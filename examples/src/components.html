@@ -187,8 +187,8 @@
         <div class="demo">
           <span class="ag-avatar ag-avatar--sm">AN</span>
           <span class="ag-avatar">JA</span>
-          <span class="ag-avatar ag-avatar--lg ag-avatar--ring" style="background:var(--ag-accent-2-soft);color:var(--ag-accent-2)">SO</span>
-          <span class="ag-avatar-group"><span class="ag-avatar ag-avatar--sm">A</span><span class="ag-avatar ag-avatar--sm" style="background:var(--ag-good-soft);color:var(--ag-good)">B</span><span class="ag-avatar ag-avatar--sm" style="background:var(--ag-warn-soft);color:var(--ag-warn)">C</span><span class="ag-avatar ag-avatar--sm">+4</span></span>
+          <span class="ag-avatar ag-avatar--lg ag-avatar--ring ag-avatar--accent2">SO</span>
+          <span class="ag-avatar-group"><span class="ag-avatar ag-avatar--sm">A</span><span class="ag-avatar ag-avatar--sm ag-avatar--good">B</span><span class="ag-avatar ag-avatar--sm ag-avatar--warn">C</span><span class="ag-avatar ag-avatar--sm">+4</span></span>
           <span class="ag-person"><span class="ag-avatar">JA</span><span><span class="ag-person__name">James</span><br><span class="ag-person__meta">DBA · MySQL</span></span></span>
         </div>
       </div>
@@ -591,7 +591,7 @@ new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor
           <h3 class="ag-card__title">.ag-approval</h3>
           <div class="ag-approval-list">
             <article class="ag-approval is-pending">
-              <div class="ag-approval__head"><span class="ag-avatar ag-avatar--sm" style="background:var(--ag-accent-2-soft);color:var(--ag-accent-2)">SO</span><div class="ag-approval__who"><strong>Sophie</strong><span>데이터팀 · 2시간 전 · REQ-0417</span></div><span class="ag-badge ag-badge--warn">대기</span></div>
+              <div class="ag-approval__head"><span class="ag-avatar ag-avatar--sm ag-avatar--accent2">SO</span><div class="ag-approval__who"><strong>Sophie</strong><span>데이터팀 · 2시간 전 · REQ-0417</span></div><span class="ag-badge ag-badge--warn">대기</span></div>
               <div class="ag-approval__what"><span class="ag-approval__kind">계정 발급</span>svc_analytics_ro · member-pg · 읽기 전용 · 10.2.0.0/16</div>
               <p class="ag-approval__reason">주문 전환율 분석용 배치. 매일 04:00 1회, SELECT 만. 보안 검토 티켓 SEC-882 완료.</p>
               <div class="ag-approval__actions"><input class="ag-input ag-input--sm" id="ap-c1" placeholder="코멘트 (선택)"><button class="ag-btn ag-btn--sm ag-btn--danger">반려</button><button class="ag-btn ag-btn--sm ag-btn--primary">승인</button></div>
@@ -898,9 +898,9 @@ innodb_buffer_pool_size = 56G</pre></div>
           <p class="ag-text-sm ag-text-2">프로필은 사이드바 하단 대신 <code>.ag-topbar__actions</code> 에 둔다. 어느 레이아웃 모드에서든 같은 자리.</p>
           <div class="ag-row ag-gap-4 ag-wrap">
             <div class="ag-dropdown is-open" style="position:relative">
-              <button class="ag-user" data-ag-dropdown><span class="ag-avatar ag-avatar--sm" style="background:var(--ag-warn-soft);color:var(--ag-warn)">AN</span><span class="ag-user__text"><span class="ag-user__name">Andy</span><span class="ag-user__meta">Administrator</span></span><svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button>
+              <button class="ag-user" data-ag-dropdown><span class="ag-avatar ag-avatar--sm ag-avatar--warn">AN</span><span class="ag-user__text"><span class="ag-user__name">Andy</span><span class="ag-user__meta">Administrator</span></span><svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button>
               <div class="ag-menu ag-menu--wide ag-menu--left" style="position:static;margin-top:8px">
-                <div class="ag-menu__user"><span class="ag-avatar" style="background:var(--ag-warn-soft);color:var(--ag-warn)">AN</span><div class="ag-min-0"><div class="ag-person__name">Andy</div><div class="ag-person__meta">andy@example.com</div></div></div>
+                <div class="ag-menu__user"><span class="ag-avatar ag-avatar--warn">AN</span><div class="ag-min-0"><div class="ag-person__name">Andy</div><div class="ag-person__meta">andy@example.com</div></div></div>
                 <a class="ag-menu__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-shield"/></svg>내 계정<span class="ag-badge ag-badge--sm ag-badge--good">Google</span></a>
                 <a class="ag-menu__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-settings"/></svg>환경설정<kbd>,</kbd></a>
                 <div class="ag-menu__item" style="cursor:default"><svg class="ag-icon ag-icon--sm"><use href="#i-clock"/></svg>자동 로그아웃<span class="ag-session ag-ml-auto">28:14</span></div>
@@ -987,7 +987,7 @@ innodb_buffer_pool_size = 56G</pre></div>
 </dialog>
 <div class="ag-modal-overlay" id="demo-overlay" hidden>
   <div class="ag-modal__panel">
-    <div class="ag-modal__head"><div class="ag-row"><span class="ag-avatar" style="background:var(--ag-warn-soft);color:var(--ag-warn)"><svg class="ag-icon"><use href="#i-alert"/></svg></span><h3>계정 잠금 해제 요청</h3></div><button class="ag-btn ag-btn--icon ag-btn--ghost" data-ag-close aria-label="닫기"><svg class="ag-icon"><use href="#i-x"/></svg></button></div>
+    <div class="ag-modal__head"><div class="ag-row"><span class="ag-avatar ag-avatar--warn"><svg class="ag-icon"><use href="#i-alert"/></svg></span><h3>계정 잠금 해제 요청</h3></div><button class="ag-btn ag-btn--icon ag-btn--ghost" data-ag-close aria-label="닫기"><svg class="ag-icon"><use href="#i-x"/></svg></button></div>
     <p class="ag-text-sm ag-text-2">최근 <strong class="ag-text-warn">90</strong>일간 로그인 기록이 없어 비활성 잠금되었습니다. 사유를 남기면 관리자에게 전달됩니다.</p>
     <div class="ag-field"><label class="ag-label" for="demo-reason">사유</label><textarea class="ag-textarea" id="demo-reason" rows="3" placeholder="예) 휴가 복귀 후 시스템 사용 재개"></textarea></div>
     <div class="ag-modal__foot"><button class="ag-btn ag-btn--ghost" data-ag-close>취소</button><button class="ag-btn ag-btn--primary" data-ag-close>요청 보내기</button></div>

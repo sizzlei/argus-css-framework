@@ -40,7 +40,9 @@ rows = [
 ]
 out.append(h("배지 × 톤 × 모양", "12톤 × 9모양. 셀 하나라도 회색/기본으로 떨어지면 소스 순서 버그", "badges"))
 tags = ''.join(f'<span class="ag-tag ag-tag--cat{i}"><span class="ag-tag__key">cat{i}</span><span class="ag-tag__val">값</span></span>' for i in range(1,5)) + '<span class="ag-tag"><span class="ag-tag__key">기본</span><span class="ag-tag__val">값</span><button class="ag-tag__remove" aria-label="제거">×</button></span>'
-out.append('<div class="ag-grid">' + card("ag-badge", table(TONES, rows)) + card("ag-tag × 범주", f'<div class="demo">{tags}</div>') + '</div></section>\n')
+AV = ["", "good", "warn", "crit", "info", "accent2", "cat1", "cat2", "cat3", "cat4", "neutral"]
+av_rows = [row(sz or "기본", [f'<span class="ag-avatar{(" ag-avatar--"+t) if t else ""}{(" "+sz) if sz else ""}">AN</span>' for t in AV]) for sz in ["ag-avatar--sm", "", "ag-avatar--lg", "ag-avatar--ring"]]
+out.append('<div class="ag-grid">' + card("ag-badge", table(TONES, rows)) + card("ag-tag × 범주", f'<div class="demo">{tags}</div>', 4) + card("ag-avatar × 톤 × 크기", table(AV, av_rows), 8) + '</div></section>\n')
 
 # ---------- 버튼 ----------
 BV = ["", "primary", "outline", "ghost", "inverse", "danger", "accent2"]

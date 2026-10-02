@@ -334,6 +334,17 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   flex: none;
 }
 .ag-avatar img { width: 100%; height: 100%; object-fit: cover; }
+/* 톤 — 상태(good/warn/crit/info)·액센트·범주(cat1~4). 기본은 accent. 인라인 style 로 색을 주지 않는다 */
+.ag-avatar--good { background: var(--ag-good-soft); color: var(--ag-good-text); }
+.ag-avatar--warn { background: var(--ag-warn-soft); color: var(--ag-warn-text); }
+.ag-avatar--crit { background: var(--ag-crit-soft); color: var(--ag-crit-text); }
+.ag-avatar--info { background: var(--ag-info-soft); color: var(--ag-info-text); }
+.ag-avatar--accent2 { background: var(--ag-accent-2-soft); color: var(--ag-accent-2); }
+.ag-avatar--cat1 { background: var(--ag-cat-1-soft); color: var(--ag-cat-1-text); }
+.ag-avatar--cat2 { background: var(--ag-cat-2-soft); color: var(--ag-cat-2-text); }
+.ag-avatar--cat3 { background: var(--ag-cat-3-soft); color: var(--ag-cat-3-text); }
+.ag-avatar--cat4 { background: var(--ag-cat-4-soft); color: var(--ag-cat-4-text); }
+.ag-avatar--neutral { background: var(--ag-surface-3); color: var(--ag-text-2); }
 .ag-avatar--sm { width: 28px; height: 28px; font-size: var(--ag-text-xs); }
 .ag-avatar--lg { width: 56px; height: 56px; font-size: var(--ag-text-lg); }
 .ag-avatar--ring { box-shadow: 0 0 0 2px var(--ag-bg), 0 0 0 4px var(--ag-accent); }
