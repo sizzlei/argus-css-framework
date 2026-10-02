@@ -7,7 +7,7 @@
 - 샘플 페이지 프로필을 Andy 로. 컬러 테마 선택은 하단 데모 네비에서 (모든 페이지).
 - `.ag-toast--warn` / `--info` 추가 (기존 good/crit 만 있었음). 4종 모두 왼쪽 3px 톤 바로 구분. `AG.toast(msg,'info')` 도 그대로 동작.
 - 컴포넌트 카탈로그 `.ag-qr` 예시에 실제 QR(otpauth 데모 URL, SVG) 추가. 720px 이하 상단 바 브랜드 축소·말줄임(좁은 화면 가로 스크롤 방지).
-- `fonts/fetch-fonts.sh` 수정: `awk | while read` 가 @font-face 블록을 줄 단위로 끊어 `src` 만 남던 버그. 블록을 한 줄로 펴서 처리, 파일명 `NotoSansKR-400-12.woff2` 꼴, 결과 검증(블록·src 수 일치), BSD sed 호환, `GOOGLE_CSS=` 드라이런.
+- `fonts/fetch-fonts.sh` 수정: `awk | while read` 가 @font-face 블록을 줄 단위로 끊어 `src` 만 남던 버그. 블록을 한 줄로 펴서 처리, 파일명 `NotoSansKR-400-12.woff2` 꼴, 결과 검증(블록·src 수 일치), BSD sed/awk 호환, `GOOGLE_CSS=` 드라이런. 2차 수정: 주석 없는 블록(Noto Sans KR 한글 서브셋 480개)이 `IFS=탭 read` 의 선행 탭 처리에 밀려 통째로 빠지던 문제 — 줄을 통째로 읽어 직접 쪼개고, 검증을 원본 블록 수 일치 + 한글(U+D55C) 담당 블록 ≥ 굵기 수로 강화.
 
 ### 공개 전 이력 (요약)
 - 0.6 경량화: dist 는 minified 만, 전체 / core / patterns / charts / auth-landing 번들, JS minify.

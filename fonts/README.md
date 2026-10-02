@@ -2,7 +2,7 @@
 
 예시 페이지는 Google Fonts 링크를 쓰지만, 폐쇄망에서는 막혀 시스템 폰트로 떨어진다. 그러면 화면 인상이 꽤 달라지므로 **서비스에는 self-host 를 권장**한다.
 
-1. 인터넷이 되는 PC 에서 `sh fonts/fetch-fonts.sh` → `fonts/*.woff2` 와 `fonts/fonts.css` 생성. 마지막 줄에 `done: N blocks, N woff2 …` 가 나오고 블록 수 검증을 통과해야 정상 (macOS 기본 sh/awk/sed 로 동작) (Manrope 400–800, Noto Sans KR 400–700, JetBrains Mono 400–500. 유니코드 범위별로 분할된 파일이라 총 2–3MB, 실제 로드는 필요한 범위만).
+1. 인터넷이 되는 PC 에서 `sh fonts/fetch-fonts.sh` → `fonts/*.woff2` 와 `fonts/fonts.css` 생성. 마지막 줄에 `done: 538/538 blocks, 538 woff2, 한글 담당 블록 4 …` 처럼 원본 블록 수와 일치하고 한글(U+D55C) 담당 블록이 굵기 수(4)만큼 있어야 정상 — 하나라도 어긋나면 스크립트가 실패로 멈춘다 (macOS 기본 sh/awk/sed 로 동작) (Manrope 400–800, Noto Sans KR 400–700, JetBrains Mono 400–500. 유니코드 범위별로 분할된 파일이라 총 2–3MB, 실제 로드는 필요한 범위만).
 2. `fonts/` 폴더째 서비스 `web/public/fonts/` 로 복사.
 3. 레이아웃 `<head>` 에서 Google Fonts `<link>` 대신:
    ```html

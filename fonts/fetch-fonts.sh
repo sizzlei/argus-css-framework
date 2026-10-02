@@ -21,13 +21,17 @@ awk 'BEGIN{RS="}"} /@font-face/{
   sub(/^[ \t\r\n]+/,""); subset="";
   if (match($0,/\/\*[^*]*\*\//)) { subset=substr($0,RSTART+2,RLENGTH-4); gsub(/[ \[\]]/,"",subset); sub(/\/\*[^*]*\*\//,""); }
   gsub(/[\r\n]+/," "); gsub(/  +/," "); sub(/^ +/,""); sub(/ +$/,"");
+  if (subset == "") subset = "s" (++k);     # 주석 없는 블록(Noto Sans KR 한글 서브셋 480개) — 빈 필드가 되지 않게 자리표시자
   print subset "\t" $0 "}"
 }' _google.css > _blocks.tsv
+SRC_BLOCKS=$(grep -c "@font-face" _google.css)
 
 : > fonts.css
 echo "/* Argus CSS Framework — self-hosted fonts. fetch-fonts.sh 가 생성. 서비스 static 의 /fonts/ 에 두고 argus.min.css 보다 먼저 로드 */" >> fonts.css
 n=0; seq=0
-while IFS="$(printf '\t')" read -r subset block; do
+TAB=$(printf '\t')
+while IFS= read -r line; do
+  subset=${line%%"$TAB"*}; block=${line#*"$TAB"}   # IFS 로 쪼개지 않는다: 탭은 공백류라 선행 탭을 read 가 먹어 필드가 밀린다
   fam=$(printf '%s' "$block" | sed -n "s/.*font-family: *'\([^']*\)'.*/\1/p" | tr -d ' ')
   wt=$(printf '%s' "$block" | sed -n 's/.*font-weight: *\([0-9]*\).*/\1/p')
   src=$(printf '%s' "$block" | sed -n 's/.*url(\([^)]*\)).*/\1/p')
@@ -44,7 +48,14 @@ while IFS="$(printf '\t')" read -r subset block; do
 done < _blocks.tsv
 rm -f _google.css _blocks.tsv
 
-# 3) 검증: 블록 수 == font-family 수 == unicode-range 수 == 로컬 url 수
-b=$(grep -c "@font-face" fonts.css); f=$(grep -c "font-family" fonts.css); u=$(grep -c "unicode-range" fonts.css); s=$(grep -c "url('./" fonts.css)
-if [ "$b" != "$f" ] || [ "$b" != "$s" ]; then echo "검증 실패: @font-face $b / font-family $f / unicode-range $u / src $s"; exit 1; fi
-if [ -n "$DRY" ]; then echo "parse OK: $n blocks (dry run, woff2 미다운로드)"; else echo "done: $n blocks, $(ls *.woff2 | wc -l | tr -d ' ') woff2, fonts.css ($b @font-face, $u unicode-range)"; fi
+# 3) 검증: 원본 블록 수와 같아야 하고, 한글 '한'(U+D55C) 을 담는 블록이 Noto Sans KR 굵기 수(4)만큼 있어야 한다
+b=$(grep -c "@font-face" fonts.css); s=$(grep -c "url('./" fonts.css)
+han=$(awk 'function pad(h){ h=tolower(h); while (length(h)<6) h="0" h; return h }
+  BEGIN{RS="}"; T=pad("d55c")} /Noto Sans KR/ && /unicode-range/ {
+  ur=$0; sub(/.*unicode-range: */,"",ur); sub(/;.*/,"",ur); n=split(ur,a,",");
+  for(i=1;i<=n;i++){ r=a[i]; gsub(/[ \t\r\n]/,"",r); sub(/^[Uu]\+/,"",r);
+    if (index(r,"-")) { lo=pad(substr(r,1,index(r,"-")-1)); hi=pad(substr(r,index(r,"-")+1)) } else { lo=pad(r); hi=lo }
+    if (lo <= T && T <= hi) { c++; break } } } END{print c+0}' fonts.css)   # 16진 문자열을 6자리로 맞춰 사전순 비교 — strtonum 없는 BSD awk 에서도 동작
+if [ "$b" != "$SRC_BLOCKS" ] || [ "$b" != "$s" ]; then echo "검증 실패: 원본 @font-face $SRC_BLOCKS / 결과 $b / 로컬 src $s"; exit 1; fi
+if [ "$han" -lt 4 ]; then echo "검증 실패: 한글(U+D55C) 담당 Noto Sans KR 블록이 $han 개 (굵기 4개 기대) — 한글 서브셋 누락"; exit 1; fi
+if [ -n "$DRY" ]; then echo "parse OK: $n/$SRC_BLOCKS blocks, 한글 블록 $han (dry run, woff2 미다운로드)"; else echo "done: $n/$SRC_BLOCKS blocks, $(ls *.woff2 | wc -l | tr -d ' ') woff2, 한글 담당 블록 $han, fonts.css"; fi
