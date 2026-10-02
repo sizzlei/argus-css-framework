@@ -1,0 +1,11 @@
+/* Argus CSS Framework — 컬러 테마 "blue" · 파랑 — 맑은 스카이 블루 */
+:root {                                  /* 다크 */
+  --ag-accent: #3f7de8; --ag-accent-hover: #6ea2ff; --ag-accent-soft: rgb(63 125 232 / .16);
+  --ag-text-on-accent: #ffffff;
+  --ag-brand-from: #3f7de8; --ag-brand-to: #4fc3c7;
+}
+:root[data-theme="light"] {              /* 라이트 — 한 단계 깊게 */
+  --ag-accent: #2f6fe0; --ag-accent-hover: #2559c2; --ag-accent-soft: rgb(47 111 224 / .16);
+  --ag-text-on-accent: #ffffff;
+  --ag-brand-from: #2f6fe0; --ag-brand-to: #1f9fb0;
+}

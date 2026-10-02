@@ -1,2 +1,210 @@
-# argus-css-framework
-Argus CSS Framework
+# Argus CSS Framework
+
+어드민 페이지용 순수 CSS 디자인 시스템. 빌드 도구 없이 `<link>` 한 줄, 다크 테마 기본 + 라이트, 컬러 테마 7종, 레이아웃 모드 6종, CSS 전용 차트.
+Go `html/template` 같은 서버 렌더링 어드민을 염두에 두고 만들었지만 어떤 스택에서든 쓸 수 있다. JS 는 전부 선택 사항.
+
+A pure-CSS design system for admin pages — dark-first with a light theme, 7 color themes, 6 layout modes, CSS-only charts, optional data-attribute JS helpers. Korean docs; class names are English (`ag-` prefix). MIT.
+
+**라이브 데모 (GitHub Pages):** https://sizzlei.github.io/argus-css-framework/
+
+| 페이지 | 내용 |
+|---|---|
+| [대시보드](https://sizzlei.github.io/argus-css-framework/examples/index.html) | 스탯·CSS 차트·알림·배너·사용자 메뉴 |
+| [리소스 목록](https://sizzlei.github.io/argus-css-framework/examples/resources.html) | 필터·테이블·벌크바·페이지네이션·사이드바 레이아웃 |
+| [상세](https://sizzlei.github.io/argus-css-framework/examples/detail.html) | 탭·KV·타임라인·폼·모달·드로어 |
+| [로그인](https://sizzlei.github.io/argus-css-framework/examples/login.html) | 2단 인증 레이아웃·OTP·외부 로그인·컬러 테마 전환 |
+| [레이아웃 모드](https://sizzlei.github.io/argus-css-framework/examples/layouts.html) | 6개 모드를 같은 콘텐츠로 전환 |
+| [컴포넌트 카탈로그](https://sizzlei.github.io/argus-css-framework/examples/components.html) | 전체 컴포넌트·패턴·토큰 |
+
+로컬에서는 저장소를 받아 `examples/index.html` 을 그냥 열면 된다 (빌드 불필요). 페이지 하단 왼쪽 네비로 이동, 우상단 버튼으로 다크/라이트 전환.
+
+```
+dist/argus.min.css              ← 가장 단순한 선택: 이것 하나만 <link> (124KB, gzip 22KB)
+  — 또는 골라 쓰기 —
+dist/argus.core.min.css         ← 토큰·베이스·레이아웃·컴포넌트·유틸 (54KB, gzip 10KB). 최소 세트
+dist/argus.patterns.min.css     ← 인증·사이드바·로그·Slack·배너·알림·승인·⌘K·트리… (59KB, gzip 11KB)
+dist/argus.charts.min.css       ← CSS 차트 + Apex/Chart.js 보정 (11KB). 차트 있는 페이지만
+dist/argus.auth-landing.min.css ← 랜딩형 인증 변형 (선택, 2KB)
+dist/themes/<color>.min.css     ← 컬러 테마 red / orange / yellow / green / blue / indigo / violet. css 다음에 한 줄 더 <link>
+dist/argus.js                   ← 선택. 테마 토글·탭·사이드바·드롭다운·모달·토스트·키보드·콤보박스 (minified)
+dist/argus.charts.js            ← 선택. ApexCharts / Chart.js 에 토큰 주입 (AG.charts.apex / chartjsDefaults)
+dist/VERSION
+css/ js/                        ← 소스. 읽을 땐 여기. (사람이 읽는 합본이 필요하면 `sh build.sh --readable`)
+fonts/                          ← 폰트 self-host 키트 (fetch-fonts.sh → woff2 + fonts.css)
+index.html                      ← GitHub Pages 진입점 (examples/ 로 리다이렉트)
+examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
+                                   index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환)
+templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
+docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
+CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
+```
+
+## 빠른 시작
+
+```html
+<!doctype html>
+<html lang="ko">                      <!-- 라이트 테마: <html lang="ko" data-theme="light"> -->
+<head>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/argus.min.css">
+  <link rel="stylesheet" href="/static/themes/blue.min.css">   <!-- 선택: 컬러 테마 -->
+</head>
+<body>
+  <div class="ag-app">
+    <header class="ag-topbar">
+      <a class="ag-topbar__brand" href="/"><span class="ag-dot ag-dot--accent"></span>Service Name</a>
+      <nav class="ag-topbar__center"><div class="ag-nav">
+        <a class="ag-nav__item" aria-current="page" href="/">개요</a>
+        <a class="ag-nav__item" href="/list">목록</a>
+      </div></nav>
+      <div class="ag-topbar__actions">
+        <button class="ag-btn ag-btn--icon ag-btn--outline" data-ag-theme-toggle aria-label="테마">…</button>
+      </div>
+    </header>
+    <main class="ag-main">
+      <div class="ag-grid">
+        <section class="ag-card ag-col-8">…</section>
+        <section class="ag-card ag-card--accent ag-col-4">…</section>
+      </div>
+    </main>
+  </div>
+  <script src="/static/argus.js"></script>  <!-- 선택 -->
+</body>
+</html>
+```
+
+Go `html/template` 앱이라면 `embed.FS` 로 `dist/` 파일 몇 개만 포함시키면 됩니다. **폰트는 self-host 를 권장합니다** — 폐쇄망에서 Google Fonts 가 막히면 시스템 폰트로 떨어져 인상이 달라집니다. `fonts/fetch-fonts.sh` 로 woff2 를 받아 `fonts/fonts.css` 를 static 에 두세요 (fonts/README.md).
+
+## 설계 원칙
+
+- **접두사 `ag-`**: 기존 페이지의 Bootstrap / 자체 CSS와 충돌 없이 점진 적용. BEM 변형(`block__element--modifier`), 상태는 `is-active`, `is-selected`, `is-invalid`.
+- **토큰 우선**: 색·간격·라운드·그림자는 전부 `--ag-*` 변수. 앱별 커스터마이즈는 테마 파일 한 장 또는 `:root { --ag-accent: … }` 한 줄로.
+- **다크 기본, 라이트는 `data-theme="light"`**: 컴포넌트는 토큰만 참조하므로 테마 블록을 건드릴 일이 없습니다.
+- **상태색은 예약색**: `good / warn / crit / info` 는 상태 표시 전용. 차트 시리즈에는 `--ag-chart-1~4` 만 씁니다 (두 테마 모두 색각이상 분리도 검증 완료).
+- **유틸리티는 최소한**: 컴포넌트 클래스로 못 푸는 예외에만 `ag-mt-4`, `ag-text-3` 같은 유틸을 씁니다. Tailwind처럼 쓰려고 만든 게 아닙니다.
+
+## 앱에 배포하기 (버전 관리)
+
+npm 패키지가 아니라 **각 앱 저장소에 dist 를 복사**하는 방식을 권장합니다. 동기화는 수작업이지만 단순하고, 앱마다 올리는 시점을 고를 수 있습니다.
+
+```sh
+# 앱 저장소에서
+AG=~/path/to/argus-css
+cp $AG/dist/argus.min.css $AG/dist/argus.js $AG/dist/argus.charts.js web/public/vendor/
+cp $AG/dist/themes/blue.min.css web/public/vendor/themes/
+cp $AG/dist/VERSION web/public/vendor/argus.VERSION
+git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/VERSION)"
+```
+
+`dist/VERSION` 이 현재 버전이고, 변경 내역은 `CHANGELOG.md`. 앱 `CLAUDE.md` 의 UI 섹션에 위 명령을 "프레임워크 업데이트" 로 적어두면 Claude Code 세션이 그대로 씁니다.
+
+## 디자인 원칙
+
+`docs/principles.md` — 한 화면에 하나만 강조, 첫 화면 카드 7개 이하, 상태는 색만으로 말하지 않기, 메뉴 수가 레이아웃을 정함, 쓰지 말 것 목록.
+
+## 컬러 테마
+
+메인 색은 앱마다 다르게 가져갈 수 있습니다. 공통인 것은 표면·텍스트·간격·컴포넌트 모양·상태색·차트 범주색이고, 액센트와 브랜드 그라데이션만 테마 파일이 바꿉니다.
+
+```html
+<link rel="stylesheet" href="/static/argus.min.css">
+<link rel="stylesheet" href="/static/themes/green.min.css">   <!-- red / orange / yellow / green / blue / indigo / violet -->
+```
+
+7종 모두 원색 그대로가 아니라 한 톤 눌러 자연스럽게 맞춘 값이고, 다크·라이트 각각 정의돼 있습니다. 밝은 색(yellow·green)은 위에 올라가는 글자가 자동으로 어둡게 바뀝니다. 새 색은 `css/themes/_template.css` 를 복사해 채우세요. `examples/layouts.html` · `examples/login.html` 하단에서 바꿔볼 수 있습니다.
+
+## 레이아웃 모드
+
+같은 마크업(`.ag-topbar` / `.ag-sidebar` / `.ag-main`)에 모드 클래스만 바꿉니다. `examples/layouts.html` 에서 전환해 볼 수 있습니다.
+
+| 클래스 | 모드 | 쓰임 |
+|---|---|---|
+| `.ag-app` | top | 상단 바 + 캡슐 네비 (기본) |
+| `.ag-app--sidebar` | sidebar | 좌측 사이드바, `is-collapsed` 접힘, 그룹 아코디언 |
+| `.ag-app--rail` | rail | 84px 아이콘 레일, 모바일은 `.ag-sidebar--bottom-tabs` 로 하단 탭 |
+| `.ag-app--tabs` | tabs | 2단 상단 바 (`.ag-topbar__row--main` + `--nav`) |
+| `.ag-app--focus` | focus | 네비 없는 좁은 중앙 컬럼 (설정·마법사) |
+| `.ag-app--dual` | dual | 사이드바 + `.ag-pane` 목록 + 상세 |
+
+사용자 프로필은 모드와 무관하게 상단 바 우측 `.ag-user` 드롭다운에 둡니다.
+
+## 기존 어드민에 적용할 때 (Claude Code)
+
+`docs/renewal-prompt.md` 에 ① 앱 저장소 `CLAUDE.md` 에 붙일 규칙 조각, ② 리뉴얼 착수 프롬프트, ③ Tailwind/Bootstrap → `ag-` 매핑표가 있습니다.
+
+## 토큰 요약
+
+| 그룹 | 변수 | 비고 |
+|---|---|---|
+| 표면 | `--ag-bg` `--ag-surface` `--ag-surface-2` `--ag-surface-3` `--ag-inverse` | 바닥 → 카드 → 카드 안 타일 → 강조 |
+| 잉크 | `--ag-text` `--ag-text-2` `--ag-text-3` | 본문 / 보조 / 메타 |
+| 액센트 | `--ag-accent` (바이올렛) `--ag-accent-2` (핑크) | `*-soft` 는 투명 배경용 |
+| 상태 | `--ag-good` `--ag-warn` `--ag-crit` `--ag-info` | `*-soft` 동반 |
+| 차트 | `--ag-chart-1..4` `--ag-chart-hatch` `--ag-chart-grid` | 범주색 고정 순서 |
+| 간격 | `--ag-space-1..12` | 4px 기준 |
+| 라운드 | `--ag-radius-sm/md/lg/xl/pill` | 8 / 12 / 18 / 24 / 999 |
+| 타이포 | `--ag-text-xs..4xl` `--ag-font-sans` `--ag-font-mono` | 본문 14px |
+
+## 컴포넌트 목록
+
+레이아웃 `ag-app` `ag-app--sidebar` `ag-topbar` `ag-nav` `ag-sidebar` `ag-main` `ag-page-header` `ag-section` `ag-grid` + `ag-col-N` `ag-stack` `ag-cluster` `ag-row` `ag-breadcrumb`
+
+차트 (CSS 전용) `ag-donut` `ag-donut-legend` `ag-bars` `ag-cols` `ag-heatmap` / `ag-heat` `ag-gauge` `ag-ring` `ag-spark` `ag-stat-card` `ag-treemap` + ApexCharts 보정 (`.ag-chart .apexcharts-*`)
+
+패턴 `ag-daterange` `ag-banner` `ag-notif` `ag-meter-row--compact` `ag-approval` `ag-cmdk` `ag-wizard` `ag-combobox` `ag-tree` `ag-td--editable` `ag-skeleton-rows` · `data-density="compact"` · `@media print` (`.ag-print-header`) `ag-auth` (표준 인증: 어두운 표면 패널 + 점 격자 · `__logo-box` `__name` `__version` `__status` `__mobile-head` `__email-chip` `__qr` `__foot`; `--landing` 은 그라데이션 패널 변형) `ag-accordion` (details / `__toggle`+`is-open` / `--plain` / `--cards`) `ag-sidebar__node` (2단계 메뉴) `ag-modal-overlay` `ag-slack` (Block Kit 미리보기 전체) `ag-provider` `ag-account` `ag-user` `ag-pane` / `ag-pane-item` `ag-auth` `ag-otp` `ag-otp-input` `ag-qr` `ag-secret` `ag-status-screen` `ag-brand-mark` `ag-session` `ag-stepper` `ag-log` `ag-code` `ag-code-block` `ag-tok-*` `ag-editor` `ag-diff` `ag-compare` `ag-tag` `ag-tags` `ag-tag-input` `ag-dropzone` `ag-file` `ag-popover` `ag-accordion` `ag-bulkbar` `ag-tr--expand` `ag-table--sticky-col` `ag-spinner` `ag-loading-overlay` `ag-msg` `ag-health` `ag-glow` `ag-scrollbar-hide` · 사이드바 `is-collapsed` / `is-open` / `ag-sidebar-backdrop` / `ag-sidebar__group-toggle`
+
+컴포넌트 `ag-btn` `ag-btn-group` `ag-segmented` `ag-chip` `ag-meter-chips` `ag-badge` `ag-dot` `ag-delta` `ag-card` `ag-tile` `ag-list` `ag-stat` `ag-avatar` `ag-person` `ag-table` `ag-table-foot` `ag-pagination` `ag-field` `ag-input` `ag-select` `ag-textarea` `ag-check` `ag-switch` `ag-input-group` `ag-form-grid` `ag-tabs` `ag-progress` `ag-meter-row` `ag-alert` `ag-insight` `ag-toast` `ag-dropdown` / `ag-menu` `ag-modal` `ag-drawer` `[data-tip]` `ag-empty` `ag-skeleton` `ag-kv` `ag-timeline` `ag-chart` `ag-legend` `ag-bubble` `ag-quick-actions`
+
+전체 모양과 조합 예시는 `examples/components.html` 에서 확인하세요.
+
+## JS 헬퍼 (선택)
+
+`dist/argus.js` 는 data 속성으로만 동작합니다.
+
+| 속성 | 동작 |
+|---|---|
+| `data-ag-theme-toggle` | 클릭 시 다크 ↔ 라이트, `localStorage('ag-theme')` 에 저장 |
+| `.ag-segmented__item` `.ag-tabs__item` | 형제 중 하나만 `is-active` |
+| `data-ag-tabs` + `data-ag-tab="x"` + `data-ag-panel="x"` | 탭 패널 전환 |
+| `data-ag-dropdown` | 부모 `.ag-dropdown` 에 `is-open` 토글, 바깥 클릭 시 닫힘 |
+| `data-ag-open="id"` / `data-ag-close` | `<dialog class="ag-modal">`, `.ag-modal-overlay`, `.ag-drawer` 열고 닫기 (오버레이는 바깥 클릭으로도 닫힘, `data-ag-static` 으로 막기) |
+| `AG.toast(message, type?, ms?)` | 우하단 토스트. type = good/warn/crit/info, ms=0 이면 수동 닫기 |
+| `data-ag-expand` (tr 안 버튼) | 다음 `tr.ag-tr--expand` 펼치기/접기 |
+| `data-ag-detail-open` / `data-ag-detail-close` | dual 레이아웃 모바일에서 목록 ↔ 상세 |
+| `.ag-accordion__toggle`, `.ag-sidebar__item--parent` | 토글형 아코디언 / 2단계 메뉴 (상태 저장: `data-ag-node`) |
+| `data-ag-banner-close` / `.ag-daterange__presets .ag-chip[data-ag-days]` | 배너 닫기 / 날짜 프리셋이 두 date 입력을 채움 |
+| `[data-ag-cmdk]` | ⌘K / Ctrl+K 로 열리는 오버레이. 방향키·ESC 지원 |
+| 키보드 | 세그먼트·탭 ←→, 메뉴·cmdk·콤보박스·알림 ↑↓, ESC 로 모든 오버레이 닫기 |
+| `.ag-chart[data-ag-chart='[{x,y,label,value}]']` | 라인 차트 호버 툴팁 + 커서 |
+| `data-ag-sidebar-toggle` / `data-ag-sidebar-open` | 사이드바 접기(저장) / 모바일 열기 |
+| `.ag-sidebar__group[data-ag-group]` > `.ag-sidebar__group-toggle` | 그룹 접기(저장) |
+
+차트 라이브러리를 쓰는 화면은 `dist/argus.charts.js` 를 추가로 로드합니다.
+```js
+const chart = new ApexCharts(el, AG.charts.apex({ chart:{type:'donut',height:280}, series:[108,61,17], labels:['MySQL','PostgreSQL','Oracle'] }));
+chart.render(); AG.charts.register(chart);   // data-theme 바뀌면 자동 재렌더
+AG.charts.chartjsDefaults(Chart);             // Chart.js 전역 기본값
+```
+
+첫 페인트 깜빡임을 막으려면 `<head>` 에 다음을 넣습니다.
+```html
+<script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+```
+
+## 빌드
+
+```sh
+sh build.sh                 # css/*.css → dist/*.min.css + themes + js. lightningcss 가 있으면 사용 (npm i -g lightningcss-cli), esbuild 있으면 JS 도 minify
+python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
+```
+
+## 기존 어드민에 적용하는 순서
+
+1. `dist/argus.min.css` 를 static 에 추가하고 `<link>` 만 걸어둔다. `ag-` 접두사라 기존 화면은 깨지지 않는다.
+2. 페이지 셸부터 바꾼다: `ag-app` / `ag-topbar` / `ag-main`. 이것만으로 톤이 맞춰진다.
+3. 테이블 → `ag-table-wrap > ag-table`, 버튼 → `ag-btn`, 상태 텍스트 → `ag-badge` 순으로 치환한다.
+4. 폼과 모달은 마지막에. 기존 JS 바인딩이 많은 곳이라 클래스만 바꾸고 동작은 그대로 둔다.
+
+## 라이선스
+
+MIT — `LICENSE`. 폰트(Manrope · Noto Sans KR · JetBrains Mono)와 아이콘(Phosphor)은 각자의 라이선스를 따르며 저장소에 포함돼 있지 않습니다.

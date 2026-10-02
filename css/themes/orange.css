@@ -1,0 +1,11 @@
+/* Argus CSS Framework — 컬러 테마 "orange" · 주황 — 차분한 테라코타 */
+:root {                                  /* 다크 */
+  --ag-accent: #f0893f; --ag-accent-hover: #f59d5c; --ag-accent-soft: rgb(240 137 63 / .18);
+  --ag-text-on-accent: #1a1000;
+  --ag-brand-from: #f0893f; --ag-brand-to: #f5b85c;
+}
+:root[data-theme="light"] {              /* 라이트 — 한 단계 깊게 */
+  --ag-accent: #c4621a; --ag-accent-hover: #bd5f14; --ag-accent-soft: rgb(196 98 26 / .16);
+  --ag-text-on-accent: #ffffff;
+  --ag-brand-from: #c4621a; --ag-brand-to: #e8a33a;
+}

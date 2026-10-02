@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argus Console — 로그인</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/argus.min.css">
+<link rel="stylesheet" href="" id="service-theme">
+<script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<style>@media (min-width: 961px) { .ag-auth__brand { padding-bottom: 104px; } }</style>
+</head>
+<body>
+<svg hidden xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></symbol>
+  <symbol id="i-trend-up" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8"/><path d="M14 7h7v7"/></symbol>
+  <symbol id="i-trend-down" viewBox="0 0 24 24"><path d="m3 7 6 6 4-4 8 8"/><path d="M21 10v7h-7"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="7" rx="2"/><rect x="2" y="14" width="20" height="7" rx="2"/><path d="M6 6.5h.01M6 17.5h.01"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19a4.5 4.5 0 0 0 .4-9A7 7 0 0 0 4.3 12.5 3.8 3.8 0 0 0 6 19Z"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/><path d="M19 17l.7 1.8 1.8.7-1.8.7L19 22l-.7-1.8-1.8-.7 1.8-.7L19 17Z"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7-7 7-12a7 7 0 1 0-14 0c0 5 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
+  <symbol id="i-hdd" viewBox="0 0 24 24"><path d="M21 12H3M4 6h16l2 6v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-6l2-6Z"/><path d="M6 16h.01M10 16h.01"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5Z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4Z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 4h4v16H7zM13 4h4v16h-4z"/></symbol>
+  <symbol id="i-git" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M6 8.5v7M18 15.5V11a3 3 0 0 0-3-3H10"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.2A8 8 0 1 1 21 12Z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14Z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+</svg>
+
+
+<div class="ag-auth">
+  <aside class="ag-auth__brand">
+    <div><span class="ag-auth__logo-box"><svg class="ag-icon"><use href="#i-database"/></svg></span><div class="ag-auth__name">Argus Console <span class="ag-auth__version">v2.4.1</span></div></div>
+    <div>
+      <h1 class="ag-auth__headline">186개 인스턴스를 <em>한 화면에서</em> 다룹니다</h1>
+      <p class="ag-auth__sub">리소스 현황, 작업 이력, 백업과 권한 발급까지 한 곳에서 다루는 어드민 콘솔 데모입니다.</p>
+      <div class="ag-auth__features">
+        <div class="ag-auth__feature"><svg class="ag-icon"><use href="#i-shield"/></svg>조직 계정 + OTP 2단계 인증</div>
+        <div class="ag-auth__feature"><svg class="ag-icon"><use href="#i-clock"/></svg>30분 미사용 시 자동 로그아웃</div>
+        <div class="ag-auth__feature"><svg class="ag-icon"><use href="#i-activity"/></svg>모든 변경은 감사 로그에 기록</div>
+      </div>
+    </div>
+    <div>
+      <div class="ag-auth__status"><span class="ag-auth__status-dot is-up"></span><b>Operational</b><i>·</i><span class="ag-upper">prod</span><i>·</i><span>a1b2c3d</span></div>
+      <div class="ag-auth__copyright">© 2026 Argus Console. Access Restricted.</div>
+    </div>
+  </aside>
+
+  <main class="ag-auth__panel">
+    <div class="ag-auth__card" data-ag-tabs>
+      <div class="ag-auth__mobile-head"><span class="ag-brand-mark"><svg class="ag-icon"><use href="#i-database"/></svg></span><h2>Argus Console</h2><p>인프라 내부 콘솔</p></div>
+      <ol class="ag-stepper ag-stepper--sm">
+        <li class="ag-stepper__step is-done"><span class="ag-stepper__dot"><span>1</span></span><span class="ag-stepper__label">이메일</span></li>
+        <li class="ag-stepper__step is-active"><span class="ag-stepper__dot"><span>2</span></span><span class="ag-stepper__label">OTP 인증</span></li>
+        <li class="ag-stepper__step"><span class="ag-stepper__dot"><span>3</span></span><span class="ag-stepper__label">완료</span></li>
+      </ol>
+
+      <div>
+        <h2 class="ag-auth__title">인증 코드를 입력하세요</h2>
+        <p class="ag-auth__desc">andy@example.com 의 Authenticator 앱에 표시된 6자리 코드</p>
+      </div>
+
+      <form class="ag-stack ag-stack--lg" onsubmit="return false">
+        <div class="ag-otp" aria-label="OTP 6자리">
+          <input class="ag-otp__cell is-filled" id="o1" inputmode="numeric" maxlength="1" value="4" aria-label="1자리">
+          <input class="ag-otp__cell is-filled" id="o2" inputmode="numeric" maxlength="1" value="8" aria-label="2자리">
+          <input class="ag-otp__cell is-filled" id="o3" inputmode="numeric" maxlength="1" value="2" aria-label="3자리">
+          <input class="ag-otp__cell" id="o4" inputmode="numeric" maxlength="1" aria-label="4자리" autofocus>
+          <input class="ag-otp__cell" id="o5" inputmode="numeric" maxlength="1" aria-label="5자리">
+          <input class="ag-otp__cell" id="o6" inputmode="numeric" maxlength="1" aria-label="6자리">
+        </div>
+        <div class="ag-cluster ag-cluster--between ag-text-sm">
+          <span class="ag-session"><svg class="ag-icon"><use href="#i-clock"/></svg>00:24 후 코드 갱신</span>
+          <a href="#">기기를 분실했나요?</a>
+        </div>
+        <button class="ag-btn ag-btn--primary ag-btn--lg ag-btn--block" type="submit">로그인</button>
+        <div class="ag-auth__divider">또는 다른 방법으로</div>
+        <div class="ag-provider-list">
+          <button class="ag-provider ag-provider--google" type="button"><span class="ag-provider__logo"><img alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%234285f4' stroke-width='2.5'/%3E%3C/svg%3E"></span><span class="ag-provider__label">Google 로 계속하기</span><span class="ag-provider__hint">example.com</span></button>
+          <div class="ag-provider-row">
+            <button class="ag-provider ag-provider--slack" type="button"><span class="ag-provider__logo"><svg class="ag-icon"><use href="#i-message"/></svg></span><span class="ag-provider__label">Slack 임시 코드</span></button>
+            <button class="ag-provider ag-provider--sso" type="button"><span class="ag-provider__logo"><svg class="ag-icon"><use href="#i-shield"/></svg></span><span class="ag-provider__label">SSO</span></button>
+          </div>
+        </div>
+        <p class="ag-domain-hint"><svg class="ag-icon ag-icon--sm"><use href="#i-info"/></svg>Google 로고는 서비스 static 의 공식 에셋으로 교체하세요 (예시는 자리표시)</p>
+      </form>
+
+      <div class="ag-alert ag-alert--info">
+        <svg class="ag-icon"><use href="#i-info"/></svg>
+        <div>처음 로그인이라면 <a href="#">OTP 등록</a>부터 진행합니다. QR 코드를 Authenticator 앱으로 스캔하세요.</div>
+      </div>
+
+      <p class="ag-text-xs ag-text-3 ag-text-center">문제가 있으면 #infra-db-help 채널로 문의하세요.</p>
+    </div>
+  </main>
+</div>
+
+<div class="ag-mode-switch ag-row ag-gap-2" style="background:var(--ag-bg-elevated);padding:6px;border-radius:var(--ag-radius-pill);border:1px solid var(--ag-border)">
+  <select class="ag-select ag-select--sm ag-select--pill ag-select--inline" id="service-select" aria-label="컬러 테마">
+    <option value="">기본 (violet)</option><option value="red">red · 빨강</option><option value="orange">orange · 주황</option><option value="yellow">yellow · 노랑</option><option value="green">green · 초록</option><option value="blue">blue · 파랑</option><option value="indigo">indigo · 남색</option><option value="violet">violet · 보라</option>
+  </select>
+  <button class="ag-btn ag-btn--sm ag-btn--outline" data-ag-theme-toggle><svg class="ag-icon ag-icon--sm ag-only-dark"><use href="#i-sun"/></svg><svg class="ag-icon ag-icon--sm ag-only-light"><use href="#i-moon"/></svg>테마</button>
+</div>
+<script src="../dist/argus.js"></script>
+<script>
+  var sel=document.getElementById('service-select'), link=document.getElementById('service-theme');
+  function setService(v){ link.href = v ? '../dist/themes/' + v + '.min.css' : ''; sel.value=v; try{localStorage.setItem('ag-demo-service',v)}catch(e){} }
+  sel.addEventListener('change',function(){ setService(sel.value); });
+  try{ setService(localStorage.getItem('ag-demo-service')||'') }catch(e){}
+  /* OTP 칸 자동 이동 — 예시용 */
+  document.querySelectorAll('.ag-otp__cell').forEach(function (c, i, all) {
+    c.addEventListener('input', function () { c.classList.toggle('is-filled', !!c.value); if (c.value && all[i+1]) all[i+1].focus(); });
+    c.addEventListener('keydown', function (e) { if (e.key === 'Backspace' && !c.value && all[i-1]) all[i-1].focus(); });
+  });
+</script>
+<!-- 예시 사이트 전용 페이지 네비 (프레임워크 아님) -->
+<style>
+  .demo-nav { position: fixed; left: var(--ag-space-4); bottom: var(--ag-space-4); z-index: 96; font-family: var(--ag-font-sans); }
+  .demo-nav summary { list-style: none; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--ag-inverse); color: var(--ag-text-on-inverse); box-shadow: var(--ag-shadow-lg); }
+  .demo-nav summary::-webkit-details-marker { display: none; }
+  .demo-nav__list { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; padding: 4px; border-radius: var(--ag-radius-pill); background: color-mix(in oklab, var(--ag-bg-elevated) 92%, transparent); backdrop-filter: blur(14px); border: 1px solid var(--ag-border-strong); box-shadow: var(--ag-shadow-lg); }
+  .demo-nav__label { padding: 0 10px 0 12px; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ag-text-3); white-space: nowrap; }
+  .demo-nav__list a { padding: 7px 12px; border-radius: var(--ag-radius-pill); font-size: var(--ag-text-sm); font-weight: 500; color: var(--ag-text-2); text-decoration: none; white-space: nowrap; }
+  .demo-nav__list a:hover { color: var(--ag-text); background: var(--ag-surface-hover); }
+  .demo-nav__list a.is-here { background: var(--ag-accent); color: var(--ag-text-on-accent); }
+  @media (min-width: 961px) { .demo-nav summary { display: none; } .demo-nav__list { display: flex !important; } }
+  @media (max-width: 960px) {
+    .demo-nav { bottom: calc(var(--ag-space-4) + env(safe-area-inset-bottom, 0px)); }
+    .demo-nav:not([open]) .demo-nav__list { display: none; }
+    .demo-nav__list { position: absolute; left: 0; bottom: 52px; flex-direction: column; align-items: stretch; border-radius: var(--ag-radius-lg); min-width: 180px; }
+    .demo-nav__label { padding: 8px 12px 4px; }
+    .demo-nav__list a { border-radius: var(--ag-radius-sm); }
+    .ag-app--rail .demo-nav { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+    .ag-mode-switch { left: auto; right: var(--ag-space-4); transform: none; }
+  }
+</style>
+<details class="demo-nav" open>
+  <summary aria-label="예시 페이지 이동"><svg class="ag-icon"><use href="#i-grid"/></svg></summary>
+  <nav class="demo-nav__list" aria-label="예시 페이지">
+    <span class="demo-nav__label">예시</span>
+    <a href="index.html" data-page="index">대시보드</a>
+    <a href="resources.html" data-page="resources">리소스</a>
+    <a href="detail.html" data-page="detail">인스턴스</a>
+    <a href="login.html" data-page="login" class="is-here" aria-current="page">로그인</a>
+    <a href="layouts.html" data-page="layouts">레이아웃</a>
+    <a href="components.html" data-page="components">컴포넌트</a>
+  </nav>
+</details>
+<script>if(matchMedia("(max-width: 960px)").matches)document.querySelector(".demo-nav").removeAttribute("open")</script>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+{{/* 인증 레이아웃 — Argus CSS Framework 적용 예시 (Go html/template).
+     web/views/layouts/auth.html 자리에 둔다. Tailwind CDN 제거, 인라인 <style> 제거.
+     다크 기본(원본 로그인 페이지가 다크였음). 로그인 후 본문은 main.html 이 data-theme="light" 를 건다. */}}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ .Title }} - Console</title>
+    <link rel="icon" type="image/svg+xml" href="{{asset "/public/favicon.svg"}}">
+
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset "/public/vendor/argus.min.css"}}">
+    <link rel="stylesheet" href="{{asset "/public/vendor/themes/blue.min.css"}}">
+
+    <script defer src="{{asset "/public/vendor/alpine.min.js"}}"></script>
+    <script src="{{asset "/public/vendor/phosphor.js"}}"></script>
+</head>
+<body>
+    {{embed}}
+</body>
+</html>

@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argus Console — 레이아웃 모드</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/argus.min.css">
+<script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<style>@media (max-width: 1300px) { .ag-mode-switch { bottom: 72px; } } @media (max-width: 960px) { .ag-mode-switch { bottom: 84px; max-width: calc(100vw - 80px); overflow-x: auto; } }</style>
+</head>
+<body>
+<svg hidden xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></symbol>
+  <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></symbol>
+  <symbol id="i-trend-up" viewBox="0 0 24 24"><path d="m3 17 6-6 4 4 8-8"/><path d="M14 7h7v7"/></symbol>
+  <symbol id="i-trend-down" viewBox="0 0 24 24"><path d="m3 7 6 6 4-4 8 8"/><path d="M21 10v7h-7"/></symbol>
+  <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+  <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></symbol>
+  <symbol id="i-database" viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"/><path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="7" rx="2"/><rect x="2" y="14" width="20" height="7" rx="2"/><path d="M6 6.5h.01M6 17.5h.01"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19a4.5 4.5 0 0 0 .4-9A7 7 0 0 0 4.3 12.5 3.8 3.8 0 0 0 6 19Z"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8Z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></symbol>
+  <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0Z"/><path d="M12 9v4M12 17h.01"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5L20 7"/></symbol>
+  <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 5-5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v6h-6"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8L12 3Z"/><path d="M19 17l.7 1.8 1.8.7-1.8.7L19 22l-.7-1.8-1.8-.7 1.8-.7L19 17Z"/></symbol>
+  <symbol id="i-terminal" viewBox="0 0 24 24"><path d="m4 17 6-6-6-6"/><path d="M12 19h8"/></symbol>
+  <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></symbol>
+  <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7-7 7-12a7 7 0 1 0-14 0c0 5 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
+  <symbol id="i-hdd" viewBox="0 0 24 24"><path d="M21 12H3M4 6h16l2 6v6a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-6l2-6Z"/><path d="M6 16h.01M10 16h.01"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></symbol>
+  <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5Z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M6 4l14 8-14 8V4Z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 4h4v16H7zM13 4h4v16h-4z"/></symbol>
+  <symbol id="i-git" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M6 8.5v7M18 15.5V11a3 3 0 0 0-3-3H10"/></symbol>
+  <symbol id="i-message" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1.1-4.2A8 8 0 1 1 21 12Z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14Z"/><path d="M4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-activity" viewBox="0 0 24 24"><path d="M3 12h4l3-8 4 16 3-8h4"/></symbol>
+</svg>
+
+
+<!-- 모드 클래스만 바뀐다. 아래 스위처가 .ag-app 의 클래스를 교체하고, 모드에 맞지 않는 조각(탭 행·목록 패널)은 hidden 토글 -->
+<div class="ag-app ag-app--sidebar" id="app">
+
+  <!-- 사이드바 (sidebar / rail / dual 모드) -->
+  <aside class="ag-sidebar ag-sidebar--bottom-tabs" id="sidebar">
+    <div class="ag-sidebar__head">
+      <a class="ag-topbar__brand" href="index.html"><span class="ag-brand-mark"><svg class="ag-icon"><use href="#i-database"/></svg></span><span class="ag-topbar__brand-text">Argus Console<small>Admin Console</small></span></a>
+      <button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm ag-sidebar__toggle" data-ag-sidebar-toggle aria-label="사이드바 접기"><svg class="ag-icon"><use href="#i-chevron-left"/></svg></button>
+    </div>
+    <nav class="ag-sidebar__group" aria-label="메뉴">
+      <div class="ag-sidebar__label">리소스</div>
+      <a class="ag-sidebar__item" href="#" data-tip="개요"><svg class="ag-icon"><use href="#i-grid"/></svg><span>개요</span></a>
+      <div class="ag-sidebar__node is-open" data-ag-node="db">
+        <button class="ag-sidebar__item ag-sidebar__item--parent" data-tip="데이터베이스"><svg class="ag-icon"><use href="#i-database"/></svg><span>데이터베이스</span><svg class="ag-icon ag-icon--sm ag-sidebar__caret"><use href="#i-chevron-down"/></svg></button>
+        <div class="ag-sidebar__sub">
+          <a class="ag-sidebar__item is-active" href="#"><span>인스턴스</span><span class="ag-badge ag-badge--count">186</span></a>
+          <a class="ag-sidebar__item" href="#"><span>계정 / 권한</span></a>
+          <a class="ag-sidebar__item" href="#"><span>복구 작업</span></a>
+          <a class="ag-sidebar__item" href="#"><span>태그</span></a>
+        </div>
+      </div>
+      <a class="ag-sidebar__item" href="#" data-tip="EC2"><svg class="ag-icon"><use href="#i-server"/></svg><span>EC2</span></a>
+      <a class="ag-sidebar__item" href="#" data-tip="스토리지"><svg class="ag-icon"><use href="#i-hdd"/></svg><span>스토리지</span></a>
+    </nav>
+    <nav class="ag-sidebar__group" aria-label="운영">
+      <div class="ag-sidebar__label">운영</div>
+      <a class="ag-sidebar__item" href="#" data-tip="알림"><svg class="ag-icon"><use href="#i-bell"/></svg><span>알림</span><span class="ag-badge ag-badge--crit">7</span></a>
+      <a class="ag-sidebar__item" href="#" data-tip="슬로우 쿼리"><svg class="ag-icon"><use href="#i-activity"/></svg><span>슬로우 쿼리</span></a>
+      <a class="ag-sidebar__item" href="#" data-tip="설정"><svg class="ag-icon"><use href="#i-settings"/></svg><span>설정</span></a>
+    </nav>
+  </aside>
+  <div class="ag-sidebar-backdrop"></div>
+
+  <!-- 상단 바: 모든 모드 공통. 사용자 메뉴는 여기 -->
+  <header class="ag-topbar" id="topbar">
+    <!-- top / sidebar / rail / focus / dual 모드용 단일 행 -->
+    <div class="ag-topbar__row ag-topbar__row--main" id="row-main" style="display:contents">
+      <button class="ag-btn ag-btn--icon ag-btn--outline ag-sidebar__hamburger" data-ag-sidebar-open aria-label="메뉴"><svg class="ag-icon"><use href="#i-grid"/></svg></button>
+      <a class="ag-topbar__brand" href="index.html" id="top-brand" hidden><span class="ag-dot ag-dot--accent"></span>Argus Console</a>
+      <a class="ag-topbar__back" href="#" id="focus-back" hidden><svg class="ag-icon ag-icon--sm"><use href="#i-chevron-left"/></svg>설정으로 돌아가기</a>
+      <nav class="ag-topbar__center ag-hide-md" id="top-nav" hidden>
+        <div class="ag-nav">
+          <a class="ag-nav__item" href="#" aria-current="page">개요</a>
+          <a class="ag-nav__item" href="#">리소스</a>
+          <a class="ag-nav__item" href="#">알림</a>
+          <a class="ag-nav__item" href="#">설정</a>
+        </div>
+      </nav>
+      <nav class="ag-breadcrumb" id="crumb" aria-label="경로"><a href="#">개요</a><span class="ag-breadcrumb__sep">/</span><span aria-current="page">데이터베이스</span></nav>
+      <div class="ag-input-group ag-topbar__search ag-hide-sm" id="top-search" style="width:300px">
+        <svg class="ag-icon"><use href="#i-search"/></svg>
+        <input class="ag-input ag-input--pill" id="q" placeholder="인스턴스, 티켓, 사용자 검색">
+        <span class="ag-input-group__end"><kbd>⌘K</kbd></span>
+      </div>
+      <div class="ag-topbar__actions">
+        <button class="ag-btn ag-btn--icon ag-btn--outline" aria-label="알림" data-tip="알림 3건"><svg class="ag-icon"><use href="#i-bell"/></svg></button>
+        <!-- 상단 사용자 메뉴 -->
+        <div class="ag-dropdown">
+          <button class="ag-user" data-ag-dropdown aria-haspopup="menu">
+            <span class="ag-avatar ag-avatar--sm" style="background:var(--ag-warn-soft);color:var(--ag-warn)">AN</span>
+            <span class="ag-user__text"><span class="ag-user__name">Andy</span><span class="ag-user__meta">Administrator</span></span>
+            <svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg>
+          </button>
+          <div class="ag-menu ag-menu--wide" role="menu">
+            <div class="ag-menu__user"><span class="ag-avatar" style="background:var(--ag-warn-soft);color:var(--ag-warn)">AN</span><div class="ag-min-0"><div class="ag-person__name">Andy</div><div class="ag-person__meta">andy@example.com</div></div></div>
+            <a class="ag-menu__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-shield"/></svg>내 계정 · 연결된 로그인<span class="ag-badge ag-badge--sm ag-badge--good">Google</span></a>
+            <a class="ag-menu__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-settings"/></svg>환경설정<kbd>,</kbd></a>
+            <button class="ag-menu__item" data-ag-theme-toggle><svg class="ag-icon ag-icon--sm ag-only-dark"><use href="#i-sun"/></svg><svg class="ag-icon ag-icon--sm ag-only-light"><use href="#i-moon"/></svg>테마 전환<span class="ag-text-xs ag-text-3 ag-ml-auto"><span class="ag-only-dark">다크</span><span class="ag-only-light">라이트</span></span></button>
+            <div class="ag-menu__item" style="cursor:default"><svg class="ag-icon ag-icon--sm"><use href="#i-grid"/></svg>컴팩트 밀도<label class="ag-switch"><input type="checkbox" id="density-menu" aria-label="컴팩트 밀도"></label></div>
+            <div class="ag-menu__sep"></div>
+            <div class="ag-menu__label">세션</div>
+            <div class="ag-menu__item" style="cursor:default"><svg class="ag-icon ag-icon--sm"><use href="#i-clock"/></svg>자동 로그아웃까지<span class="ag-session ag-ml-auto">28:14</span></div>
+            <a class="ag-menu__item is-danger" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-x"/></svg>로그아웃</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- tabs 모드 전용 2번째 행 -->
+    <div class="ag-topbar__row ag-topbar__row--nav" id="row-nav" hidden>
+      <div class="ag-nav">
+        <a class="ag-nav__item" href="#" aria-current="page"><svg class="ag-icon ag-icon--sm"><use href="#i-grid"/></svg>대시보드</a>
+        <a class="ag-nav__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-download"/></svg>추출 잡</a>
+        <a class="ag-nav__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-database"/></svg>추출 대상</a>
+        <a class="ag-nav__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-shield"/></svg>사용자 관리</a>
+        <a class="ag-nav__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-settings"/></svg>설정</a>
+        <a class="ag-nav__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-clock"/></svg>이력</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- dual 모드 전용 목록 패널 -->
+  <aside class="ag-pane" id="pane" hidden>
+    <div class="ag-pane__head"><h3>알림함</h3><span class="ag-badge ag-badge--crit">7</span><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="필터"><svg class="ag-icon ag-icon--sm"><use href="#i-filter"/></svg></button></div>
+    <div class="ag-pane__body">
+      <a class="ag-pane-item is-active is-unread" href="#" data-ag-detail-open><div class="ag-pane-item__top"><span class="ag-dot ag-dot--crit"></span>ALM-2041<time>14:02</time></div><div class="ag-pane-item__title">order-db-writer CPU 92% 지속</div><div class="ag-pane-item__snippet">커넥션 풀 포화로 p99 지연 1.8s. 담당 James, 조치 중.</div></a>
+      <a class="ag-pane-item is-unread" href="#"><div class="ag-pane-item__top"><span class="ag-dot ag-dot--warn"></span>ALM-2039<time>11:05</time></div><div class="ag-pane-item__title">member-pg Failover 1회 발생</div><div class="ag-pane-item__snippet">Aurora PG 15.4 마이너 패치 중 자동 failover. 원인 분석 중.</div></a>
+      <a class="ag-pane-item" href="#"><div class="ag-pane-item__top"><span class="ag-dot ag-dot--crit"></span>ALM-2037<time>09:48</time></div><div class="ag-pane-item__title">ebs-wms-03 사용률 91%</div><div class="ag-pane-item__snippet">증설 요청 INFRA-2044 생성됨.</div></a>
+      <a class="ag-pane-item" href="#"><div class="ag-pane-item__top"><span class="ag-dot ag-dot--good"></span>ALM-2035<time>어제</time></div><div class="ag-pane-item__title">catalog-docdb 스냅샷 복구 완료</div><div class="ag-pane-item__snippet">리허설 통과 · 6m 12s</div></a>
+      <a class="ag-pane-item" href="#"><div class="ag-pane-item__top"><span class="ag-dot"></span>ALM-2031<time>9/29</time></div><div class="ag-pane-item__title">settle-pg-01 중지됨 (예정)</div><div class="ag-pane-item__snippet">비용 절감 — 10/15 삭제 예정</div></a>
+    </div>
+    <div class="ag-pane__foot">7개 중 5개 표시 · 읽지 않음 2</div>
+  </aside>
+
+  <!-- 본문: 모드별로 보여줄 콘텐츠를 바꾼다 -->
+  <main class="ag-main">
+    <div id="content-grid">
+      <div class="ag-page-header">
+        <div class="ag-page-header__title"><h2 id="page-title">데이터베이스</h2><p class="ag-text-2" id="page-sub">같은 콘텐츠, 다른 셸. 아래 스위처로 모드를 바꿔보세요.</p></div>
+        <div class="ag-page-header__actions"><button class="ag-btn ag-btn--outline"><svg class="ag-icon"><use href="#i-refresh"/></svg>새로고침</button><button class="ag-btn ag-btn--primary"><svg class="ag-icon"><use href="#i-plus"/></svg>등록</button></div>
+      </div>
+      <div class="ag-grid">
+        <div class="ag-card ag-card--sm ag-col-3 ag-stat-card"><div class="ag-stat-card__head"><span class="ag-stat-card__icon"><svg class="ag-icon"><use href="#i-database"/></svg></span><span class="ag-delta ag-delta--inline ag-delta--up">+12%</span></div><div class="ag-stat ag-stat--sm"><span class="ag-stat__value">186</span><span class="ag-stat__label">DB 인스턴스</span></div></div>
+        <div class="ag-card ag-card--sm ag-col-3 ag-stat-card"><div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--crit"><svg class="ag-icon"><use href="#i-activity"/></svg></span><span class="ag-delta ag-delta--inline ag-delta--down">-38%</span></div><div class="ag-stat ag-stat--sm"><span class="ag-stat__value">24</span><span class="ag-stat__label">슬로우 쿼리 / 시간</span></div></div>
+        <div class="ag-card ag-card--sm ag-col-3 ag-stat-card"><div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--warn"><svg class="ag-icon"><use href="#i-bell"/></svg></span></div><div class="ag-stat ag-stat--sm"><span class="ag-stat__value">7</span><span class="ag-stat__label">열린 알림</span></div></div>
+        <div class="ag-card ag-card--sm ag-col-3 ag-stat-card"><div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--good"><svg class="ag-icon"><use href="#i-check-circle"/></svg></span></div><div class="ag-stat ag-stat--sm"><span class="ag-stat__value">184<small>/186</small></span><span class="ag-stat__label">스냅샷 성공</span></div></div>
+        <section class="ag-card ag-col-8">
+          <div class="ag-card__head"><h3 class="ag-card__title">엔진별 분포</h3><div class="ag-segmented ag-segmented--sm"><button class="ag-segmented__item is-active">전체</button><button class="ag-segmented__item">prod</button><button class="ag-segmented__item">stg</button></div></div>
+          <div class="ag-bars" style="--ag-bars-label: 110px">
+            <div class="ag-bars__row"><span class="ag-bars__label">MySQL</span><div class="ag-bars__track"><div class="ag-bars__seg ag-bars__seg--1" style="width:58%"></div></div><span class="ag-bars__value">108</span></div>
+            <div class="ag-bars__row"><span class="ag-bars__label">PostgreSQL</span><div class="ag-bars__track"><div class="ag-bars__seg ag-bars__seg--2" style="width:33%"></div></div><span class="ag-bars__value">61</span></div>
+            <div class="ag-bars__row"><span class="ag-bars__label">Oracle</span><div class="ag-bars__track"><div class="ag-bars__seg ag-bars__seg--3" style="width:9%"></div></div><span class="ag-bars__value">17</span></div>
+          </div>
+        </section>
+        <section class="ag-card ag-col-4"><div class="ag-card__head"><h3 class="ag-card__title">최근 변경</h3></div><div class="ag-timeline"><div class="ag-timeline__item is-good"><div class="ag-timeline__time">14:32</div><div class="ag-timeline__title">파라미터 그룹 적용</div>order-db · James</div><div class="ag-timeline__item is-crit"><div class="ag-timeline__time">09:48</div><div class="ag-timeline__title">EBS 용량 경보</div>ebs-wms-03 91%</div></div></section>
+      </div>
+    </div>
+
+    <!-- focus 모드 콘텐츠: 설정 > 계정 -->
+    <div id="content-focus" hidden class="ag-stack ag-stack--lg">
+      <div class="ag-page-header"><div class="ag-page-header__title"><span class="ag-eyebrow">설정 · 계정</span><h2>로그인 방법</h2><p class="ag-text-2">조직 Google Workspace 계정으로 로그인합니다. 백업용으로 OTP 를 함께 등록해 두세요.</p></div></div>
+      <section class="ag-card">
+        <div class="ag-card__head"><h3 class="ag-card__title">연결된 계정</h3><span class="ag-domain-hint"><svg class="ag-icon ag-icon--sm"><use href="#i-shield"/></svg>허용 도메인 <code>example.com</code></span></div>
+        <div class="ag-account-list">
+          <div class="ag-account is-connected is-primary">
+            <span class="ag-account__logo"><img alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%237c6cff' stroke-width='2'/%3E%3C/svg%3E"></span>
+            <div class="ag-account__body"><div class="ag-account__name">Google Workspace<span class="ag-badge ag-badge--sm ag-badge--good">연결됨</span><span class="ag-badge ag-badge--sm ag-badge--accent">기본</span></div><div class="ag-account__meta">andy@example.com · 마지막 로그인 오늘 09:12 · Seoul</div></div>
+            <button class="ag-btn ag-btn--sm ag-btn--ghost">연결 해제</button>
+          </div>
+          <div class="ag-account is-connected">
+            <span class="ag-account__logo"><svg class="ag-icon"><use href="#i-message"/></svg></span>
+            <div class="ag-account__body"><div class="ag-account__name">Slack<span class="ag-badge ag-badge--sm ag-badge--good">연결됨</span></div><div class="ag-account__meta">@sangjae · 알림 수신 + 임시 코드 발급에 사용</div></div>
+            <button class="ag-btn ag-btn--sm ag-btn--ghost">연결 해제</button>
+          </div>
+          <div class="ag-account">
+            <span class="ag-account__logo"><svg class="ag-icon"><use href="#i-shield"/></svg></span>
+            <div class="ag-account__body"><div class="ag-account__name">Authenticator OTP<span class="ag-badge ag-badge--sm ag-badge--warn">미등록</span></div><div class="ag-account__meta">Google 로그인이 막혔을 때 쓰는 백업 수단입니다.</div></div>
+            <button class="ag-btn ag-btn--sm ag-btn--primary">등록</button>
+          </div>
+        </div>
+      </section>
+      <section class="ag-card">
+        <div class="ag-card__head"><h3 class="ag-card__title">세션</h3></div>
+        <dl class="ag-kv"><dt>자동 로그아웃</dt><dd>30분 미사용 시 · <a href="#">변경</a></dd><dt>활성 세션</dt><dd>2개 (이 기기, iPhone) · <a href="#">모두 종료</a></dd><dt>최근 로그인 실패</dt><dd class="ag-text-3">없음</dd></dl>
+      </section>
+      <div class="ag-form-actions"><button class="ag-btn ag-btn--ghost">취소</button><button class="ag-btn ag-btn--primary">저장</button></div>
+    </div>
+
+    <!-- dual 모드 콘텐츠: 알림 상세 -->
+    <div id="content-dual" hidden class="ag-stack ag-stack--lg">
+      <button class="ag-btn ag-btn--sm ag-btn--ghost ag-show-sm" data-ag-detail-close style="align-self:flex-start"><svg class="ag-icon ag-icon--sm"><use href="#i-chevron-left"/></svg>알림함</button>
+      <div class="ag-page-header">
+        <div class="ag-page-header__title"><div class="ag-cluster"><span class="ag-badge ag-badge--lg ag-badge--crit"><span class="ag-dot ag-dot--crit ag-dot--pulse"></span>장애</span><span class="ag-text-sm ag-text-3 ag-mono">ALM-2041</span></div><h2>order-db-writer CPU 92% 지속</h2><p class="ag-text-2">14:02 발생 · 2시간 14분 경과 · 담당 James</p></div>
+        <div class="ag-page-header__actions"><button class="ag-btn ag-btn--outline">담당자 변경</button><button class="ag-btn ag-btn--primary">해결 처리</button></div>
+      </div>
+      <div class="ag-alert ag-alert--crit"><svg class="ag-icon"><use href="#i-alert"/></svg><div><div class="ag-alert__title">p99 지연 1.8s (평소 120ms)</div>커넥션 1,842/2,000. order-api 배포 직후 커넥션 급증.</div></div>
+      <section class="ag-card"><div class="ag-card__head"><h3 class="ag-card__title">타임라인</h3></div><div class="ag-timeline"><div class="ag-timeline__item is-crit"><div class="ag-timeline__time">14:02</div><div class="ag-timeline__title">CloudWatch 경보 → ALM-2041 생성</div></div><div class="ag-timeline__item is-warn"><div class="ag-timeline__time">14:05</div><div class="ag-timeline__title">James 담당 배정</div>Slack #infra-db-alert</div><div class="ag-timeline__item"><div class="ag-timeline__time">14:40</div><div class="ag-timeline__title">max_connections 3000 적용 (dynamic)</div></div></div></section>
+      <section class="ag-card"><div class="ag-card__head"><h3 class="ag-card__title">코멘트</h3></div><textarea class="ag-textarea" placeholder="조치 내용을 남기세요. @멘션 가능"></textarea><div class="ag-form-actions"><button class="ag-btn ag-btn--primary ag-btn--sm">남기기</button></div></section>
+    </div>
+  </main>
+</div>
+
+<link rel="stylesheet" id="service-theme" href="">
+<!-- 데모용 모드 스위처 + 컬러 테마 -->
+<div class="ag-mode-switch ag-row ag-gap-2" style="background:var(--ag-bg-elevated);padding:6px;border-radius:var(--ag-radius-pill);border:1px solid var(--ag-border)">
+<select class="ag-select ag-select--sm ag-select--pill ag-select--inline" id="service-select" aria-label="컬러 테마">
+  <option value="">기본 (violet)</option><option value="red">red · 빨강</option><option value="orange">orange · 주황</option><option value="yellow">yellow · 노랑</option><option value="green">green · 초록</option><option value="blue">blue · 파랑</option><option value="indigo">indigo · 남색</option><option value="violet">violet · 보라</option>
+</select>
+<div class="ag-segmented" role="group" aria-label="레이아웃 모드" style="box-shadow:none">
+  <button class="ag-segmented__item" data-mode="top">top</button>
+  <button class="ag-segmented__item is-active" data-mode="sidebar">sidebar</button>
+  <button class="ag-segmented__item" data-mode="rail">rail</button>
+  <button class="ag-segmented__item" data-mode="tabs">tabs</button>
+  <button class="ag-segmented__item" data-mode="focus">focus</button>
+  <button class="ag-segmented__item" data-mode="dual">dual</button>
+</div>
+</div>
+
+<script src="../dist/argus.js"></script>
+<script>
+  (function () {
+    var app = document.getElementById('app');
+    var $ = function (id) { return document.getElementById(id); };
+    var MODES = ['top','sidebar','rail','tabs','focus','dual'];
+    function setMode(m) {
+      MODES.forEach(function (x) { app.classList.remove('ag-app--' + x); });
+      if (m !== 'top') app.classList.add('ag-app--' + m);
+      app.classList.remove('is-collapsed');
+      var hasSide = m === 'sidebar' || m === 'rail' || m === 'dual';
+      $('sidebar').hidden = !hasSide;
+      $('top-brand').hidden = hasSide || m === 'focus';
+      $('top-nav').hidden = m !== 'top';
+      $('crumb').hidden = !(m === 'sidebar' || m === 'rail' || m === 'dual');
+      $('focus-back').hidden = m !== 'focus';
+      $('row-nav').hidden = m !== 'tabs';
+      $('row-main').style.display = m === 'tabs' ? '' : 'contents';
+      $('top-search').hidden = m === 'focus';
+      $('pane').hidden = m !== 'dual';
+      $('content-grid').hidden = m === 'focus' || m === 'dual';
+      $('content-focus').hidden = m !== 'focus';
+      $('content-dual').hidden = m !== 'dual';
+      document.querySelectorAll('.ag-mode-switch [data-mode]').forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-mode') === m); });
+      try { localStorage.setItem('ag-demo-mode', m); } catch (e) {}
+      if (location.hash.slice(1) !== m) history.replaceState(null, '', '#' + m);
+    }
+    document.querySelectorAll('.ag-mode-switch [data-mode]').forEach(function (b) {
+      b.addEventListener('click', function (e) { e.stopPropagation(); setMode(b.getAttribute('data-mode')); });
+    });
+    var sel = document.getElementById('service-select'), link = document.getElementById('service-theme');
+    function setService(v) { link.href = v ? '../dist/themes/' + v + '.min.css' : ''; sel.value = v; try { localStorage.setItem('ag-demo-service', v); } catch (e) {} }
+    sel.addEventListener('change', function () { setService(sel.value); });
+    try { setService(localStorage.getItem('ag-demo-service') || ''); } catch (e) {}
+    var dsw = document.getElementById('density-menu');
+    if (dsw) { try { dsw.checked = localStorage.getItem('ag-density') === 'compact'; if (dsw.checked) document.documentElement.setAttribute('data-density','compact'); } catch (e) {}
+      dsw.addEventListener('change', function (e) { e.stopPropagation(); if (dsw.checked) document.documentElement.setAttribute('data-density','compact'); else document.documentElement.removeAttribute('data-density'); try { localStorage.setItem('ag-density', dsw.checked ? 'compact' : ''); } catch (err) {} });
+      dsw.closest('.ag-menu__item').addEventListener('click', function (e) { e.stopPropagation(); }); }
+    var init = location.hash.slice(1); if (MODES.indexOf(init) < 0) { try { init = localStorage.getItem('ag-demo-mode') || 'sidebar'; } catch (e) { init = 'sidebar'; } }
+    setMode(MODES.indexOf(init) >= 0 ? init : 'sidebar');
+  })();
+</script>
+<!-- 예시 사이트 전용 페이지 네비 (프레임워크 아님) -->
+<style>
+  .demo-nav { position: fixed; left: var(--ag-space-4); bottom: var(--ag-space-4); z-index: 96; font-family: var(--ag-font-sans); }
+  .demo-nav summary { list-style: none; cursor: pointer; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--ag-inverse); color: var(--ag-text-on-inverse); box-shadow: var(--ag-shadow-lg); }
+  .demo-nav summary::-webkit-details-marker { display: none; }
+  .demo-nav__list { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; padding: 4px; border-radius: var(--ag-radius-pill); background: color-mix(in oklab, var(--ag-bg-elevated) 92%, transparent); backdrop-filter: blur(14px); border: 1px solid var(--ag-border-strong); box-shadow: var(--ag-shadow-lg); }
+  .demo-nav__label { padding: 0 10px 0 12px; font-size: 10px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--ag-text-3); white-space: nowrap; }
+  .demo-nav__list a { padding: 7px 12px; border-radius: var(--ag-radius-pill); font-size: var(--ag-text-sm); font-weight: 500; color: var(--ag-text-2); text-decoration: none; white-space: nowrap; }
+  .demo-nav__list a:hover { color: var(--ag-text); background: var(--ag-surface-hover); }
+  .demo-nav__list a.is-here { background: var(--ag-accent); color: var(--ag-text-on-accent); }
+  @media (min-width: 961px) { .demo-nav summary { display: none; } .demo-nav__list { display: flex !important; } }
+  @media (max-width: 960px) {
+    .demo-nav { bottom: calc(var(--ag-space-4) + env(safe-area-inset-bottom, 0px)); }
+    .demo-nav:not([open]) .demo-nav__list { display: none; }
+    .demo-nav__list { position: absolute; left: 0; bottom: 52px; flex-direction: column; align-items: stretch; border-radius: var(--ag-radius-lg); min-width: 180px; }
+    .demo-nav__label { padding: 8px 12px 4px; }
+    .demo-nav__list a { border-radius: var(--ag-radius-sm); }
+    .ag-app--rail .demo-nav { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+    .ag-mode-switch { left: auto; right: var(--ag-space-4); transform: none; }
+  }
+</style>
+<details class="demo-nav" open>
+  <summary aria-label="예시 페이지 이동"><svg class="ag-icon"><use href="#i-grid"/></svg></summary>
+  <nav class="demo-nav__list" aria-label="예시 페이지">
+    <span class="demo-nav__label">예시</span>
+    <a href="index.html" data-page="index">대시보드</a>
+    <a href="resources.html" data-page="resources">리소스</a>
+    <a href="detail.html" data-page="detail">인스턴스</a>
+    <a href="login.html" data-page="login">로그인</a>
+    <a href="layouts.html" data-page="layouts" class="is-here" aria-current="page">레이아웃</a>
+    <a href="components.html" data-page="components">컴포넌트</a>
+  </nav>
+</details>
+<script>if(matchMedia("(max-width: 960px)").matches)document.querySelector(".demo-nav").removeAttribute("open")</script>
+
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argus Console — 리소스</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/argus.min.css">
+<script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+</head>
+<body>
+<!--@icons-->
+
+<!-- 사이드바 변형 레이아웃 -->
+<div class="ag-app ag-app--sidebar">
+
+  <aside class="ag-sidebar">
+    <div class="ag-sidebar__head">
+      <a class="ag-topbar__brand" href="index.html"><span class="ag-brand-mark"><svg class="ag-icon"><use href="#i-database"/></svg></span><span class="ag-topbar__brand-text">Argus Console<small>Admin Console</small></span></a>
+      <button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm ag-sidebar__toggle" data-ag-sidebar-toggle aria-label="사이드바 접기" data-tip="접기 / 펼치기"><svg class="ag-icon"><use href="#i-chevron-left"/></svg></button>
+    </div>
+    <nav class="ag-sidebar__group" aria-label="리소스" data-ag-group="res">
+      <button class="ag-sidebar__group-toggle">리소스<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button>
+      <a class="ag-sidebar__item" href="index.html" data-tip="개요"><svg class="ag-icon"><use href="#i-grid"/></svg><span>개요</span></a>
+      <a class="ag-sidebar__item is-active" href="resources.html" data-tip="데이터베이스"><svg class="ag-icon"><use href="#i-database"/></svg><span>데이터베이스</span><span class="ag-badge ag-badge--count">186</span></a>
+      <a class="ag-sidebar__item" href="#" data-tip="EC2"><svg class="ag-icon"><use href="#i-server"/></svg><span>EC2</span></a>
+      <a class="ag-sidebar__item" href="#" data-tip="스토리지"><svg class="ag-icon"><use href="#i-hdd"/></svg><span>스토리지</span></a>
+      <a class="ag-sidebar__item" href="#" data-tip="네트워크"><svg class="ag-icon"><use href="#i-cloud"/></svg><span>네트워크</span></a>
+    </nav>
+    <nav class="ag-sidebar__group" aria-label="운영" data-ag-group="ops">
+      <button class="ag-sidebar__group-toggle">운영<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button>
+      <a class="ag-sidebar__item" href="#" data-tip="알림"><svg class="ag-icon"><use href="#i-bell"/></svg><span>알림</span><span class="ag-badge ag-badge--crit">7</span></a>
+      <a class="ag-sidebar__item" href="#" data-tip="슬로우 쿼리"><svg class="ag-icon"><use href="#i-activity"/></svg><span>슬로우 쿼리</span></a>
+      <a class="ag-sidebar__item" href="#" data-tip="계정 / 권한"><svg class="ag-icon"><use href="#i-shield"/></svg><span>계정 / 권한</span></a>
+      <a class="ag-sidebar__item" href="#" data-tip="점검 일정"><svg class="ag-icon"><use href="#i-calendar"/></svg><span>점검 일정</span></a>
+    </nav>
+    <nav class="ag-sidebar__group" aria-label="기타">
+      <div class="ag-sidebar__label">기타</div>
+      <a class="ag-sidebar__item" href="components.html" data-tip="컴포넌트 가이드"><svg class="ag-icon"><use href="#i-book"/></svg><span>컴포넌트 가이드</span></a>
+      <a class="ag-sidebar__item" href="#" data-tip="설정"><svg class="ag-icon"><use href="#i-settings"/></svg><span>설정</span></a>
+    </nav>
+    <div class="ag-sidebar__footer ag-person">
+      <span class="ag-avatar" style="background:var(--ag-warn-soft);color:var(--ag-warn)">AN</span>
+      <div class="ag-min-0"><div class="ag-person__name">Andy</div><div class="ag-person__meta">Platform · Admin</div></div>
+    </div>
+  </aside>
+
+  <div class="ag-sidebar-backdrop"></div>
+  <header class="ag-topbar">
+    <button class="ag-btn ag-btn--icon ag-btn--outline ag-sidebar__hamburger" data-ag-sidebar-open aria-label="메뉴"><svg class="ag-icon"><use href="#i-grid"/></svg></button>
+    <nav class="ag-breadcrumb" aria-label="경로">
+      <a href="index.html">개요</a><span class="ag-breadcrumb__sep">/</span><span aria-current="page">데이터베이스</span>
+    </nav>
+    <div class="ag-topbar__actions">
+      <div class="ag-input-group ag-hide-sm" style="width:280px">
+        <svg class="ag-icon"><use href="#i-search"/></svg>
+        <input class="ag-input ag-input--pill" id="q" placeholder="인스턴스, 클러스터, 태그 검색">
+      </div>
+      <button class="ag-btn ag-btn--icon ag-btn--outline" aria-label="테마 전환" data-ag-theme-toggle>
+        <svg class="ag-icon ag-only-dark"><use href="#i-sun"/></svg>
+        <svg class="ag-icon ag-only-light"><use href="#i-moon"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="ag-main">
+    <div class="ag-page-header">
+      <div class="ag-page-header__title">
+        <h2>데이터베이스</h2>
+        <p class="ag-text-2">RDS, Aurora, EC2 self-managed, DocumentDB 인스턴스 186개</p>
+      </div>
+      <div class="ag-page-header__actions">
+        <button class="ag-btn ag-btn--outline"><svg class="ag-icon"><use href="#i-download"/></svg>CSV</button>
+        <button class="ag-btn ag-btn--outline"><svg class="ag-icon"><use href="#i-refresh"/></svg>새로고침</button>
+        <button class="ag-btn ag-btn--primary"><svg class="ag-icon"><use href="#i-plus"/></svg>인스턴스 등록</button>
+      </div>
+    </div>
+
+    <!-- 요약 스탯 -->
+    <div class="ag-grid">
+      <div class="ag-card ag-card--sm ag-col-3"><div class="ag-stat ag-stat--sm"><span class="ag-stat__label">전체</span><span class="ag-stat__value">186</span></div></div>
+      <div class="ag-card ag-card--sm ag-col-3"><div class="ag-stat ag-stat--sm"><span class="ag-stat__label"><span class="ag-dot ag-dot--good"></span> 정상</span><span class="ag-stat__value">171</span></div></div>
+      <div class="ag-card ag-card--sm ag-col-3"><div class="ag-stat ag-stat--sm"><span class="ag-stat__label"><span class="ag-dot ag-dot--warn"></span> 주의</span><span class="ag-stat__value">11</span></div></div>
+      <div class="ag-card ag-card--sm ag-col-3"><div class="ag-stat ag-stat--sm"><span class="ag-stat__label"><span class="ag-dot ag-dot--crit"></span> 장애</span><span class="ag-stat__value ag-text-crit">4</span></div></div>
+    </div>
+
+    <!-- 필터 바 + 테이블 -->
+    <section class="ag-card ag-card--flush">
+      <div class="ag-card__head">
+        <div class="ag-segmented">
+          <button class="ag-segmented__item is-active">전체</button>
+          <button class="ag-segmented__item">MySQL</button>
+          <button class="ag-segmented__item">PostgreSQL</button>
+          <button class="ag-segmented__item">Oracle</button>
+          <button class="ag-segmented__item">DocumentDB</button>
+        </div>
+        <div class="ag-cluster">
+          <select class="ag-select ag-select--sm ag-select--pill ag-select--inline" aria-label="환경"><option>모든 환경</option><option>prod</option><option>stg</option><option>dev</option></select>
+          <select class="ag-select ag-select--sm ag-select--pill ag-select--inline" aria-label="리전"><option>ap-northeast-2</option><option>us-east-1</option></select>
+          <button class="ag-btn ag-btn--sm ag-btn--outline"><svg class="ag-icon ag-icon--sm"><use href="#i-filter"/></svg>필터 <span class="ag-badge ag-badge--sm ag-badge--accent">2</span></button>
+        </div>
+      </div>
+
+      <div class="ag-table-wrap ag-mt-4">
+        <table class="ag-table ag-table--dense">
+          <thead>
+            <tr>
+              <th style="width:1%"><label class="ag-check"><input type="checkbox" aria-label="전체 선택"></label></th>
+              <th class="is-sorted"><button class="ag-sort">인스턴스 <svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button></th>
+              <th>엔진</th>
+              <th>플랫폼</th>
+              <th>환경</th>
+              <th>클래스</th>
+              <th class="ag-th--num">CPU</th>
+              <th class="ag-th--num">커넥션</th>
+              <th style="min-width:170px">스토리지</th>
+              <th>상태</th>
+              <th class="ag-td--actions"></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><label class="ag-check"><input type="checkbox"></label></td>
+              <td><a href="detail.html" class="ag-fw-500 ag-text-1">order-db-writer</a><div class="ag-text-xs ag-text-3 ag-mono">prod-order-cluster</div></td>
+              <td><span class="ag-badge"><span class="ag-dot ag-dot--c1"></span>MySQL 8.0.36</span></td>
+              <td class="ag-text-2">Aurora</td>
+              <td><span class="ag-badge ag-badge--accent2">prod</span></td>
+              <td class="ag-mono ag-text-2">db.r6g.4xlarge</td>
+              <td class="ag-td--num ag-text-crit ag-fw-600">92%</td>
+              <td class="ag-td--num">1,842 / 2,000</td>
+              <td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span class="ag-meter-row__keep">1.2 / 2.0 TiB</span><strong>60%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:60%"></div></div></div></td>
+              <td><span class="ag-badge ag-badge--crit"><span class="ag-dot ag-dot--crit ag-dot--pulse"></span>장애</span></td>
+              <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><label class="ag-check"><input type="checkbox"></label></td>
+              <td><a href="detail.html" class="ag-fw-500 ag-text-1">order-db-reader-1</a><div class="ag-text-xs ag-text-3 ag-mono">prod-order-cluster</div></td>
+              <td><span class="ag-badge"><span class="ag-dot ag-dot--c1"></span>MySQL 8.0.36</span></td>
+              <td class="ag-text-2">Aurora</td>
+              <td><span class="ag-badge ag-badge--accent2">prod</span></td>
+              <td class="ag-mono ag-text-2">db.r6g.4xlarge</td>
+              <td class="ag-td--num ag-text-warn ag-fw-600">78%</td>
+              <td class="ag-td--num">1,210 / 2,000</td>
+              <td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span class="ag-meter-row__keep">1.2 / 2.0 TiB</span><strong>60%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:60%"></div></div></div></td>
+              <td><span class="ag-badge ag-badge--warn"><span class="ag-dot ag-dot--warn"></span>주의</span></td>
+              <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
+            </tr>
+            <tr class="is-selected">
+              <td><label class="ag-check"><input type="checkbox" checked></label></td>
+              <td><a href="detail.html" class="ag-fw-500 ag-text-1">member-pg-writer</a><div class="ag-text-xs ag-text-3 ag-mono">prod-member-pg</div></td>
+              <td><span class="ag-badge"><span class="ag-dot ag-dot--c2"></span>PostgreSQL 15.4</span></td>
+              <td class="ag-text-2">Aurora</td>
+              <td><span class="ag-badge ag-badge--accent2">prod</span></td>
+              <td class="ag-mono ag-text-2">db.r6g.2xlarge</td>
+              <td class="ag-td--num">41%</td>
+              <td class="ag-td--num">312 / 1,000</td>
+              <td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span class="ag-meter-row__keep">480 / 1,000 GiB</span><strong>48%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:48%"></div></div></div></td>
+              <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
+              <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><label class="ag-check"><input type="checkbox"></label></td>
+              <td><a href="detail.html" class="ag-fw-500 ag-text-1">wms-ora-01</a><div class="ag-text-xs ag-text-3 ag-mono">i-0f3a9c21be7d4e</div></td>
+              <td><span class="ag-badge"><span class="ag-dot ag-dot--c3"></span>Oracle 19c</span></td>
+              <td class="ag-text-2">EC2</td>
+              <td><span class="ag-badge ag-badge--accent2">prod</span></td>
+              <td class="ag-mono ag-text-2">r6i.8xlarge</td>
+              <td class="ag-td--num">55%</td>
+              <td class="ag-td--num">640 / 1,500</td>
+              <td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span class="ag-meter-row__keep">7.3 / 8.0 TiB</span><strong>91%</strong></div><div class="ag-progress ag-progress--sm ag-progress--crit"><div class="ag-progress__bar" style="width:91%"></div></div></div></td>
+              <td><span class="ag-badge ag-badge--warn"><span class="ag-dot ag-dot--warn"></span>용량 주의</span></td>
+              <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><label class="ag-check"><input type="checkbox"></label></td>
+              <td><a href="detail.html" class="ag-fw-500 ag-text-1">catalog-docdb</a><div class="ag-text-xs ag-text-3 ag-mono">prod-catalog-docdb</div></td>
+              <td><span class="ag-badge"><span class="ag-dot ag-dot--c4"></span>DocumentDB 5.0</span></td>
+              <td class="ag-text-2">DocumentDB</td>
+              <td><span class="ag-badge ag-badge--accent2">prod</span></td>
+              <td class="ag-mono ag-text-2">db.r6g.large</td>
+              <td class="ag-td--num">23%</td>
+              <td class="ag-td--num">88 / 500</td>
+              <td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span class="ag-meter-row__keep">210 / 1,000 GiB</span><strong>21%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:21%"></div></div></div></td>
+              <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
+              <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><label class="ag-check"><input type="checkbox"></label></td>
+              <td><a href="detail.html" class="ag-fw-500 ag-text-1">promo-mysql-01</a><div class="ag-text-xs ag-text-3 ag-mono">i-07b1e3d9a04c22</div></td>
+              <td><span class="ag-badge"><span class="ag-dot ag-dot--c1"></span>MySQL 8.0.34</span></td>
+              <td class="ag-text-2">EC2</td>
+              <td><span class="ag-badge">stg</span></td>
+              <td class="ag-mono ag-text-2">r6i.2xlarge</td>
+              <td class="ag-td--num">12%</td>
+              <td class="ag-td--num">34 / 500</td>
+              <td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span class="ag-meter-row__keep">120 / 500 GiB</span><strong>24%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:24%"></div></div></div></td>
+              <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
+              <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
+            </tr>
+            <tr>
+              <td><label class="ag-check"><input type="checkbox"></label></td>
+              <td><a href="detail.html" class="ag-fw-500 ag-text-1">settle-pg-01</a><div class="ag-text-xs ag-text-3 ag-mono">prod-settle-pg</div></td>
+              <td><span class="ag-badge"><span class="ag-dot ag-dot--c2"></span>PostgreSQL 14.9</span></td>
+              <td class="ag-text-2">RDS</td>
+              <td><span class="ag-badge ag-badge--accent2">prod</span></td>
+              <td class="ag-mono ag-text-2">db.m6g.xlarge</td>
+              <td class="ag-td--num">—</td>
+              <td class="ag-td--num">—</td>
+              <td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span class="ag-meter-row__keep">수집 안 됨</span><strong>—</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:0"></div></div></div></td>
+              <td><span class="ag-badge"><span class="ag-dot"></span>중지됨</span></td>
+              <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="ag-table-foot">
+        <span>186개 중 1–7 표시 · 1개 선택됨</span>
+        <nav class="ag-pagination" aria-label="페이지">
+          <button class="ag-pagination__item" disabled aria-label="이전"><svg class="ag-icon ag-icon--sm"><use href="#i-chevron-left"/></svg></button>
+          <a class="ag-pagination__item is-active" href="#">1</a>
+          <a class="ag-pagination__item" href="#">2</a>
+          <a class="ag-pagination__item" href="#">3</a>
+          <span class="ag-pagination__item">…</span>
+          <a class="ag-pagination__item" href="#">27</a>
+          <button class="ag-pagination__item" aria-label="다음"><svg class="ag-icon ag-icon--sm"><use href="#i-chevron-right"/></svg></button>
+        </nav>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="../dist/argus.js"></script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+/* ==========================================================================
+   Argus CSS Framework — extras: 랜딩형 인증 변형 (.ag-auth--landing) — 선택 사항
+   기본 .ag-auth(어두운 표면 패널 + 점 격자)가 표준. 이 파일은 좌측 패널을 서비스 액센트
+   그라데이션(--ag-brand-from/to, 테마 파일이 공급)으로 꽉 채우는 대안. 필요한 서비스만
+   dist/argus.auth-landing.min.css 를 추가로 로드한다.
+   ========================================================================== */
+/* ---- 랜딩형 인증 변형 (선택) ----------------------------------------------------
+   기본 .ag-auth(어두운 표면 패널 + 점 격자)가 표준. --landing 은 패널을 액센트 그라데이션으로 꽉 채우는 대안.
+   좌측 패널을 서비스 액센트 그라데이션으로 꽉 채우고(--ag-brand-from/to → 테마 파일이 색을 공급),
+   흰 글자 + 글래스 로고 박스 + 버전 필 + 하단 상태 라인. 우측은 글래스 카드.
+   <div class="ag-auth ag-auth--landing">
+     <aside class="ag-auth__brand">
+       <div><span class="ag-auth__logo-box">…icon…</span><div class="ag-auth__name">Argus <span class="ag-auth__version">v2.4.1</span></div>
+            <h1 class="ag-auth__headline">…</h1><p class="ag-auth__sub">…</p></div>
+       <div class="ag-auth__status"><span class="ag-auth__status-dot is-up"></span><b>Operational</b><i>·</i>prod<i>·</i>a1b2c3d</div>
+     </aside>
+     <main class="ag-auth__panel"><div class="ag-auth__card"><div class="ag-auth__mobile-head">…</div><div class="ag-auth__glass">…폼…</div></div></main>
+   </div> */
+.ag-auth--landing .ag-auth__brand {
+  color: #fff;
+  border-right: 0;
+  background:
+    radial-gradient(380px 380px at 100% 0%, rgb(255 255 255 / .16), transparent 70%),
+    radial-gradient(320px 320px at 0% 100%, color-mix(in oklab, var(--ag-brand-to, var(--ag-accent-2)) 35%, transparent), transparent 70%),
+    linear-gradient(135deg, var(--ag-brand-from, var(--ag-accent)) 0%, color-mix(in oklab, var(--ag-brand-from, var(--ag-accent)) 55%, var(--ag-brand-to, var(--ag-accent-2))) 60%, var(--ag-brand-to, var(--ag-accent-2)) 100%);
+}
+.ag-auth--landing .ag-auth__brand::after { background-image: radial-gradient(rgb(255 255 255 / .18) 1px, transparent 1px); }
+.ag-auth--landing .ag-auth__headline { color: #fff; font-weight: 700; font-size: clamp(26px, 2.6vw, 34px); }
+.ag-auth--landing .ag-auth__headline em { color: rgb(255 255 255 / .75); }
+.ag-auth--landing .ag-auth__sub { color: rgb(255 255 255 / .82); }
+.ag-auth--landing .ag-auth__feature { color: rgb(255 255 255 / .85); }
+.ag-auth--landing .ag-auth__feature .ag-icon, .ag-auth--landing .ag-auth__feature [class*="ph-"] { color: #fff; }
+.ag-auth--landing .ag-auth__logo-box { background: rgb(255 255 255 / .15); border: 1px solid rgb(255 255 255 / .22); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 20px 40px -16px rgb(0 0 0 / .45); }
+.ag-auth--landing .ag-auth__version { background: rgb(255 255 255 / .2); color: #fff; border-color: rgb(255 255 255 / .12); backdrop-filter: blur(6px); }
+.ag-auth--landing .ag-auth__status { color: rgb(255 255 255 / .75); }
+.ag-auth--landing .ag-auth__status-dot.is-up { background: #6ee7b7; color: #6ee7b7; }
+.ag-auth--landing .ag-auth__status-dot.is-down { background: #fda4af; }
+.ag-auth--landing .ag-auth__copyright { color: rgb(255 255 255 / .6); }
+/* 우측 글래스 카드 */
+.ag-auth--landing .ag-auth__panel { position: relative; overflow: hidden; }
+.ag-auth--landing .ag-auth__panel::before { content: ""; position: absolute; top: -20%; right: -10%; width: 60%; height: 60%; border-radius: 50%; background: color-mix(in oklab, var(--ag-accent) 10%, transparent); filter: blur(120px); pointer-events: none; }
+.ag-auth--landing .ag-auth__glass, .ag-auth__glass--card {
+  padding: var(--ag-space-6) var(--ag-space-6) var(--ag-space-5);
+  border-radius: var(--ag-radius-xl);
+  background: color-mix(in oklab, var(--ag-surface) 70%, transparent);
+  border: 1px solid var(--ag-border-strong);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  box-shadow: var(--ag-shadow-lg);
+}

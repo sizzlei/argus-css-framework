@@ -1,0 +1,170 @@
+{{/* 로그인 — Argus CSS Framework 적용 예시 (Go html/template + Alpine). web/views/login.html 자리에 둔다.
+     디자인: 표준 .ag-auth (어두운 표면 브랜드 패널 + 점 격자). 그라데이션 패널을 원하면 .ag-auth--landing 한 클래스만 추가.
+     Alpine 상태·함수(loginForm, loginStatus, step, email, code, setupCode, qrImage, loading,
+     errorMessage, successMessage, showUnlockModal, unlockReason, inactiveDays, unlockSubmitting)와
+     x-ref(otpInput, setupInput), 폼 핸들러(checkEmail, submitLogin, submitSetup)는 원본과 동일하다.
+     auth.js 는 수정하지 않는다. 바뀐 것은 class 속성과 :class 안의 문자열뿐. */}}
+<div class="ag-auth">
+
+    {{/* ─── 좌측 브랜드 패널 ─── */}}
+    <aside class="ag-auth__brand">
+        <div>
+            <span class="ag-auth__logo-box"><i class="ph-bold ph-database"></i></span>
+            <div class="ag-auth__name">Console <span class="ag-auth__version">v{{.Version}}</span></div>
+            <h1 class="ag-auth__headline">운영 자산을<br>한 곳에서 <em>안전하게</em></h1>
+            <p class="ag-auth__sub">리소스 인벤토리 · 보안 감사 · 계정 관리</p>
+            <div class="ag-auth__features">
+                <div class="ag-auth__feature"><i class="ph-bold ph-shield-check"></i>조직 이메일 + OTP 2단계 인증</div>
+                <div class="ag-auth__feature"><i class="ph-bold ph-clock-counter-clockwise"></i>모든 계정 발급·변경은 감사 로그에 기록</div>
+                <div class="ag-auth__feature"><i class="ph-bold ph-slack-logo"></i>잠금 해제·승인 결과는 Slack DM 으로</div>
+            </div>
+        </div>
+        <div>
+            <div class="ag-auth__status" x-data="loginStatus()" x-init="init()">
+                <span class="ag-auth__status-dot" :class="healthy ? 'is-up' : 'is-down'"></span>
+                <b x-text="healthy ? 'Operational' : 'Unreachable'"></b>
+                <i>·</i><span class="ag-upper">{{.Env}}</span>
+                <i>·</i><span>{{.Commit}}</span>
+            </div>
+            <div class="ag-auth__copyright">&copy; 2026 Console. Access Restricted.</div>
+        </div>
+    </aside>
+
+    {{/* ─── 우측 폼 패널 ─── */}}
+    <main class="ag-auth__panel">
+        <div class="ag-auth__card">
+
+            <div class="ag-auth__mobile-head">
+                <span class="ag-brand-mark"><i class="ph-bold ph-database"></i></span>
+                <h2>Console</h2>
+                <p>DBA 통합 관리 시스템</p>
+            </div>
+
+            <div>
+                <h2 class="ag-auth__title">로그인</h2>
+                <p class="ag-auth__desc">등록한 이메일 주소로 시작하세요.</p>
+            </div>
+
+            <div class="ag-auth__glass" x-data="loginForm()">
+
+                {{/* Step indicator — 원본의 x-for 유지, 클래스만 교체 */}}
+                <ol class="ag-stepper ag-stepper--sm">
+                    <template x-for="(label, i) in ['이메일', 'OTP 인증', '초기 설정']" :key="i">
+                        <li class="ag-stepper__step" :class="{ 'is-active': step === (i+1), 'is-done': step > (i+1) }">
+                            <span class="ag-stepper__dot"><span x-text="i+1"></span></span>
+                            <span class="ag-stepper__label" x-text="label"></span>
+                        </li>
+                    </template>
+                </ol>
+
+                {{/* Step 1 — 이메일 */}}
+                <form @submit.prevent="checkEmail" x-show="step === 1"
+                      x-transition:enter="transition ease-out duration-300"
+                      x-transition:enter-start="opacity-0 transform scale-95"
+                      x-transition:enter-end="opacity-100 transform scale-100">
+                    <div class="ag-field">
+                        <label class="ag-label" for="email">이메일 주소</label>
+                        <div class="ag-input-group">
+                            <i class="ph-duotone ph-envelope ag-icon"></i>
+                            <input class="ag-input ag-input--lg" id="email" x-model="email" type="email" required autofocus placeholder="name@company.com">
+                        </div>
+                    </div>
+                    <button type="submit" class="ag-btn ag-btn--primary ag-btn--lg ag-btn--block ag-btn--square" :disabled="loading" :class="{ 'is-loading': loading }">
+                        다음 <i class="ph-bold ph-arrow-right"></i>
+                    </button>
+                </form>
+
+                {{/* Step 2 — OTP */}}
+                <form @submit.prevent="submitLogin" x-show="step === 2" style="display: none;"
+                      x-transition:enter="transition ease-out duration-300"
+                      x-transition:enter-start="opacity-0 transform translate-x-8"
+                      x-transition:enter-end="opacity-100 transform translate-x-0">
+                    <div class="ag-text-center">
+                        <span class="ag-auth__email-chip">
+                            <span x-text="email"></span>
+                            <button type="button" @click="step = 1; errorMessage = ''; code = ''" aria-label="이메일 수정"><i class="ph-bold ph-pencil-simple"></i></button>
+                        </span>
+                    </div>
+                    <div class="ag-field">
+                        <label class="ag-label" for="otp">OTP 인증 코드</label>
+                        <input class="ag-otp-input" id="otp" x-model="code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" required x-ref="otpInput" placeholder="000000">
+                    </div>
+                    <button type="submit" class="ag-btn ag-btn--primary ag-btn--lg ag-btn--block ag-btn--square" :disabled="loading" :class="{ 'is-loading': loading }">
+                        로그인 <i class="ph-bold ph-sign-in"></i>
+                    </button>
+                </form>
+
+                {{/* Step 3 — OTP 초기 설정 (QR) */}}
+                <form @submit.prevent="submitSetup" x-show="step === 3" style="display: none;"
+                      x-transition:enter="transition ease-out duration-300"
+                      x-transition:enter-start="opacity-0 transform translate-y-4"
+                      x-transition:enter-end="opacity-100 transform translate-y-0">
+                    <div class="ag-auth__qr">
+                        <span class="ag-auth__qr-icon"><i class="ph-duotone ph-qr-code" style="font-size:22px"></i></span>
+                        <h3>OTP 초기 설정</h3>
+                        <p>최초 로그인입니다. Authenticator 앱으로 아래 QR 코드를 스캔하세요.</p>
+                        <div class="ag-qr">
+                            <template x-if="qrImage"><img :src="qrImage" alt="QR Code"></template>
+                            <template x-if="!qrImage"><div class="ag-text-xs ag-text-3" style="width:180px;height:180px;display:grid;place-items:center;color:#666">QR 코드 생성 중…</div></template>
+                        </div>
+                    </div>
+                    <div class="ag-field">
+                        <label class="ag-label ag-text-center" for="setupCode">인증 코드 확인</label>
+                        <input class="ag-otp-input" id="setupCode" x-model="setupCode" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" required x-ref="setupInput" placeholder="000000">
+                    </div>
+                    <button type="submit" class="ag-btn ag-btn--primary ag-btn--lg ag-btn--block ag-btn--square" :disabled="loading" :class="{ 'is-loading': loading }">
+                        인증 및 등록 완료
+                    </button>
+                </form>
+
+                {{/* 메시지 */}}
+                <div class="ag-alert ag-alert--crit" x-show="errorMessage" x-transition style="display:none">
+                    <i class="ph-fill ph-warning-circle"></i>
+                    <p x-text="errorMessage"></p>
+                </div>
+                <div class="ag-alert ag-alert--good" x-show="successMessage" x-transition style="display:none">
+                    <i class="ph-fill ph-check-circle"></i>
+                    <p x-text="successMessage"></p>
+                </div>
+
+                <div class="ag-auth__foot" x-show="step === 1">
+                    계정이 없으신가요? <a href="/register">계정 등록 하기</a>
+                </div>
+
+                {{/* 비활성 잠금 해제 요청 모달 — x-show 오버레이형 */}}
+                <div class="ag-modal-overlay" x-show="showUnlockModal" style="display:none;" x-transition.opacity @click.self="closeUnlockModal()">
+                    <div class="ag-modal__panel" x-transition>
+                        <div class="ag-modal__head">
+                            <div class="ag-row">
+                                <span class="ag-avatar" style="background:var(--ag-warn-soft);color:var(--ag-warn)"><i class="ph-bold ph-lock-key" style="font-size:18px"></i></span>
+                                <h3>계정 잠금 해제 요청</h3>
+                            </div>
+                            <button type="button" class="ag-btn ag-btn--icon ag-btn--ghost" @click="closeUnlockModal()" aria-label="닫기"><i class="ph-bold ph-x"></i></button>
+                        </div>
+                        <p class="ag-text-sm ag-text-2">
+                            최근 <strong class="ag-text-warn" x-text="inactiveDays"></strong>일간 로그인 기록이 없어 계정이 비활성 잠금되었습니다.
+                            관리자에게 잠금 해제를 요청하시려면 사유를 입력해주세요. 처리 결과는 Slack DM 으로 안내됩니다.
+                        </p>
+                        <div class="ag-field">
+                            <label class="ag-label" for="unlockReason">사유 <span class="ag-req">*</span></label>
+                            <textarea class="ag-textarea" id="unlockReason" x-model="unlockReason" rows="4" maxlength="500" placeholder="예) 휴가 복귀 후 시스템 사용 재개"></textarea>
+                            <span class="ag-hint ag-text-right"><span x-text="(unlockReason || '').length"></span> / 500</span>
+                        </div>
+                        <div class="ag-modal__foot">
+                            <button type="button" class="ag-btn ag-btn--ghost" @click="closeUnlockModal()" :disabled="unlockSubmitting">취소</button>
+                            <button type="button" class="ag-btn ag-btn--primary" @click="submitUnlockRequest()" :disabled="unlockSubmitting || !(unlockReason || '').trim()">
+                                <span x-text="unlockSubmitting ? '요청 중...' : '요청 보내기'"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <p class="ag-auth__mobile-foot" x-data="loginStatus()" x-init="init()">
+                <span class="ag-dot" :class="healthy ? 'ag-dot--good ag-dot--pulse' : 'ag-dot--crit'"></span>
+                {{.Env}} · v{{.Version}} · {{.Commit}}
+            </p>
+        </div>
+    </main>
+</div>
+<script src="{{asset "/public/js/auth.js"}}"></script>

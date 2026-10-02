@@ -1,0 +1,11 @@
+/* Argus CSS Framework — 컬러 테마 "yellow" · 노랑 — 앰버. 밝은 액센트라 위 글자는 어둡게 */
+:root {                                  /* 다크 */
+  --ag-accent: #e3b23c; --ag-accent-hover: #ebc25d; --ag-accent-soft: rgb(227 178 60 / .18);
+  --ag-text-on-accent: #1a1400;
+  --ag-brand-from: #e3b23c; --ag-brand-to: #f08a4b;
+}
+:root[data-theme="light"] {              /* 라이트 — 한 단계 깊게 */
+  --ag-accent: #a37700; --ag-accent-hover: #9c7100; --ag-accent-soft: rgb(163 119 0 / .16);
+  --ag-text-on-accent: #ffffff;
+  --ag-brand-from: #a37700; --ag-brand-to: #d9701f;
+}

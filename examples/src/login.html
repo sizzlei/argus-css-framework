@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argus Console — 로그인</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/argus.min.css">
+<link rel="stylesheet" href="" id="service-theme">
+<script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<style>@media (min-width: 961px) { .ag-auth__brand { padding-bottom: 104px; } }</style>
+</head>
+<body>
+<!--@icons-->
+
+<div class="ag-auth">
+  <aside class="ag-auth__brand">
+    <div><span class="ag-auth__logo-box"><svg class="ag-icon"><use href="#i-database"/></svg></span><div class="ag-auth__name">Argus Console <span class="ag-auth__version">v2.4.1</span></div></div>
+    <div>
+      <h1 class="ag-auth__headline">186개 인스턴스를 <em>한 화면에서</em> 다룹니다</h1>
+      <p class="ag-auth__sub">리소스 현황, 작업 이력, 백업과 권한 발급까지 한 곳에서 다루는 어드민 콘솔 데모입니다.</p>
+      <div class="ag-auth__features">
+        <div class="ag-auth__feature"><svg class="ag-icon"><use href="#i-shield"/></svg>조직 계정 + OTP 2단계 인증</div>
+        <div class="ag-auth__feature"><svg class="ag-icon"><use href="#i-clock"/></svg>30분 미사용 시 자동 로그아웃</div>
+        <div class="ag-auth__feature"><svg class="ag-icon"><use href="#i-activity"/></svg>모든 변경은 감사 로그에 기록</div>
+      </div>
+    </div>
+    <div>
+      <div class="ag-auth__status"><span class="ag-auth__status-dot is-up"></span><b>Operational</b><i>·</i><span class="ag-upper">prod</span><i>·</i><span>a1b2c3d</span></div>
+      <div class="ag-auth__copyright">© 2026 Argus Console. Access Restricted.</div>
+    </div>
+  </aside>
+
+  <main class="ag-auth__panel">
+    <div class="ag-auth__card" data-ag-tabs>
+      <div class="ag-auth__mobile-head"><span class="ag-brand-mark"><svg class="ag-icon"><use href="#i-database"/></svg></span><h2>Argus Console</h2><p>인프라 내부 콘솔</p></div>
+      <ol class="ag-stepper ag-stepper--sm">
+        <li class="ag-stepper__step is-done"><span class="ag-stepper__dot"><span>1</span></span><span class="ag-stepper__label">이메일</span></li>
+        <li class="ag-stepper__step is-active"><span class="ag-stepper__dot"><span>2</span></span><span class="ag-stepper__label">OTP 인증</span></li>
+        <li class="ag-stepper__step"><span class="ag-stepper__dot"><span>3</span></span><span class="ag-stepper__label">완료</span></li>
+      </ol>
+
+      <div>
+        <h2 class="ag-auth__title">인증 코드를 입력하세요</h2>
+        <p class="ag-auth__desc">andy@example.com 의 Authenticator 앱에 표시된 6자리 코드</p>
+      </div>
+
+      <form class="ag-stack ag-stack--lg" onsubmit="return false">
+        <div class="ag-otp" aria-label="OTP 6자리">
+          <input class="ag-otp__cell is-filled" id="o1" inputmode="numeric" maxlength="1" value="4" aria-label="1자리">
+          <input class="ag-otp__cell is-filled" id="o2" inputmode="numeric" maxlength="1" value="8" aria-label="2자리">
+          <input class="ag-otp__cell is-filled" id="o3" inputmode="numeric" maxlength="1" value="2" aria-label="3자리">
+          <input class="ag-otp__cell" id="o4" inputmode="numeric" maxlength="1" aria-label="4자리" autofocus>
+          <input class="ag-otp__cell" id="o5" inputmode="numeric" maxlength="1" aria-label="5자리">
+          <input class="ag-otp__cell" id="o6" inputmode="numeric" maxlength="1" aria-label="6자리">
+        </div>
+        <div class="ag-cluster ag-cluster--between ag-text-sm">
+          <span class="ag-session"><svg class="ag-icon"><use href="#i-clock"/></svg>00:24 후 코드 갱신</span>
+          <a href="#">기기를 분실했나요?</a>
+        </div>
+        <button class="ag-btn ag-btn--primary ag-btn--lg ag-btn--block" type="submit">로그인</button>
+        <div class="ag-auth__divider">또는 다른 방법으로</div>
+        <div class="ag-provider-list">
+          <button class="ag-provider ag-provider--google" type="button"><span class="ag-provider__logo"><img alt="" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ccircle cx='12' cy='12' r='9' fill='none' stroke='%234285f4' stroke-width='2.5'/%3E%3C/svg%3E"></span><span class="ag-provider__label">Google 로 계속하기</span><span class="ag-provider__hint">example.com</span></button>
+          <div class="ag-provider-row">
+            <button class="ag-provider ag-provider--slack" type="button"><span class="ag-provider__logo"><svg class="ag-icon"><use href="#i-message"/></svg></span><span class="ag-provider__label">Slack 임시 코드</span></button>
+            <button class="ag-provider ag-provider--sso" type="button"><span class="ag-provider__logo"><svg class="ag-icon"><use href="#i-shield"/></svg></span><span class="ag-provider__label">SSO</span></button>
+          </div>
+        </div>
+        <p class="ag-domain-hint"><svg class="ag-icon ag-icon--sm"><use href="#i-info"/></svg>Google 로고는 서비스 static 의 공식 에셋으로 교체하세요 (예시는 자리표시)</p>
+      </form>
+
+      <div class="ag-alert ag-alert--info">
+        <svg class="ag-icon"><use href="#i-info"/></svg>
+        <div>처음 로그인이라면 <a href="#">OTP 등록</a>부터 진행합니다. QR 코드를 Authenticator 앱으로 스캔하세요.</div>
+      </div>
+
+      <p class="ag-text-xs ag-text-3 ag-text-center">문제가 있으면 #infra-db-help 채널로 문의하세요.</p>
+    </div>
+  </main>
+</div>
+
+<div class="ag-mode-switch ag-row ag-gap-2" style="background:var(--ag-bg-elevated);padding:6px;border-radius:var(--ag-radius-pill);border:1px solid var(--ag-border)">
+  <select class="ag-select ag-select--sm ag-select--pill ag-select--inline" id="service-select" aria-label="컬러 테마">
+    <option value="">기본 (violet)</option><option value="red">red · 빨강</option><option value="orange">orange · 주황</option><option value="yellow">yellow · 노랑</option><option value="green">green · 초록</option><option value="blue">blue · 파랑</option><option value="indigo">indigo · 남색</option><option value="violet">violet · 보라</option>
+  </select>
+  <button class="ag-btn ag-btn--sm ag-btn--outline" data-ag-theme-toggle><svg class="ag-icon ag-icon--sm ag-only-dark"><use href="#i-sun"/></svg><svg class="ag-icon ag-icon--sm ag-only-light"><use href="#i-moon"/></svg>테마</button>
+</div>
+<script src="../dist/argus.js"></script>
+<script>
+  var sel=document.getElementById('service-select'), link=document.getElementById('service-theme');
+  function setService(v){ link.href = v ? '../dist/themes/' + v + '.min.css' : ''; sel.value=v; try{localStorage.setItem('ag-demo-service',v)}catch(e){} }
+  sel.addEventListener('change',function(){ setService(sel.value); });
+  try{ setService(localStorage.getItem('ag-demo-service')||'') }catch(e){}
+  /* OTP 칸 자동 이동 — 예시용 */
+  document.querySelectorAll('.ag-otp__cell').forEach(function (c, i, all) {
+    c.addEventListener('input', function () { c.classList.toggle('is-filled', !!c.value); if (c.value && all[i+1]) all[i+1].focus(); });
+    c.addEventListener('keydown', function (e) { if (e.key === 'Backspace' && !c.value && all[i-1]) all[i-1].focus(); });
+  });
+</script>
+</body>
+</html>

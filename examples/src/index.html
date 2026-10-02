@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argus Console — 개요</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/argus.min.css">
+<script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+</head>
+<body>
+<!--@icons-->
+
+<div class="ag-app">
+
+  <div class="ag-banner ag-banner--warn">
+    <svg class="ag-icon"><use href="#i-alert"/></svg>
+    <div class="ag-banner__text"><strong>점검 예정</strong>10/3(목) 02:00–02:30 KST order-db 파라미터 적용으로 약 30초 쓰기 중단 · INFRA-2041</div>
+    <a class="ag-btn ag-btn--sm ag-btn--outline" href="detail.html">자세히</a>
+    <button class="ag-banner__close" data-ag-banner-close aria-label="닫기">×</button>
+  </div>
+
+  <!-- ===== Topbar ===== -->
+  <header class="ag-topbar">
+    <a class="ag-topbar__brand" href="index.html"><span class="ag-dot ag-dot--accent"></span>Argus Console</a>
+    <nav class="ag-topbar__center ag-hide-md" aria-label="주 메뉴">
+      <div class="ag-nav">
+        <a class="ag-nav__item" href="index.html" aria-current="page">개요</a>
+        <a class="ag-nav__item" href="resources.html">리소스</a>
+        <a class="ag-nav__item" href="detail.html">인스턴스</a>
+        <a class="ag-nav__item" href="#">알림</a>
+      </div>
+    </nav>
+    <div class="ag-topbar__actions">
+      <button class="ag-btn ag-btn--icon ag-btn--outline" aria-label="검색" data-tip="검색 ⌘K"><svg class="ag-icon"><use href="#i-search"/></svg></button>
+      <div class="ag-dropdown">
+        <button class="ag-btn ag-btn--icon ag-btn--outline ag-notif-btn" data-ag-dropdown aria-label="알림 3건"><svg class="ag-icon"><use href="#i-bell"/></svg><span class="ag-notif-btn__count">3</span></button>
+        <div class="ag-menu ag-notif" role="menu">
+          <div class="ag-notif__head"><strong>알림</strong><span class="ag-badge ag-badge--sm ag-badge--accent">3 새 알림</span><button class="ag-btn ag-btn--sm ag-btn--ghost">모두 읽음</button></div>
+          <div class="ag-notif__list">
+            <div class="ag-notif__group">오늘</div>
+            <a class="ag-notif__item is-unread" href="detail.html"><span class="ag-notif__icon ag-notif__icon--crit"><svg class="ag-icon"><use href="#i-alert"/></svg></span><div class="ag-notif__body"><div class="ag-notif__title">order-db-writer CPU 92% 지속</div><div class="ag-notif__meta">ALM-2041 · 담당 James · 조치 중</div></div><time>14:02</time></a>
+            <a class="ag-notif__item is-unread" href="#"><span class="ag-notif__icon ag-notif__icon--warn"><svg class="ag-icon"><use href="#i-hdd"/></svg></span><div class="ag-notif__body"><div class="ag-notif__title">ebs-wms-03 사용률 91%</div><div class="ag-notif__meta">증설 요청 INFRA-2044 생성됨</div></div><time>09:48</time></a>
+            <a class="ag-notif__item is-unread" href="#"><span class="ag-notif__icon ag-notif__icon--info"><svg class="ag-icon"><use href="#i-shield"/></svg></span><div class="ag-notif__body"><div class="ag-notif__title">계정 발급 요청 1건 승인 대기</div><div class="ag-notif__meta">svc_analytics_ro · 데이터팀</div></div><time>08:10</time></a>
+            <div class="ag-notif__group">어제</div>
+            <a class="ag-notif__item" href="#"><span class="ag-notif__icon ag-notif__icon--good"><svg class="ag-icon"><use href="#i-check-circle"/></svg></span><div class="ag-notif__body"><div class="ag-notif__title">catalog-docdb 복구 리허설 통과</div><div class="ag-notif__meta">6m 12s · 자동</div></div><time>03:00</time></a>
+            <a class="ag-notif__item" href="#"><span class="ag-notif__icon"><svg class="ag-icon"><use href="#i-refresh"/></svg></span><div class="ag-notif__body"><div class="ag-notif__title">member-pg 마이너 패치 완료</div><div class="ag-notif__meta">Aurora PG 15.4 · failover 1회</div></div><time>11:05</time></a>
+          </div>
+          <div class="ag-notif__foot"><a href="layouts.html#dual">알림함 전체 보기</a></div>
+        </div>
+      </div>
+      <button class="ag-btn ag-btn--icon ag-btn--outline" aria-label="테마 전환" data-ag-theme-toggle data-tip="테마 전환">
+        <svg class="ag-icon ag-only-dark"><use href="#i-sun"/></svg>
+        <svg class="ag-icon ag-only-light"><use href="#i-moon"/></svg>
+      </button>
+      <div class="ag-dropdown">
+        <button class="ag-user" data-ag-dropdown aria-haspopup="menu">
+          <span class="ag-avatar ag-avatar--sm" style="background:var(--ag-warn-soft);color:var(--ag-warn)">AN</span>
+          <span class="ag-user__text"><span class="ag-user__name">Andy</span><span class="ag-user__meta">Administrator</span></span>
+          <svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg>
+        </button>
+        <div class="ag-menu ag-menu--wide" role="menu">
+          <div class="ag-menu__user"><span class="ag-avatar" style="background:var(--ag-warn-soft);color:var(--ag-warn)">AN</span><div class="ag-min-0"><div class="ag-person__name">Andy</div><div class="ag-person__meta">andy@example.com</div></div></div>
+          <a class="ag-menu__item" href="layouts.html#focus"><svg class="ag-icon ag-icon--sm"><use href="#i-shield"/></svg>내 계정<span class="ag-badge ag-badge--sm ag-badge--good">Google</span></a>
+          <a class="ag-menu__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-settings"/></svg>환경설정</a>
+          <div class="ag-menu__sep"></div>
+          <a class="ag-menu__item is-danger" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-x"/></svg>로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Main ===== -->
+  <main class="ag-main">
+
+    <!-- Header: 인사 + 미터 칩 + 핵심 스탯 -->
+    <div class="ag-page-header">
+      <div class="ag-page-header__title">
+        <h1>안녕하세요, <span class="ag-accent-text">Andy님</span></h1>
+        <div class="ag-meter-chips ag-mt-2">
+          <div><span class="ag-chip__label">RDS / Aurora</span><span class="ag-chip ag-chip--accent2">42%</span></div>
+          <div><span class="ag-chip__label">EC2 self-managed</span><span class="ag-chip ag-chip--inverse">23%</span></div>
+          <div><span class="ag-chip__label">DocumentDB</span><span class="ag-chip">18%</span></div>
+          <div><span class="ag-chip__label">기타 (Oracle, ElastiCache)</span><span class="ag-chip ag-chip--hatch">17%</span></div>
+        </div>
+      </div>
+      <div class="ag-cluster ag-gap-8">
+        <div class="ag-stat">
+          <div class="ag-stat__top"><span class="ag-delta ag-delta--up"><svg class="ag-icon ag-icon--sm"><use href="#i-trend-up"/></svg>+12%</span><span class="ag-stat__value">186</span></div>
+          <span class="ag-stat__label">DB 인스턴스</span>
+        </div>
+        <div class="ag-stat">
+          <div class="ag-stat__top"><span class="ag-delta ag-delta--down"><svg class="ag-icon ag-icon--sm"><use href="#i-trend-down"/></svg>-38%</span><span class="ag-stat__value">24</span></div>
+          <span class="ag-stat__label">슬로우 쿼리 / 시간</span>
+        </div>
+        <div class="ag-stat">
+          <div class="ag-stat__top"><span class="ag-delta ag-delta--down"><svg class="ag-icon ag-icon--sm"><use href="#i-trend-down"/></svg>-64%</span><span class="ag-stat__value">7</span></div>
+          <span class="ag-stat__label">열린 알림</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 1 -->
+    <div class="ag-grid">
+
+      <!-- 요약 -->
+      <section class="ag-card ag-col-3">
+        <div class="ag-card__head"><h2 class="ag-card__title">상태 요약</h2></div>
+        <div class="ag-list">
+          <a class="ag-list__item" href="resources.html"><span class="ag-list__label"><span class="ag-dot ag-dot--good"></span><span>정상</span></span><span class="ag-badge ag-badge--count">171</span></a>
+          <a class="ag-list__item" href="resources.html"><span class="ag-list__label"><span class="ag-dot ag-dot--warn"></span><span>주의</span></span><span class="ag-badge ag-badge--count">11</span></a>
+          <a class="ag-list__item" href="resources.html"><span class="ag-list__label"><span class="ag-dot ag-dot--crit ag-dot--pulse"></span><span>장애</span></span><span class="ag-badge ag-badge--count">4</span></a>
+        </div>
+        <div class="ag-insight ag-mt-auto">
+          <span class="ag-insight__icon"><svg class="ag-icon"><use href="#i-sparkle"/></svg></span>
+          <p>슬로우 쿼리가 <strong>9월 3주차에 급증</strong>했고, 그중 72%가 <strong>order-db 리더</strong>에서 발생했습니다.</p>
+        </div>
+      </section>
+
+      <!-- 차트 -->
+      <section class="ag-card ag-col-6">
+        <div class="ag-card__head">
+          <h2 class="ag-card__title">슬로우 쿼리 추이</h2>
+          <div class="ag-segmented">
+            <button class="ag-segmented__item" aria-pressed="false">12개월</button>
+            <button class="ag-segmented__item is-active" aria-pressed="true">30일</button>
+            <button class="ag-segmented__item" aria-pressed="false">1주</button>
+          </div>
+        </div>
+        <div class="ag-chart" data-ag-chart="[{&quot;x&quot;: 48.0, &quot;y&quot;: 157.5, &quot;ys&quot;: [157.5, 195.0], &quot;label&quot;: &quot;9월 1일&quot;, &quot;value&quot;: &quot;MySQL 180 · PostgreSQL 120&quot;}, {&quot;x&quot;: 76.7, &quot;y&quot;: 132.5, &quot;ys&quot;: [132.5, 182.5], &quot;label&quot;: &quot;9월 2일&quot;, &quot;value&quot;: &quot;MySQL 220 · PostgreSQL 140&quot;}, {&quot;x&quot;: 105.4, &quot;y&quot;: 57.5, &quot;ys&quot;: [57.5, 170.0], &quot;label&quot;: &quot;9월 3일&quot;, &quot;value&quot;: &quot;MySQL 340 · PostgreSQL 160&quot;}, {&quot;x&quot;: 134.1, &quot;y&quot;: 63.8, &quot;ys&quot;: [63.8, 151.2], &quot;label&quot;: &quot;9월 4일&quot;, &quot;value&quot;: &quot;MySQL 330 · PostgreSQL 190&quot;}, {&quot;x&quot;: 162.8, &quot;y&quot;: 107.5, &quot;ys&quot;: [107.5, 113.8], &quot;label&quot;: &quot;9월 5일&quot;, &quot;value&quot;: &quot;MySQL 260 · PostgreSQL 250&quot;}, {&quot;x&quot;: 191.4, &quot;y&quot;: 138.8, &quot;ys&quot;: [138.8, 76.2], &quot;label&quot;: &quot;9월 6일&quot;, &quot;value&quot;: &quot;MySQL 210 · PostgreSQL 310&quot;}, {&quot;x&quot;: 220.1, &quot;y&quot;: 176.2, &quot;ys&quot;: [176.2, 63.8], &quot;label&quot;: &quot;9월 7일&quot;, &quot;value&quot;: &quot;MySQL 150 · PostgreSQL 330&quot;}, {&quot;x&quot;: 248.8, &quot;y&quot;: 182.5, &quot;ys&quot;: [182.5, 88.8], &quot;label&quot;: &quot;9월 8일&quot;, &quot;value&quot;: &quot;MySQL 140 · PostgreSQL 290&quot;}, {&quot;x&quot;: 277.5, &quot;y&quot;: 163.8, &quot;ys&quot;: [163.8, 126.2], &quot;label&quot;: &quot;9월 9일&quot;, &quot;value&quot;: &quot;MySQL 170 · PostgreSQL 230&quot;}, {&quot;x&quot;: 306.2, &quot;y&quot;: 107.5, &quot;ys&quot;: [107.5, 163.8], &quot;label&quot;: &quot;9월 10일&quot;, &quot;value&quot;: &quot;MySQL 260 · PostgreSQL 170&quot;}, {&quot;x&quot;: 334.9, &quot;y&quot;: 76.2, &quot;ys&quot;: [76.2, 182.5], &quot;label&quot;: &quot;9월 11일&quot;, &quot;value&quot;: &quot;MySQL 310 · PostgreSQL 140&quot;}, {&quot;x&quot;: 363.6, &quot;y&quot;: 63.8, &quot;ys&quot;: [63.8, 176.2], &quot;label&quot;: &quot;9월 12일&quot;, &quot;value&quot;: &quot;MySQL 330 · PostgreSQL 150&quot;}, {&quot;x&quot;: 392.3, &quot;y&quot;: 88.8, &quot;ys&quot;: [88.8, 163.8], &quot;label&quot;: &quot;9월 13일&quot;, &quot;value&quot;: &quot;MySQL 290 · PostgreSQL 170&quot;}, {&quot;x&quot;: 421.0, &quot;y&quot;: 120.0, &quot;ys&quot;: [120.0, 170.0], &quot;label&quot;: &quot;9월 14일&quot;, &quot;value&quot;: &quot;MySQL 240 · PostgreSQL 160&quot;}, {&quot;x&quot;: 449.7, &quot;y&quot;: 157.5, &quot;ys&quot;: [157.5, 176.2], &quot;label&quot;: &quot;9월 15일&quot;, &quot;value&quot;: &quot;MySQL 180 · PostgreSQL 150&quot;}, {&quot;x&quot;: 478.3, &quot;y&quot;: 170.0, &quot;ys&quot;: [170.0, 176.2], &quot;label&quot;: &quot;9월 16일&quot;, &quot;value&quot;: &quot;MySQL 160 · PostgreSQL 150&quot;}, {&quot;x&quot;: 507.0, &quot;y&quot;: 145.0, &quot;ys&quot;: [145.0, 163.8], &quot;label&quot;: &quot;9월 17일&quot;, &quot;value&quot;: &quot;MySQL 200 · PostgreSQL 170&quot;}, {&quot;x&quot;: 535.7, &quot;y&quot;: 126.2, &quot;ys&quot;: [126.2, 151.2], &quot;label&quot;: &quot;9월 18일&quot;, &quot;value&quot;: &quot;MySQL 230 · PostgreSQL 190&quot;}, {&quot;x&quot;: 564.4, &quot;y&quot;: 107.5, &quot;ys&quot;: [107.5, 126.2], &quot;label&quot;: &quot;9월 19일&quot;, &quot;value&quot;: &quot;MySQL 260 · PostgreSQL 230&quot;}, {&quot;x&quot;: 593.1, &quot;y&quot;: 82.5, &quot;ys&quot;: [82.5, 101.2], &quot;label&quot;: &quot;9월 20일&quot;, &quot;value&quot;: &quot;MySQL 300 · PostgreSQL 270&quot;}, {&quot;x&quot;: 621.8, &quot;y&quot;: 71.2, &quot;ys&quot;: [71.2, 88.8], &quot;label&quot;: &quot;9월 21일&quot;, &quot;value&quot;: &quot;MySQL 318 · PostgreSQL 290&quot;}, {&quot;x&quot;: 650.5, &quot;y&quot;: 88.8, &quot;ys&quot;: [88.8, 107.5], &quot;label&quot;: &quot;9월 22일&quot;, &quot;value&quot;: &quot;MySQL 290 · PostgreSQL 260&quot;}, {&quot;x&quot;: 679.2, &quot;y&quot;: 113.8, &quot;ys&quot;: [113.8, 126.2], &quot;label&quot;: &quot;9월 23일&quot;, &quot;value&quot;: &quot;MySQL 250 · PostgreSQL 230&quot;}, {&quot;x&quot;: 707.9, &quot;y&quot;: 132.5, &quot;ys&quot;: [132.5, 138.8], &quot;label&quot;: &quot;9월 24일&quot;, &quot;value&quot;: &quot;MySQL 220 · PostgreSQL 210&quot;}, {&quot;x&quot;: 736.6, &quot;y&quot;: 145.0, &quot;ys&quot;: [145.0, 126.2], &quot;label&quot;: &quot;9월 25일&quot;, &quot;value&quot;: &quot;MySQL 200 · PostgreSQL 230&quot;}, {&quot;x&quot;: 765.2, &quot;y&quot;: 138.8, &quot;ys&quot;: [138.8, 113.8], &quot;label&quot;: &quot;9월 26일&quot;, &quot;value&quot;: &quot;MySQL 210 · PostgreSQL 250&quot;}, {&quot;x&quot;: 793.9, &quot;y&quot;: 120.0, &quot;ys&quot;: [120.0, 120.0], &quot;label&quot;: &quot;9월 27일&quot;, &quot;value&quot;: &quot;MySQL 240 · PostgreSQL 240&quot;}, {&quot;x&quot;: 822.6, &quot;y&quot;: 95.0, &quot;ys&quot;: [95.0, 138.8], &quot;label&quot;: &quot;9월 28일&quot;, &quot;value&quot;: &quot;MySQL 280 · PostgreSQL 210&quot;}, {&quot;x&quot;: 851.3, &quot;y&quot;: 82.5, &quot;ys&quot;: [82.5, 157.5], &quot;label&quot;: &quot;9월 29일&quot;, &quot;value&quot;: &quot;MySQL 300 · PostgreSQL 180&quot;}, {&quot;x&quot;: 880.0, &quot;y&quot;: 76.2, &quot;ys&quot;: [76.2, 163.8], &quot;label&quot;: &quot;9월 30일&quot;, &quot;value&quot;: &quot;MySQL 310 · PostgreSQL 170&quot;}]" data-ag-chart-default="20">
+          <svg viewBox="0 0 900 320" role="img" aria-label="최근 30일 슬로우 쿼리 발생 추이, MySQL과 PostgreSQL">
+  <g class="ag-chart__grid"><line x1="48" x2="880" y1="207.5" y2="207.5"/><line x1="48" x2="880" y1="145.0" y2="145.0"/><line x1="48" x2="880" y1="82.5" y2="82.5"/><line x1="48" x2="880" y1="20.0" y2="20.0"/><line x1="48.0" x2="48.0" y1="20" y2="270"/><line x1="162.8" x2="162.8" y1="20" y2="270"/><line x1="306.2" x2="306.2" y1="20" y2="270"/><line x1="449.7" x2="449.7" y1="20" y2="270"/><line x1="593.1" x2="593.1" y1="20" y2="270"/><line x1="736.6" x2="736.6" y1="20" y2="270"/><line x1="880.0" x2="880.0" y1="20" y2="270"/></g>
+  <g class="ag-chart__axis"><text x="38" y="211.5" text-anchor="end">100</text><text x="38" y="149.0" text-anchor="end">200</text><text x="38" y="86.5" text-anchor="end">300</text><text x="38" y="24.0" text-anchor="end">400</text><text x="48.0" y="298" text-anchor="middle">9/1</text><text x="162.8" y="298" text-anchor="middle">9/5</text><text x="306.2" y="298" text-anchor="middle">9/10</text><text x="449.7" y="298" text-anchor="middle">9/15</text><text x="593.1" y="298" text-anchor="middle">9/20</text><text x="736.6" y="298" text-anchor="middle">9/25</text><text x="880.0" y="298" text-anchor="middle">9/30</text></g>
+  <path class="ag-chart__area--1" d="M48.0,157.5 C52.8,153.3 67.1,149.2 76.7,132.5 C86.3,115.8 95.8,69.0 105.4,57.5 C114.9,46.0 124.5,55.4 134.1,63.8 C143.6,72.1 153.2,95.0 162.8,107.5 C172.3,120.0 181.9,127.3 191.4,138.8 C201.0,150.2 210.6,169.0 220.1,176.2 C229.7,183.5 239.3,184.6 248.8,182.5 C258.4,180.4 268.0,176.2 277.5,163.8 C287.1,151.2 296.6,122.1 306.2,107.5 C315.8,92.9 325.3,83.5 334.9,76.2 C344.5,69.0 354.0,61.7 363.6,63.8 C373.1,65.8 382.7,79.4 392.3,88.8 C401.8,98.1 411.4,108.5 421.0,120.0 C430.5,131.5 440.1,149.2 449.7,157.5 C459.2,165.8 468.8,172.1 478.3,170.0 C487.9,167.9 497.5,152.3 507.0,145.0 C516.6,137.7 526.2,132.5 535.7,126.2 C545.3,120.0 554.9,114.8 564.4,107.5 C574.0,100.2 583.5,88.5 593.1,82.5 C602.7,76.5 612.2,70.2 621.8,71.2 C631.4,72.3 640.9,81.7 650.5,88.8 C660.0,95.8 669.6,106.5 679.2,113.8 C688.7,121.0 698.3,127.3 707.9,132.5 C717.4,137.7 727.0,144.0 736.6,145.0 C746.1,146.0 755.7,142.9 765.2,138.8 C774.8,134.6 784.4,127.3 793.9,120.0 C803.5,112.7 813.1,101.2 822.6,95.0 C832.2,88.8 841.7,85.6 851.3,82.5 C860.9,79.4 875.2,77.3 880.0,76.2 L880.0,270 L48.0,270 Z"/>
+  <path class="ag-chart__line ag-chart__line--2" d="M48.0,195.0 C52.8,192.9 67.1,186.7 76.7,182.5 C86.3,178.3 95.8,175.2 105.4,170.0 C114.9,164.8 124.5,160.6 134.1,151.2 C143.6,141.9 153.2,126.2 162.8,113.8 C172.3,101.2 181.9,84.6 191.4,76.2 C201.0,67.9 210.6,61.7 220.1,63.8 C229.7,65.8 239.3,78.3 248.8,88.8 C258.4,99.2 268.0,113.8 277.5,126.2 C287.1,138.8 296.6,154.4 306.2,163.8 C315.8,173.1 325.3,180.4 334.9,182.5 C344.5,184.6 354.0,179.4 363.6,176.2 C373.1,173.1 382.7,164.8 392.3,163.8 C401.8,162.7 411.4,167.9 421.0,170.0 C430.5,172.1 440.1,175.2 449.7,176.2 C459.2,177.3 468.8,178.3 478.3,176.2 C487.9,174.2 497.5,167.9 507.0,163.8 C516.6,159.6 526.2,157.5 535.7,151.2 C545.3,145.0 554.9,134.6 564.4,126.2 C574.0,117.9 583.5,107.5 593.1,101.2 C602.7,95.0 612.2,87.7 621.8,88.8 C631.4,89.8 640.9,101.2 650.5,107.5 C660.0,113.8 669.6,121.0 679.2,126.2 C688.7,131.5 698.3,138.8 707.9,138.8 C717.4,138.8 727.0,130.4 736.6,126.2 C746.1,122.1 755.7,114.8 765.2,113.8 C774.8,112.7 784.4,115.8 793.9,120.0 C803.5,124.2 813.1,132.5 822.6,138.8 C832.2,145.0 841.7,153.3 851.3,157.5 C860.9,161.7 875.2,162.7 880.0,163.8"/>
+  <path class="ag-chart__line ag-chart__line--1" d="M48.0,157.5 C52.8,153.3 67.1,149.2 76.7,132.5 C86.3,115.8 95.8,69.0 105.4,57.5 C114.9,46.0 124.5,55.4 134.1,63.8 C143.6,72.1 153.2,95.0 162.8,107.5 C172.3,120.0 181.9,127.3 191.4,138.8 C201.0,150.2 210.6,169.0 220.1,176.2 C229.7,183.5 239.3,184.6 248.8,182.5 C258.4,180.4 268.0,176.2 277.5,163.8 C287.1,151.2 296.6,122.1 306.2,107.5 C315.8,92.9 325.3,83.5 334.9,76.2 C344.5,69.0 354.0,61.7 363.6,63.8 C373.1,65.8 382.7,79.4 392.3,88.8 C401.8,98.1 411.4,108.5 421.0,120.0 C430.5,131.5 440.1,149.2 449.7,157.5 C459.2,165.8 468.8,172.1 478.3,170.0 C487.9,167.9 497.5,152.3 507.0,145.0 C516.6,137.7 526.2,132.5 535.7,126.2 C545.3,120.0 554.9,114.8 564.4,107.5 C574.0,100.2 583.5,88.5 593.1,82.5 C602.7,76.5 612.2,70.2 621.8,71.2 C631.4,72.3 640.9,81.7 650.5,88.8 C660.0,95.8 669.6,106.5 679.2,113.8 C688.7,121.0 698.3,127.3 707.9,132.5 C717.4,137.7 727.0,144.0 736.6,145.0 C746.1,146.0 755.7,142.9 765.2,138.8 C774.8,134.6 784.4,127.3 793.9,120.0 C803.5,112.7 813.1,101.2 822.6,95.0 C832.2,88.8 841.7,85.6 851.3,82.5 C860.9,79.4 875.2,77.3 880.0,76.2"/>
+  <line class="ag-chart__cursor" x1="0" x2="0" y1="20" y2="270" style="opacity:0"/>
+  <circle class="ag-chart__marker ag-chart__marker--1" r="6" cx="0" cy="0" style="opacity:0"/>
+  <circle class="ag-chart__marker ag-chart__marker--2" r="6" cx="0" cy="0" style="opacity:0"/>
+</svg>
+          <div class="ag-chart__tooltip" hidden></div>
+        </div>
+        <div class="ag-card__foot">
+          <div class="ag-legend">
+            <span class="ag-legend__item"><span class="ag-dot ag-dot--c1"></span>MySQL</span>
+            <span class="ag-legend__item"><span class="ag-dot ag-dot--c2"></span>PostgreSQL</span>
+          </div>
+          <span>건 / 일 · 1s 초과 기준</span>
+        </div>
+      </section>
+
+      <!-- 액센트 카드 -->
+      <section class="ag-card ag-card--accent ag-col-3">
+        <div class="ag-card__head">
+          <h2 class="ag-card__title">백업 점검</h2>
+          <a class="ag-btn ag-btn--icon ag-btn--inverse ag-btn--sm" href="#" aria-label="자세히"><svg class="ag-icon"><use href="#i-arrow-up-right"/></svg></a>
+        </div>
+        <p class="ag-text-lg ag-text-2">자동 스냅샷 186건 중 184건 성공. 복구 리허설 2건이 이번 주 예정되어 있습니다.</p>
+        <div class="ag-stack ag-stack--sm ag-mt-auto">
+          <div class="ag-tile ag-tile--inverse"><span class="ag-tile__label">스냅샷 실패</span><span class="ag-badge ag-badge--count">2</span></div>
+          <div class="ag-tile ag-tile--inverse" style="opacity:.85"><span class="ag-tile__label">복구 리허설 예정</span><span class="ag-badge ag-badge--count">2</span></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Row 2: AWS 리소스 요약 + 엔진 분포 -->
+    <div class="ag-grid">
+      <section class="ag-card ag-card--flush ag-col-8">
+        <div class="ag-card__head">
+          <div><h2 class="ag-card__title">AWS 리소스 사용량</h2><p class="ag-card__subtitle">ap-northeast-2 · 프로덕션 계정</p></div>
+          <a class="ag-btn ag-btn--sm ag-btn--outline" href="resources.html">전체 보기<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-right"/></svg></a>
+        </div>
+        <div class="ag-table-wrap ag-mt-4">
+          <table class="ag-table">
+            <thead><tr><th>리소스</th><th>타입</th><th class="ag-th--num">수량</th><th style="min-width:180px">사용률 (CPU · 용량 · 메모리)</th><th>상태</th></tr></thead>
+            <tbody>
+              <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-database"/></svg>RDS / Aurora</span></td><td class="ag-text-2">db.r6g.2xlarge 외</td><td class="ag-td--num ag-num">78</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>CPU 평균</span><strong>61%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:61%"></div></div></div></td><td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td></tr>
+              <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-server"/></svg>EC2 (self-managed DB)</span></td><td class="ag-text-2">r6i.4xlarge 외</td><td class="ag-td--num ag-num">43</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>CPU 평균</span><strong>84%</strong></div><div class="ag-progress ag-progress--sm ag-progress--warn"><div class="ag-progress__bar" style="width:84%"></div></div></div></td><td><span class="ag-badge ag-badge--warn"><span class="ag-dot ag-dot--warn"></span>주의</span></td></tr>
+              <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-layers"/></svg>DocumentDB</span></td><td class="ag-text-2">db.r6g.large</td><td class="ag-td--num ag-num">34</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>CPU 평균</span><strong>37%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:37%"></div></div></div></td><td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td></tr>
+              <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-hdd"/></svg>EBS gp3</span></td><td class="ag-text-2">총 412 TiB</td><td class="ag-td--num ag-num">318</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>용량</span><strong>91%</strong></div><div class="ag-progress ag-progress--sm ag-progress--crit"><div class="ag-progress__bar" style="width:91%"></div></div></div></td><td><span class="ag-badge ag-badge--crit"><span class="ag-dot ag-dot--crit"></span>증설 필요</span></td></tr>
+              <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-cpu"/></svg>ElastiCache</span></td><td class="ag-text-2">cache.r7g.xlarge</td><td class="ag-td--num ag-num">21</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>메모리</span><strong>52%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:52%"></div></div></div></td><td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- 분포 버블 -->
+      <section class="ag-card ag-col-4">
+        <div class="ag-card__head">
+          <h2 class="ag-card__title">엔진 분포</h2>
+          <a class="ag-btn ag-btn--icon ag-btn--outline ag-btn--sm" href="resources.html" aria-label="리소스 보기"><svg class="ag-icon"><use href="#i-arrow-up-right"/></svg></a>
+        </div>
+        <div class="ag-relative" style="height:230px;max-width:280px;margin-inline:auto;width:100%">
+          <div class="ag-bubble ag-bubble--2" style="position:absolute;left:0;top:6px;width:170px;font-size:46px"><strong>58%</strong><span>MySQL</span></div>
+          <div class="ag-bubble ag-bubble--hatch" style="position:absolute;left:150px;top:0;width:84px;font-size:22px"><strong>9%</strong><span>Oracle</span></div>
+          <div class="ag-bubble ag-bubble--1" style="position:absolute;left:135px;bottom:0;width:136px;font-size:36px"><strong>33%</strong><span>PostgreSQL</span></div>
+        </div>
+      </section>
+    </div>
+
+  </main>
+</div>
+
+<script src="../dist/argus.js"></script>
+</body>
+</html>

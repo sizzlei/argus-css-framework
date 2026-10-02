@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Argus Console — order-db-writer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/argus.min.css">
+<script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+</head>
+<body>
+<!--@icons-->
+
+<div class="ag-app">
+  <header class="ag-topbar">
+    <a class="ag-topbar__brand" href="index.html"><span class="ag-dot ag-dot--accent"></span>Argus Console</a>
+    <nav class="ag-topbar__center ag-hide-md" aria-label="주 메뉴">
+      <div class="ag-nav">
+        <a class="ag-nav__item" href="index.html">개요</a>
+        <a class="ag-nav__item" href="resources.html">리소스</a>
+        <a class="ag-nav__item" href="detail.html" aria-current="page">인스턴스</a>
+        <a class="ag-nav__item" href="#">알림</a>
+      </div>
+    </nav>
+    <div class="ag-topbar__actions">
+      <button class="ag-btn ag-btn--icon ag-btn--outline" aria-label="검색"><svg class="ag-icon"><use href="#i-search"/></svg></button>
+      <button class="ag-btn ag-btn--icon ag-btn--outline" aria-label="테마 전환" data-ag-theme-toggle>
+        <svg class="ag-icon ag-only-dark"><use href="#i-sun"/></svg>
+        <svg class="ag-icon ag-only-light"><use href="#i-moon"/></svg>
+      </button>
+      <span class="ag-avatar" style="background:var(--ag-warn-soft);color:var(--ag-warn)">AN</span>
+    </div>
+  </header>
+
+  <main class="ag-main">
+    <nav class="ag-breadcrumb" aria-label="경로">
+      <a href="index.html">개요</a><span class="ag-breadcrumb__sep">/</span><a href="resources.html">데이터베이스</a><span class="ag-breadcrumb__sep">/</span><span aria-current="page">order-db-writer</span>
+    </nav>
+
+    <div class="ag-page-header">
+      <div class="ag-page-header__title">
+        <div class="ag-cluster">
+          <h2>order-db-writer</h2>
+          <span class="ag-badge ag-badge--lg ag-badge--crit"><span class="ag-dot ag-dot--crit ag-dot--pulse"></span>장애</span>
+          <span class="ag-badge ag-badge--lg ag-badge--accent2">prod</span>
+        </div>
+        <div class="ag-cluster ag-text-sm ag-text-3">
+          <span class="ag-row ag-gap-1"><svg class="ag-icon ag-icon--sm"><use href="#i-database"/></svg>Aurora MySQL 8.0.36</span>
+          <span>·</span><span class="ag-mono">db.r6g.4xlarge</span>
+          <span>·</span><span class="ag-row ag-gap-1"><svg class="ag-icon ag-icon--sm"><use href="#i-pin"/></svg>ap-northeast-2a</span>
+          <span>·</span><span class="ag-mono">prod-order-cluster</span>
+        </div>
+      </div>
+      <div class="ag-page-header__actions">
+        <button class="ag-btn ag-btn--outline"><svg class="ag-icon"><use href="#i-terminal"/></svg>콘솔 접속</button>
+        <button class="ag-btn ag-btn--outline" data-ag-open="drawer-param"><svg class="ag-icon"><use href="#i-edit"/></svg>파라미터 편집</button>
+        <div class="ag-dropdown">
+          <button class="ag-btn ag-btn--primary" data-ag-dropdown>작업<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button>
+          <div class="ag-menu">
+            <div class="ag-menu__label">인스턴스</div>
+            <button class="ag-menu__item"><svg class="ag-icon ag-icon--sm"><use href="#i-refresh"/></svg>재부팅</button>
+            <button class="ag-menu__item"><svg class="ag-icon ag-icon--sm"><use href="#i-copy"/></svg>스냅샷 생성</button>
+            <button class="ag-menu__item"><svg class="ag-icon ag-icon--sm"><use href="#i-git"/></svg>Failover 수행</button>
+            <div class="ag-menu__sep"></div>
+            <button class="ag-menu__item is-danger" data-ag-open="modal-stop"><svg class="ag-icon ag-icon--sm"><use href="#i-pause"/></svg>인스턴스 중지</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ag-alert ag-alert--crit">
+      <svg class="ag-icon"><use href="#i-alert"/></svg>
+      <div><div class="ag-alert__title">CPU 92% 지속 — ALM-2041 조치 중</div>커넥션 풀 포화로 p99 지연이 1.8s까지 상승했습니다. 담당 James · 2시간 14분 경과. <a href="#">알림 보기</a></div>
+    </div>
+
+    <div class="ag-grid">
+      <!-- 좌: 메트릭 + 탭 -->
+      <div class="ag-col-8 ag-stack ag-stack--lg">
+        <div class="ag-grid">
+          <div class="ag-card ag-card--sm ag-col-3"><div class="ag-stat ag-stat--sm"><span class="ag-stat__label">CPU</span><span class="ag-stat__value ag-text-crit">92<small>%</small></span></div><div class="ag-progress ag-progress--sm ag-progress--crit"><div class="ag-progress__bar" style="width:92%"></div></div></div>
+          <div class="ag-card ag-card--sm ag-col-3"><div class="ag-stat ag-stat--sm"><span class="ag-stat__label">커넥션</span><span class="ag-stat__value">1,842<small>/2,000</small></span></div><div class="ag-progress ag-progress--sm ag-progress--warn"><div class="ag-progress__bar" style="width:92%"></div></div></div>
+          <div class="ag-card ag-card--sm ag-col-3"><div class="ag-stat ag-stat--sm"><span class="ag-stat__label">p99 지연</span><span class="ag-stat__value">1.8<small>s</small></span></div><div class="ag-text-xs ag-text-3">평소 120ms</div></div>
+          <div class="ag-card ag-card--sm ag-col-3"><div class="ag-stat ag-stat--sm"><span class="ag-stat__label">복제 지연</span><span class="ag-stat__value ag-text-good">14<small>ms</small></span></div><div class="ag-text-xs ag-text-3">reader-1, reader-2</div></div>
+        </div>
+
+        <section class="ag-card" data-ag-tabs>
+          <div class="ag-tabs" role="tablist">
+            <button class="ag-tabs__item is-active" role="tab" aria-selected="true" data-ag-tab="overview">개요</button>
+            <button class="ag-tabs__item" role="tab" aria-selected="false" data-ag-tab="slow">슬로우 쿼리 <span class="ag-badge ag-badge--sm ag-badge--crit">24</span></button>
+            <button class="ag-tabs__item" role="tab" aria-selected="false" data-ag-tab="params">파라미터</button>
+            <button class="ag-tabs__item" role="tab" aria-selected="false" data-ag-tab="backup">백업</button>
+            <button class="ag-tabs__item" role="tab" aria-selected="false" data-ag-tab="access">접근 제어</button>
+          </div>
+
+          <div data-ag-panel="overview">
+            <dl class="ag-kv">
+              <dt>엔드포인트</dt><dd class="ag-mono">order-db-writer.cluster-abc123.ap-northeast-2.rds.amazonaws.com:3306 <button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="복사" data-tip="복사"><svg class="ag-icon ag-icon--sm"><use href="#i-copy"/></svg></button></dd>
+              <dt>VPC / 서브넷</dt><dd class="ag-mono">vpc-0a1b2c3d · subnet-group-prod-db</dd>
+              <dt>보안 그룹</dt><dd><span class="ag-badge">sg-prod-db-mysql</span> <span class="ag-badge">sg-bastion-ingress</span></dd>
+              <dt>파라미터 그룹</dt><dd>prod-order-mysql80 <span class="ag-badge ag-badge--sm ag-badge--warn">pending-reboot</span></dd>
+              <dt>스토리지</dt><dd>1.2 / 2.0 TiB · Aurora Standard · 암호화 (KMS aws/rds)</dd>
+              <dt>Multi-AZ</dt><dd>리더 2 (2a, 2c) · 자동 Failover Tier 0</dd>
+              <dt>백업 보존</dt><dd>7일 · 스냅샷 매일 03:00 KST · PITR 활성</dd>
+              <dt>담당</dt><dd><span class="ag-person"><span class="ag-avatar ag-avatar--sm">JA</span><span>James (DBA)</span></span></dd>
+              <dt>태그</dt><dd><span class="ag-cluster"><span class="ag-badge">service:order</span><span class="ag-badge">tier:0</span><span class="ag-badge">owner:infra-eng</span><span class="ag-badge">cost-center:platform</span></span></dd>
+            </dl>
+          </div>
+
+          <div data-ag-panel="slow" hidden>
+            <div class="ag-table-wrap">
+              <table class="ag-table ag-table--dense">
+                <thead><tr><th>지문</th><th class="ag-th--num">호출</th><th class="ag-th--num">평균</th><th class="ag-th--num">최대</th><th>마지막</th></tr></thead>
+                <tbody>
+                  <tr><td class="ag-mono ag-td--wrap">SELECT * FROM orders WHERE member_id = ? AND status IN (?,?) ORDER BY created_at DESC</td><td class="ag-td--num">4,812</td><td class="ag-td--num ag-text-crit">3.4s</td><td class="ag-td--num">11.2s</td><td class="ag-text-3">2분 전</td></tr>
+                  <tr><td class="ag-mono ag-td--wrap">UPDATE order_items SET qty = ? WHERE order_id = ?</td><td class="ag-td--num">1,203</td><td class="ag-td--num ag-text-warn">1.2s</td><td class="ag-td--num">4.0s</td><td class="ag-text-3">5분 전</td></tr>
+                  <tr><td class="ag-mono ag-td--wrap">SELECT COUNT(*) FROM orders o JOIN payments p ON p.order_id = o.id WHERE o.created_at &gt; ?</td><td class="ag-td--num">310</td><td class="ag-td--num ag-text-warn">1.1s</td><td class="ag-td--num">2.7s</td><td class="ag-text-3">12분 전</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div data-ag-panel="params" hidden>
+            <div class="ag-alert ag-alert--warn"><svg class="ag-icon"><use href="#i-info"/></svg><div>변경 2건이 <strong>재부팅 대기</strong> 중입니다. 다음 점검 창(목 02:00 KST)에 적용됩니다.</div></div>
+            <div class="ag-table-wrap ag-mt-4">
+              <table class="ag-table ag-table--dense">
+                <thead><tr><th>파라미터</th><th>현재</th><th>대기</th><th>적용</th></tr></thead>
+                <tbody>
+                  <tr><td class="ag-mono">innodb_buffer_pool_size</td><td class="ag-mono">48G</td><td class="ag-mono ag-text-accent">56G</td><td><span class="ag-badge ag-badge--sm ag-badge--warn">reboot</span></td></tr>
+                  <tr><td class="ag-mono">max_connections</td><td class="ag-mono">2000</td><td class="ag-mono ag-text-accent">3000</td><td><span class="ag-badge ag-badge--sm ag-badge--good">dynamic</span></td></tr>
+                  <tr><td class="ag-mono">long_query_time</td><td class="ag-mono">1</td><td class="ag-text-3">—</td><td><span class="ag-badge ag-badge--sm">applied</span></td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div data-ag-panel="backup" hidden>
+            <div class="ag-empty"><span class="ag-empty__icon"><svg class="ag-icon ag-icon--lg"><use href="#i-check-circle"/></svg></span><div class="ag-empty__title">최근 7일 스냅샷 모두 성공</div><p>마지막 스냅샷 오늘 03:00 KST · 1.2 TiB · 복구 리허설 9/28 통과</p><button class="ag-btn ag-btn--outline ag-btn--sm">스냅샷 목록</button></div>
+          </div>
+
+          <div data-ag-panel="access" hidden>
+            <div class="ag-list ag-list--divided">
+              <div class="ag-list__item"><span class="ag-list__label"><span class="ag-avatar ag-avatar--sm">SV</span><span>svc_order_app</span></span><span class="ag-cluster"><span class="ag-badge ag-badge--accent">RW</span><span class="ag-text-sm ag-text-3">10.0.0.0/16</span></span></div>
+              <div class="ag-list__item"><span class="ag-list__label"><span class="ag-avatar ag-avatar--sm">SV</span><span>svc_analytics_ro</span></span><span class="ag-cluster"><span class="ag-badge">RO</span><span class="ag-text-sm ag-text-3">10.2.0.0/16</span></span></div>
+              <div class="ag-list__item"><span class="ag-list__label"><span class="ag-avatar ag-avatar--sm">DB</span><span>dba_admin</span></span><span class="ag-cluster"><span class="ag-badge ag-badge--crit">ADMIN</span><span class="ag-text-sm ag-text-3">bastion only</span></span></div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- 우: 타임라인 + 연결 리소스 -->
+      <div class="ag-col-4 ag-stack ag-stack--lg">
+        <section class="ag-card">
+          <div class="ag-card__head"><h3 class="ag-card__title">이벤트</h3><button class="ag-btn ag-btn--sm ag-btn--ghost">전체</button></div>
+          <div class="ag-timeline">
+            <div class="ag-timeline__item is-crit"><div class="ag-timeline__time">14:02</div><div class="ag-timeline__title">CPU 90% 초과 경보</div>CloudWatch · ALM-2041 생성</div>
+            <div class="ag-timeline__item is-warn"><div class="ag-timeline__time">13:48</div><div class="ag-timeline__title">커넥션 1,800 돌파</div>order-api 배포 직후</div>
+            <div class="ag-timeline__item is-good"><div class="ag-timeline__time">03:00</div><div class="ag-timeline__title">자동 스냅샷 완료</div>1.2 TiB · 6m 12s</div>
+            <div class="ag-timeline__item"><div class="ag-timeline__time">어제</div><div class="ag-timeline__title">파라미터 변경 요청</div>innodb_buffer_pool_size · James</div>
+          </div>
+        </section>
+
+        <section class="ag-card">
+          <div class="ag-card__head"><h3 class="ag-card__title">클러스터 구성</h3></div>
+          <div class="ag-list">
+            <div class="ag-list__item" style="border-color:var(--ag-accent)"><span class="ag-list__label"><span class="ag-dot ag-dot--crit"></span><span>order-db-writer</span></span><span class="ag-badge ag-badge--accent">WRITER</span></div>
+            <a class="ag-list__item" href="#"><span class="ag-list__label"><span class="ag-dot ag-dot--warn"></span><span>order-db-reader-1</span></span><span class="ag-badge">READER · 2c</span></a>
+            <a class="ag-list__item" href="#"><span class="ag-list__label"><span class="ag-dot ag-dot--good"></span><span>order-db-reader-2</span></span><span class="ag-badge">READER · 2a</span></a>
+          </div>
+        </section>
+
+        <section class="ag-card ag-card--inverse">
+          <div class="ag-card__head"><h3 class="ag-card__title">월 예상 비용</h3><svg class="ag-icon"><use href="#i-cloud"/></svg></div>
+          <div class="ag-stat"><span class="ag-stat__value">$4,120</span><span class="ag-stat__label ag-text-2">전월 대비 +6% · 스토리지 I/O 증가</span></div>
+        </section>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Drawer: 파라미터 편집 폼 -->
+<aside class="ag-drawer" id="drawer-param" aria-label="파라미터 편집">
+  <div class="ag-modal__head">
+    <div><h3>파라미터 변경 요청</h3><p class="ag-text-sm ag-text-3">prod-order-mysql80 · 변경은 승인 후 적용됩니다</p></div>
+    <button class="ag-btn ag-btn--icon ag-btn--ghost" data-ag-close aria-label="닫기"><svg class="ag-icon"><use href="#i-x"/></svg></button>
+  </div>
+  <form class="ag-stack ag-stack--lg" onsubmit="return false">
+    <div class="ag-form-grid">
+      <div class="ag-field ag-field--full">
+        <label class="ag-label" for="p-name">파라미터 <span class="ag-req">*</span></label>
+        <select class="ag-select" id="p-name"><option>innodb_buffer_pool_size</option><option>max_connections</option><option>long_query_time</option><option>wait_timeout</option></select>
+      </div>
+      <div class="ag-field">
+        <label class="ag-label" for="p-cur">현재 값</label>
+        <input class="ag-input ag-input--mono" id="p-cur" value="48G" disabled>
+      </div>
+      <div class="ag-field is-invalid">
+        <label class="ag-label" for="p-new">변경 값 <span class="ag-req">*</span></label>
+        <input class="ag-input ag-input--mono" id="p-new" value="72G">
+        <span class="ag-hint">인스턴스 메모리(128G)의 75%를 초과합니다. 56G 이하를 권장합니다.</span>
+      </div>
+      <div class="ag-field ag-field--full">
+        <label class="ag-label" for="p-reason">변경 사유 <span class="ag-req">*</span></label>
+        <textarea class="ag-textarea" id="p-reason" placeholder="관련 티켓, 측정 근거, 롤백 계획을 적어주세요">ALM-2041 대응. 버퍼 풀 히트율 94% → 99% 목표. 롤백: 파라미터 그룹 이전 버전 재적용.</textarea>
+        <span class="ag-hint">Jira 티켓 키를 포함하면 자동으로 연결됩니다.</span>
+      </div>
+      <div class="ag-field">
+        <label class="ag-label" for="p-when">적용 시점</label>
+        <select class="ag-select" id="p-when"><option>다음 점검 창 (목 02:00 KST)</option><option>즉시 (dynamic 파라미터만)</option><option>직접 지정</option></select>
+      </div>
+      <div class="ag-field">
+        <span class="ag-label">알림</span>
+        <div class="ag-stack ag-stack--sm ag-mt-1">
+          <label class="ag-switch"><input type="checkbox" id="p-slack" checked>Slack #infra-db-alert</label>
+          <label class="ag-switch"><input type="checkbox" id="p-mail">서비스 담당자 메일</label>
+        </div>
+      </div>
+      <div class="ag-field ag-field--full">
+        <label class="ag-check"><input type="checkbox" id="p-ack">변경 영향(재부팅 필요 여부)을 확인했고, 서비스 담당자에게 공유했습니다.</label>
+      </div>
+    </div>
+    <div class="ag-form-actions">
+      <button type="button" class="ag-btn ag-btn--ghost" data-ag-close>취소</button>
+      <button type="button" class="ag-btn ag-btn--outline">임시 저장</button>
+      <button type="submit" class="ag-btn ag-btn--primary">승인 요청</button>
+    </div>
+  </form>
+</aside>
+
+<!-- Modal: 위험 작업 확인 -->
+<dialog class="ag-modal" id="modal-stop">
+  <div class="ag-modal__panel">
+    <div class="ag-modal__head">
+      <div class="ag-row"><span class="ag-avatar" style="background:var(--ag-crit-soft);color:var(--ag-crit)"><svg class="ag-icon"><use href="#i-alert"/></svg></span><div><h3>인스턴스를 중지할까요?</h3><p class="ag-text-sm ag-text-3">order-db-writer · prod · Tier 0</p></div></div>
+      <button class="ag-btn ag-btn--icon ag-btn--ghost" data-ag-close aria-label="닫기"><svg class="ag-icon"><use href="#i-x"/></svg></button>
+    </div>
+    <p class="ag-text-2">Writer 인스턴스를 중지하면 자동 Failover가 발생하고 약 30초간 쓰기가 중단됩니다. 확인을 위해 인스턴스 이름을 입력하세요.</p>
+    <div class="ag-field"><input class="ag-input ag-input--mono" id="confirm-name" placeholder="order-db-writer"></div>
+    <div class="ag-modal__foot">
+      <button class="ag-btn ag-btn--ghost" data-ag-close>취소</button>
+      <button class="ag-btn ag-btn--danger" disabled>중지</button>
+    </div>
+  </div>
+</dialog>
+
+<script src="../dist/argus.js"></script>
+</body>
+</html>
