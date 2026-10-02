@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../dist/argus.min.css">
-<link rel="stylesheet" href="" id="service-theme">
 <script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
 <style>@media (min-width: 961px) { .ag-auth__brand { padding-bottom: 104px; } }</style>
 </head>
@@ -83,17 +82,10 @@
 </div>
 
 <div class="ag-mode-switch ag-row ag-gap-2" style="background:var(--ag-bg-elevated);padding:6px;border-radius:var(--ag-radius-pill);border:1px solid var(--ag-border)">
-  <select class="ag-select ag-select--sm ag-select--pill ag-select--inline" id="service-select" aria-label="컬러 테마">
-    <option value="">기본 (violet)</option><option value="red">red · 빨강</option><option value="orange">orange · 주황</option><option value="yellow">yellow · 노랑</option><option value="green">green · 초록</option><option value="blue">blue · 파랑</option><option value="indigo">indigo · 남색</option><option value="violet">violet · 보라</option>
-  </select>
   <button class="ag-btn ag-btn--sm ag-btn--outline" data-ag-theme-toggle><svg class="ag-icon ag-icon--sm ag-only-dark"><use href="#i-sun"/></svg><svg class="ag-icon ag-icon--sm ag-only-light"><use href="#i-moon"/></svg>테마</button>
 </div>
 <script src="../dist/argus.js"></script>
 <script>
-  var sel=document.getElementById('service-select'), link=document.getElementById('service-theme');
-  function setService(v){ link.href = v ? '../dist/themes/' + v + '.min.css' : ''; sel.value=v; try{localStorage.setItem('ag-demo-service',v)}catch(e){} }
-  sel.addEventListener('change',function(){ setService(sel.value); });
-  try{ setService(localStorage.getItem('ag-demo-service')||'') }catch(e){}
   /* OTP 칸 자동 이동 — 예시용 */
   document.querySelectorAll('.ag-otp__cell').forEach(function (c, i, all) {
     c.addEventListener('input', function () { c.classList.toggle('is-filled', !!c.value); if (c.value && all[i+1]) all[i+1].focus(); });

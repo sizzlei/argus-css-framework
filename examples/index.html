@@ -261,6 +261,12 @@
   .demo-nav__list a { padding: 7px 12px; border-radius: var(--ag-radius-pill); font-size: var(--ag-text-sm); font-weight: 500; color: var(--ag-text-2); text-decoration: none; white-space: nowrap; }
   .demo-nav__list a:hover { color: var(--ag-text); background: var(--ag-surface-hover); }
   .demo-nav__list a.is-here { background: var(--ag-accent); color: var(--ag-text-on-accent); }
+  .demo-nav__sep { width: 1px; height: 18px; background: var(--ag-border-strong); margin: 0 4px; }
+  .demo-nav__color { display: flex; align-items: center; gap: 6px; padding: 0 10px 0 8px; }
+  .demo-nav__swatch { width: 10px; height: 10px; border-radius: 50%; background: var(--ag-accent); box-shadow: 0 0 0 2px var(--ag-accent-soft); flex: none; }
+  .demo-nav__color select { appearance: none; -webkit-appearance: none; background: transparent; border: 0; color: var(--ag-text-2); font: inherit; font-size: var(--ag-text-sm); font-weight: 500; padding: 7px 0; cursor: pointer; outline: none; }
+  .demo-nav__color select:focus-visible { color: var(--ag-text); }
+  .demo-nav__color select option { color: #111; }
   @media (min-width: 961px) { .demo-nav summary { display: none; } .demo-nav__list { display: flex !important; } }
   @media (max-width: 960px) {
     .demo-nav { bottom: calc(var(--ag-space-4) + env(safe-area-inset-bottom, 0px)); }
@@ -268,6 +274,8 @@
     .demo-nav__list { position: absolute; left: 0; bottom: 52px; flex-direction: column; align-items: stretch; border-radius: var(--ag-radius-lg); min-width: 180px; }
     .demo-nav__label { padding: 8px 12px 4px; }
     .demo-nav__list a { border-radius: var(--ag-radius-sm); }
+    .demo-nav__sep { width: auto; height: 1px; margin: 4px 8px; }
+    .demo-nav__color { padding: 4px 12px 8px; }
     .ag-app--rail .demo-nav { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
     .ag-mode-switch { left: auto; right: var(--ag-space-4); transform: none; }
   }
@@ -282,8 +290,25 @@
     <a href="login.html" data-page="login">로그인</a>
     <a href="layouts.html" data-page="layouts">레이아웃</a>
     <a href="components.html" data-page="components">컴포넌트</a>
+    <span class="demo-nav__sep"></span>
+    <label class="demo-nav__color"><span class="demo-nav__swatch" aria-hidden="true"></span>
+      <select id="demo-color" aria-label="컬러 테마">
+        <option value="">violet · 기본</option><option value="red">red · 빨강</option><option value="orange">orange · 주황</option><option value="yellow">yellow · 노랑</option><option value="green">green · 초록</option><option value="blue">blue · 파랑</option><option value="indigo">indigo · 남색</option>
+      </select>
+    </label>
   </nav>
 </details>
+<script>
+(function(){
+  var link=document.getElementById('demo-theme-link');
+  if(!link){ link=document.createElement('link'); link.rel='stylesheet'; link.id='demo-theme-link'; document.head.appendChild(link); }
+  var sel=document.getElementById('demo-color');
+  function apply(v){ link.href = v ? '../dist/themes/'+v+'.min.css' : ''; sel.value=v; try{localStorage.setItem('ag-demo-color',v)}catch(e){} }
+  sel.addEventListener('change',function(){ apply(sel.value); });
+  var saved=''; try{ saved=localStorage.getItem('ag-demo-color')||'' }catch(e){}
+  apply(saved);
+})();
+</script>
 <script>if(matchMedia("(max-width: 960px)").matches)document.querySelector(".demo-nav").removeAttribute("open")</script>
 
 </body>
