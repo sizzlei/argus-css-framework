@@ -185,7 +185,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | `.ag-segmented__item` `.ag-tabs__item` | 형제 중 하나만 `is-active` |
 | `data-ag-tabs` + `data-ag-tab="x"` + `data-ag-panel="x"` | 탭 패널 전환 |
 | `data-ag-dropdown` | 부모 `.ag-dropdown` 에 `is-open` 토글, 바깥 클릭 시 닫힘 |
-| `data-ag-open="id"` / `data-ag-close` | `<dialog class="ag-modal">`, `.ag-modal-overlay`, `.ag-drawer` 열고 닫기 (오버레이는 바깥 클릭으로도 닫힘, `data-ag-static` 으로 막기) |
+| `data-ag-open="id"` / `data-ag-close` | `<dialog class="ag-modal">`, `.ag-modal-overlay`, `.ag-drawer` 열고 닫기. **소유권 원칙:** 바깥 클릭·ESC 는 argus.js 가 `data-ag-open`(또는 ⌘K)으로 연 것만 닫는다 — Alpine `x-show` / Vue `v-show` 가 제어하는 오버레이·드로어·드롭다운은 건드리지 않음. `data-ag-static` 은 바깥 클릭·ESC 차단. 닫기 직전 cancelable `ag:overlay-close`(detail.reason = button/backdrop/escape), 닫힌 뒤 `ag:overlay-closed`, 연 뒤 `ag:overlay-open` 이벤트. 코드에서는 `AG.overlay.open(el)` / `.close(el)` / `.owns(el)` |
 | `AG.toast(message, type?, ms?)` | 우하단 토스트. type = good/warn/crit/info, ms=0 이면 수동 닫기 |
 | `data-ag-expand` (tr 안 버튼) | 다음 `tr.ag-tr--expand` 펼치기/접기 |
 | `data-ag-detail-open` / `data-ag-detail-close` | dual 레이아웃 모바일에서 목록 ↔ 상세 |

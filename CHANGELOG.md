@@ -5,6 +5,7 @@
 - 컬러 테마를 색 이름 7종으로: `red` `orange` `yellow` `green` `blue` `indigo` `violet` — 원색을 한 톤 눌러 자연스럽게, 다크·라이트 각각, 액센트 위 글자 대비 확인.
 - 사내 전용 문서·템플릿을 걷어내고 Go html/template 적용 예시만 일반화해 남김. MIT 라이선스.
 - 샘플 페이지 프로필을 Andy 로. 컬러 테마 선택은 하단 데모 네비에서 (모든 페이지).
+- **argus.js 오버레이 소유권 원칙** — 바깥 클릭·ESC 가 모든 `.ag-modal-overlay` / `.ag-drawer` / `.ag-dropdown` / `.ag-combobox` 를 닫던 설계를 "자기가 `data-ag-open`·⌘K 로 연 것만 닫음" 으로 변경. Alpine/Vue/React 가 제어하는 오버레이를 `hidden !important` 로 잠그던 문제(모르면 조용히 고장) 해소. 표시 토글은 `is-open` 클래스 + `hidden` 병행, 닫기 직전 cancelable `ag:overlay-close`(reason: button/backdrop/escape) · `ag:overlay-closed` · `ag:overlay-open` 이벤트, `AG.overlay.open/close/owns` API. 명시적 `data-ag-close` 버튼은 소유와 무관하게 동작(마크업이 opt-in).
 - `.ag-glow` 복원 — 미검증 정리 때 삭제했으나 서비스(`.ag-app.ag-glow`)가 쓰고 있었음. 매트릭스에 데모 추가.
 - `.ag-app--tabs` 상단바가 3,224px 이상 초광폭에서 두 행이 한 줄로 나란히 붙던 버그 — wrap flex 에서 `__row` 의 `max-width` 가 flex-basis 가 된 탓. 상단바를 블록으로 쌓도록 변경(행 내부만 flex). `tools/shots.py` 에 3400px 레이아웃 회귀 추가.
 - `.ag-page` — 화면 내용을 감싸는 `<div x-data>` 래퍼가 `.ag-main` 직계가 되면 gap 이 래퍼 하나에만 걸려 안쪽 블록이 0px 로 붙던 문제(Harpoon 전 화면). 래퍼에 `.ag-page` 를 붙이면 같은 스택이 되고, 클래스 없는 div / `[x-data]` 래퍼는 자동 적용.

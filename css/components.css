@@ -658,6 +658,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-modal__foot { display: flex; justify-content: flex-end; gap: var(--ag-space-2); }
 
 /* <dialog> 를 쓰지 않는 오버레이형 모달 (Alpine x-show 등으로 열고 닫을 때) */
+/* 표시 제어: argus.js 는 is-open 클래스 + hidden 을 함께 토글(자기가 연 것만). Alpine x-show / Vue v-show 는 inline display 로 제어 — 둘이 섞여도 교착 없음 */
 .ag-modal-overlay { position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center; padding: var(--ag-space-4); background: var(--ag-overlay); backdrop-filter: blur(4px); }
 .ag-modal-overlay > .ag-modal__panel { width: 100%; max-width: 560px; max-height: calc(100dvh - 32px); overflow-y: auto; }
 .ag-modal-overlay--lg > .ag-modal__panel { max-width: 860px; }

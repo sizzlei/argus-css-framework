@@ -750,7 +750,7 @@ new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor
             <button class="ag-btn ag-btn--outline" data-ag-open="demo-overlay">오버레이 모달 (x-show 형)</button>
             <button class="ag-btn ag-btn--outline" data-ag-open="demo-drawer">우측 드로어</button>
           </div>
-          <p class="ag-text-sm ag-text-3"><code>data-ag-open="id"</code> / <code>data-ag-close</code>. Alpine 을 쓰는 서비스는 <code>x-show</code> 로 <code>.ag-modal-overlay</code> 를 그대로 토글.</p>
+          <p class="ag-text-sm ag-text-3"><code>data-ag-open="id"</code> / <code>data-ag-close</code>. Alpine 을 쓰는 서비스는 <code>x-show</code> 로 <code>.ag-modal-overlay</code> 를 그대로 토글 — argus.js 는 자기가 연 것만 바깥 클릭·ESC 로 닫으므로 충돌 없음. 닫기 전 <code>ag:overlay-close</code> 이벤트(cancelable).</p>
           <h3 class="ag-card__title ag-mt-4">툴팁 <code>[data-tip]</code></h3>
           <div class="ag-cluster">
             <button class="ag-btn ag-btn--icon ag-btn--outline" data-tip="새로고침 (R)"><svg class="ag-icon"><use href="#i-refresh"/></svg></button>

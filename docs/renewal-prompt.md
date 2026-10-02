@@ -27,6 +27,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 - 차트: ApexCharts 는 `AG.charts.apex(options)` 로 감싸고 `AG.charts.register(chart)` 한다. Chart.js 는 `AG.charts.chartjsDefaults(Chart)` 를 먼저 호출한다. 시리즈 색을 직접 지정하지 않는다 (`AG.charts.palette()` 사용). 상태색(good/warn/crit)은 차트 시리즈로 쓰지 않는다.
 - 테마: 다크 기본. 라이트 전환은 `<html data-theme="light">` + `[data-ag-theme-toggle]` 버튼. 서비스 자체 테마 로직(쿠키 등)이 있으면 `data-theme` 속성을 세팅하는 쪽으로 맞춘다.
 - 화면 전체를 감싸는 `<div x-data="…">` 래퍼에는 **`class="ag-page"`** 를 붙인다 (`.ag-main` 의 블록 간격이 래퍼 안으로 이어지도록. 클래스 없는 div / x-data 래퍼는 프레임워크가 자동으로 같은 스택으로 처리하지만, 명시가 안전하다).
+- 모달·드로어를 Alpine `x-show` 로 제어하는 화면은 그대로 둔다 — `argus.js` 는 자기가 `data-ag-open` 으로 연 오버레이만 바깥 클릭·ESC 로 닫으므로 충돌하지 않는다. ESC 로 Alpine 모달을 닫고 싶으면 Alpine 쪽 `@keydown.escape.window` 로 처리. 프레임워크 닫기를 조건부로 막아야 하면 `ag:overlay-close` 에서 `preventDefault()`.
 - Alpine.js / htmx 는 그대로 유지한다. 리뉴얼은 **마크업과 클래스만** 바꾸는 작업이고, `x-data`, `@click`, `hx-*` 바인딩과 Go 템플릿 로직(`{{if}}`, `{{range}}`, 권한 체크)은 건드리지 않는다.
 - 프레임워크 업데이트: `cp $AG/dist/{argus.min.css,argus.js,argus.charts.js} web/public/vendor/ && cp $AG/dist/themes/{{COLOR}}.min.css web/public/vendor/themes/ && cp $AG/dist/VERSION web/public/vendor/argus.VERSION` (AG=~/Desktop/develop/argus-css). 변경 내역은 `$AG/CHANGELOG.md`.
 - 디자인 판단이 갈리면 `$AG/docs/principles.md` 가 기준이다.

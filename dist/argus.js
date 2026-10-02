@@ -94,27 +94,42 @@ e.preventDefault();
 })();
 (function () {
 'use strict';
+/* 소유권 원칙: argus.js 는 자기가 연 것만 닫는다. Alpine/Vue/React 가 x-show 등으로 제어하는 오버레이·드로어·드롭다운은
+data-ag-open 으로 열리지 않았으므로 바깥 클릭·ESC 에서 건드리지 않는다 (hidden !important 교착 방지).
+닫기 직전에는 cancelable 'ag:overlay-close' 를 보내므로 서비스가 preventDefault() 로 막을 수 있다. */
+var AG = window.AG = window.AG || {};
+var owned = new WeakSet();
+function closeOverlay(el, reason) {
+if (!el) return false;
+var ev = new CustomEvent('ag:overlay-close', { bubbles: true, cancelable: true, detail: { reason: reason } });
+if (!el.dispatchEvent(ev)) return false;
+if (el.tagName === 'DIALOG') { if (el.open) el.close(); }
+else if (el.classList.contains('ag-modal-overlay')) { el.classList.remove('is-open'); el.hidden = true; }
+else el.classList.remove('is-open');
+owned.delete(el);
+el.dispatchEvent(new CustomEvent('ag:overlay-closed', { bubbles: true, detail: { reason: reason } }));
+return true;
+}
+function openOverlay(el) {
+if (!el) return;
+owned.add(el);
+if (el.tagName === 'DIALOG') el.showModal();
+else if (el.classList.contains('ag-modal-overlay')) { el.hidden = false; el.classList.add('is-open'); }
+else el.classList.add('is-open');
+el.dispatchEvent(new CustomEvent('ag:overlay-open', { bubbles: true }));
+}
+AG.overlay = { open: openOverlay, close: closeOverlay, owns: function (el) { return owned.has(el); }, _owned: owned };
 document.addEventListener('click', function (e) {
 var trig = e.target.closest('[data-ag-dropdown]');
 document.querySelectorAll('.ag-dropdown.is-open').forEach(function (d) {
-if (!d.contains(e.target)) d.classList.remove('is-open');
+if (owned.has(d) && !d.contains(e.target)) { d.classList.remove('is-open'); owned.delete(d); }
 });
-if (trig) trig.closest('.ag-dropdown').classList.toggle('is-open');
+if (trig) { var dd = trig.closest('.ag-dropdown'); if (dd) { if (dd.classList.toggle('is-open')) owned.add(dd); else owned.delete(dd); } }
 var open = e.target.closest('[data-ag-open]');
-if (open) {
-var el = document.getElementById(open.getAttribute('data-ag-open'));
-if (el && el.tagName === 'DIALOG') el.showModal();
-else if (el && el.classList.contains('ag-modal-overlay')) el.hidden = false;
-else if (el) el.classList.add('is-open');
-}
+if (open) openOverlay(document.getElementById(open.getAttribute('data-ag-open')));
 var close = e.target.closest('[data-ag-close]');
-if (close) {
-var c = close.closest('dialog, .ag-drawer, .ag-modal-overlay');
-if (c && c.tagName === 'DIALOG') c.close();
-else if (c && c.classList.contains('ag-modal-overlay')) c.hidden = true;
-else if (c) c.classList.remove('is-open');
-}
-if (e.target.classList.contains('ag-modal-overlay') && !e.target.hasAttribute('data-ag-static')) e.target.hidden = true;
+if (close) closeOverlay(close.closest('dialog, .ag-drawer, .ag-modal-overlay'), 'button');   
+if (e.target.classList.contains('ag-modal-overlay') && owned.has(e.target) && !e.target.hasAttribute('data-ag-static')) closeOverlay(e.target, 'backdrop');
 var dOpen = e.target.closest('[data-ag-detail-open]');
 if (dOpen) { var da = dOpen.closest('.ag-app--dual'); if (da) da.classList.add('is-detail'); }
 var dClose = e.target.closest('[data-ag-detail-close]');
@@ -166,19 +181,22 @@ items[nxt].classList.add('is-active'); items[nxt].setAttribute('tabindex', '-1')
 }
 }
 if (e.key === 'Escape') {
-document.querySelectorAll('.ag-dropdown.is-open').forEach(function (d) { d.classList.remove('is-open'); });
-document.querySelectorAll('.ag-modal-overlay:not([hidden])').forEach(function (o) { if (!o.hasAttribute('data-ag-static')) o.hidden = true; });
-document.querySelectorAll('.ag-drawer.is-open').forEach(function (d) { d.classList.remove('is-open'); });
-document.querySelectorAll('.ag-combobox.is-open').forEach(function (c) { c.classList.remove('is-open'); });
+var ov = window.AG && AG.overlay;
+document.querySelectorAll('.ag-dropdown.is-open, .ag-drawer.is-open, .ag-modal-overlay.is-open, .ag-modal-overlay:not([hidden])').forEach(function (o) {
+if (!ov || !ov.owns(o)) return;
+if (o.classList.contains('ag-modal-overlay') && o.hasAttribute('data-ag-static')) return;
+ov.close(o, 'escape');
+});
+document.querySelectorAll('.ag-combobox.is-open').forEach(function (c) { if (c.__agOwned) { c.classList.remove('is-open'); c.__agOwned = false; } });
 }
 if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
 var ck = document.querySelector('[data-ag-cmdk]');
-if (ck) { e.preventDefault(); ck.hidden = false; var inp = ck.querySelector('input'); if (inp) { inp.value = ''; inp.focus(); } }
+if (ck) { e.preventDefault(); if (window.AG && AG.overlay) AG.overlay.open(ck); else ck.hidden = false; var inp = ck.querySelector('input'); if (inp) { inp.value = ''; inp.focus(); } }
 }
 });
-document.addEventListener('focusin', function (e) { var cb = e.target.closest && e.target.closest('.ag-combobox'); if (cb) cb.classList.add('is-open'); });
+document.addEventListener('focusin', function (e) { var cb = e.target.closest && e.target.closest('.ag-combobox'); if (cb && !cb.hasAttribute('data-ag-manual')) { cb.classList.add('is-open'); cb.__agOwned = true; } });
 document.addEventListener('click', function (e) {
-document.querySelectorAll('.ag-combobox.is-open').forEach(function (c) { if (!c.contains(e.target)) c.classList.remove('is-open'); });
+document.querySelectorAll('.ag-combobox.is-open').forEach(function (c) { if (c.__agOwned && !c.contains(e.target)) { c.classList.remove('is-open'); c.__agOwned = false; } });
 var opt = e.target.closest('.ag-combobox__option');
 if (opt) { var cb2 = opt.closest('.ag-combobox'); if (cb2 && !cb2.hasAttribute('data-ag-multi')) { opt.parentElement.querySelectorAll('.is-selected').forEach(function (o) { o.classList.remove('is-selected'); }); } opt.classList.toggle('is-selected'); if (cb2 && !cb2.hasAttribute('data-ag-multi')) cb2.classList.remove('is-open'); }
 });

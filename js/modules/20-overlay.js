@@ -1,31 +1,47 @@
 /* overlay: 드롭다운, 모달/드로어/오버레이, dual 모바일, 배너, 날짜 프리셋, 토스트 닫기, 확장 행 */
 (function () {
   'use strict';
+  /* 소유권 원칙: argus.js 는 자기가 연 것만 닫는다. Alpine/Vue/React 가 x-show 등으로 제어하는 오버레이·드로어·드롭다운은
+     data-ag-open 으로 열리지 않았으므로 바깥 클릭·ESC 에서 건드리지 않는다 (hidden !important 교착 방지).
+     닫기 직전에는 cancelable 'ag:overlay-close' 를 보내므로 서비스가 preventDefault() 로 막을 수 있다. */
+  var AG = window.AG = window.AG || {};
+  var owned = new WeakSet();
+  function closeOverlay(el, reason) {
+    if (!el) return false;
+    var ev = new CustomEvent('ag:overlay-close', { bubbles: true, cancelable: true, detail: { reason: reason } });
+    if (!el.dispatchEvent(ev)) return false;
+    if (el.tagName === 'DIALOG') { if (el.open) el.close(); }
+    else if (el.classList.contains('ag-modal-overlay')) { el.classList.remove('is-open'); el.hidden = true; }
+    else el.classList.remove('is-open');
+    owned.delete(el);
+    el.dispatchEvent(new CustomEvent('ag:overlay-closed', { bubbles: true, detail: { reason: reason } }));
+    return true;
+  }
+  function openOverlay(el) {
+    if (!el) return;
+    owned.add(el);
+    if (el.tagName === 'DIALOG') el.showModal();
+    else if (el.classList.contains('ag-modal-overlay')) { el.hidden = false; el.classList.add('is-open'); }
+    else el.classList.add('is-open');
+    el.dispatchEvent(new CustomEvent('ag:overlay-open', { bubbles: true }));
+  }
+  AG.overlay = { open: openOverlay, close: closeOverlay, owns: function (el) { return owned.has(el); }, _owned: owned };
+
   document.addEventListener('click', function (e) {
-    /* ---- 드롭다운 ---- */
+    /* ---- 드롭다운 (argus.js 가 연 것만 바깥 클릭으로 닫음) ---- */
     var trig = e.target.closest('[data-ag-dropdown]');
     document.querySelectorAll('.ag-dropdown.is-open').forEach(function (d) {
-      if (!d.contains(e.target)) d.classList.remove('is-open');
+      if (owned.has(d) && !d.contains(e.target)) { d.classList.remove('is-open'); owned.delete(d); }
     });
-    if (trig) trig.closest('.ag-dropdown').classList.toggle('is-open');
+    if (trig) { var dd = trig.closest('.ag-dropdown'); if (dd) { if (dd.classList.toggle('is-open')) owned.add(dd); else owned.delete(dd); } }
 
     /* ---- 모달 / 드로어 ---- */
     var open = e.target.closest('[data-ag-open]');
-    if (open) {
-      var el = document.getElementById(open.getAttribute('data-ag-open'));
-      if (el && el.tagName === 'DIALOG') el.showModal();
-      else if (el && el.classList.contains('ag-modal-overlay')) el.hidden = false;
-      else if (el) el.classList.add('is-open');
-    }
+    if (open) openOverlay(document.getElementById(open.getAttribute('data-ag-open')));
     var close = e.target.closest('[data-ag-close]');
-    if (close) {
-      var c = close.closest('dialog, .ag-drawer, .ag-modal-overlay');
-      if (c && c.tagName === 'DIALOG') c.close();
-      else if (c && c.classList.contains('ag-modal-overlay')) c.hidden = true;
-      else if (c) c.classList.remove('is-open');
-    }
-    /* 오버레이 바깥(어두운 영역) 클릭 시 닫기 */
-    if (e.target.classList.contains('ag-modal-overlay') && !e.target.hasAttribute('data-ag-static')) e.target.hidden = true;
+    if (close) closeOverlay(close.closest('dialog, .ag-drawer, .ag-modal-overlay'), 'button');   /* 명시적 닫기 버튼은 소유와 무관 (마크업이 곧 opt-in) */
+    /* 오버레이 바깥(어두운 영역) 클릭 — argus.js 가 연 것만, data-ag-static 이면 안 닫음 */
+    if (e.target.classList.contains('ag-modal-overlay') && owned.has(e.target) && !e.target.hasAttribute('data-ag-static')) closeOverlay(e.target, 'backdrop');
 
     /* ---- dual 레이아웃 모바일: 목록 ↔ 상세 ---- */
     var dOpen = e.target.closest('[data-ag-detail-open]');
