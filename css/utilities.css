@@ -25,6 +25,7 @@
 .ag-upper { text-transform: uppercase; letter-spacing: .06em; }
 .ag-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .ag-nowrap { white-space: nowrap; }
+.ag-text-left { text-align: left; }
 .ag-text-center { text-align: center; }
 .ag-text-right { text-align: right; }
 .ag-eyebrow { font-size: var(--ag-text-xs); font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ag-text-3); }
@@ -86,6 +87,13 @@
 .ag-shadow-md { box-shadow: var(--ag-shadow-md); }
 .ag-overflow-auto { overflow: auto; }
 .ag-overflow-x { overflow-x: auto; }
+/* 세로 스크롤 영역 — 긴 후보 목록·로그 등. 높이는 --sm/--md/--lg 또는 style="--ag-scroll-max: 28rem" 로 */
+.ag-scroll-y { overflow-y: auto; max-height: var(--ag-scroll-max, 20rem); overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--ag-border-strong) transparent; }
+.ag-scroll-y::-webkit-scrollbar { width: 8px; }
+.ag-scroll-y::-webkit-scrollbar-thumb { background: var(--ag-border-strong); border-radius: 8px; border: 2px solid transparent; background-clip: padding-box; }
+.ag-scroll-y--sm { --ag-scroll-max: 12rem; }
+.ag-scroll-y--md { --ag-scroll-max: 20rem; }
+.ag-scroll-y--lg { --ag-scroll-max: 32rem; }
 .ag-relative { position: relative; }
 
 /* Visibility */

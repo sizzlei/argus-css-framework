@@ -222,6 +222,30 @@
             </div>
           </div>
         </div>
+        <div class="ag-card ag-col-12 ag-stack">
+          <h3 class="ag-card__title">카드를 버튼으로 — <code>button.ag-card</code> + <code>.ag-scroll-y</code></h3>
+          <p class="ag-text-sm ag-text-2">후보가 수십 개인 선택 목록. <code>&lt;button class="ag-card ag-card--interactive"&gt;</code> 는 프레임워크가 왼쪽 정렬·폰트·밑줄 제거를 처리하므로 인라인 style 이 필요 없고, 선택 상태는 <code>is-selected</code>. 목록 높이는 <code>.ag-scroll-y</code>(<code>--sm 12rem / --md 20rem / --lg 32rem</code>, 또는 <code>style="--ag-scroll-max: 28rem"</code>).</p>
+          <div class="ag-grid">
+            <div class="ag-col-6">
+              <div class="ag-scroll-y ag-scroll-y--sm ag-stack ag-stack--sm" style="padding-right:4px">
+              <button class="ag-card ag-card--sm ag-card--interactive is-selected" type="button" aria-pressed="true"><div class="ag-row ag-justify-between"><strong>order-db-writer</strong><span class="ag-badge ag-badge--sm ag-badge--cat1">MySQL</span></div><span class="ag-text-xs ag-text-3">Aurora MySQL 8.0 · db.r6g.4xlarge</span></button>
+              <button class="ag-card ag-card--sm ag-card--interactive" type="button"><div class="ag-row ag-justify-between"><strong>order-db-reader-1</strong><span class="ag-badge ag-badge--sm ag-badge--cat1">MySQL</span></div><span class="ag-text-xs ag-text-3">Aurora MySQL 8.0 · db.r6g.2xlarge</span></button>
+              <button class="ag-card ag-card--sm ag-card--interactive" type="button"><div class="ag-row ag-justify-between"><strong>wms-pg-primary</strong><span class="ag-badge ag-badge--sm ag-badge--cat2">PostgreSQL</span></div><span class="ag-text-xs ag-text-3">PostgreSQL 15.4 · db.r6g.xlarge</span></button>
+              <button class="ag-card ag-card--sm ag-card--interactive" type="button"><div class="ag-row ag-justify-between"><strong>analytics-pg-ro</strong><span class="ag-badge ag-badge--sm ag-badge--cat2">PostgreSQL</span></div><span class="ag-text-xs ag-text-3">PostgreSQL 15.4 · db.r6g.large</span></button>
+              <button class="ag-card ag-card--sm ag-card--interactive" type="button"><div class="ag-row ag-justify-between"><strong>legacy-oracle-01</strong><span class="ag-badge ag-badge--sm ag-badge--cat3">Oracle</span></div><span class="ag-text-xs ag-text-3">Oracle 19c · db.m5.2xlarge</span></button>
+              <button class="ag-card ag-card--sm ag-card--interactive" type="button"><div class="ag-row ag-justify-between"><strong>catalog-docdb</strong><span class="ag-badge ag-badge--sm ag-badge--cat4">DocumentDB</span></div><span class="ag-text-xs ag-text-3">DocumentDB 5.0 · db.r6g.large</span></button>
+              <button class="ag-card ag-card--sm ag-card--interactive" type="button"><div class="ag-row ag-justify-between"><strong>session-redis-mirror</strong><span class="ag-badge ag-badge--sm">기타</span></div><span class="ag-text-xs ag-text-3">ElastiCache · cache.r6g.large</span></button>
+              <button class="ag-card ag-card--sm ag-card--interactive" type="button"><div class="ag-row ag-justify-between"><strong>billing-db-writer</strong><span class="ag-badge ag-badge--sm ag-badge--cat1">MySQL</span></div><span class="ag-text-xs ag-text-3">Aurora MySQL 8.0 · db.r6g.xlarge</span></button>
+              </div>
+            </div>
+            <div class="ag-col-6 ag-stack ag-stack--sm">
+              <span class="ag-text-xs ag-text-3">같은 카드를 <code>&lt;a&gt;</code> 로 — 링크 카드도 밑줄·색 상속 처리됨</span>
+              <a class="ag-card ag-card--sm ag-card--interactive" href="detail.html"><div class="ag-row ag-justify-between"><strong>order-db-writer</strong><svg class="ag-icon ag-text-3"><use href="#i-arrow-up-right"/></svg></div><span class="ag-text-xs ag-text-3">상세 페이지로 이동하는 링크 카드</span></a>
+              <span class="ag-text-xs ag-text-3 ag-mt-2">텍스트 정렬 유틸: <code>.ag-text-left</code> · <code>.ag-text-center</code> · <code>.ag-text-right</code></span>
+              <div class="ag-card ag-card--sm" style="background:var(--ag-surface-2)"><div class="ag-text-left">왼쪽</div><div class="ag-text-center">가운데</div><div class="ag-text-right">오른쪽</div></div>
+            </div>
+          </div>
+        </div>
         <div class="ag-card ag-col-4"><h3 class="ag-card__title">.ag-timeline</h3><div class="ag-timeline"><div class="ag-timeline__item is-crit"><div class="ag-timeline__time">14:02</div><div class="ag-timeline__title">경보 발생</div>CloudWatch</div><div class="ag-timeline__item is-good"><div class="ag-timeline__time">03:00</div><div class="ag-timeline__title">스냅샷 완료</div>1.2 TiB</div><div class="ag-timeline__item"><div class="ag-timeline__time">어제</div><div class="ag-timeline__title">변경 요청</div>James</div></div></div>
       </div>
     </section>
@@ -894,12 +918,12 @@ innodb_buffer_pool_size = 56G</pre></div>
     <section class="ag-section" id="layouts">
       <div class="ag-section__head"><h2>레이아웃 모드</h2><a class="ag-btn ag-btn--sm ag-btn--outline" href="layouts.html">라이브 스위처 열기<svg class="ag-icon ag-icon--sm"><use href="#i-arrow-up-right"/></svg></a></div>
       <div class="ag-grid">
-        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#top" style="text-decoration:none"><div class="ag-eyebrow">.ag-app</div><strong>top</strong><p class="ag-text-xs ag-text-3">상단 바 + 캡슐 네비. 메뉴 4~6개 대시보드형</p></a>
-        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#sidebar" style="text-decoration:none"><div class="ag-eyebrow">--sidebar</div><strong>sidebar</strong><p class="ag-text-xs ag-text-3">그룹 메뉴 많은 관리 도구. 접힘 지원</p></a>
-        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#rail" style="text-decoration:none"><div class="ag-eyebrow">--rail</div><strong>rail</strong><p class="ag-text-xs ag-text-3">아이콘 레일. 메뉴 적은 소형 서비스, 모바일은 하단 탭</p></a>
-        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#tabs" style="text-decoration:none"><div class="ag-eyebrow">--tabs</div><strong>tabs</strong><p class="ag-text-xs ag-text-3">2단 상단 바. harpoon 구조</p></a>
-        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#focus" style="text-decoration:none"><div class="ag-eyebrow">--focus</div><strong>focus</strong><p class="ag-text-xs ag-text-3">네비 없는 좁은 컬럼. 설정·마법사</p></a>
-        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#dual" style="text-decoration:none"><div class="ag-eyebrow">--dual</div><strong>dual</strong><p class="ag-text-xs ag-text-3">목록 패널 + 상세. 알림함·공지함</p></a>
+        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#top"><div class="ag-eyebrow">.ag-app</div><strong>top</strong><p class="ag-text-xs ag-text-3">상단 바 + 캡슐 네비. 메뉴 4~6개 대시보드형</p></a>
+        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#sidebar"><div class="ag-eyebrow">--sidebar</div><strong>sidebar</strong><p class="ag-text-xs ag-text-3">그룹 메뉴 많은 관리 도구. 접힘 지원</p></a>
+        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#rail"><div class="ag-eyebrow">--rail</div><strong>rail</strong><p class="ag-text-xs ag-text-3">아이콘 레일. 메뉴 적은 소형 서비스, 모바일은 하단 탭</p></a>
+        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#tabs"><div class="ag-eyebrow">--tabs</div><strong>tabs</strong><p class="ag-text-xs ag-text-3">2단 상단 바. harpoon 구조</p></a>
+        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#focus"><div class="ag-eyebrow">--focus</div><strong>focus</strong><p class="ag-text-xs ag-text-3">네비 없는 좁은 컬럼. 설정·마법사</p></a>
+        <a class="ag-card ag-card--sm ag-card--interactive ag-col-2" href="layouts.html#dual"><div class="ag-eyebrow">--dual</div><strong>dual</strong><p class="ag-text-xs ag-text-3">목록 패널 + 상세. 알림함·공지함</p></a>
       </div>
     </section>
 
