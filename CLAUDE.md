@@ -9,13 +9,13 @@ css/            소스. 빌드 순서 = tokens → base → layout → component
 dist/           build.sh 산출물(전부 minified). 직접 수정 금지. argus.min.css(전체) / core·patterns·charts·auth-landing.min.css(골라 쓰기) / themes/*.min.css / *.js
 js/modules/     선택 헬퍼 소스. 10-core(테마·사이드바·탭) 20-overlay(드롭다운·모달·배너·날짜·토스트닫기·확장행) 30-keyboard 40-chart-hover 50-toast. build 가 합친다
 js/argus.charts.js  ApexCharts/Chart.js 프리셋
-tools/          shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
+tools/          check.py 값 단언 회귀(40항목, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
 examples/src/   예시 페이지 소스. <!--@icons--> 는 _icons.html 스프라이트로 치환됨
 examples/       build_examples.py 산출물. 직접 수정 금지. GitHub Pages 가 main 브랜치 루트를 그대로 서빙하므로 커밋 전 반드시 빌드 (루트 index.html 은 examples/ 로 리다이렉트, .nojekyll 로 _icons.html 등 밑줄 파일 유지)
 docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프롬프트 키트
 ```
 
-빌드: `sh build.sh && python3 tools/gen_matrix.py && python3 build_examples.py`. 변형(modifier)을 추가·수정했으면 `tools/gen_matrix.py` 의 해당 목록에도 넣어 매트릭스에 나오게 한다 — 조합 버그는 매트릭스에서만 보인다. 둘 다 돌린 뒤 커밋한다. build.sh 는 리터럴 색 린트를 먼저 돌리고 실패하면 멈춘다 (허용 목록은 build.sh 안). `lightningcss` 가 PATH 에 있으면 min 빌드에 쓰고, 없으면 sed 간이 압축으로 떨어진다 (둘 다 유효).
+빌드: `sh build.sh && python3 tools/gen_matrix.py && python3 build_examples.py && python3 tools/check.py`. 변형(modifier)을 추가·수정했으면 `tools/gen_matrix.py` 의 해당 목록에도 넣어 매트릭스에 나오게 한다 — 조합 버그는 매트릭스에서만 보인다. 둘 다 돌린 뒤 커밋한다. build.sh 는 리터럴 색 린트를 먼저 돌리고 실패하면 멈춘다 (허용 목록은 build.sh 안). `npm i` 로 esbuild·lightningcss-cli 를 받으면 CSS·JS 둘 다 제대로 minify 되고, 없으면 sed 간이 압축으로 떨어진다 (둘 다 유효하지만 커밋하는 dist 는 minify 된 것으로).
 
 ## 어디에 무엇을 넣나
 
@@ -28,6 +28,10 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 | CSS 전용 차트, 차트 라이브러리 보정 | `charts.css` |
 | 어드민 화면에서 반복되는 조합 패턴 (인증, 로그 뷰어, 스테퍼, diff…) | `patterns.css`. 거의 안 쓰는 선택 변형은 `extras/` (별도 번들) |
 | 한 줄짜리 유틸 | `utilities.css` — **최소한만.** 컴포넌트 클래스로 풀 수 있으면 유틸을 만들지 않는다 |
+
+## 변형 선언 순서 (소스 순서가 곧 우선순위)
+
+같은 특이도의 변형끼리는 **뒤에 선언된 것이 이긴다.** 그래서 한 블록 안에서 순서를 고정한다: ① 모양(`--sm` `--lg` `--count` `--stack` …) → ② 톤(상태 good/warn/crit/info · 액센트 · 범주 cat1~4 · inverse) → ③ 톤 × `--solid` 같은 조합. 모양 변형이 색을 건드려도 톤이 덮고, 톤은 조합이 덮는다. 이 순서를 지키면 `:not()` 체인으로 순서 문제를 때울 일이 없다 (`.ag-badge` 블록이 기준 예). 폴백 성격의 규칙(형제 간격 등)은 `:where()` 로 특이도를 0 으로 낮춰 어떤 클래스든 덮어쓸 수 있게 한다.
 
 ## 네이밍
 
@@ -74,7 +78,7 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 
 ## 커밋 전 체크
 
-- [ ] `sh build.sh` 경고 없음, `python3 build_examples.py` 성공
+- [ ] `sh build.sh` 경고 없음, `python3 build_examples.py` 성공, **`python3 tools/check.py` 전부 통과**. 서비스에서 들어온 버그를 고쳤으면 check.py 에 단언을 하나 남긴다
 - [ ] 다크·라이트 스크린샷 확인 (components.html + matrix.html 전체 + 바뀐 예시 페이지). 매트릭스에서 톤이 기본 회색으로 떨어진 셀·겹친 셀이 없어야 한다
 - [ ] 400px 폭에서 가로 스크롤 없음
 - [ ] 새 클래스는 README 목록 + components.html 예시에 반영

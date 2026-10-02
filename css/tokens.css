@@ -164,7 +164,7 @@
   --ag-info-soft: rgb(11 132 201 / .12);
   /* 라이트: 흰 바탕 단독 텍스트는 한 단계 어둡게 (모두 4.5:1 이상) */
   --ag-good-text: #0b7a55;
-  --ag-warn-text: #a85f00;
+  --ag-warn-text: #9a5600;
   --ag-crit-text: #c42a48;
   --ag-info-text: #0a6ea8;
 

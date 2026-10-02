@@ -212,10 +212,11 @@
 .ag-row { display: flex; align-items: center; gap: var(--ag-space-3); min-width: 0; }
 .ag-spacer { flex: 1; }
 
-/* 기본 간격 폴백 — 프레임워크 컨테이너(.ag-grid/.ag-stack/.ag-cluster …) 없이 카드나 버튼을 그냥 나란히 두었을 때도 붙지 않게.
-   gap 을 가진 프레임워크 컨테이너 안에서는 적용되지 않는다 (이중 간격 방지). 서비스 자체 flex+gap 컨테이너 안이라면 그 컨테이너에 gap 대신 이 폴백을 쓰거나 .ag-cluster 로 바꾼다 */
-:where(:not(.ag-grid):not(.ag-stack):not(.ag-cluster):not(.ag-row):not(.ag-form-grid):not(.ag-list):not(.ag-pane):not(.ag-main):not(.ag-section)) > .ag-card + .ag-card { margin-top: var(--ag-gap-grid); }
-:where(:not(.ag-cluster):not(.ag-row):not(.ag-stack):not(.ag-btn-group):not(.ag-segmented):not(.ag-form-actions):not(.ag-topbar__actions):not(.ag-page-header__actions):not(.ag-card__head):not(.ag-card__foot):not(.ag-table-toolbar):not(.ag-modal__foot):not(.ag-approval__actions):not(.ag-slack__actions):not(.ag-wizard__nav):not(.ag-bulkbar):not(.ag-grid)) > .ag-btn + .ag-btn { margin-inline-start: var(--ag-space-2); }
+/* 기본 간격 폴백 — 클래스 없는 평범한 부모(<div>, <td>, <li>, <form> …) 안에 카드·버튼을 그냥 나란히 두었을 때만 형제 간격을 준다.
+   부모에 클래스가 하나라도 있으면(프레임워크 컨테이너든 서비스의 flex+gap 이든) 그쪽 gap 에 맡기고 건드리지 않는다 — 목록 관리가 필요 없고 이중 간격도 없다.
+   :where() 로 특이도 0 → 어떤 유틸(.ag-mt-*)이든 덮어쓸 수 있다 */
+:where(div, section, article, td, li, form, fieldset, main, header, footer):not([class]) > :where(.ag-card + .ag-card) { margin-top: var(--ag-gap-grid); }
+:where(div, section, article, td, li, form, fieldset, p, main, header, footer):not([class]) > :where(.ag-btn + .ag-btn) { margin-inline-start: var(--ag-space-2); }
 
 /* ---- Breadcrumb ------------------------------------------------------ */
 .ag-breadcrumb {

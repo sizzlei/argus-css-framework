@@ -236,7 +236,6 @@ HEAD = '''<!doctype html>
 <script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
 <style>
   .demo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ag-space-3); }
-  .demo > .ag-btn + .ag-btn { margin-inline-start: 0; }   /* 데모 컨테이너는 gap 을 가지므로 폴백 간격 해제 */
   .ag-table--matrix th:first-child { white-space: nowrap; color: var(--ag-text-3); font-weight: 500; font-family: var(--ag-font-mono); font-size: var(--ag-text-xs); }
   .ag-table--matrix td { vertical-align: middle; }
   .ag-table--matrix thead th { font-family: var(--ag-font-mono); font-size: var(--ag-text-xs); }
