@@ -570,6 +570,13 @@
 [x-cloak] { display: none !important; }
 .ag-scrollbar-hide { scrollbar-width: none; }
 .ag-scrollbar-hide::-webkit-scrollbar { display: none; }
+/* 본문 배경 글로우 — .ag-app 에 붙이면 액센트·보조색이 상단 좌우에서 은은하게 번진다 (서비스 선택 사항, 라이트에서도 동작) */
+.ag-glow {
+  background-image:
+    radial-gradient(60rem 30rem at 80% -10%, color-mix(in oklab, var(--ag-accent) 14%, transparent), transparent 60%),
+    radial-gradient(50rem 28rem at 0% 0%, color-mix(in oklab, var(--ag-accent-2) 8%, transparent), transparent 55%);
+  background-repeat: no-repeat;
+}
 
 /* ---- 외부 인증 (Google Workspace / Slack / Okta SSO) ---------------------
    <button class="ag-provider"><span class="ag-provider__logo"><img src="/static/google.svg" alt=""></span><span class="ag-provider__label">Google 계정으로 계속하기</span></button>

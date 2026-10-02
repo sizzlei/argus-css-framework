@@ -5,12 +5,13 @@
 - 컬러 테마를 색 이름 7종으로: `red` `orange` `yellow` `green` `blue` `indigo` `violet` — 원색을 한 톤 눌러 자연스럽게, 다크·라이트 각각, 액센트 위 글자 대비 확인.
 - 사내 전용 문서·템플릿을 걷어내고 Go html/template 적용 예시만 일반화해 남김. MIT 라이선스.
 - 샘플 페이지 프로필을 Andy 로. 컬러 테마 선택은 하단 데모 네비에서 (모든 페이지).
+- `.ag-glow` 복원 — 미검증 정리 때 삭제했으나 서비스(`.ag-app.ag-glow`)가 쓰고 있었음. 매트릭스에 데모 추가.
 - `.ag-app--tabs` 상단바가 3,224px 이상 초광폭에서 두 행이 한 줄로 나란히 붙던 버그 — wrap flex 에서 `__row` 의 `max-width` 가 flex-basis 가 된 탓. 상단바를 블록으로 쌓도록 변경(행 내부만 flex). `tools/shots.py` 에 3400px 레이아웃 회귀 추가.
 - `.ag-page` — 화면 내용을 감싸는 `<div x-data>` 래퍼가 `.ag-main` 직계가 되면 gap 이 래퍼 하나에만 걸려 안쪽 블록이 0px 로 붙던 문제(Harpoon 전 화면). 래퍼에 `.ag-page` 를 붙이면 같은 스택이 되고, 클래스 없는 div / `[x-data]` 래퍼는 자동 적용.
 - **기본 간격 상향 + 토큰화**: 카드 사이 `--ag-gap-grid` 20 → 24px, 본문 블록 사이 `--ag-gap-main` 24 → 32px, 섹션 `--ag-gap-section` 16 → 20px (Harpoon 라이트 대시보드에서 카드가 붙어 보인다는 피드백). 서비스는 `:root` 에서 토큰만 바꾸면 됨. 컨테이너 없이 `.ag-card + .ag-card`, `.ag-btn + .ag-btn` 을 그냥 나란히 두었을 때의 기본 간격 폴백 추가 (프레임워크 gap 컨테이너 안에서는 비활성).
 - `.ag-avatar` 톤 변형 `--good/--warn/--crit/--info/--accent2/--cat1~4/--neutral` — 카탈로그에 인라인 style 로 14번 반복되던 것 교체. 서비스에서도 아바타 색은 클래스로.
 - **조합 매트릭스** `examples/matrix.html` (`tools/gen_matrix.py` 생성): 배지 12톤 × 9모양, 버튼 7변형 × 9상태, 카드·타일·입력·피드백·차트·패턴·유틸 전 변형을 격자로. 여기서 바로 잡힌 누락: `.ag-badge--solid.ag-badge--info / --accent2`, `.ag-banner--info`, `.ag-donut--sm` 중앙 글자 넘침.
-- 미검증 셀렉터 정리: 124개 중 쓸 것은 매트릭스/레이아웃 페이지에 예시 추가(focus-wide·dual-nosidebar·underline 탭 토글 포함), 죽은 것 삭제 — `.ag-glow`, `.ag-table--skeleton`, `.ag-auth__logo/__logo-mark/__footer`(구 인증 마크업), `.ag-spark__end`. 남은 미검증 0 (JS 가 문자열로 붙이는 모드 클래스 제외).
+- 미검증 셀렉터 정리: 124개 중 쓸 것은 매트릭스/레이아웃 페이지에 예시 추가(focus-wide·dual-nosidebar·underline 탭 토글 포함), 죽은 것 삭제 — `.ag-table--skeleton`, `.ag-auth__logo/__logo-mark/__footer`(구 인증 마크업), `.ag-spark__end`. 남은 미검증 0 (JS 가 문자열로 붙이는 모드 클래스 제외).
 - `.ag-input-group--end` 가 `padding-left` 를 덮어 선행 아이콘과 같이 못 쓰던 문제 — 오른쪽 여백만 추가하도록. 아이콘 + `--end` 조합 동작.
 - `.ag-field--span2 / --span3` (form-grid 중간 폭, "Host 2칸 : Port 1칸"). 720px 이하 자동 전체 폭.
 - `a.ag-card` / `button.ag-card` 기본값(왼쪽 정렬·밑줄 제거·폰트 상속·전체 폭·포커스 링 — `display` 는 건드리지 않아 `.ag-card` 의 flex column·gap 이 그대로 적용) + `.ag-card.is-selected`. 카드를 링크/버튼으로 쓸 때 인라인 style 이 필요 없다. 유틸 `.ag-text-left`, `.ag-scroll-y`(`--sm/--md/--lg`, `--ag-scroll-max`) 추가.

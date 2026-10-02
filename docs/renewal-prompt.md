@@ -89,7 +89,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 페이지 제목 블록 (h1 + 설명 + 우측 버튼) | `.ag-page-header` > `__title` + `__actions` |
 | 가로 탭 네비 `px-3 py-1.5 rounded-lg bg-red-600` | `.ag-nav` > `.ag-nav__item[aria-current=page]` |
 | 로그인 2단 `min-h-screen grid md:grid-cols-2` | `.ag-auth` > `.ag-auth__brand` + `.ag-auth__panel` > `.ag-auth__card` |
-| 배경 글로우 `.app-bg`, `.bg-grid-pattern` | 삭제 — 본문은 평평한 `--ag-bg`, 인증 화면은 `.ag-auth__brand` 가 내장 |
+| 배경 글로우 `.app-bg`, `.bg-grid-pattern` | `.ag-app.ag-glow` (선택) / 인증 화면은 `.ag-auth__brand` 가 내장 |
 
 ### 3-2. 컴포넌트
 
