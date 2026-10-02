@@ -19,7 +19,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 
 - 새 화면·수정 화면은 모두 `ag-` 클래스로 작성한다. Tailwind 유틸, Bootstrap 클래스, 인라인 style 색상은 **새로 추가하지 않는다.** (기존 코드에 남아 있는 것은 그 화면을 손볼 때 함께 치환한다.)
 - 색상·간격·라운드는 CSS 변수(`--ag-*`)만 쓴다. hex/rgb 리터럴 금지. 이 서비스의 메인 색은 `argus-css/dist/themes/{{COLOR}}.min.css` 가 정의한다 — `argus.min.css` 다음 줄에 `<link>` 한다. 색을 바꾸고 싶으면 그 파일(원본은 `css/themes/`)만 고친다.
-- 컴포넌트 카탈로그: `$AG/examples/components.html` (클래스 목록은 README.md). 필요한 컴포넌트가 없으면 **이 저장소에서 CSS 를 즉흥으로 만들지 말고** argus-css 에 추가한 뒤 가져온다. 임시로 꼭 필요하면 `{{SERVICE}}.css` 에 `ag-x-` 접두사로 넣고 TODO 주석을 단다.
+- 컴포넌트 카탈로그: `$AG/examples/components.html` (클래스 목록은 README.md). 필요한 컴포넌트가 없으면 **이 저장소에서 CSS 를 즉흥으로 만들지 말고** argus-css 에 추가한 뒤 가져온다. 그 전까지는 기본 스타일 그대로 둔다. 보고할 때는 **클래스명 · 어떤 화면 몇 곳 · 지금 어떻게 보이는지**를 한 문단으로 (예: "`.ag-toast--info` 가 components.css 에 없음 — 3곳에서 사용, 아이콘 색만 기본값"). 임시로 꼭 필요하면 서비스 자체 CSS 에 `ag-x-` 접두사로 넣고 TODO 주석을 단다.
 - 레이아웃은 6개 모드 중 하나: `ag-app`(top) · `ag-app--sidebar` · `ag-app--rail` · `ag-app--tabs` · `ag-app--focus` · `ag-app--dual`. 같은 마크업에 모드 클래스만 다르다 (`examples/layouts.html` 에서 전환 비교). 사이드바 접힘은 `is-collapsed`, 모바일 열림은 `is-open`, 상태 저장은 `argus.js` 가 처리한다.
 - 사용자 프로필/로그아웃/테마는 **상단 바 우측** `.ag-topbar__actions` 의 `.ag-user` 드롭다운에 둔다. 사이드바 하단 프로필은 쓰지 않는다 (모드가 바뀌어도 자리가 같아야 하므로).
 - 외부 로그인(Google Workspace, Slack, SSO)은 `.ag-provider--google/--slack/--sso`. 구조는 `__logo` + `__label` (+ 선택 `__hint`) — 라벨은 반드시 `<span class="ag-provider__label">` 로 감싼다(줄바꿈 방지·말줄임). 제공자 로고는 공식 브랜드 에셋을 `web/public/img/` 에 두고 `<img>` 로 넣는다. 연결된 계정 화면은 `.ag-account`.

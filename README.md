@@ -132,6 +132,17 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 
 `docs/renewal-prompt.md` 에 ① 앱 저장소 `CLAUDE.md` 에 붙일 규칙 조각, ② 리뉴얼 착수 프롬프트, ③ Tailwind/Bootstrap → `ag-` 매핑표가 있습니다.
 
+## 서비스에 적용하며 생기는 변경 (피드백 루프)
+
+실제 서비스를 이 프레임워크로 갈아입히다 보면 "변형이 없다", "스크립트가 깨진다" 같은 건이 계속 나옵니다. 처리 원칙:
+
+1. **서비스 저장소에서 즉흥 CSS 를 만들지 않는다.** 없는 것은 그대로 두고(읽는 데 지장 없는 수준이면 기본 스타일로), 프레임워크에 "무엇이 어디서 몇 곳에 필요한지" 를 보고한다.
+2. 프레임워크에서 고친다 — CSS(`css/`) + **카탈로그 예시**(`examples/src/components.html`) + **README 컴포넌트 목록** + `CHANGELOG.md` 네 군데를 한 커밋에. 예시 없이 CSS 만 추가하지 않는다 (예시가 곧 회귀 테스트이자 문서).
+3. `sh build.sh && python3 build_examples.py` 후 1440/400px 다크·라이트 확인, 커밋.
+4. 서비스는 `dist/` 를 다시 복사한다 (위 "앱에 배포하기").
+
+지금까지 이 루프로 들어온 것: `.ag-toast--warn/--info`, `.ag-provider__label`, `fonts/fetch-fonts.sh` 블록 파싱 두 건, 모바일 상단 바 넘침, `.ag-qr` 예시 누락 — 전부 `CHANGELOG.md` 1.0.0 항목에 있습니다.
+
 ## 토큰 요약
 
 | 그룹 | 변수 | 비고 |
@@ -151,9 +162,9 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 
 차트 (CSS 전용) `ag-donut` `ag-donut-legend` `ag-bars` `ag-cols` `ag-heatmap` / `ag-heat` `ag-gauge` `ag-ring` `ag-spark` `ag-stat-card` `ag-treemap` + ApexCharts 보정 (`.ag-chart .apexcharts-*`)
 
-패턴 `ag-daterange` `ag-banner` `ag-notif` `ag-meter-row--compact` `ag-approval` `ag-cmdk` `ag-wizard` `ag-combobox` `ag-tree` `ag-td--editable` `ag-skeleton-rows` · `data-density="compact"` · `@media print` (`.ag-print-header`) `ag-auth` (표준 인증: 어두운 표면 패널 + 점 격자 · `__logo-box` `__name` `__version` `__status` `__mobile-head` `__email-chip` `__qr` `__foot`; `--landing` 은 그라데이션 패널 변형) `ag-accordion` (details / `__toggle`+`is-open` / `--plain` / `--cards`) `ag-sidebar__node` (2단계 메뉴) `ag-modal-overlay` `ag-slack` (Block Kit 미리보기 전체) `ag-provider` `ag-account` `ag-user` `ag-pane` / `ag-pane-item` `ag-auth` `ag-otp` `ag-otp-input` `ag-qr` `ag-secret` `ag-status-screen` `ag-brand-mark` `ag-session` `ag-stepper` `ag-log` `ag-code` `ag-code-block` `ag-tok-*` `ag-editor` `ag-diff` `ag-compare` `ag-tag` `ag-tags` `ag-tag-input` `ag-dropzone` `ag-file` `ag-popover` `ag-accordion` `ag-bulkbar` `ag-tr--expand` `ag-table--sticky-col` `ag-spinner` `ag-loading-overlay` `ag-msg` `ag-health` `ag-glow` `ag-scrollbar-hide` · 사이드바 `is-collapsed` / `is-open` / `ag-sidebar-backdrop` / `ag-sidebar__group-toggle`
+패턴 `ag-daterange` `ag-banner` `ag-notif` `ag-meter-row--compact` `ag-approval` `ag-cmdk` `ag-wizard` `ag-combobox` `ag-tree` `ag-td--editable` `ag-skeleton-rows` · `data-density="compact"` · `@media print` (`.ag-print-header`) `ag-auth` (표준 인증: 어두운 표면 패널 + 점 격자 · `__logo-box` `__name` `__version` `__status` `__mobile-head` `__email-chip` `__qr` `__foot`; `--landing` 은 그라데이션 패널 변형) `ag-accordion` (details / `__toggle`+`is-open` / `--plain` / `--cards`) `ag-sidebar__node` (2단계 메뉴) `ag-modal-overlay` `ag-slack` (Block Kit 미리보기 전체) `ag-provider` `ag-account` `ag-user` `ag-pane` / `ag-pane-item` `ag-auth` `ag-otp` `ag-otp-input` `ag-qr` (흰 패딩 박스 180px, QR 자체는 img/svg/canvas 로) `ag-secret` `ag-status-screen` `ag-brand-mark` `ag-session` `ag-stepper` `ag-log` `ag-code` `ag-code-block` `ag-tok-*` `ag-editor` `ag-diff` `ag-compare` `ag-tag` `ag-tags` `ag-tag-input` `ag-dropzone` `ag-file` `ag-popover` `ag-accordion` `ag-bulkbar` `ag-tr--expand` `ag-table--sticky-col` `ag-spinner` `ag-loading-overlay` `ag-msg` `ag-health` `ag-glow` `ag-scrollbar-hide` · 사이드바 `is-collapsed` / `is-open` / `ag-sidebar-backdrop` / `ag-sidebar__group-toggle`
 
-컴포넌트 `ag-btn` `ag-btn-group` `ag-segmented` `ag-chip` `ag-meter-chips` `ag-badge` `ag-dot` `ag-delta` `ag-card` `ag-tile` `ag-list` `ag-stat` `ag-avatar` `ag-person` `ag-table` `ag-table-foot` `ag-pagination` `ag-field` `ag-input` `ag-select` `ag-textarea` `ag-check` `ag-switch` `ag-input-group` `ag-form-grid` `ag-tabs` `ag-progress` `ag-meter-row` `ag-alert` `ag-insight` `ag-toast` `ag-dropdown` / `ag-menu` `ag-modal` `ag-drawer` `[data-tip]` `ag-empty` `ag-skeleton` `ag-kv` `ag-timeline` `ag-chart` `ag-legend` `ag-bubble` `ag-quick-actions`
+컴포넌트 `ag-btn` `ag-btn-group` `ag-segmented` `ag-chip` `ag-meter-chips` `ag-badge` `ag-dot` `ag-delta` `ag-card` `ag-tile` `ag-list` `ag-stat` `ag-avatar` `ag-person` `ag-table` `ag-table-foot` `ag-pagination` `ag-field` `ag-input` `ag-select` `ag-textarea` `ag-check` `ag-switch` `ag-input-group` `ag-form-grid` `ag-tabs` `ag-progress` `ag-meter-row` `ag-alert` `ag-insight` `ag-toast` (`--good` `--warn` `--crit` `--info`, 왼쪽 톤 바) `ag-dropdown` / `ag-menu` `ag-modal` `ag-drawer` `[data-tip]` `ag-empty` `ag-skeleton` `ag-kv` `ag-timeline` `ag-chart` `ag-legend` `ag-bubble` `ag-quick-actions`
 
 전체 모양과 조합 예시는 `examples/components.html` 에서 확인하세요.
 

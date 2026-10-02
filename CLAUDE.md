@@ -54,6 +54,9 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 3. `examples/src/components.html` 의 해당 섹션에 실제 데이터가 들어간 예시를 추가한다. lorem ipsum, "항목 1/2/3" 금지 — 실제 인스턴스 이름, 실제 지표를 쓴다.
 4. 빌드 후 다크·라이트 모두 스크린샷으로 확인한다. 1440px 와 400px.
 5. README 의 컴포넌트 목록에 클래스명을 추가한다.
+6. `CHANGELOG.md` 에 한 줄.
+
+**변형(modifier) 하나를 추가하거나 버그를 고칠 때도 같은 네 군데(CSS · components.html 예시 · README 목록 · CHANGELOG)를 한 커밋에 반영한다.** 서비스 적용 과정에서 "없다/깨진다" 로 들어오는 건이 많으므로, 고치고 예시·문서를 빠뜨리면 다음 서비스가 같은 문제를 다시 만난다. 서비스 저장소 쪽 Claude Code 세션은 즉흥 CSS 를 만들지 말고 프레임워크로 보고한다 (docs/renewal-prompt.md 의 CLAUDE.md 조각이 그렇게 지시한다).
 
 ## 하지 않는 것
 
