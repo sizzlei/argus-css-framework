@@ -191,6 +191,9 @@
 }
 @media (max-width: 720px) {
   .ag-grid > [class*="ag-col-"] { grid-column: span 12; }
+  .ag-topbar { gap: var(--ag-space-3); }
+  .ag-topbar__brand { font-size: var(--ag-text-lg); }
+  .ag-topbar__brand { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 }
 
 /* 자동 채움 카드 그리드 */

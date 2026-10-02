@@ -4,7 +4,10 @@
 - 이름을 **Argus CSS Framework** 로, 접두사를 `ka-` → **`ag-`** 로 (클래스·토큰 `--ag-*`·data 속성·JS 전역 `AG`·localStorage 키 `ag-theme`). 배포 파일명 `argus.*`.
 - 컬러 테마를 색 이름 7종으로: `red` `orange` `yellow` `green` `blue` `indigo` `violet` — 원색을 한 톤 눌러 자연스럽게, 다크·라이트 각각, 액센트 위 글자 대비 확인.
 - 사내 전용 문서·템플릿을 걷어내고 Go html/template 적용 예시만 일반화해 남김. MIT 라이선스.
-- 샘플 페이지 프로필을 Andy 로.
+- 샘플 페이지 프로필을 Andy 로. 컬러 테마 선택은 하단 데모 네비에서 (모든 페이지).
+- `.ag-toast--warn` / `--info` 추가 (기존 good/crit 만 있었음). 4종 모두 왼쪽 3px 톤 바로 구분. `AG.toast(msg,'info')` 도 그대로 동작.
+- 컴포넌트 카탈로그 `.ag-qr` 예시에 실제 QR(otpauth 데모 URL, SVG) 추가. 720px 이하 상단 바 브랜드 축소·말줄임(좁은 화면 가로 스크롤 방지).
+- `fonts/fetch-fonts.sh` 수정: `awk | while read` 가 @font-face 블록을 줄 단위로 끊어 `src` 만 남던 버그. 블록을 한 줄로 펴서 처리, 파일명 `NotoSansKR-400-12.woff2` 꼴, 결과 검증(블록·src 수 일치), BSD sed 호환, `GOOGLE_CSS=` 드라이런.
 
 ### 공개 전 이력 (요약)
 - 0.6 경량화: dist 는 minified 만, 전체 / core / patterns / charts / auth-landing 번들, JS minify.

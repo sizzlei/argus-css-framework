@@ -535,8 +535,15 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   font-size: var(--ag-text-sm);
   animation: ag-toast-in .25s var(--ag-ease);
 }
+/* 톤 4종 — 아이콘/점 색 + 왼쪽 3px 톤 바. 상태색만 쓰고 배경은 그대로(알림 스택이 색 면적으로 시끄러워지지 않게) */
+.ag-toast--good { box-shadow: inset 3px 0 0 var(--ag-good), var(--ag-shadow-lg); }
+.ag-toast--warn { box-shadow: inset 3px 0 0 var(--ag-warn), var(--ag-shadow-lg); }
+.ag-toast--crit { box-shadow: inset 3px 0 0 var(--ag-crit), var(--ag-shadow-lg); }
+.ag-toast--info { box-shadow: inset 3px 0 0 var(--ag-info), var(--ag-shadow-lg); }
 .ag-toast--good .ag-icon { color: var(--ag-good); }
+.ag-toast--warn .ag-icon { color: var(--ag-warn); }
 .ag-toast--crit .ag-icon { color: var(--ag-crit); }
+.ag-toast--info .ag-icon { color: var(--ag-info); }
 @keyframes ag-toast-in { from { opacity: 0; transform: translateY(8px); } }
 
 /* ---- Dropdown / Menu ------------------------------------------------- */
