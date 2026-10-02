@@ -717,10 +717,12 @@ new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor
         </div>
         <div class="ag-card ag-col-4 ag-stack">
           <h3 class="ag-card__title">팝오버 · 로딩 오버레이</h3>
-          <div class="ag-relative" style="height:120px">
-            <button class="ag-btn ag-btn--outline ag-btn--sm" style="position:absolute;left:0;top:0">ALM-2041 <svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button>
+          <p class="ag-text-sm ag-text-3"><code>.ag-popover</code> — 트리거 아래 <code>position:absolute</code> 로 붙는 설명 카드. 아래는 열린 상태를 고정한 데모.</p>
+          <div class="ag-relative" style="height:184px">
+            <button class="ag-btn ag-btn--outline ag-btn--sm" style="position:absolute;left:0;top:0" aria-expanded="true">ALM-2041 <svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button>
             <div class="ag-popover" style="left:0;top:44px"><div class="ag-popover__title">order-db-writer CPU 92%</div>커넥션 풀 포화 · 담당 James · 2h 14m<div class="ag-cluster ag-mt-2"><span class="ag-badge ag-badge--sm ag-badge--crit">장애</span><span class="ag-badge ag-badge--sm">Tier 0</span></div></div>
           </div>
+          <p class="ag-text-sm ag-text-3 ag-mt-2"><code>.ag-loading-overlay</code> — 갱신 중인 카드 위를 덮는 반투명 레이어. 부모에 <code>.ag-relative</code>.</p>
           <div class="ag-card ag-card--sm ag-relative" style="background:var(--ag-surface-2);min-height:110px">
             <div class="ag-stat ag-stat--sm"><span class="ag-stat__label">커넥션</span><span class="ag-stat__value">1,842</span></div>
             <div class="ag-loading-overlay"><div class="ag-row ag-gap-2 ag-text-sm ag-text-2"><span class="ag-spinner"></span>갱신 중…</div></div>

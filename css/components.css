@@ -522,7 +522,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 
 /* ---- Toast ----------------------------------------------------------- */
 .ag-toast-stack { position: fixed; right: var(--ag-space-6); bottom: var(--ag-space-6); display: flex; flex-direction: column; gap: var(--ag-space-2); z-index: 90; max-width: min(380px, calc(100vw - 32px)); }
-.ag-toast-stack--static { position: static; max-width: none; }
+.ag-toast-stack--static { position: static; z-index: auto; max-width: none; }   /* z-index 를 반드시 풀 것: flex/grid 아이템은 static 이어도 z-index 로 쌓임 맥락을 만들어 모달(80) 위로 올라온다 */
 .ag-toast {
   display: flex;
   align-items: flex-start;
