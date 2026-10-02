@@ -150,10 +150,23 @@
   min-width: 24px;
   padding: 0 7px;
   justify-content: center;
-  background: var(--ag-surface-3);
-  color: var(--ag-text);
 }
-.ag-badge--count.ag-badge--inverse { background: var(--ag-inverse); color: var(--ag-text-on-inverse); }
+/* --count 는 모양(폭·패딩·숫자 정렬·본문 글자색)만 담당하고 배경은 건드리지 않는다 — 기본 회색은 .ag-badge 가 이미 준다.
+   그래야 .ag-badge--count 에 --accent / --cat1 / --good / --inverse 를 붙였을 때 소스 순서와 무관하게 톤이 먹는다 */
+.ag-badge--count:not([class*="--good"]):not([class*="--warn"]):not([class*="--crit"]):not([class*="--info"]):not([class*="--accent"]):not([class*="--cat"]):not([class*="--inverse"]) { color: var(--ag-text); }
+.ag-badge--inverse { background: var(--ag-inverse); color: var(--ag-text-on-inverse); }
+.ag-badge--solid.ag-badge--good { background: var(--ag-good); color: #0b1a14; }
+.ag-badge--solid.ag-badge--crit { background: var(--ag-crit); color: #fff; }
+.ag-badge--solid.ag-badge--warn { background: var(--ag-warn); color: #1a1400; }
+.ag-badge--count {
+  min-width: 24px;
+  padding: 0 7px;
+  justify-content: center;
+}
+/* --count 는 모양(폭·패딩·숫자 정렬)만 담당. 색은 톤 변형이 정한다 — 톤이 없을 때만 기본 회색.
+   그래야 .ag-badge--count.ag-badge--accent / --cat1 / --good 이 전부 소스 순서와 무관하게 먹는다 */
+.ag-badge--count:not([class*="ag-badge--good"]):not([class*="ag-badge--warn"]):not([class*="ag-badge--crit"]):not([class*="ag-badge--info"]):not([class*="ag-badge--accent"]):not([class*="ag-badge--cat"]):not([class*="ag-badge--inverse"]) { background: var(--ag-surface-3); color: var(--ag-text); }
+.ag-badge--inverse { background: var(--ag-inverse); color: var(--ag-text-on-inverse); }
 
 /* 상태 점 */
 .ag-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--ag-text-3); flex: none; }

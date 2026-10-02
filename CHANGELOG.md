@@ -5,6 +5,7 @@
 - 컬러 테마를 색 이름 7종으로: `red` `orange` `yellow` `green` `blue` `indigo` `violet` — 원색을 한 톤 눌러 자연스럽게, 다크·라이트 각각, 액센트 위 글자 대비 확인.
 - 사내 전용 문서·템플릿을 걷어내고 Go html/template 적용 예시만 일반화해 남김. MIT 라이선스.
 - 샘플 페이지 프로필을 Andy 로. 컬러 테마 선택은 하단 데모 네비에서 (모든 페이지).
+- `.ag-badge--count` 가 뒤에 선언돼 `--accent` 등 톤 배경을 덮던 버그 — count 는 모양만 담당하고 배경은 톤 변형이 정하도록 분리. `--count --accent/--crit/--cat1/--inverse` 조합 전부 동작.
 - 범주색 `--ag-cat-1~4` (+ `-soft` / `-text`) 토큰과 `.ag-badge--cat1~4`(+ `--solid`), `.ag-tag--cat1~4`, `.ag-dot--cat1~4` 추가 — 엔진·태그·팀 같은 "종류" 를 상태색 없이 구분. 차트 범주색과 같은 네 가지, 라이트는 글자색을 한 단계 깊게 (4.5:1).
 - `.ag-toast-stack--static` 이 모달 위로 올라오던 버그 수정 — flex 아이템은 `position: static` 이어도 `z-index` 가 살아 쌓임 맥락을 만든다 (90 > 모달 80). `z-index: auto` 로 해제.
 - `.ag-toast--warn` / `--info` 추가 (기존 good/crit 만 있었음). 4종 모두 왼쪽 3px 톤 바로 구분. `AG.toast(msg,'info')` 도 그대로 동작.
