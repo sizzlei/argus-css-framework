@@ -216,7 +216,7 @@
 .ag-card--interactive:hover { border-color: var(--ag-border-strong); background: var(--ag-surface-hover); transform: translateY(-1px); box-shadow: var(--ag-card-edge), var(--ag-shadow-md); }
 .ag-card--interactive:active { transform: none; }
 /* 카드를 <a> / <button> 으로 쓸 때 — 브라우저 기본(가운데 정렬·밑줄·버튼 폰트)을 카드답게 되돌린다. 인라인 style 불필요 */
-a.ag-card, button.ag-card { display: block; width: 100%; text-align: left; color: inherit; text-decoration: none; font: inherit; cursor: pointer; }
+a.ag-card, button.ag-card { width: 100%; text-align: left; color: inherit; text-decoration: none; font: inherit; cursor: pointer; }
 a.ag-card:hover { text-decoration: none; }
 button.ag-card:focus-visible, a.ag-card:focus-visible { outline: none; box-shadow: var(--ag-ring); }
 .ag-card.is-selected { border-color: var(--ag-accent); box-shadow: 0 0 0 1px var(--ag-accent) inset; }

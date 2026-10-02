@@ -5,7 +5,7 @@
 - 컬러 테마를 색 이름 7종으로: `red` `orange` `yellow` `green` `blue` `indigo` `violet` — 원색을 한 톤 눌러 자연스럽게, 다크·라이트 각각, 액센트 위 글자 대비 확인.
 - 사내 전용 문서·템플릿을 걷어내고 Go html/template 적용 예시만 일반화해 남김. MIT 라이선스.
 - 샘플 페이지 프로필을 Andy 로. 컬러 테마 선택은 하단 데모 네비에서 (모든 페이지).
-- `a.ag-card` / `button.ag-card` 기본값(왼쪽 정렬·밑줄 제거·폰트 상속·전체 폭·포커스 링) + `.ag-card.is-selected`. 카드를 링크/버튼으로 쓸 때 인라인 style 이 필요 없다. 유틸 `.ag-text-left`, `.ag-scroll-y`(`--sm/--md/--lg`, `--ag-scroll-max`) 추가.
+- `a.ag-card` / `button.ag-card` 기본값(왼쪽 정렬·밑줄 제거·폰트 상속·전체 폭·포커스 링 — `display` 는 건드리지 않아 `.ag-card` 의 flex column·gap 이 그대로 적용) + `.ag-card.is-selected`. 카드를 링크/버튼으로 쓸 때 인라인 style 이 필요 없다. 유틸 `.ag-text-left`, `.ag-scroll-y`(`--sm/--md/--lg`, `--ag-scroll-max`) 추가.
 - `.ag-tile--stack` (라벨 위·값 아래 세로 타일) 추가 — 기본 `.ag-tile` 은 가로 space-between 이라 세로 콘텐츠를 넣으면 가운데가 비던 오용 대응. `.ag-form-grid--2/--3/--4` 열 고정 변형 추가 — auto-fit 에 `--full` 이 섞이면 넓은 화면에서 트랙이 쪼개지는 문제의 올바른 사용법. 카탈로그에 예시·주의 문구, principles "쓰지 말 것" 에 추가.
 - `.ag-badge--count` 가 뒤에 선언돼 `--accent` 등 톤 배경을 덮던 버그 — count 는 모양만 담당하고 배경은 톤 변형이 정하도록 분리. `--count --accent/--crit/--cat1/--inverse` 조합 전부 동작.
 - 범주색 `--ag-cat-1~4` (+ `-soft` / `-text`) 토큰과 `.ag-badge--cat1~4`(+ `--solid`), `.ag-tag--cat1~4`, `.ag-dot--cat1~4` 추가 — 엔진·태그·팀 같은 "종류" 를 상태색 없이 구분. 차트 범주색과 같은 네 가지, 라이트는 글자색을 한 단계 깊게 (4.5:1).
