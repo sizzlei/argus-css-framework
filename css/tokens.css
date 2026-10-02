@@ -30,6 +30,10 @@
   --ag-space-8: 2rem;
   --ag-space-10: 2.5rem;
   --ag-space-12: 3rem;
+  /* 레이아웃 간격 — 카드 사이·섹션 사이·본문 블록 사이. 서비스가 한 번에 조이거나 풀 수 있게 토큰으로 */
+  --ag-gap-grid: var(--ag-space-6);      /* .ag-grid 카드 사이 24px */
+  --ag-gap-main: var(--ag-space-8);      /* .ag-main 직계 블록(헤더 ↔ 그리드 ↔ 섹션) 사이 32px */
+  --ag-gap-section: var(--ag-space-5);   /* .ag-section 헤드 ↔ 본문 20px */
 
   /* ---- Radius — 예시처럼 둥근 캡슐/카드 ---- */
   --ag-radius-sm: 8px;

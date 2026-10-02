@@ -26,6 +26,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 - 아이콘은 Phosphor (`<i class="ph-bold ph-database">`) 를 그대로 쓴다. 프레임워크가 `.ag-btn`, `.ag-sidebar__item` 안의 Phosphor 크기를 맞춘다.
 - 차트: ApexCharts 는 `AG.charts.apex(options)` 로 감싸고 `AG.charts.register(chart)` 한다. Chart.js 는 `AG.charts.chartjsDefaults(Chart)` 를 먼저 호출한다. 시리즈 색을 직접 지정하지 않는다 (`AG.charts.palette()` 사용). 상태색(good/warn/crit)은 차트 시리즈로 쓰지 않는다.
 - 테마: 다크 기본. 라이트 전환은 `<html data-theme="light">` + `[data-ag-theme-toggle]` 버튼. 서비스 자체 테마 로직(쿠키 등)이 있으면 `data-theme` 속성을 세팅하는 쪽으로 맞춘다.
+- 화면 전체를 감싸는 `<div x-data="…">` 래퍼에는 **`class="ag-page"`** 를 붙인다 (`.ag-main` 의 블록 간격이 래퍼 안으로 이어지도록. 클래스 없는 div / x-data 래퍼는 프레임워크가 자동으로 같은 스택으로 처리하지만, 명시가 안전하다).
 - Alpine.js / htmx 는 그대로 유지한다. 리뉴얼은 **마크업과 클래스만** 바꾸는 작업이고, `x-data`, `@click`, `hx-*` 바인딩과 Go 템플릿 로직(`{{if}}`, `{{range}}`, 권한 체크)은 건드리지 않는다.
 - 프레임워크 업데이트: `cp $AG/dist/{argus.min.css,argus.js,argus.charts.js} web/public/vendor/ && cp $AG/dist/themes/{{COLOR}}.min.css web/public/vendor/themes/ && cp $AG/dist/VERSION web/public/vendor/argus.VERSION` (AG=~/Desktop/develop/argus-css). 변경 내역은 `$AG/CHANGELOG.md`.
 - 디자인 판단이 갈리면 `$AG/docs/principles.md` 가 기준이다.

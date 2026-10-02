@@ -83,6 +83,7 @@
   </header>
 
   <main class="ag-main">
+  <div x-data="{ tab: 'overview' }" class="ag-page"><!-- Alpine 래퍼 예: .ag-page 로 .ag-main 의 블록 간격을 이어받는다 -->
     <nav class="ag-breadcrumb" aria-label="경로">
       <a href="index.html">개요</a><span class="ag-breadcrumb__sep">/</span><a href="resources.html">데이터베이스</a><span class="ag-breadcrumb__sep">/</span><span aria-current="page">order-db-writer</span>
     </nav>
@@ -224,6 +225,7 @@
         </section>
       </div>
     </div>
+  </div>
   </main>
 </div>
 

@@ -189,7 +189,7 @@ out.append('<div class="ag-grid">' +
 </div></div>
 <div class="ag-slack__error">error — <code>blocks[3]</code> 파싱 실패</div>
 <div class="ag-slack__empty">empty — 미리볼 블록이 없습니다</div></div>''', 6) +
-    card("레이아웃 모드 세부 변형", '<p class="ag-text-sm ag-text-2">모드 전환은 <a href="layouts.html">레이아웃 페이지</a>에서. 여기엔 모드에 붙는 세부 변형만 적어 둔다.</p><div class="ag-table-wrap"><table class="ag-table ag-table--matrix"><tbody><tr><th>ag-app--focus-wide</th><td>focus 모드 본문 폭 720 → 1040px (넓은 폼·비교 화면)</td></tr><tr><th>ag-app--dual-nosidebar</th><td>dual 모드에서 사이드바 없이 목록 패널 + 상세만</td></tr><tr><th>ag-topbar__row--underline</th><td>tabs 모드 네비 행을 캡슐 대신 밑줄 탭으로</td></tr><tr><th>ag-banner--sticky</th><td>배너를 상단 고정 (z 41, 상단 바 바로 위)</td></tr><tr><th>ag-editor</th><td>EasyMDE 같은 외부 에디터 래퍼 — 툴바·테두리를 토큰 색으로</td></tr><tr><th>ag-scrollbar-hide</th><td>스크롤바 숨김 (가로 칩 스크롤 등)</td></tr></tbody></table></div><div class="ag-scrollbar-hide ag-overflow-x ag-mt-3" style="display:flex;gap:8px;width:100%">' + ''.join(f'<span class="ag-chip">칩 {i}</span>' for i in range(1,16)) + '</div>', 6) +
+    card("레이아웃 모드 세부 변형", '<p class="ag-text-sm ag-text-2">모드 전환은 <a href="layouts.html">레이아웃 페이지</a>에서. 여기엔 모드에 붙는 세부 변형만 적어 둔다.</p><div class="ag-table-wrap"><table class="ag-table ag-table--matrix"><tbody><tr><th>ag-app--focus-wide</th><td>focus 모드 본문 폭 720 → 1040px (넓은 폼·비교 화면)</td></tr><tr><th>ag-app--dual-nosidebar</th><td>dual 모드에서 사이드바 없이 목록 패널 + 상세만</td></tr><tr><th>ag-topbar__row--underline</th><td>tabs 모드 네비 행을 캡슐 대신 밑줄 탭으로</td></tr><tr><th>ag-page / --tight</th><td>본문 래퍼(Alpine <code>x-data</code> div 등)에 — <code>.ag-main</code> 의 블록 간격을 이어받는 세로 스택. 클래스 없는 div·<code>[x-data]</code> 래퍼는 자동 적용</td></tr><tr><th>ag-banner--sticky</th><td>배너를 상단 고정 (z 41, 상단 바 바로 위)</td></tr><tr><th>ag-editor</th><td>EasyMDE 같은 외부 에디터 래퍼 — 툴바·테두리를 토큰 색으로</td></tr><tr><th>ag-scrollbar-hide</th><td>스크롤바 숨김 (가로 칩 스크롤 등)</td></tr></tbody></table></div><div class="ag-scrollbar-hide ag-overflow-x ag-mt-3" style="display:flex;gap:8px;width:100%">' + ''.join(f'<span class="ag-chip">칩 {i}</span>' for i in range(1,16)) + '</div>', 6) +
     card("인쇄 전용 · 모달 크기", f'<p class="ag-text-sm ag-text-2"><code>.ag-print-only</code> 는 화면에서 숨고 인쇄에서만 나온다 (아래 줄은 보이면 안 됨): <span class="ag-print-only">인쇄 전용 텍스트</span></p><div class="demo"><button class="ag-btn ag-btn--outline" data-ag-open="mx-lg">overlay --lg (860px)</button><button class="ag-btn ag-btn--outline" data-ag-open="mx-xl">overlay --xl (1100px)</button></div>', 6) +
     '</div></section>\n')
 
@@ -236,6 +236,7 @@ HEAD = '''<!doctype html>
 <script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
 <style>
   .demo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ag-space-3); }
+  .demo > .ag-btn + .ag-btn { margin-inline-start: 0; }   /* 데모 컨테이너는 gap 을 가지므로 폴백 간격 해제 */
   .ag-table--matrix th:first-child { white-space: nowrap; color: var(--ag-text-3); font-weight: 500; font-family: var(--ag-font-mono); font-size: var(--ag-text-xs); }
   .ag-table--matrix td { vertical-align: middle; }
   .ag-table--matrix thead th { font-family: var(--ag-font-mono); font-size: var(--ag-text-xs); }

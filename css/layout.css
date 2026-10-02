@@ -144,9 +144,13 @@
   padding-block: var(--ag-space-8) var(--ag-space-12);
   display: flex;
   flex-direction: column;
-  gap: var(--ag-space-6);
+  gap: var(--ag-gap-main);
   min-width: 0;
 }
+/* 본문 래퍼 — Alpine 의 <div x-data="…"> 처럼 레이아웃 클래스 없는 래퍼가 .ag-main 의 직계가 되면 gap 이 래퍼 하나에만 걸려
+   안쪽 블록이 0px 로 붙는다. 명시적으로는 .ag-page 를 붙이고, 클래스 없는 div / x-data 래퍼는 자동으로 같은 스택이 된다 */
+.ag-page, .ag-main > :where(div:not([class]), [x-data]:not([class*="ag-"])) { display: flex; flex-direction: column; gap: var(--ag-gap-main); min-width: 0; }
+.ag-page--tight { gap: var(--ag-gap-grid); }
 
 .ag-page-header {
   display: flex;
@@ -159,7 +163,7 @@
 .ag-page-header__title h1 .ag-accent-text { color: var(--ag-text-2); font-weight: 400; }
 .ag-page-header__actions { display: inline-flex; align-items: center; gap: var(--ag-space-2); flex-wrap: wrap; }
 
-.ag-section { display: flex; flex-direction: column; gap: var(--ag-space-4); }
+.ag-section { display: flex; flex-direction: column; gap: var(--ag-gap-section); }
 .ag-section__head {
   display: flex;
   align-items: center;
@@ -171,7 +175,7 @@
 /* ---- Grid ------------------------------------------------------------ */
 .ag-grid {
   display: grid;
-  gap: var(--ag-space-5);
+  gap: var(--ag-gap-grid);
   grid-template-columns: repeat(12, minmax(0, 1fr));
 }
 .ag-grid > * { min-width: 0; }
@@ -207,6 +211,11 @@
 .ag-cluster--between { justify-content: space-between; }
 .ag-row { display: flex; align-items: center; gap: var(--ag-space-3); min-width: 0; }
 .ag-spacer { flex: 1; }
+
+/* 기본 간격 폴백 — 프레임워크 컨테이너(.ag-grid/.ag-stack/.ag-cluster …) 없이 카드나 버튼을 그냥 나란히 두었을 때도 붙지 않게.
+   gap 을 가진 프레임워크 컨테이너 안에서는 적용되지 않는다 (이중 간격 방지). 서비스 자체 flex+gap 컨테이너 안이라면 그 컨테이너에 gap 대신 이 폴백을 쓰거나 .ag-cluster 로 바꾼다 */
+:where(:not(.ag-grid):not(.ag-stack):not(.ag-cluster):not(.ag-row):not(.ag-form-grid):not(.ag-list):not(.ag-pane):not(.ag-main):not(.ag-section)) > .ag-card + .ag-card { margin-top: var(--ag-gap-grid); }
+:where(:not(.ag-cluster):not(.ag-row):not(.ag-stack):not(.ag-btn-group):not(.ag-segmented):not(.ag-form-actions):not(.ag-topbar__actions):not(.ag-page-header__actions):not(.ag-card__head):not(.ag-card__foot):not(.ag-table-toolbar):not(.ag-modal__foot):not(.ag-approval__actions):not(.ag-slack__actions):not(.ag-wizard__nav):not(.ag-bulkbar):not(.ag-grid)) > .ag-btn + .ag-btn { margin-inline-start: var(--ag-space-2); }
 
 /* ---- Breadcrumb ------------------------------------------------------ */
 .ag-breadcrumb {
