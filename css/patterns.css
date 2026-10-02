@@ -820,7 +820,7 @@
 .ag-wizard__bar .ag-btn--primary { margin-left: auto; }
 .ag-wizard__progress { font-size: var(--ag-text-sm); color: var(--ag-text-3); font-variant-numeric: tabular-nums; }
 .ag-wizard__summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: var(--ag-space-3); }
-.ag-wizard__summary .ag-tile { flex-direction: column; align-items: flex-start; gap: 2px; }
+.ag-wizard__summary .ag-tile { flex-direction: column; align-items: flex-start; gap: 2px; }   /* = .ag-tile--stack. 마크업에 --stack 을 붙이는 쪽을 권장 */
 .ag-wizard__summary .ag-tile small { color: var(--ag-text-3); }
 
 /* ---- 콤보박스 (B7) -----------------------------------------------------------

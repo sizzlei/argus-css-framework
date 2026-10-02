@@ -251,6 +251,24 @@
         <div class="ag-card ag-card--interactive ag-col-3"><div class="ag-card__head"><h3 class="ag-card__title">Interactive</h3><svg class="ag-icon ag-text-3"><use href="#i-chevron-right"/></svg></div><p class="ag-text-2">호버 시 보더/배경 변화. 클릭 가능한 카드에만.</p></div>
         <div class="ag-card ag-col-4"><h3 class="ag-card__title">.ag-list</h3><div class="ag-list"><div class="ag-list__item"><span class="ag-list__label"><span class="ag-dot ag-dot--c1"></span><span>Triage</span></span><span class="ag-badge ag-badge--count">1234</span></div><div class="ag-list__item"><span class="ag-list__label"><span class="ag-dot ag-dot--good"></span><span>Fixing</span></span><span class="ag-badge ag-badge--count">0</span></div><div class="ag-list__item"><span class="ag-list__label"><span class="ag-dot ag-dot--c2"></span><span>Investigating</span></span><span class="ag-badge ag-badge--count">24</span></div></div></div>
         <div class="ag-card ag-col-4"><h3 class="ag-card__title">.ag-kv</h3><dl class="ag-kv"><dt>엔진</dt><dd>Aurora MySQL 8.0.36</dd><dt>클래스</dt><dd class="ag-mono">db.r6g.4xlarge</dd><dt>리전</dt><dd>ap-northeast-2a</dd><dt>태그</dt><dd><span class="ag-badge">tier:0</span> <span class="ag-badge">service:order</span></dd></dl></div>
+        <div class="ag-card ag-col-12 ag-stack">
+          <h3 class="ag-card__title">.ag-tile — 가로(기본) vs <code>--stack</code></h3>
+          <div class="ag-grid">
+            <div class="ag-col-6 ag-stack ag-stack--sm">
+              <span class="ag-text-xs ag-text-3">기본: 라벨 ↔ 값 가로 배치 (space-between). 한 줄짜리 요약·카운트에</span>
+              <div class="ag-tile"><span class="ag-tile__label"><span class="ag-dot ag-dot--crit"></span>스냅샷 실패</span><span class="ag-badge ag-badge--count">2</span></div>
+              <div class="ag-tile ag-tile--inverse"><span class="ag-tile__label">복구 리허설 예정</span><span class="ag-badge ag-badge--count">2</span></div>
+            </div>
+            <div class="ag-col-6 ag-stack ag-stack--sm">
+              <span class="ag-text-xs ag-text-3"><code>--stack</code>: 라벨 위 · 값 아래. 기간·예약·진행률 같은 블록에. 기본 타일에 세로 콘텐츠를 넣으면 양끝으로 밀려 가운데가 빈다</span>
+              <div class="ag-grid" style="gap:var(--ag-space-3)">
+                <div class="ag-tile ag-tile--stack ag-col-4"><small>보존 기간</small><strong>35일</strong></div>
+                <div class="ag-tile ag-tile--stack ag-col-4"><small>다음 실행</small><strong>10/3 02:00</strong></div>
+                <div class="ag-tile ag-tile--stack ag-col-4"><small>진행률</small><strong>62%</strong><div class="ag-progress ag-progress--sm ag-w-full"><div class="ag-progress__bar" style="width:62%"></div></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="ag-card ag-col-4"><h3 class="ag-card__title">.ag-timeline</h3><div class="ag-timeline"><div class="ag-timeline__item is-crit"><div class="ag-timeline__time">14:02</div><div class="ag-timeline__title">경보 발생</div>CloudWatch</div><div class="ag-timeline__item is-good"><div class="ag-timeline__time">03:00</div><div class="ag-timeline__title">스냅샷 완료</div>1.2 TiB</div><div class="ag-timeline__item"><div class="ag-timeline__time">어제</div><div class="ag-timeline__title">변경 요청</div>James</div></div></div>
       </div>
     </section>
@@ -259,7 +277,8 @@
     <section class="ag-section" id="forms">
       <div class="ag-section__head"><h2>폼</h2></div>
       <div class="ag-card">
-        <div class="ag-form-grid">
+        <p class="ag-text-sm ag-text-2"><code>.ag-form-grid</code> 기본은 auto-fit(240px 칸이 들어가는 만큼). <strong><code>.ag-field--full</code> 을 섞을 때는 <code>--2 / --3 / --4</code> 로 열 수를 고정</strong>하세요 — auto-fit 에 full 이 섞이면 넓은 화면에서 트랙이 잘게 쪼개져 앞 필드가 좁게 남습니다. 폼이 아닌 균등 분할은 <code>.ag-grid</code> + <code>.ag-col-*</code>.</p>
+        <div class="ag-form-grid ag-form-grid--3">
           <div class="ag-field"><label class="ag-label" for="f1">인스턴스 이름 <span class="ag-req">*</span></label><input class="ag-input" id="f1" placeholder="order-db-writer"><span class="ag-hint">소문자, 하이픈만</span></div>
           <div class="ag-field"><label class="ag-label" for="f2">엔진</label><select class="ag-select" id="f2"><option>MySQL 8.0</option><option>PostgreSQL 15</option><option>Oracle 19c</option><option>DocumentDB 5.0</option></select></div>
           <div class="ag-field is-invalid"><label class="ag-label" for="f3">버퍼 풀</label><input class="ag-input ag-input--mono" id="f3" value="72G"><span class="ag-hint">메모리의 75%를 초과합니다</span></div>
@@ -646,7 +665,7 @@ new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor
                 <div class="ag-field"><label class="ag-label" for="wz2">스토리지</label><input class="ag-input" id="wz2" value="2000 GiB"></div>
                 <div class="ag-field ag-field--full"><label class="ag-switch"><input type="checkbox" checked id="wz3">복원 후 72시간 뒤 자동 삭제 (리허설용)</label></div>
               </div>
-              <div class="ag-wizard__summary"><div class="ag-tile"><small>스냅샷</small>order-db-snapshot-0930</div><div class="ag-tile"><small>크기</small>1.2 TiB</div><div class="ag-tile"><small>예상 시간</small>약 25분</div></div>
+              <div class="ag-wizard__summary"><div class="ag-tile ag-tile--stack"><small>스냅샷</small>order-db-snapshot-0930</div><div class="ag-tile ag-tile--stack"><small>크기</small>1.2 TiB</div><div class="ag-tile ag-tile--stack"><small>예상 시간</small>약 25분</div></div>
             </section>
             <div class="ag-wizard__bar"><button class="ag-btn ag-btn--ghost">이전</button><span class="ag-wizard__progress">2 / 4</span><button class="ag-btn ag-btn--primary">다음<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-right"/></svg></button></div>
           </div>
@@ -696,14 +715,14 @@ new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor
         <div class="ag-card ag-col-12">
           <div class="ag-card__head"><h3 class="ag-card__title">쓰지 말 것</h3><a class="ag-text-sm" href="#">docs/principles.md</a></div>
           <div class="ag-grid" style="--ag-space-5: var(--ag-space-3)">
-            <div class="ag-tile ag-col-3" style="align-items:flex-start;flex-direction:column;gap:4px"><strong class="ag-text-crit">카드 3단 중첩</strong><span class="ag-text-xs ag-text-3">카드 &gt; 카드 &gt; 카드. 2단까지. 세 번째는 리스트 아이템이나 kv 로.</span></div>
-            <div class="ag-tile ag-col-3" style="align-items:flex-start;flex-direction:column;gap:4px"><strong class="ag-text-crit">탭 7개 이상</strong><span class="ag-text-xs ag-text-3">사이드바 그룹이나 드롭다운으로 나눈다.</span></div>
-            <div class="ag-tile ag-col-3" style="align-items:flex-start;flex-direction:column;gap:4px"><strong class="ag-text-crit">뱃지 안 문장</strong><span class="ag-text-xs ag-text-3">뱃지는 2~3단어. 설명은 툴팁이나 옆 텍스트.</span></div>
-            <div class="ag-tile ag-col-3" style="align-items:flex-start;flex-direction:column;gap:4px"><strong class="ag-text-crit">토스트에 중요한 결정</strong><span class="ag-text-xs ag-text-3">토스트는 확인용. 판단이 필요하면 배너·모달.</span></div>
-            <div class="ag-tile ag-col-3" style="align-items:flex-start;flex-direction:column;gap:4px"><strong class="ag-text-crit">모달 안 모달</strong><span class="ag-text-xs ag-text-3">두 번째는 드로어 또는 인라인 확장.</span></div>
-            <div class="ag-tile ag-col-3" style="align-items:flex-start;flex-direction:column;gap:4px"><strong class="ag-text-crit">상태색을 장식에</strong><span class="ag-text-xs ag-text-3">good/warn/crit 는 상태에만. 차트·브랜드 금지.</span></div>
-            <div class="ag-tile ag-col-3" style="align-items:flex-start;flex-direction:column;gap:4px"><strong class="ag-text-crit">액센트 카드 2개</strong><span class="ag-text-xs ag-text-3">화면당 1개. 두 번째는 --accent-soft.</span></div>
-            <div class="ag-tile ag-col-3" style="align-items:flex-start;flex-direction:column;gap:4px"><strong class="ag-text-crit">hex 리터럴</strong><span class="ag-text-xs ag-text-3">토큰만. 서비스 색은 themes/ 파일에서.</span></div>
+            <div class="ag-tile ag-tile--stack ag-col-3"><strong class="ag-text-crit">카드 3단 중첩</strong><span class="ag-text-xs ag-text-3">카드 &gt; 카드 &gt; 카드. 2단까지. 세 번째는 리스트 아이템이나 kv 로.</span></div>
+            <div class="ag-tile ag-tile--stack ag-col-3"><strong class="ag-text-crit">탭 7개 이상</strong><span class="ag-text-xs ag-text-3">사이드바 그룹이나 드롭다운으로 나눈다.</span></div>
+            <div class="ag-tile ag-tile--stack ag-col-3"><strong class="ag-text-crit">뱃지 안 문장</strong><span class="ag-text-xs ag-text-3">뱃지는 2~3단어. 설명은 툴팁이나 옆 텍스트.</span></div>
+            <div class="ag-tile ag-tile--stack ag-col-3"><strong class="ag-text-crit">토스트에 중요한 결정</strong><span class="ag-text-xs ag-text-3">토스트는 확인용. 판단이 필요하면 배너·모달.</span></div>
+            <div class="ag-tile ag-tile--stack ag-col-3"><strong class="ag-text-crit">모달 안 모달</strong><span class="ag-text-xs ag-text-3">두 번째는 드로어 또는 인라인 확장.</span></div>
+            <div class="ag-tile ag-tile--stack ag-col-3"><strong class="ag-text-crit">상태색을 장식에</strong><span class="ag-text-xs ag-text-3">good/warn/crit 는 상태에만. 차트·브랜드 금지.</span></div>
+            <div class="ag-tile ag-tile--stack ag-col-3"><strong class="ag-text-crit">액센트 카드 2개</strong><span class="ag-text-xs ag-text-3">화면당 1개. 두 번째는 --accent-soft.</span></div>
+            <div class="ag-tile ag-tile--stack ag-col-3"><strong class="ag-text-crit">hex 리터럴</strong><span class="ag-text-xs ag-text-3">토큰만. 서비스 색은 themes/ 파일에서.</span></div>
           </div>
         </div>
       </div>

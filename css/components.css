@@ -242,6 +242,11 @@
 .ag-tile--inverse { background: var(--ag-inverse); color: var(--ag-text-on-inverse); border-color: transparent; }
 .ag-tile--inverse .ag-badge--count { background: var(--ag-text-on-inverse); color: var(--ag-inverse); }
 .ag-tile__label { display: inline-flex; align-items: center; gap: var(--ag-space-2); font-weight: 500; }
+/* 기본 .ag-tile 은 라벨↔값 가로 배치(space-between). 라벨 위·값 아래로 쌓는 블록(기간·예약·진행률 요약)은 --stack.
+   .ag-tile 에 세로 콘텐츠를 그냥 넣으면 양끝으로 밀려 가운데가 빈다 → --stack 또는 .ag-card--sm 을 쓴다 */
+.ag-tile--stack { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 4px; }
+.ag-tile--stack small, .ag-tile--stack .ag-tile__label { font-size: var(--ag-text-xs); color: var(--ag-text-3); font-weight: 500; }
+.ag-tile--stack strong { font-size: var(--ag-text-lg); font-weight: 600; letter-spacing: -0.01em; }
 
 /* 리스트 아이템 (Triage 1234 / Fixing 0) */
 .ag-list { display: flex; flex-direction: column; gap: var(--ag-space-2); }
@@ -410,7 +415,14 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-hint { font-size: var(--ag-text-xs); color: var(--ag-text-3); }
 .ag-field.is-invalid .ag-hint { color: var(--ag-crit-text); }
 .ag-field.is-invalid .ag-input, .ag-field.is-invalid .ag-select, .ag-field.is-invalid .ag-textarea { border-color: var(--ag-crit); }
+/* 기본은 auto-fit: 폭에 맞춰 240px 이상 칸이 생기는 만큼 늘어난다 (필드가 많고 전부 같은 폭일 때).
+   주의 — --full 필드가 섞이면 넓은 화면에서 트랙이 5~6개로 쪼개져 앞 필드들이 좁게 남는다 (full 이 모든 트랙을 차지해 빈 트랙이 collapse 되지 않음).
+   필드 수가 정해져 있거나 --full 을 섞을 때는 --2 / --3 / --4 로 열 수를 고정한다 (720px 이하에서 1열). */
 .ag-form-grid { display: grid; gap: var(--ag-space-4) var(--ag-space-5); grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); }
+.ag-form-grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.ag-form-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.ag-form-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@media (max-width: 720px) { .ag-form-grid--2, .ag-form-grid--3, .ag-form-grid--4 { grid-template-columns: minmax(0, 1fr); } }
 .ag-form-grid .ag-field--full { grid-column: 1 / -1; }
 .ag-form-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--ag-space-2); flex-wrap: wrap; padding-top: var(--ag-space-2); }
 
