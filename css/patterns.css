@@ -344,6 +344,11 @@
 .ag-tag__key { padding: 0 8px; background: var(--ag-surface-3); color: var(--ag-text-3); height: 100%; display: inline-flex; align-items: center; }
 .ag-tag__val { padding: 0 8px; color: var(--ag-text); display: inline-flex; align-items: center; height: 100%; }
 .ag-tag__remove { display: inline-grid; place-content: center; width: 20px; height: 100%; color: var(--ag-text-3); border-left: 1px solid var(--ag-border); }
+/* 범주 태그 — key 칸에 범주색 */
+.ag-tag--cat1 .ag-tag__key { background: var(--ag-cat-1-soft); color: var(--ag-cat-1-text); }
+.ag-tag--cat2 .ag-tag__key { background: var(--ag-cat-2-soft); color: var(--ag-cat-2-text); }
+.ag-tag--cat3 .ag-tag__key { background: var(--ag-cat-3-soft); color: var(--ag-cat-3-text); }
+.ag-tag--cat4 .ag-tag__key { background: var(--ag-cat-4-soft); color: var(--ag-cat-4-text); }
 .ag-tag__remove:hover { color: var(--ag-crit); background: var(--ag-crit-soft); }
 .ag-tag--accent { border-color: transparent; background: var(--ag-accent-soft); color: var(--ag-accent); }
 .ag-tag--accent .ag-tag__key { background: color-mix(in oklab, var(--ag-accent) 24%, transparent); color: var(--ag-accent); }

@@ -109,6 +109,13 @@
   --ag-chart-grid: rgb(255 255 255 / .06);
   --ag-chart-axis: var(--ag-text-3);
   --ag-chart-hatch: repeating-linear-gradient(135deg, rgb(255 255 255 / .22) 0 2px, transparent 2px 6px);
+
+  /* 범주색 (엔진·태그·팀 같은 "종류" 구분) — 차트 범주색과 같은 네 가지. 상태색은 상태 전용이므로 범주에 쓰지 않는다.
+     5번째 범주를 만들지 않는다 → "기타". 다크 글자색도 soft 배경 위 4.5:1 이 되게 살짝 밝힘 */
+  --ag-cat-1: var(--ag-chart-1); --ag-cat-1-text: #9d90ff;           --ag-cat-1-soft: rgb(139 124 255 / .18);
+  --ag-cat-2: var(--ag-chart-2); --ag-cat-2-text: #f66b9d;           --ag-cat-2-soft: rgb(242 80 140 / .18);
+  --ag-cat-3: var(--ag-chart-3); --ag-cat-3-text: #3fb8cf;           --ag-cat-3-soft: rgb(24 159 184 / .20);
+  --ag-cat-4: var(--ag-chart-4); --ag-cat-4-text: #e0963a;           --ag-cat-4-soft: rgb(201 122 20 / .20);
 }
 
 /* ======================================================================
@@ -163,6 +170,12 @@
   --ag-chart-4: #d97706;
   --ag-chart-grid: rgb(16 18 32 / .07);
   --ag-chart-hatch: repeating-linear-gradient(135deg, rgb(16 18 32 / .18) 0 2px, transparent 2px 6px);
+
+  /* 라이트 범주색 — soft 배경 위 글자는 한 단계 깊게 (4.5:1 이상) */
+  --ag-cat-1-text: #4b3fd1; --ag-cat-1-soft: rgb(91 76 240 / .12);
+  --ag-cat-2-text: #b81e5b; --ag-cat-2-soft: rgb(224 38 111 / .12);
+  --ag-cat-3-text: #0a7490; --ag-cat-3-soft: rgb(8 145 178 / .13);
+  --ag-cat-4-text: #9a5200; --ag-cat-4-soft: rgb(217 119 6 / .14);
 
   --ag-shadow-sm: 0 1px 2px rgb(16 18 32 / .06);
   --ag-shadow-md: 0 8px 24px -8px rgb(16 18 32 / .14);

@@ -132,6 +132,15 @@
 .ag-badge--info   { background: var(--ag-info-soft);   color: var(--ag-info); }
 .ag-badge--accent { background: var(--ag-accent-soft); color: var(--ag-accent); }
 .ag-badge--accent2{ background: var(--ag-accent-2-soft); color: var(--ag-accent-2); }
+/* 범주 배지 — 엔진·태그·팀처럼 "종류" 를 구분할 때. 상태색(good/warn/crit/info) 은 상태에만 쓰고 범주에는 cat1~4 를 쓴다 (차트 범주색과 같은 순서) */
+.ag-badge--cat1 { background: var(--ag-cat-1-soft); color: var(--ag-cat-1-text); }
+.ag-badge--cat2 { background: var(--ag-cat-2-soft); color: var(--ag-cat-2-text); }
+.ag-badge--cat3 { background: var(--ag-cat-3-soft); color: var(--ag-cat-3-text); }
+.ag-badge--cat4 { background: var(--ag-cat-4-soft); color: var(--ag-cat-4-text); }
+.ag-badge--solid.ag-badge--cat1 { background: var(--ag-cat-1); color: #fff; }
+.ag-badge--solid.ag-badge--cat2 { background: var(--ag-cat-2); color: #fff; }
+.ag-badge--solid.ag-badge--cat3 { background: var(--ag-cat-3); color: #fff; }
+.ag-badge--solid.ag-badge--cat4 { background: var(--ag-cat-4); color: #1a1400; }
 .ag-badge--solid.ag-badge--accent { background: var(--ag-accent); color: var(--ag-text-on-accent); }
 .ag-badge--solid.ag-badge--inverse { background: var(--ag-inverse); color: var(--ag-text-on-inverse); }
 .ag-badge--solid.ag-badge--good { background: var(--ag-good); color: #0b1a14; }
@@ -154,10 +163,10 @@
 .ag-dot--info { background: var(--ag-info); }
 .ag-dot--accent { background: var(--ag-accent); }
 .ag-dot--accent2 { background: var(--ag-accent-2); }
-.ag-dot--c1 { background: var(--ag-chart-1); }
-.ag-dot--c2 { background: var(--ag-chart-2); }
-.ag-dot--c3 { background: var(--ag-chart-3); }
-.ag-dot--c4 { background: var(--ag-chart-4); }
+.ag-dot--cat1, .ag-dot--c1 { background: var(--ag-chart-1); }
+.ag-dot--cat2, .ag-dot--c2 { background: var(--ag-chart-2); }
+.ag-dot--cat3, .ag-dot--c3 { background: var(--ag-chart-3); }
+.ag-dot--cat4, .ag-dot--c4 { background: var(--ag-chart-4); }
 .ag-dot--pulse { box-shadow: 0 0 0 0 currentColor; animation: ag-pulse 1.8s var(--ag-ease) infinite; }
 @keyframes ag-pulse { 0% { box-shadow: 0 0 0 0 color-mix(in oklab, currentColor 50%, transparent); } 100% { box-shadow: 0 0 0 8px transparent; } }
 .ag-dot--good.ag-dot--pulse { color: var(--ag-good); }
