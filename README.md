@@ -167,7 +167,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 
 레이아웃 `ag-app` `ag-app--sidebar` `ag-topbar` `ag-nav` `ag-sidebar` `ag-main` `ag-page` (x-data 같은 본문 래퍼에 — 블록 간격 이어받음, `--tight`) `ag-page-header` `ag-section` `ag-grid` + `ag-col-N` `ag-stack` `ag-cluster` `ag-row` `ag-breadcrumb`
 
-차트 (CSS 전용) `ag-donut` `ag-donut-legend` `ag-bars` `ag-cols` `ag-heatmap` / `ag-heat` `ag-gauge` `ag-ring` `ag-spark` `ag-stat-card` `ag-treemap` + ApexCharts 보정 (`.ag-chart .apexcharts-*`)
+차트 (CSS 전용) `ag-donut` `ag-donut-legend` `ag-bars` `ag-cols` `ag-heatmap` (`--crit`) / `ag-heat` (`--l` 연속 또는 `--1…--5` = `--ag-seq-1..5`, `--empty`) `ag-heat-scale` `ag-gauge` `ag-ring` `ag-spark` `ag-stat-card` `ag-treemap` + ApexCharts 보정 (`.ag-chart .apexcharts-*`)
 
 패턴 `ag-daterange` `ag-banner` `ag-notif` `ag-meter-row--compact` `ag-approval` `ag-cmdk` `ag-wizard` `ag-combobox` `ag-tree` `ag-td--editable` `ag-skeleton-rows` · `data-density="compact"` · `@media print` (`.ag-print-header`) `ag-auth` (표준 인증: 어두운 표면 패널 + 점 격자 · `__logo-box` `__name` `__version` `__status` `__mobile-head` `__email-chip` `__qr` `__foot`; `--landing` 은 그라데이션 패널 변형) `ag-accordion` (details / `__toggle`+`is-open` / `--plain` / `--cards`) `ag-sidebar__node` (2단계 메뉴) `ag-modal-overlay` `ag-slack` (Block Kit 미리보기 전체) `ag-provider` `ag-account` `ag-user` `ag-pane` / `ag-pane-item` `ag-auth` `ag-otp` `ag-otp-input` `ag-qr` (흰 패딩 박스 180px, QR 자체는 img/svg/canvas 로) `ag-secret` `ag-status-screen` `ag-brand-mark` `ag-session` `ag-stepper` `ag-log` `ag-code` `ag-code-block` `ag-tok-*` `ag-editor` `ag-diff` `ag-compare` `ag-tag` (`--cat1~4`) `ag-tags` `ag-tag-input` `ag-dropzone` `ag-file` `ag-popover` `ag-accordion` `ag-bulkbar` `ag-tr--expand` `ag-table--sticky-col` `ag-spinner` `ag-loading-overlay` `ag-msg` `ag-health` `ag-glow` (`.ag-app` 배경 글로우, 선택) `ag-scrollbar-hide` · 사이드바 `is-collapsed` / `is-open` / `ag-sidebar-backdrop` / `ag-sidebar__group-toggle`
 
@@ -202,6 +202,11 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 const chart = new ApexCharts(el, AG.charts.apex({ chart:{type:'donut',height:280}, series:[108,61,17], labels:['MySQL','PostgreSQL','Oracle'] }));
 chart.render(); AG.charts.register(chart);   // data-theme 바뀌면 자동 재렌더
 AG.charts.chartjsDefaults(Chart);             // Chart.js 전역 기본값
+
+// 히트맵: 단일 색 순차 램프. CSS 토큰 --ag-seq-1..5 (= .ag-heat--1..5) 와 같은 색이라 CSS 셀과 Apex 셀이 맞고, 라이트에서 셀이 사라지지 않음
+new ApexCharts(el, AG.charts.apex({ chart:{type:'heatmap'}, series })).render();   // ranges 생략 → series 최소~최대 5등분, 셀 경계 --ag-chart-grid
+AG.charts.sequential(5)                       // ['rgb(…)', …] 연한→진한. sequential(n, '--ag-crit') 처럼 기준색 변경 가능
+AG.charts.heatRanges(0, 400)                  // Apex plotOptions.heatmap.colorScale.ranges 직접 지정할 때
 ```
 
 첫 페인트 깜빡임을 막으려면 `<head>` 에 다음을 넣습니다.

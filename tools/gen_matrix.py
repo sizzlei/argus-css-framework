@@ -148,6 +148,7 @@ spark_d = "M0,20 L10,18 L20,22 L30,12 L40,14 L50,6 L60,10 L70,8 L80,16 L90,18 L1
 def spark(cls):
     return f'<svg class="ag-spark {cls}" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="{spark_d} L100,28 L0,28 Z"/><path class="ag-spark__line" d="{spark_d}"/></svg>'
 heat = lambda cls="": f'<div class="ag-heatmap {cls}" style="--ag-heat-cols: 10">' + ''.join(f'<i class="ag-heat{" ag-heat--empty" if i%7==3 else ""}" style="--l: {((i*37)%10)/10:.1f}"></i>' for i in range(30)) + '</div>'
+heat_steps = lambda cls="": f'<div class="ag-heatmap {cls}" style="--ag-heat-cols: 6">' + ''.join(f'<i class="ag-heat ag-heat--{k}" title="--ag-seq-{k}"></i>' for k in range(1, 6)) + '<i class="ag-heat ag-heat--empty" title="empty"></i></div>'
 gauges = ''.join(f'<div class="ag-gauge{(" ag-gauge--"+t) if t else ""}" style="--p: {p}"><strong>{p}%</strong><span>{t or "기본"}</span></div>' for t, p in [("", 45), ("good", 32), ("warn", 71), ("crit", 92)])
 cols = '<div class="ag-cols" style="--ag-cols-max: 100; --ag-cols-h: 120px">' + ''.join(f'<div class="ag-cols__col" style="--v: {v}"><span class="ag-cols__bar ag-cols__bar--{i%4+1}"></span><span class="ag-cols__label">s{i%4+1}</span></div>' for i, v in enumerate([40, 70, 55, 90, 30, 65, 80, 50])) + '</div>'
 bars = lambda cls="": f'<div class="ag-bars {cls}" style="--ag-bars-label: 70px">' + ''.join(f'<div class="ag-bars__row"><span class="ag-bars__label">{l}</span><div class="ag-bars__track"><div class="ag-bars__seg ag-bars__seg--{s}" style="width:{w}%"></div><div class="ag-bars__seg ag-bars__seg--muted" style="width:{100-w-5}%"></div></div><span class="ag-bars__value">{w}</span></div>' for l, s, w in [("seg--1", "1", 62), ("seg--2", "2", 45), ("seg--3", "3", 30), ("seg--4", "4", 78), ("seg--accent", "accent", 50)]) + '</div>'
@@ -161,6 +162,7 @@ out.append('<div class="ag-grid">' +
     card("ag-gauge 톤", f'<div class="demo ag-items-end">{gauges}</div>', 6) +
     card("ag-cols (bar 1~4)", cols, 4) + card("ag-bars (seg 1~4 · accent · muted) + --thin", bars() + '<div class="ag-mt-3">' + bars("ag-bars--thin") + '</div>', 4) +
     card("ag-heatmap 기본 / --crit / heat--empty", heat() + '<div class="ag-mt-3">' + heat("ag-heatmap--crit") + '</div>', 4) +
+    card("ag-heat--1…5 (--ag-seq 램프) · --crit 안에서", heat_steps() + '<div class="ag-mt-3">' + heat_steps("ag-heatmap--crit") + '</div>', 4) +
     card("ag-spark 크기 × 톤 (--sm / 기본 / --lg · --2 / --good / --crit)", '<div class="ag-grid">' + ''.join(f'<div class="ag-col-2">{spark(c)}<span class="ag-text-xs ag-text-3">{c or "기본"}</span></div>' for c in ["ag-spark--sm", "", "ag-spark--lg", "ag-spark--2", "ag-spark--good", "ag-spark--crit"]) + '</div>') +
     card("ag-stat-card 아이콘 톤", f'<div class="ag-grid ag-grid--auto">{stat_icons}</div>') +
     card("ag-bubble 1~3 · hatch", f'<div class="demo ag-items-end">{bubbles}</div>') + '</div></section>\n')

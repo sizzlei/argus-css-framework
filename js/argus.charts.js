@@ -8,6 +8,9 @@
 
       AG.charts.chartjsDefaults(Chart);                     // Chart.js 전역 기본값 주입
       new Chart(ctx, { type:'bar', data:{ datasets:[{ data, backgroundColor: AG.charts.palette() }] } });
+
+      AG.charts.sequential(5)                               // 히트맵용 순차 램프 — CSS 토큰 --ag-seq-1..5 와 같은 색 (rgb 문자열)
+      AG.charts.apex({ chart:{type:'heatmap'}, series, plotOptions:{ heatmap:{ colorScale:{ ranges: AG.charts.heatRanges(0, 400) } } } })
 */
 (function (global) {
   'use strict';
@@ -15,6 +18,19 @@
 
   function token(name, el) {
     return getComputedStyle(el || document.documentElement).getPropertyValue(name).trim();
+  }
+  /* color-mix()/oklab() 같은 함수형 색을 라이브러리가 먹는 #rrggbb 로 푼다 — 1px 캔버스에 칠해 픽셀을 읽는다 (어떤 CSS 색이든 sRGB 로 떨어짐).
+     이미 #hex / rgb() 면 그대로. 캔버스를 못 쓰면 원문 반환 */
+  var _ctx;
+  function resolve(color) {
+    if (!color || /^#|^rgba?\(/.test(color)) return color;
+    try {
+      if (!_ctx) _ctx = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
+      _ctx.clearRect(0, 0, 1, 1); _ctx.fillStyle = color; _ctx.fillRect(0, 0, 1, 1);
+      var d = _ctx.getImageData(0, 0, 1, 1).data;
+      if (d[3] === 0) return color;
+      return '#' + [d[0], d[1], d[2]].map(function (v) { return ('0' + v.toString(16)).slice(-2); }).join('');
+    } catch (e) { return color; }
   }
   function tokens() {
     return {
@@ -51,6 +67,34 @@
       return out;
     },
     status: function () { var t = tokens(); return { good: t.good, warn: t.warn, crit: t.crit, info: t.info }; },
+
+    /* ---- 순차 램프 (히트맵·밀도) ----
+       sequential(n, base): 연한 → 진한 n색. n=5 (기본) 는 CSS 토큰 --ag-seq-1..5 와 정확히 같은 값.
+       base 는 토큰 이름('--ag-crit') 또는 색 문자열. 기본은 --ag-chart-1. 다른 n 은 같은 식(15%→100%)을 등분해 계산.
+       Apex 는 enableShades 로 자기 램프를 만들려 하므로, 이 색을 colorScale.ranges 로 넘기고 enableShades 는 끈다 (apex() 가 heatmap 일 때 자동). */
+    sequential: function (n, base) {
+      n = n || 5;
+      var top = base ? (base.charAt(0) === '-' ? token(base) : base) : token('--ag-chart-1');
+      var floor = token('--ag-surface-2'), out = [];
+      if (n === 5 && !base) { for (var k = 1; k <= 5; k++) out.push(resolve(token('--ag-seq-' + k))); return out; }
+      for (var i = 0; i < n; i++) {
+        var pct = n === 1 ? 100 : 15 + (85 * i) / (n - 1);
+        out.push(pct >= 100 ? resolve(top) : resolve('color-mix(in oklab, ' + top + ' ' + pct.toFixed(1) + '%, ' + floor + ')'));
+      }
+      return out;
+    },
+    /* Apex heatmap colorScale.ranges 생성. 0 이하 = 비어 있음(--ag-surface-2), 그 위 max 까지 n 등분(기본 5) */
+    heatRanges: function (min, max, n, base) {
+      n = n || 5; var cols = AG.charts.sequential(n, base), out = [];
+      var lo = Math.max(min, 0);
+      if (min <= 0) out.push({ from: -1e12, to: 0, color: resolve(token('--ag-surface-2')), name: '없음' });   /* 0 = 비어 있음 */
+      var step = (max - lo) / n;
+      for (var i = 0; i < n; i++) {
+        var from = lo + step * i, to = i === n - 1 ? max : lo + step * (i + 1) - 1e-9;
+        out.push({ from: i === 0 && lo === 0 ? 1e-9 : from, to: to, color: cols[i], name: Math.ceil(from) + '–' + Math.round(to) });
+      }
+      return out;
+    },
 
     /* ---- ApexCharts 옵션 프리셋 ---- */
     apex: function (userOptions) {
@@ -115,14 +159,32 @@
             dataLabels: { name: { color: t.text3, fontSize: '12px' }, value: { color: t.text, fontSize: '24px', fontWeight: 500 } }
           },
           treemap: { distributed: false, enableShades: true, shadeIntensity: .4, useFillColorAsStroke: false },
-          heatmap: { radius: 3, enableShades: true, shadeIntensity: .6, colorScale: {} }
+          heatmap: { radius: 3, enableShades: false, useFillColorAsStroke: false, colorScale: { inverse: false } }
         },
         states: { hover: { filter: { type: 'lighten', value: .06 } }, active: { filter: { type: 'none' } } },
         noData: { text: '데이터 없음', style: { color: t.text3, fontSize: '13px', fontFamily: t.font } }
       };
       if (type === 'donut' || type === 'pie') { base.stroke = { width: 2, colors: [t.surface] }; base.legend.position = 'right'; base.legend.horizontalAlign = 'center'; }
       if (type === 'treemap' || type === 'heatmap') { base.dataLabels = { enabled: true, style: { fontSize: '12px', fontFamily: t.font, fontWeight: 500 } }; }
-      return merge(base, userOptions || {});
+      if (type === 'heatmap') {
+        /* 단일 색 + 토큰 램프. 셀 경계는 --ag-chart-grid (표면색으로 그리면 라이트에서 셀이 사라진다).
+           colorScale.ranges 를 직접 주지 않았으면 series 의 최소~최대를 5등분한 heatRanges 를 넣는다 (Apex 자체 shade 램프는 라이트에서 흰색으로 흐려짐) */
+        base.colors = [t.c[0]];
+        base.stroke = { width: 1, colors: [t.grid] };
+        var hm = userOptions && userOptions.plotOptions && userOptions.plotOptions.heatmap;
+        if (!(hm && hm.colorScale && hm.colorScale.ranges)) {
+          var vals = [];
+          (userOptions && userOptions.series || []).forEach(function (sr) { (sr.data || []).forEach(function (d) { var v = d && typeof d === 'object' ? d.y : d; if (typeof v === 'number' && isFinite(v)) vals.push(v); }); });
+          if (vals.length) {
+            var lo = Math.min.apply(null, vals), hi = Math.max.apply(null, vals);
+            base.plotOptions.heatmap.colorScale.ranges = AG.charts.heatRanges(lo, hi === lo ? lo + 1 : hi);
+          } else { base.plotOptions.heatmap.enableShades = true; base.plotOptions.heatmap.shadeIntensity = .85; }
+        }
+      }
+      var out = merge(base, userOptions || {});
+      /* 테마 전환 refresh 가 사용자 옵션(dataLabels, legend, plotOptions …)을 잃지 않도록 원본을 숨겨 둔다 */
+      try { Object.defineProperty(out, '__agUser', { value: userOptions || {}, enumerable: false }); } catch (e) { /* ignore */ }
+      return out;
     },
 
     /* ---- Chart.js 전역 기본값 ---- */
@@ -166,8 +228,10 @@
       registry.forEach(function (ch) {
         try {
           if (ch && typeof ch.updateOptions === 'function') {            /* ApexCharts */
-            var cur = ch.opts || ch.w && ch.w.config || {};
-            ch.updateOptions(AG.charts.apex({ chart: { type: cur.chart && cur.chart.type } }), false, true);
+            var cur = ch.w && ch.w.config || ch.opts || {};
+            var user = ch.opts && ch.opts.__agUser ? merge(ch.opts.__agUser, {}) : { chart: { type: cur.chart && cur.chart.type } };
+            if (cur.series) user.series = cur.series;                   /* 현재 데이터 기준 (heatmap 램프는 series 범위로 재계산) */
+            ch.updateOptions(AG.charts.apex(user), false, true);
           } else if (ch && ch.config && typeof ch.update === 'function') { /* Chart.js */
             AG.charts.chartjsDefaults(ch.constructor);
             ch.update();

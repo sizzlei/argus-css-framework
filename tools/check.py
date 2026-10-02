@@ -136,6 +136,22 @@ async def main():
         finally:
             tmp.unlink(missing_ok=True); await pg.close()
 
+        # ── 9c. 순차 램프: CSS 토큰 == JS sequential(), 라이트에서 1단계·빈 셀이 카드 배경과 구분, Apex heatmap 프리셋 ──
+        for light in (False, True):
+            pg = await page(b, "components.html", light=light)
+            r = await pg.evaluate("""()=>{const d=document.createElement('div');d.className='ag-card';d.innerHTML='<div class="ag-heatmap">'+[1,2,3,4,5].map(k=>'<i class="ag-heat ag-heat--'+k+'"></i>').join('')+'<i class="ag-heat ag-heat--empty"></i></div>';document.body.appendChild(d);
+              const cells=[...d.querySelectorAll('.ag-heat')].map(e=>getComputedStyle(e).backgroundColor);const card=getComputedStyle(d).backgroundColor;
+              const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});const hex=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);const d=ctx.getImageData(0,0,1,1).data;return '#'+[d[0],d[1],d[2]].map(v=>('0'+v.toString(16)).slice(-2)).join('')};const lum=c=>{const h=hex(c);return (parseInt(h.slice(1,3),16)*299+parseInt(h.slice(3,5),16)*587+parseInt(h.slice(5,7),16)*114)/1000};
+              const o=AG.charts.apex({chart:{type:'heatmap'},series:[{data:[{x:'a',y:0},{x:'b',y:40},{x:'c',y:400}]}]});
+              return {css:cells.slice(0,5).map(hex),js:AG.charts.sequential(5),empty:cells[5],card,d1:Math.abs(lum(cells[0])-lum(card)),dEmpty:Math.abs(lum(cells[5])-lum(card)),
+                shadow:getComputedStyle(d.querySelector('.ag-heat')).boxShadow!=='none',ranges:(o.plotOptions.heatmap.colorScale.ranges||[]).length,shades:o.plotOptions.heatmap.enableShades,stroke:o.stroke.colors[0],n7:AG.charts.sequential(7).length}}""")
+            th = "light" if light else "dark"
+            check(f"seq ({th}): --ag-seq-1..5 == AG.charts.sequential(5) (hex)", r["css"] == r["js"] and all(c.startswith('#') for c in r["js"]), f'{r["css"]} vs {r["js"]}')
+            check(f"seq ({th}): 5 distinct steps, monotonic", len(set(r["css"])) == 5)
+            check(f"seq ({th}): step 1 and empty cell distinguishable from card bg", r["d1"] >= 6 and (r["dEmpty"] >= 3 or r["shadow"]), f'd1={r["d1"]:.1f} dEmpty={r["dEmpty"]:.1f} shadow={r["shadow"]}')
+            check(f"seq ({th}): apex heatmap preset → 6 ranges (0 + 5 steps) from series, shades off, grid stroke", r["ranges"] == 6 and r["shades"] is False and bool(r["stroke"]) and r["n7"] == 7, str({k: r[k] for k in ("ranges", "shades", "stroke", "n7")}))
+            await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

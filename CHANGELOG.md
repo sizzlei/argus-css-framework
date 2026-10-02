@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
+- 순차 색 램프 토큰 `--ag-seq-1..5` (다크·라이트, `--ag-chart-1` → `--ag-surface-2` color-mix 15/36/57/78/100%) + `.ag-heat--1..5`. `AG.charts.sequential(n, base?)` 가 같은 값을 rgb 로 돌려주고, `AG.charts.heatRanges(min,max)` 가 Apex `colorScale.ranges` 를 만든다. `apex({type:'heatmap'})` 은 enableShades 를 끄고 series 범위로 램프를 자동 적용, 셀 경계는 `--ag-chart-grid` — 라이트에서 Apex 자체 shade 가 흰색으로 흐려져 셀이 사라지던 문제. `.ag-heat` 에 `--ag-chart-grid` 1px 안쪽 테두리를 넣어 값 0 셀도 카드와 구분. `--crit` 안의 `--empty` 가 crit 램프에 덮이던 것 수정.
 - **버전 규율**: 동작이 바뀌는 수정(간격·래퍼·소유권)은 minor 를 올린다. `dist/VERSION` 이 서비스가 쓰는 버전의 기준.
 - `argus.js` 를 `<head>` 에서 로드해도 사이드바 접힘·그룹·노드 상태 복원과 차트 호버가 동작 (DOM 준비 후 초기화). 권장 위치는 여전히 body 끝(또는 `defer`) — README 스니펫에 명시. `AG.chartHover()` 로 동적 차트에 다시 붙일 수 있음.
 - 접힌 사이드바(`is-collapsed`)·dual 모드가 Phosphor `<i class="ph-…">` 아이콘까지 숨기던 모순 — `:not([class*="ph-"])` 추가. 서비스가 `ag-icon` 을 중복 표기할 필요 없음.

@@ -123,8 +123,10 @@
 
 /* ---- 히트맵 / 활동 캘린더 (주 × 요일) --------------------------------
    <div class="ag-heatmap" style="--ag-heat-cols: 12">
-     <i class="ag-heat" style="--l: .8"></i> …   (--l: 0~1, 단일 색상 명도 램프)
-   </div> */
+     <i class="ag-heat" style="--l: .8"></i> …        (--l: 0~1 연속 램프)
+     <i class="ag-heat ag-heat--3"></i>                (--1 … --5: 토큰 --ag-seq-1..5 5단계. JS 쪽 AG.charts.sequential(5) 와 같은 색)
+   </div>
+   셀에는 --ag-chart-grid 1px 테두리가 들어가 라이트에서 값 0 셀도 카드 배경과 구분된다. */
 .ag-heatmap {
   display: grid;
   grid-template-columns: repeat(var(--ag-heat-cols, 7), 1fr);
@@ -134,12 +136,24 @@
   aspect-ratio: 1;
   border-radius: 3px;
   background: color-mix(in oklab, var(--ag-chart-1) calc(var(--l, 0) * 100%), var(--ag-surface-2));
+  box-shadow: inset 0 0 0 1px var(--ag-chart-grid);
   min-width: 10px;
 }
 .ag-heat:hover { outline: 2px solid var(--ag-text-3); outline-offset: 1px; }
 .ag-heat--empty { background: var(--ag-surface-2); }
+.ag-heat--1 { background: var(--ag-seq-1); }
+.ag-heat--2 { background: var(--ag-seq-2); }
+.ag-heat--3 { background: var(--ag-seq-3); }
+.ag-heat--4 { background: var(--ag-seq-4); }
+.ag-heat--5 { background: var(--ag-seq-5); }
 .ag-heatmap--crit .ag-heat { background: color-mix(in oklab, var(--ag-crit) calc(var(--l, 0) * 100%), var(--ag-surface-2)); }
-.ag-heat-scale { display: inline-flex; align-items: center; gap: 4px; font-size: var(--ag-text-xs); color: var(--ag-text-3); }
+.ag-heatmap--crit .ag-heat--1 { background: color-mix(in oklab, var(--ag-crit) 15%, var(--ag-surface-2)); }
+.ag-heatmap--crit .ag-heat--2 { background: color-mix(in oklab, var(--ag-crit) 36%, var(--ag-surface-2)); }
+.ag-heatmap--crit .ag-heat--3 { background: color-mix(in oklab, var(--ag-crit) 57%, var(--ag-surface-2)); }
+.ag-heatmap--crit .ag-heat--4 { background: color-mix(in oklab, var(--ag-crit) 78%, var(--ag-surface-2)); }
+.ag-heatmap--crit .ag-heat--5 { background: var(--ag-crit); }
+.ag-heatmap--crit .ag-heat--empty { background: var(--ag-surface-2); }
+.ag-heat-scale { display: inline-flex; align-items: center; gap: 4px; font-size: var(--ag-text-xs); color: var(--ag-text-3); white-space: nowrap; }
 .ag-heat-scale .ag-heat { width: 12px; }
 
 /* ---- 게이지 (반원 / 원형 진행률) -----------------------------------------

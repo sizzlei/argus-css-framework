@@ -361,7 +361,8 @@
         <div class="ag-card ag-col-4">
           <h3 class="ag-card__title">.ag-heatmap · .ag-gauge · .ag-ring</h3>
           <div class="ag-heatmap" style="--ag-heat-cols: 14" id="heat"></div>
-          <div class="ag-heat-scale">적음 <i class="ag-heat" style="--l:.1"></i><i class="ag-heat" style="--l:.35"></i><i class="ag-heat" style="--l:.6"></i><i class="ag-heat" style="--l:.85"></i><i class="ag-heat" style="--l:1"></i> 많음</div>
+          <div class="ag-heat-scale">적음 <i class="ag-heat ag-heat--1"></i><i class="ag-heat ag-heat--2"></i><i class="ag-heat ag-heat--3"></i><i class="ag-heat ag-heat--4"></i><i class="ag-heat ag-heat--5"></i> 많음</div>
+          <p class="ag-text-xs ag-text-3"><code>.ag-heat--1…5</code> = <code>--ag-seq-1..5</code> = <code>AG.charts.sequential(5)</code> — CSS 셀과 Apex 셀 색이 같다</p>
           <div class="ag-row ag-gap-6 ag-wrap ag-mt-2">
             <div class="ag-gauge ag-gauge--crit" style="--p: 92"><strong>92%</strong><span>CPU</span></div>
             <div class="ag-gauge ag-gauge--sm" style="--p: 61"><strong>61%</strong><span>메모리</span></div>
@@ -395,6 +396,11 @@ const chart = new ApexCharts(el, AG.charts.apex({
   series: [108, 61, 17], labels: ['MySQL', 'PostgreSQL', 'Oracle']
 }));
 chart.render(); AG.charts.register(chart);
+
+// 히트맵 — 토큰 순차 램프 (CSS .ag-heat--1..5 와 같은 색, 라이트에서도 셀이 사라지지 않음). ranges 를 안 주면 series 최소~최대 5등분
+new ApexCharts(el2, AG.charts.apex({ chart: { type: 'heatmap', height: 240 }, series })).render();
+AG.charts.sequential(5)            // ['rgb(…)', …] — 직접 쓸 때
+AG.charts.heatRanges(0, 400)       // Apex colorScale.ranges 5구간 (0 이하 = 비어 있음)
 
 // Chart.js — 전역 기본값 주입
 AG.charts.chartjsDefaults(Chart);
@@ -823,6 +829,7 @@ new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor
       <div class="ag-grid">
         <div class="ag-card ag-col-4"><div class="ag-card__head"><h3 class="ag-card__title">엔진 분포 (donut)</h3></div><div class="ag-chart ag-chart--h-md" id="apex-donut"><div class="ag-chart__empty">ApexCharts 를 불러오지 못했습니다</div></div></div>
         <div class="ag-card ag-col-8"><div class="ag-card__head"><h3 class="ag-card__title">부서별 DB (stacked bar)</h3><div class="ag-legend"><span class="ag-legend__item"><span class="ag-dot ag-dot--c1"></span>MySQL</span><span class="ag-legend__item"><span class="ag-dot ag-dot--c2"></span>PostgreSQL</span><span class="ag-legend__item"><span class="ag-dot ag-dot--c3"></span>Oracle</span></div></div><div class="ag-chart ag-chart--h-md" id="apex-bar"><div class="ag-chart__empty">ApexCharts 를 불러오지 못했습니다</div></div></div>
+        <div class="ag-card ag-col-12"><div class="ag-card__head"><h3 class="ag-card__title">시간대별 슬로우 쿼리 (heatmap · <code>AG.charts.sequential</code> 램프)</h3><div class="ag-heat-scale">적음 <i class="ag-heat ag-heat--1"></i><i class="ag-heat ag-heat--2"></i><i class="ag-heat ag-heat--3"></i><i class="ag-heat ag-heat--4"></i><i class="ag-heat ag-heat--5"></i> 많음</div></div><div class="ag-chart ag-chart--h-md" id="apex-heat"><div class="ag-chart__empty">ApexCharts 를 불러오지 못했습니다</div></div></div>
         <div class="ag-card ag-col-12"><div class="ag-card__head"><h3 class="ag-card__title">슬로우 쿼리 (area, 2 시리즈)</h3><div class="ag-segmented ag-segmented--sm"><button class="ag-segmented__item">12개월</button><button class="ag-segmented__item is-active">30일</button><button class="ag-segmented__item">1주</button></div></div><div class="ag-chart ag-chart--h-md" id="apex-area"><div class="ag-chart__empty">ApexCharts 를 불러오지 못했습니다</div></div></div>
       </div>
     </section>
@@ -1016,6 +1023,8 @@ innodb_buffer_pool_size = 56G</pre></div>
       series: [{ name: 'MySQL', data: [180,220,340,330,260,210,150,140,170,260,310,330,290,240,180,160,200,230,260,300,318,290,250,220,200,210,240,280,300,310] },
                { name: 'PostgreSQL', data: [120,140,160,190,250,310,330,290,230,170,140,150,170,160,150,150,170,190,230,270,290,260,230,210,230,250,240,210,180,170] }],
       xaxis: { categories: Array.from({length:30}, function(_, i){ return '9/' + (i+1); }), tickAmount: 6 } });
+    (function(){ var days=['월','화','수','목','금','토','일'], seed=11, series=days.map(function(d, di){ return { name:d, data: Array.from({length:24}, function(_, h){ seed=(seed*9301+49297)%233280; var v=Math.round(seed/233280*260); if (h<7||h>21) v=Math.round(v*.2); if (di>4) v=Math.round(v*.35); if (di===2&&h===14) v=400; return { x: h+'시', y: v }; }) }; });
+      mount('apex-heat', { chart: { type: 'heatmap', height: 260 }, series: series, dataLabels: { enabled: false }, xaxis: { tickAmount: 12 }, legend: { show: false } }); })();
   })();
 </script>
 <script>
