@@ -121,6 +121,21 @@ async def main():
             check(f"tabs @{w}: 2 rows stacked and aligned with main", r["n"] == 2 and r["distinctTop"] and r["aligned"], str(r))
             await pg.close()
 
+        # ── 9b. argus.js 를 <head> 에서 로드해도 사이드바 상태 복원 동작 / 접힌 사이드바에서 Phosphor <i> 유지 ──
+        pg = await b.new_page(viewport={"width": 1440, "height": 900})
+        await pg.add_init_script("try{localStorage.setItem('ag-sidebar-collapsed','true')}catch(e){}")
+        html = (ROOT / "examples/resources.html").read_text(encoding="utf-8")
+        head_loaded = html.replace('<script src="../dist/argus.js"></script>', '').replace('</head>', '<script src="../dist/argus.js"></script></head>', 1)
+        head_loaded = head_loaded.replace('<span>개요</span>', '<i class="ph-bold ph-squares-four"></i><span>개요</span>', 1)
+        tmp = ROOT / "examples/_check_head.html"; tmp.write_text(head_loaded, encoding="utf-8")
+        try:
+            await pg.goto(BASE + "_check_head.html"); await pg.wait_for_timeout(400)
+            check("argus.js in <head>: sidebar collapsed state restored", await pg.evaluate("document.querySelector('.ag-app--sidebar').classList.contains('is-collapsed')"))
+            r = await pg.evaluate("""()=>{const i=document.querySelector('.ag-sidebar__item [class*="ph-"]');const s=i&&i.nextElementSibling;return {icon:i?getComputedStyle(i).display:'none',label:s?getComputedStyle(s).display:'?'}}""")
+            check("collapsed sidebar: Phosphor <i> stays visible, label hidden", r["icon"] != "none" and r["label"] == "none", str(r))
+        finally:
+            tmp.unlink(missing_ok=True); await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

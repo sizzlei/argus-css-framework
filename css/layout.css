@@ -361,7 +361,7 @@
 @media (max-width: 1200px) {
   .ag-app--dual { grid-template-columns: 72px var(--ag-pane-w, 320px) minmax(0, 1fr); }
   .ag-app--dual .ag-sidebar { padding-inline: 12px; }
-  .ag-app--dual .ag-sidebar__item > :not(.ag-icon), .ag-app--dual .ag-sidebar__label, .ag-app--dual .ag-topbar__brand > :not(.ag-dot):not(.ag-brand-mark), .ag-app--dual .ag-sidebar__toggle { display: none; }
+  .ag-app--dual .ag-sidebar__item > :not(.ag-icon):not([class*="ph-"]), .ag-app--dual .ag-sidebar__label, .ag-app--dual .ag-topbar__brand > :not(.ag-dot):not(.ag-brand-mark), .ag-app--dual .ag-sidebar__toggle { display: none; }
   .ag-app--dual .ag-sidebar__item { justify-content: center; padding-inline: 0; }
 }
 @media (max-width: 960px) {

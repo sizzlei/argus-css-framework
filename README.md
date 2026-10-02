@@ -69,7 +69,7 @@ CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업�
       </div>
     </main>
   </div>
-  <script src="/static/argus.js"></script>  <!-- 선택 -->
+  <script src="/static/argus.js"></script>  <!-- 선택. body 끝에서 로드 (또는 <head> 에 defer) — 사이드바 상태 복원·차트 호버가 DOM 을 찾는다 -->
 </body>
 </html>
 ```
@@ -177,7 +177,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 
 ## JS 헬퍼 (선택)
 
-`dist/argus.js` 는 data 속성으로만 동작합니다.
+`dist/argus.js` 는 data 속성으로만 동작합니다. **`<body>` 끝에서 로드하거나 `<head>` 에서 `defer` 로** — 1.1 부터는 `<head>` 에 그냥 넣어도 DOM 준비 후 초기화하지만, 클릭 위임은 로드 즉시 걸리므로 위치는 body 끝이 기본입니다. 아이콘은 `<svg class="ag-icon">` 과 Phosphor `<i class="ph-…">` 둘 다 접힌 사이드바·rail·dual 에서 살아남습니다.
 
 | 속성 | 동작 |
 |---|---|

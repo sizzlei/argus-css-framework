@@ -138,7 +138,7 @@
 .is-collapsed .ag-sidebar { padding-inline: 12px; }
 .is-collapsed .ag-sidebar__label { height: 1px; margin: 8px 12px; padding: 0; background: var(--ag-border); overflow: hidden; color: transparent; font-size: 0; }
 .is-collapsed .ag-sidebar__item { justify-content: center; padding-inline: 0; }
-.is-collapsed .ag-sidebar__item > :not(.ag-icon) { display: none; }
+.is-collapsed .ag-sidebar__item > :not(.ag-icon):not([class*="ph-"]) { display: none; }   /* Phosphor <i class="ph-…"> 도 아이콘 */
 .is-collapsed .ag-topbar__brand > :not(.ag-dot):not(.ag-brand-mark) { display: none; }
 .is-collapsed .ag-sidebar__footer .ag-person > :not(.ag-avatar), .is-collapsed .ag-sidebar__footer.ag-person > :not(.ag-avatar) { display: none; }
 .is-collapsed .ag-sidebar__footer { justify-content: center; }

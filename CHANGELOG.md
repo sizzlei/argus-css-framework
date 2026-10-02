@@ -2,6 +2,8 @@
 
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
 - **버전 규율**: 동작이 바뀌는 수정(간격·래퍼·소유권)은 minor 를 올린다. `dist/VERSION` 이 서비스가 쓰는 버전의 기준.
+- `argus.js` 를 `<head>` 에서 로드해도 사이드바 접힘·그룹·노드 상태 복원과 차트 호버가 동작 (DOM 준비 후 초기화). 권장 위치는 여전히 body 끝(또는 `defer`) — README 스니펫에 명시. `AG.chartHover()` 로 동적 차트에 다시 붙일 수 있음.
+- 접힌 사이드바(`is-collapsed`)·dual 모드가 Phosphor `<i class="ph-…">` 아이콘까지 숨기던 모순 — `:not([class*="ph-"])` 추가. 서비스가 `ag-icon` 을 중복 표기할 필요 없음.
 - `package.json`(devDependencies: esbuild, lightningcss-cli) — `npm i` 한 번이면 JS 도 제대로 minify (13.4KB → 10.5KB). build.sh 가 저장소 node_modules/.bin → PATH → npx 순으로 찾고, 없으면 기존 sed 폴백.
 - `tools/check.py` — 값 단언 회귀 40항목: 페이지 에러·400px 가로 스크롤, 배지 톤×모양·solid, input-group 양끝 패딩, form-grid span·열 수, 토스트 쌓임, a/button 카드 flex, 범주·아바타 대비(다크·라이트), 오버레이 소유권 8시나리오, 래퍼 스택·간격 토큰, tabs 1440~3840, 폴백 간격. 첫 실행에서 라이트 `--ag-warn-text` 대비 4.29 를 잡아 `#9a5600` 으로 조정.
 - 변형 선언 순서 원칙(모양 → 톤 → 조합)으로 `.ag-badge` 블록 재정렬 — `--count` 의 `:not()` 7개 체인 제거, 중복 선언 정리. 간격 폴백은 "클래스 없는 부모 안에서만" 으로 범위를 좁혀 컨테이너 목록 자체를 없앰 (`:where()` 특이도 0).

@@ -1,7 +1,6 @@
 /* core: 테마 토글, 사이드바(접기·모바일·그룹·2단계), 세그먼트/탭, 아코디언 */
 (function () {
   'use strict';
-  'use strict';
   var root = document.documentElement;
   var KEY = 'ag-theme';
 
@@ -15,8 +14,8 @@
   }
   try { applyTheme(localStorage.getItem(KEY) || 'dark'); } catch (e) { applyTheme('dark'); }
 
-  /* ---- 사이드바 상태 복원 ---- */
-  try {
+  /* ---- 사이드바 상태 복원 — <head> 에서 로드돼도 동작하도록 body 파싱 후 실행 ---- */
+  function restoreSidebar() { try {
     var appEl = document.querySelector('.ag-app--sidebar');
     if (appEl && localStorage.getItem('ag-sidebar-collapsed') === 'true') appEl.classList.add('is-collapsed');
     var groups = JSON.parse(localStorage.getItem('ag-sidebar-groups') || '{}');
@@ -29,7 +28,8 @@
       if (k in nodes) n.classList.toggle('is-open', !!nodes[k]);
       else if (n.querySelector('.ag-sidebar__item.is-active')) n.classList.add('is-open');
     });
-  } catch (e) {}
+  } catch (e) {} }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', restoreSidebar); else restoreSidebar();
 
 
   document.addEventListener('click', function (e) {

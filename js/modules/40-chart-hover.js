@@ -2,7 +2,7 @@
 (function () {
   'use strict';
   /* ---- 라인 차트 호버: data-ag-chart 가 붙은 .ag-chart 안의 <svg> 기준 ---- */
-  document.querySelectorAll('.ag-chart[data-ag-chart]').forEach(function (wrap) {
+  function init() { document.querySelectorAll('.ag-chart[data-ag-chart]').forEach(function (wrap) {
     var svg = wrap.querySelector('svg');
     var tip = wrap.querySelector('.ag-chart__tooltip');
     var cursor = wrap.querySelector('.ag-chart__cursor');
@@ -41,5 +41,7 @@
     });
     /* 기본 강조점 */
     if (wrap.hasAttribute('data-ag-chart-default')) show(+wrap.getAttribute('data-ag-chart-default'));
-  });
+  }); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+  window.AG = window.AG || {}; AG.chartHover = init;   /* 동적으로 추가한 차트에 다시 붙일 때 */
 })();
