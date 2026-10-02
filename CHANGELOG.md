@@ -1,15 +1,21 @@
 # Changelog
 
+## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
+- **버전 규율**: 동작이 바뀌는 수정(간격·래퍼·소유권)은 minor 를 올린다. `dist/VERSION` 이 서비스가 쓰는 버전의 기준.
+- `package.json`(devDependencies: esbuild, lightningcss-cli) — `npm i` 한 번이면 JS 도 제대로 minify (13.4KB → 10.5KB). build.sh 가 저장소 node_modules/.bin → PATH → npx 순으로 찾고, 없으면 기존 sed 폴백.
+- `tools/check.py` — 값 단언 회귀 40항목: 페이지 에러·400px 가로 스크롤, 배지 톤×모양·solid, input-group 양끝 패딩, form-grid span·열 수, 토스트 쌓임, a/button 카드 flex, 범주·아바타 대비(다크·라이트), 오버레이 소유권 8시나리오, 래퍼 스택·간격 토큰, tabs 1440~3840, 폴백 간격. 첫 실행에서 라이트 `--ag-warn-text` 대비 4.29 를 잡아 `#9a5600` 으로 조정.
+- 변형 선언 순서 원칙(모양 → 톤 → 조합)으로 `.ag-badge` 블록 재정렬 — `--count` 의 `:not()` 7개 체인 제거, 중복 선언 정리. 간격 폴백은 "클래스 없는 부모 안에서만" 으로 범위를 좁혀 컨테이너 목록 자체를 없앰 (`:where()` 특이도 0).
+- **argus.js 오버레이 소유권 원칙** — 바깥 클릭·ESC 가 모든 `.ag-modal-overlay` / `.ag-drawer` / `.ag-dropdown` / `.ag-combobox` 를 닫던 설계를 "자기가 `data-ag-open`·⌘K 로 연 것만 닫음" 으로 변경. Alpine/Vue/React 가 제어하는 오버레이를 `hidden !important` 로 잠그던 문제(모르면 조용히 고장) 해소. 표시 토글은 `is-open` 클래스 + `hidden` 병행, 닫기 직전 cancelable `ag:overlay-close`(reason: button/backdrop/escape) · `ag:overlay-closed` · `ag:overlay-open` 이벤트, `AG.overlay.open/close/owns` API. 명시적 `data-ag-close` 버튼은 소유와 무관하게 동작(마크업이 opt-in).
+- `.ag-glow` 복원 — 미검증 정리 때 삭제했으나 서비스(`.ag-app.ag-glow`)가 쓰고 있었음. 매트릭스에 데모 추가.
+- `.ag-app--tabs` 상단바가 3,224px 이상 초광폭에서 두 행이 한 줄로 나란히 붙던 버그 — wrap flex 에서 `__row` 의 `max-width` 가 flex-basis 가 된 탓. 상단바를 블록으로 쌓도록 변경(행 내부만 flex). `tools/shots.py` 에 3400px 레이아웃 회귀 추가.
+- `.ag-page` — 화면 내용을 감싸는 `<div x-data>` 래퍼가 `.ag-main` 직계가 되면 gap 이 래퍼 하나에만 걸려 안쪽 블록이 0px 로 붙던 문제(Harpoon 전 화면). 래퍼에 `.ag-page` 를 붙이면 같은 스택이 되고, 클래스 없는 div / `[x-data]` 래퍼는 자동 적용.
+- **기본 간격 상향 + 토큰화**: 카드 사이 `--ag-gap-grid` 20 → 24px, 본문 블록 사이 `--ag-gap-main` 24 → 32px, 섹션 `--ag-gap-section` 16 → 20px (Harpoon 라이트 대시보드에서 카드가 붙어 보인다는 피드백). 서비스는 `:root` 에서 토큰만 바꾸면 됨. 클래스 없는 부모 안에 `.ag-card + .ag-card`, `.ag-btn + .ag-btn` 을 그냥 나란히 두었을 때의 기본 간격 폴백 추가 (부모에 클래스가 있으면 그쪽 gap 에 맡김).
+
 ## 1.0.0 — 2026-10-02 · 공개 첫 릴리스
 - 이름을 **Argus CSS Framework** 로, 접두사를 `ka-` → **`ag-`** 로 (클래스·토큰 `--ag-*`·data 속성·JS 전역 `AG`·localStorage 키 `ag-theme`). 배포 파일명 `argus.*`.
 - 컬러 테마를 색 이름 7종으로: `red` `orange` `yellow` `green` `blue` `indigo` `violet` — 원색을 한 톤 눌러 자연스럽게, 다크·라이트 각각, 액센트 위 글자 대비 확인.
 - 사내 전용 문서·템플릿을 걷어내고 Go html/template 적용 예시만 일반화해 남김. MIT 라이선스.
 - 샘플 페이지 프로필을 Andy 로. 컬러 테마 선택은 하단 데모 네비에서 (모든 페이지).
-- **argus.js 오버레이 소유권 원칙** — 바깥 클릭·ESC 가 모든 `.ag-modal-overlay` / `.ag-drawer` / `.ag-dropdown` / `.ag-combobox` 를 닫던 설계를 "자기가 `data-ag-open`·⌘K 로 연 것만 닫음" 으로 변경. Alpine/Vue/React 가 제어하는 오버레이를 `hidden !important` 로 잠그던 문제(모르면 조용히 고장) 해소. 표시 토글은 `is-open` 클래스 + `hidden` 병행, 닫기 직전 cancelable `ag:overlay-close`(reason: button/backdrop/escape) · `ag:overlay-closed` · `ag:overlay-open` 이벤트, `AG.overlay.open/close/owns` API. 명시적 `data-ag-close` 버튼은 소유와 무관하게 동작(마크업이 opt-in).
-- `.ag-glow` 복원 — 미검증 정리 때 삭제했으나 서비스(`.ag-app.ag-glow`)가 쓰고 있었음. 매트릭스에 데모 추가.
-- `.ag-app--tabs` 상단바가 3,224px 이상 초광폭에서 두 행이 한 줄로 나란히 붙던 버그 — wrap flex 에서 `__row` 의 `max-width` 가 flex-basis 가 된 탓. 상단바를 블록으로 쌓도록 변경(행 내부만 flex). `tools/shots.py` 에 3400px 레이아웃 회귀 추가.
-- `.ag-page` — 화면 내용을 감싸는 `<div x-data>` 래퍼가 `.ag-main` 직계가 되면 gap 이 래퍼 하나에만 걸려 안쪽 블록이 0px 로 붙던 문제(Harpoon 전 화면). 래퍼에 `.ag-page` 를 붙이면 같은 스택이 되고, 클래스 없는 div / `[x-data]` 래퍼는 자동 적용.
-- **기본 간격 상향 + 토큰화**: 카드 사이 `--ag-gap-grid` 20 → 24px, 본문 블록 사이 `--ag-gap-main` 24 → 32px, 섹션 `--ag-gap-section` 16 → 20px (Harpoon 라이트 대시보드에서 카드가 붙어 보인다는 피드백). 서비스는 `:root` 에서 토큰만 바꾸면 됨. 컨테이너 없이 `.ag-card + .ag-card`, `.ag-btn + .ag-btn` 을 그냥 나란히 두었을 때의 기본 간격 폴백 추가 (프레임워크 gap 컨테이너 안에서는 비활성).
 - `.ag-avatar` 톤 변형 `--good/--warn/--crit/--info/--accent2/--cat1~4/--neutral` — 카탈로그에 인라인 style 로 14번 반복되던 것 교체. 서비스에서도 아바타 색은 클래스로.
 - **조합 매트릭스** `examples/matrix.html` (`tools/gen_matrix.py` 생성): 배지 12톤 × 9모양, 버튼 7변형 × 9상태, 카드·타일·입력·피드백·차트·패턴·유틸 전 변형을 격자로. 여기서 바로 잡힌 누락: `.ag-badge--solid.ag-badge--info / --accent2`, `.ag-banner--info`, `.ag-donut--sm` 중앙 글자 넘침.
 - 미검증 셀렉터 정리: 124개 중 쓸 것은 매트릭스/레이아웃 페이지에 예시 추가(focus-wide·dual-nosidebar·underline 탭 토글 포함), 죽은 것 삭제 — `.ag-table--skeleton`, `.ag-auth__logo/__logo-mark/__footer`(구 인증 마크업), `.ag-spark__end`. 남은 미검증 0 (JS 가 문자열로 붙이는 모드 클래스 제외).

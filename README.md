@@ -212,9 +212,11 @@ AG.charts.chartjsDefaults(Chart);             // Chart.js 전역 기본값
 ## 빌드
 
 ```sh
-sh build.sh                 # css/*.css → dist/*.min.css + themes + js. lightningcss 가 있으면 사용 (npm i -g lightningcss-cli), esbuild 있으면 JS 도 minify
+npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌드는 됨 — sed 간이 압축으로)
+sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
+python3 tools/check.py      # 값 단언 회귀 40항목 (Playwright). shots.py 는 스크린샷
 ```
 
 ## 기존 어드민에 적용하는 순서

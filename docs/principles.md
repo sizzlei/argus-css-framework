@@ -48,7 +48,7 @@
 - 탭 7개 이상 → 사이드바 그룹이나 드롭다운으로.
 - 모달 안의 모달. 두 번째는 드로어나 인라인 확장.
 - 토스트에 중요한 내용. 토스트는 "저장됨" 같은 확인용. 판단이 필요하면 배너나 모달.
-- Tailwind/Bootstrap 유틸로 간격 조정. 간격은 컨테이너(`.ag-main` · `.ag-grid` · `.ag-stack` · `.ag-cluster`)가 가진다. 카드 사이는 `--ag-gap-grid`(24px), 본문 블록 사이는 `--ag-gap-main`(32px) — 조이고 싶으면 토큰을 바꾼다. 컨테이너 없이 카드·버튼을 그냥 나란히 두어도 기본 간격 폴백이 붙는다.
+- Tailwind/Bootstrap 유틸로 간격 조정. 간격은 컨테이너(`.ag-main` · `.ag-grid` · `.ag-stack` · `.ag-cluster`)가 가진다. 카드 사이는 `--ag-gap-grid`(24px), 본문 블록 사이는 `--ag-gap-main`(32px) — 조이고 싶으면 토큰을 바꾼다. 클래스 없는 부모 안에 카드·버튼을 그냥 나란히 두어도 기본 간격 폴백이 붙는다.
 - hex 리터럴. 토큰만.
 - `.ag-tile` 에 세로 콘텐츠. 기본 타일은 라벨↔값 가로 배치라 가운데가 빈다 → `.ag-tile--stack` 또는 `.ag-card--sm`.
 - `.ag-form-grid`(auto-fit) 에 `.ag-field--full` 섞기. 넓은 화면에서 트랙이 잘게 쪼개진다 → `.ag-form-grid--2/--3/--4` 로 열 고정. 폼이 아닌 균등 분할은 `.ag-grid` + `.ag-col-*`.

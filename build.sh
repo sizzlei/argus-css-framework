@@ -12,7 +12,7 @@
 # 사람이 읽는 합본이 필요하면 `sh build.sh --readable` → dist/argus.css 추가 생성.
 set -e
 cd "$(dirname "$0")"
-VERSION="1.0.0"
+VERSION="1.1.0"
 CORE="tokens base layout components utilities"
 ORDER="tokens base layout components charts patterns utilities"
 
@@ -25,10 +25,12 @@ rm -rf dist && mkdir -p dist/themes
 BANNER="/*! Argus CSS Framework v$VERSION — 어드민 페이지용 디자인 시스템 | 다크 기본 / data-theme=\"light\" */"
 TMP=$(mktemp -d); trap 'rm -rf "$TMP"' EXIT
 
-if command -v npx >/dev/null 2>&1 && npx --no-install lightningcss --version >/dev/null 2>&1; then MIN="lightningcss"; else MIN="sed"; fi
+LCSS=""; for c in ./node_modules/.bin/lightningcss lightningcss; do command -v "$c" >/dev/null 2>&1 && { LCSS="$c"; break; }; done
+[ -z "$LCSS" ] && npx --no-install lightningcss --version >/dev/null 2>&1 && LCSS="npx --no-install lightningcss"
+if [ -n "$LCSS" ]; then MIN="lightningcss"; else MIN="sed"; fi
 minify() { # $1 in, $2 out
   if [ "$MIN" = lightningcss ]; then
-    npx --no-install lightningcss --minify --targets ">= 0.5%, last 2 versions, not dead" "$1" -o "$2"
+    $LCSS --minify --targets ">= 0.5%, last 2 versions, not dead" "$1" -o "$2"
   else
     { echo "$BANNER"; sed -e 's,/\*[^!][^*]*\*\+\([^/*][^*]*\*\+\)*/,,g' "$1" | tr -s ' \n\t' ' ' | sed -e 's/ *\([{};:,>]\) */\1/g' -e 's/;}/}/g'; } > "$2"
   fi
@@ -54,13 +56,16 @@ printf "%s\n" "$VERSION" > dist/VERSION
 
 # JS: 모듈 합본 → 가능하면 minify (esbuild/terser 가 있을 때), 없으면 주석·공백만 정리
 { echo "/*! Argus CSS Framework v$VERSION — 선택 JS 헬퍼 (js/modules 합본, 각 IIFE 독립) */"; for m in js/modules/*.js; do echo; cat "$m"; done; } > "$TMP/ag.js"
+# JS minifier 탐색 순서: 저장소 node_modules/.bin (npm i 로 설치) → PATH → npx 캐시. 없으면 주석·공백 제거만
+ESBUILD=""; for c in ./node_modules/.bin/esbuild esbuild; do command -v "$c" >/dev/null 2>&1 && { ESBUILD="$c"; break; }; done
+[ -z "$ESBUILD" ] && npx --no-install esbuild --version >/dev/null 2>&1 && ESBUILD="npx --no-install esbuild"
 jsmin() { # $1 in, $2 out
-  if npx --no-install esbuild --version >/dev/null 2>&1; then npx --no-install esbuild --minify --log-level=error "$1" > "$2"
+  if [ -n "$ESBUILD" ]; then $ESBUILD --minify --log-level=error "$1" > "$2"
   elif npx --no-install terser --version >/dev/null 2>&1; then npx --no-install terser -c -m -o "$2" "$1"
   else sed -E -e 's,^[[:space:]]*//.*$,,' -e 's,/\*[^!][^*]*\*/,,g' -e 's/^[[:space:]]+//' "$1" | grep -v '^$' > "$2"; fi
 }
 jsmin "$TMP/ag.js" dist/argus.js
 jsmin js/argus.charts.js dist/argus.charts.js
 
-echo "minifier: $MIN"
+echo "minifier: css=$MIN js=${ESBUILD:-sed}"
 for f in dist/*.min.css dist/*.js; do printf "%-42s %7d bytes  gzip %6d\n" "$f" "$(wc -c < "$f")" "$(gzip -9c "$f" | wc -c)"; done
