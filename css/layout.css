@@ -291,7 +291,9 @@
 }
 
 /* ---- tabs: 2단 상단 바 ---- */
-.ag-app--tabs .ag-topbar { height: auto; flex-wrap: wrap; padding-inline: 0; row-gap: 0; }
+/* 두 행을 wrap flex 가 아니라 블록으로 쌓는다. wrap flex 였을 때 __row 의 max-width(1600) 가 flex-basis 가 되어
+   3224px(1600×2+gap) 이상 초광폭에서 두 행이 한 줄에 나란히 들어가던 버그. 행 내부만 flex 로 가운데 정렬 */
+.ag-app--tabs .ag-topbar { display: block; height: auto; padding-inline: 0; }
 .ag-app--tabs .ag-topbar__row {
   width: 100%; display: flex; align-items: center; gap: var(--ag-space-6);
   padding-inline: var(--ag-gutter); max-width: var(--ag-content-max); margin-inline: auto;

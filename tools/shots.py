@@ -31,22 +31,14 @@ async def main():
         pg=await ctx.new_page(); await pg.goto(base+"index.html"); await pg.wait_for_timeout(800)
         print("mobile scrollW",await pg.evaluate("document.documentElement.scrollWidth"))
         await pg.screenshot(path=str(ROOT / "shots/index-mobile.png"), full_page=True)
+        await ctx.close()
+        # 초광폭 3400px: tabs 모드 상단바 두 행이 한 줄로 붙지 않는지 (3224px 이상에서 터졌던 버그). 행 2개의 top 이 달라야 함
+        ctx=await b.new_context(viewport={"width":3400,"height":900})
+        pg=await ctx.new_page(); await pg.goto(base+"layouts.html"); await pg.wait_for_timeout(600)
+        await pg.click('[data-mode="tabs"]'); await pg.wait_for_timeout(300)
+        r=await pg.evaluate("""()=>{const rows=[...document.querySelectorAll('.ag-topbar__row')].filter(e=>!e.hidden);const main=document.querySelector('.ag-main').getBoundingClientRect();return {rows:rows.map(e=>{const b=e.getBoundingClientRect();return [Math.round(b.top),Math.round(b.left),Math.round(b.right)]}),main:[Math.round(main.left),Math.round(main.right)]}}""")
+        ok = len(r["rows"])==2 and r["rows"][0][0]!=r["rows"][1][0] and abs(r["rows"][0][1]-r["main"][0])<2
+        print("ultrawide 3400 tabs", r, "OK" if ok else "FAIL — 상단바 행이 한 줄로 붙었거나 본문과 어긋남")
+        await pg.screenshot(path=str(ROOT / "shots/layouts-tabs-3400.png"), clip={"x":0,"y":0,"width":3400,"height":200})
         await b.close()
 asyncio.run(main())
-
-async def extra():
-    async with async_playwright() as p:
-        b=await p.chromium.launch()
-        ctx=await b.new_context(viewport={"width":1440,"height":900})
-        pg=await ctx.new_page(); await pg.goto(base+"resources.html"); await pg.wait_for_timeout(500)
-        await pg.click("[data-ag-sidebar-toggle]"); await pg.wait_for_timeout(300)
-        await pg.screenshot(path=str(ROOT / "shots/resources-collapsed.png"))
-        pg2=await ctx.new_page(); await pg2.goto(base+"detail.html"); await pg2.wait_for_timeout(500)
-        await pg2.click("[data-ag-open='drawer-param']"); await pg2.wait_for_timeout(400)
-        await pg2.screenshot(path=str(ROOT / "shots/detail-drawer.png"))
-        ctx2=await b.new_context(viewport={"width":400,"height":800})
-        pg3=await ctx2.new_page(); await pg3.goto(base+"resources.html"); await pg3.wait_for_timeout(500)
-        await pg3.click("[data-ag-sidebar-open]"); await pg3.wait_for_timeout(400)
-        await pg3.screenshot(path=str(ROOT / "shots/resources-mobile-open.png"))
-        await b.close()
-asyncio.run(extra())
