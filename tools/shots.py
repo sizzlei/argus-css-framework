@@ -6,7 +6,7 @@ import pathlib, sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 base = ROOT.joinpath("examples").as_uri() + "/"
 pathlib.Path(ROOT / "shots").mkdir(exist_ok=True)
-pages=["index","resources","detail","components","login","layouts"]
+pages=["index","resources","detail","components","login","layouts","matrix"]
 async def main():
     async with async_playwright() as p:
         b=await p.chromium.launch()

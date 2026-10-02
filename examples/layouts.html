@@ -33,6 +33,7 @@
   <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 5-5"/></symbol>
   <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 16v-4M12 8h.01"/></symbol>
+  <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/><circle cx="12" cy="12" r="3"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8L3 5Z"/></symbol>
   <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 21h16"/></symbol>
@@ -139,7 +140,7 @@
       </div>
     </div>
     <!-- tabs 모드 전용 2번째 행 -->
-    <div class="ag-topbar__row ag-topbar__row--nav" id="row-nav" hidden>
+    <div class="ag-topbar__row ag-topbar__row--nav ag-topbar__row--underline" id="row-nav" hidden>
       <div class="ag-nav">
         <a class="ag-nav__item" href="#" aria-current="page"><svg class="ag-icon ag-icon--sm"><use href="#i-grid"/></svg>대시보드</a>
         <a class="ag-nav__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-download"/></svg>추출 잡</a>
@@ -234,6 +235,8 @@
 
 <!-- 데모용 모드 스위처 (컬러 테마는 하단 데모 네비에서) -->
 <div class="ag-mode-switch ag-row ag-gap-2" style="background:var(--ag-bg-elevated);padding:6px;border-radius:var(--ag-radius-pill);border:1px solid var(--ag-border)">
+<label class="ag-check ag-text-xs" id="opt-wide" hidden><input type="checkbox" data-opt="ag-app--focus-wide"><span>wide</span></label>
+<label class="ag-check ag-text-xs" id="opt-noside" hidden><input type="checkbox" data-opt="ag-app--dual-nosidebar"><span>no-sidebar</span></label>
 <div class="ag-segmented" role="group" aria-label="레이아웃 모드" style="box-shadow:none">
   <button class="ag-segmented__item" data-mode="top">top</button>
   <button class="ag-segmented__item is-active" data-mode="sidebar">sidebar</button>
@@ -263,11 +266,17 @@
       $('row-nav').hidden = m !== 'tabs';
       $('row-main').style.display = m === 'tabs' ? '' : 'contents';
       $('top-search').hidden = m === 'focus';
+      $('opt-wide').hidden = m !== 'focus'; $('opt-noside').hidden = m !== 'dual';
+      app.classList.remove('ag-app--focus-wide', 'ag-app--dual-nosidebar');
+      document.querySelectorAll('[data-opt]').forEach(function (c) { c.checked = false; });
       $('pane').hidden = m !== 'dual';
       $('content-grid').hidden = m === 'focus' || m === 'dual';
       $('content-focus').hidden = m !== 'focus';
       $('content-dual').hidden = m !== 'dual';
-      document.querySelectorAll('.ag-mode-switch [data-mode]').forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-mode') === m); });
+      document.querySelectorAll('[data-opt]').forEach(function (c) {
+      c.addEventListener('change', function (e) { e.stopPropagation(); app.classList.toggle(c.getAttribute('data-opt'), c.checked); if (c.getAttribute('data-opt') === 'ag-app--dual-nosidebar') $('sidebar').hidden = c.checked; });
+    });
+    document.querySelectorAll('.ag-mode-switch [data-mode]').forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-mode') === m); });
       try { localStorage.setItem('ag-demo-mode', m); } catch (e) {}
       if (location.hash.slice(1) !== m) history.replaceState(null, '', '#' + m);
     }
@@ -321,6 +330,7 @@
     <a href="login.html" data-page="login">로그인</a>
     <a href="layouts.html" data-page="layouts" class="is-here" aria-current="page">레이아웃</a>
     <a href="components.html" data-page="components">컴포넌트</a>
+    <a href="matrix.html" data-page="matrix">매트릭스</a>
     <span class="demo-nav__sep"></span>
     <label class="demo-nav__color"><span class="demo-nav__swatch" aria-hidden="true"></span>
       <select id="demo-color" aria-label="컬러 테마">

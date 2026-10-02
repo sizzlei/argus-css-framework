@@ -92,7 +92,7 @@
       </div>
     </div>
     <!-- tabs 모드 전용 2번째 행 -->
-    <div class="ag-topbar__row ag-topbar__row--nav" id="row-nav" hidden>
+    <div class="ag-topbar__row ag-topbar__row--nav ag-topbar__row--underline" id="row-nav" hidden>
       <div class="ag-nav">
         <a class="ag-nav__item" href="#" aria-current="page"><svg class="ag-icon ag-icon--sm"><use href="#i-grid"/></svg>대시보드</a>
         <a class="ag-nav__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-download"/></svg>추출 잡</a>
@@ -187,6 +187,8 @@
 
 <!-- 데모용 모드 스위처 (컬러 테마는 하단 데모 네비에서) -->
 <div class="ag-mode-switch ag-row ag-gap-2" style="background:var(--ag-bg-elevated);padding:6px;border-radius:var(--ag-radius-pill);border:1px solid var(--ag-border)">
+<label class="ag-check ag-text-xs" id="opt-wide" hidden><input type="checkbox" data-opt="ag-app--focus-wide"><span>wide</span></label>
+<label class="ag-check ag-text-xs" id="opt-noside" hidden><input type="checkbox" data-opt="ag-app--dual-nosidebar"><span>no-sidebar</span></label>
 <div class="ag-segmented" role="group" aria-label="레이아웃 모드" style="box-shadow:none">
   <button class="ag-segmented__item" data-mode="top">top</button>
   <button class="ag-segmented__item is-active" data-mode="sidebar">sidebar</button>
@@ -216,11 +218,17 @@
       $('row-nav').hidden = m !== 'tabs';
       $('row-main').style.display = m === 'tabs' ? '' : 'contents';
       $('top-search').hidden = m === 'focus';
+      $('opt-wide').hidden = m !== 'focus'; $('opt-noside').hidden = m !== 'dual';
+      app.classList.remove('ag-app--focus-wide', 'ag-app--dual-nosidebar');
+      document.querySelectorAll('[data-opt]').forEach(function (c) { c.checked = false; });
       $('pane').hidden = m !== 'dual';
       $('content-grid').hidden = m === 'focus' || m === 'dual';
       $('content-focus').hidden = m !== 'focus';
       $('content-dual').hidden = m !== 'dual';
-      document.querySelectorAll('.ag-mode-switch [data-mode]').forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-mode') === m); });
+      document.querySelectorAll('[data-opt]').forEach(function (c) {
+      c.addEventListener('change', function (e) { e.stopPropagation(); app.classList.toggle(c.getAttribute('data-opt'), c.checked); if (c.getAttribute('data-opt') === 'ag-app--dual-nosidebar') $('sidebar').hidden = c.checked; });
+    });
+    document.querySelectorAll('.ag-mode-switch [data-mode]').forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-mode') === m); });
       try { localStorage.setItem('ag-demo-mode', m); } catch (e) {}
       if (location.hash.slice(1) !== m) history.replaceState(null, '', '#' + m);
     }

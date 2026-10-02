@@ -36,20 +36,12 @@
   pointer-events: none;
 }
 .ag-auth__brand > * { position: relative; z-index: 1; }
-.ag-auth__logo { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; font-size: var(--ag-text-xl); letter-spacing: -0.02em; }
-.ag-auth__logo-mark {
-  width: 44px; height: 44px; border-radius: 14px;
-  background: linear-gradient(135deg, var(--ag-accent), var(--ag-accent-2));
-  display: grid; place-content: center; color: #fff;
-  box-shadow: 0 12px 32px -8px color-mix(in oklab, var(--ag-accent) 60%, transparent);
-}
 .ag-auth__headline { font-size: clamp(28px, 3.2vw, 40px); font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; max-width: 16ch; }
 .ag-auth__headline em { font-style: normal; color: var(--ag-text-2); }
 .ag-auth__sub { color: var(--ag-text-2); max-width: 44ch; margin-top: var(--ag-space-4); }
 .ag-auth__features { display: flex; flex-direction: column; gap: 12px; margin-top: var(--ag-space-8); }
 .ag-auth__feature { display: flex; align-items: center; gap: 12px; color: var(--ag-text-2); font-size: var(--ag-text-sm); }
 .ag-auth__feature .ag-icon { color: var(--ag-accent); }
-.ag-auth__footer { font-size: var(--ag-text-xs); color: var(--ag-text-3); display: flex; gap: 12px; align-items: center; }
 .ag-auth__panel { display: flex; align-items: center; justify-content: center; padding: clamp(24px, 4vw, 48px); min-width: 0; }
 .ag-auth__card { width: 100%; max-width: 420px; min-width: 0; display: flex; flex-direction: column; gap: var(--ag-space-6); }
 .ag-auth__card > * { min-width: 0; }
@@ -578,11 +570,6 @@
 [x-cloak] { display: none !important; }
 .ag-scrollbar-hide { scrollbar-width: none; }
 .ag-scrollbar-hide::-webkit-scrollbar { display: none; }
-.ag-glow {
-  background-image:
-    radial-gradient(60rem 30rem at 80% -10%, color-mix(in oklab, var(--ag-accent) 14%, transparent), transparent 60%),
-    radial-gradient(50rem 28rem at 0% 0%, color-mix(in oklab, var(--ag-accent-2) 8%, transparent), transparent 55%);
-}
 
 /* ---- 외부 인증 (Google Workspace / Slack / Okta SSO) ---------------------
    <button class="ag-provider"><span class="ag-provider__logo"><img src="/static/google.svg" alt=""></span><span class="ag-provider__label">Google 계정으로 계속하기</span></button>
@@ -707,6 +694,8 @@
 .ag-banner--warn > .ag-icon, .ag-banner--warn > [class*="ph-"] { color: var(--ag-warn-text); }
 .ag-banner--crit { background: var(--ag-crit-soft); border-bottom-color: color-mix(in oklab, var(--ag-crit) 35%, transparent); }
 .ag-banner--crit > .ag-icon, .ag-banner--crit > [class*="ph-"] { color: var(--ag-crit-text); }
+.ag-banner--info { background: var(--ag-info-soft); border-bottom-color: color-mix(in oklab, var(--ag-info) 35%, transparent); }
+.ag-banner--info > .ag-icon, .ag-banner--info > [class*="ph-"] { color: var(--ag-info-text); }
 .ag-banner--accent { background: var(--ag-accent); color: var(--ag-text-on-accent); border-bottom: 0; }
 .ag-banner--accent > .ag-icon, .ag-banner--accent .ag-banner__close { color: inherit; }
 .ag-banner--accent .ag-btn--outline { border-color: color-mix(in oklab, var(--ag-text-on-accent) 40%, transparent); color: inherit; background: transparent; }
@@ -886,9 +875,8 @@
 @keyframes ag-flash { 0% { background: var(--ag-good-soft); } 100% { background: transparent; } }
 
 /* ---- 스켈레톤 테이블 (B10) --------------------------------------------------
-   <table class="ag-table ag-table--skeleton"><tbody><tr><td><span class="ag-skeleton" style="width:60%"></span></td>…</tr>…</tbody></table>
+   <table class="ag-table"><tbody><tr><td><span class="ag-skeleton" style="width:60%"></span></td>…</tr>…</tbody></table>
    또는 간단히: <div class="ag-skeleton-rows" style="--rows: 5"></div> (CSS 그라데이션으로 N줄) */
-.ag-table--skeleton td .ag-skeleton { height: 14px; }
 .ag-skeleton-rows { --rows: 5; --row-h: 44px; height: calc(var(--rows) * var(--row-h)); border-radius: var(--ag-radius-md); background:
   repeating-linear-gradient(to bottom, transparent 0 10px, var(--ag-surface-2) 10px calc(var(--row-h) - 10px), transparent calc(var(--row-h) - 10px) var(--row-h)); position: relative; overflow: hidden; }
 .ag-skeleton-rows::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 0%, color-mix(in oklab, var(--ag-surface-3) 60%, transparent) 50%, transparent 100%); background-size: 200% 100%; animation: ag-shimmer 1.4s linear infinite; }

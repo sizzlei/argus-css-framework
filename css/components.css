@@ -146,6 +146,8 @@
 .ag-badge--solid.ag-badge--good { background: var(--ag-good); color: #0b1a14; }
 .ag-badge--solid.ag-badge--crit { background: var(--ag-crit); color: #fff; }
 .ag-badge--solid.ag-badge--warn { background: var(--ag-warn); color: #1a1400; }
+.ag-badge--solid.ag-badge--info { background: var(--ag-info); color: #04111a; }
+.ag-badge--solid.ag-badge--accent2 { background: var(--ag-accent-2); color: #fff; }
 .ag-badge--count {
   min-width: 24px;
   padding: 0 7px;
@@ -158,6 +160,8 @@
 .ag-badge--solid.ag-badge--good { background: var(--ag-good); color: #0b1a14; }
 .ag-badge--solid.ag-badge--crit { background: var(--ag-crit); color: #fff; }
 .ag-badge--solid.ag-badge--warn { background: var(--ag-warn); color: #1a1400; }
+.ag-badge--solid.ag-badge--info { background: var(--ag-info); color: #04111a; }
+.ag-badge--solid.ag-badge--accent2 { background: var(--ag-accent-2); color: #fff; }
 .ag-badge--count {
   min-width: 24px;
   padding: 0 7px;
@@ -429,6 +433,10 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-form-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 @media (max-width: 720px) { .ag-form-grid--2, .ag-form-grid--3, .ag-form-grid--4 { grid-template-columns: minmax(0, 1fr); } }
 .ag-form-grid .ag-field--full { grid-column: 1 / -1; }
+/* 중간 폭: --2/--3/--4 격자에서 "Host 2칸 : Port 1칸" 같은 배치. 720px 이하(1열)에서는 자동으로 전체 폭 */
+.ag-form-grid .ag-field--span2 { grid-column: span 2; }
+.ag-form-grid .ag-field--span3 { grid-column: span 3; }
+@media (max-width: 720px) { .ag-form-grid .ag-field--span2, .ag-form-grid .ag-field--span3 { grid-column: 1 / -1; } }
 .ag-form-actions { display: flex; align-items: center; justify-content: flex-end; gap: var(--ag-space-2); flex-wrap: wrap; padding-top: var(--ag-space-2); }
 
 .ag-input, .ag-select, .ag-textarea {
@@ -467,7 +475,9 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-input-group .ag-input { padding-left: 42px; }
 .ag-input-group .ag-input-group__end { position: absolute; right: 8px; display: inline-flex; gap: 4px; }
 .ag-input-group .ag-input-group__end .ag-icon { position: static; }
-.ag-input-group.ag-input-group--end .ag-input { padding-left: 14px; padding-right: 48px; }
+/* --end 는 오른쪽 여백만 추가한다 — 선행 아이콘(padding-left 42px)과 함께 써도 양쪽이 다 살아 있어야 한다 */
+.ag-input-group.ag-input-group--end .ag-input { padding-right: 48px; }
+.ag-input-group.ag-input-group--end:not(:has(> .ag-icon)) .ag-input { padding-left: 14px; }
 
 /* 체크박스 / 라디오 */
 .ag-check { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-size: var(--ag-text-md); color: var(--ag-text); }

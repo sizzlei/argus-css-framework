@@ -9,13 +9,13 @@ css/            소스. 빌드 순서 = tokens → base → layout → component
 dist/           build.sh 산출물(전부 minified). 직접 수정 금지. argus.min.css(전체) / core·patterns·charts·auth-landing.min.css(골라 쓰기) / themes/*.min.css / *.js
 js/modules/     선택 헬퍼 소스. 10-core(테마·사이드바·탭) 20-overlay(드롭다운·모달·배너·날짜·토스트닫기·확장행) 30-keyboard 40-chart-hover 50-toast. build 가 합친다
 js/argus.charts.js  ApexCharts/Chart.js 프리셋
-tools/          shots.py 시각 회귀
+tools/          shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
 examples/src/   예시 페이지 소스. <!--@icons--> 는 _icons.html 스프라이트로 치환됨
 examples/       build_examples.py 산출물. 직접 수정 금지. GitHub Pages 가 main 브랜치 루트를 그대로 서빙하므로 커밋 전 반드시 빌드 (루트 index.html 은 examples/ 로 리다이렉트, .nojekyll 로 _icons.html 등 밑줄 파일 유지)
 docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프롬프트 키트
 ```
 
-빌드: `sh build.sh && python3 build_examples.py`. 둘 다 돌린 뒤 커밋한다. build.sh 는 리터럴 색 린트를 먼저 돌리고 실패하면 멈춘다 (허용 목록은 build.sh 안). `lightningcss` 가 PATH 에 있으면 min 빌드에 쓰고, 없으면 sed 간이 압축으로 떨어진다 (둘 다 유효).
+빌드: `sh build.sh && python3 tools/gen_matrix.py && python3 build_examples.py`. 변형(modifier)을 추가·수정했으면 `tools/gen_matrix.py` 의 해당 목록에도 넣어 매트릭스에 나오게 한다 — 조합 버그는 매트릭스에서만 보인다. 둘 다 돌린 뒤 커밋한다. build.sh 는 리터럴 색 린트를 먼저 돌리고 실패하면 멈춘다 (허용 목록은 build.sh 안). `lightningcss` 가 PATH 에 있으면 min 빌드에 쓰고, 없으면 sed 간이 압축으로 떨어진다 (둘 다 유효).
 
 ## 어디에 무엇을 넣나
 
@@ -75,7 +75,7 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 ## 커밋 전 체크
 
 - [ ] `sh build.sh` 경고 없음, `python3 build_examples.py` 성공
-- [ ] 다크·라이트 스크린샷 확인 (components.html 전체 + 바뀐 예시 페이지)
+- [ ] 다크·라이트 스크린샷 확인 (components.html + matrix.html 전체 + 바뀐 예시 페이지). 매트릭스에서 톤이 기본 회색으로 떨어진 셀·겹친 셀이 없어야 한다
 - [ ] 400px 폭에서 가로 스크롤 없음
 - [ ] 새 클래스는 README 목록 + components.html 예시에 반영
 - [ ] `CHANGELOG.md` 갱신, `VERSION` 올림 (CSS 가 바뀌었으면)

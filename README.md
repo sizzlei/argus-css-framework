@@ -15,6 +15,7 @@ A pure-CSS design system for admin pages — dark-first with a light theme, 7 co
 | [로그인](https://sizzlei.github.io/argus-css-framework/examples/login.html) | 2단 인증 레이아웃·OTP·외부 로그인·컬러 테마 전환 |
 | [레이아웃 모드](https://sizzlei.github.io/argus-css-framework/examples/layouts.html) | 6개 모드를 같은 콘텐츠로 전환 |
 | [컴포넌트 카탈로그](https://sizzlei.github.io/argus-css-framework/examples/components.html) | 전체 컴포넌트·패턴·토큰 |
+| [조합 매트릭스](https://sizzlei.github.io/argus-css-framework/examples/matrix.html) | 모든 변형 × 조합 (회귀 확인용 — 어긋난 셀을 찾는 페이지) |
 
 로컬에서는 저장소를 받아 `examples/index.html` 을 그냥 열면 된다 (빌드 불필요). 페이지 하단 왼쪽 네비로 이동, 우상단 버튼으로 다크/라이트 전환.
 
@@ -33,7 +34,7 @@ css/ js/                        ← 소스. 읽을 땐 여기. (사람이 읽는
 fonts/                          ← 폰트 self-host 키트 (fetch-fonts.sh → woff2 + fonts.css)
 index.html                      ← GitHub Pages 진입점 (examples/ 로 리다이렉트)
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
-                                   index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환)
+                                   index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
@@ -163,9 +164,9 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 
 차트 (CSS 전용) `ag-donut` `ag-donut-legend` `ag-bars` `ag-cols` `ag-heatmap` / `ag-heat` `ag-gauge` `ag-ring` `ag-spark` `ag-stat-card` `ag-treemap` + ApexCharts 보정 (`.ag-chart .apexcharts-*`)
 
-패턴 `ag-daterange` `ag-banner` `ag-notif` `ag-meter-row--compact` `ag-approval` `ag-cmdk` `ag-wizard` `ag-combobox` `ag-tree` `ag-td--editable` `ag-skeleton-rows` · `data-density="compact"` · `@media print` (`.ag-print-header`) `ag-auth` (표준 인증: 어두운 표면 패널 + 점 격자 · `__logo-box` `__name` `__version` `__status` `__mobile-head` `__email-chip` `__qr` `__foot`; `--landing` 은 그라데이션 패널 변형) `ag-accordion` (details / `__toggle`+`is-open` / `--plain` / `--cards`) `ag-sidebar__node` (2단계 메뉴) `ag-modal-overlay` `ag-slack` (Block Kit 미리보기 전체) `ag-provider` `ag-account` `ag-user` `ag-pane` / `ag-pane-item` `ag-auth` `ag-otp` `ag-otp-input` `ag-qr` (흰 패딩 박스 180px, QR 자체는 img/svg/canvas 로) `ag-secret` `ag-status-screen` `ag-brand-mark` `ag-session` `ag-stepper` `ag-log` `ag-code` `ag-code-block` `ag-tok-*` `ag-editor` `ag-diff` `ag-compare` `ag-tag` (`--cat1~4`) `ag-tags` `ag-tag-input` `ag-dropzone` `ag-file` `ag-popover` `ag-accordion` `ag-bulkbar` `ag-tr--expand` `ag-table--sticky-col` `ag-spinner` `ag-loading-overlay` `ag-msg` `ag-health` `ag-glow` `ag-scrollbar-hide` · 사이드바 `is-collapsed` / `is-open` / `ag-sidebar-backdrop` / `ag-sidebar__group-toggle`
+패턴 `ag-daterange` `ag-banner` `ag-notif` `ag-meter-row--compact` `ag-approval` `ag-cmdk` `ag-wizard` `ag-combobox` `ag-tree` `ag-td--editable` `ag-skeleton-rows` · `data-density="compact"` · `@media print` (`.ag-print-header`) `ag-auth` (표준 인증: 어두운 표면 패널 + 점 격자 · `__logo-box` `__name` `__version` `__status` `__mobile-head` `__email-chip` `__qr` `__foot`; `--landing` 은 그라데이션 패널 변형) `ag-accordion` (details / `__toggle`+`is-open` / `--plain` / `--cards`) `ag-sidebar__node` (2단계 메뉴) `ag-modal-overlay` `ag-slack` (Block Kit 미리보기 전체) `ag-provider` `ag-account` `ag-user` `ag-pane` / `ag-pane-item` `ag-auth` `ag-otp` `ag-otp-input` `ag-qr` (흰 패딩 박스 180px, QR 자체는 img/svg/canvas 로) `ag-secret` `ag-status-screen` `ag-brand-mark` `ag-session` `ag-stepper` `ag-log` `ag-code` `ag-code-block` `ag-tok-*` `ag-editor` `ag-diff` `ag-compare` `ag-tag` (`--cat1~4`) `ag-tags` `ag-tag-input` `ag-dropzone` `ag-file` `ag-popover` `ag-accordion` `ag-bulkbar` `ag-tr--expand` `ag-table--sticky-col` `ag-spinner` `ag-loading-overlay` `ag-msg` `ag-health` `ag-scrollbar-hide` · 사이드바 `is-collapsed` / `is-open` / `ag-sidebar-backdrop` / `ag-sidebar__group-toggle`
 
-컴포넌트 `ag-btn` `ag-btn-group` `ag-segmented` `ag-chip` `ag-meter-chips` `ag-badge` (`--good/--warn/--crit/--info` 상태 · `--cat1~4` 범주 · `--solid` · `--count` — count 는 모양만이라 어떤 톤과도 조합) `ag-dot` (`--cat1~4` 포함) `ag-delta` `ag-card` (`a.ag-card` / `button.ag-card` 는 정렬·밑줄·폰트 자동 처리, `is-selected`) `ag-tile` (가로 라벨↔값 · `--stack` 세로 · `--inverse`) `ag-list` `ag-stat` `ag-avatar` `ag-person` `ag-table` `ag-table-foot` `ag-pagination` `ag-field` `ag-input` `ag-select` `ag-textarea` `ag-check` `ag-switch` `ag-input-group` `ag-form-grid` (auto-fit 기본 · `--2/--3/--4` 열 고정 — `--full` 섞을 때는 고정) `ag-tabs` `ag-progress` `ag-meter-row` `ag-alert` `ag-insight` `ag-toast` (`--good` `--warn` `--crit` `--info`, 왼쪽 톤 바) `ag-dropdown` / `ag-menu` `ag-modal` `ag-drawer` `[data-tip]` `ag-empty` `ag-skeleton` `ag-kv` `ag-timeline` `ag-chart` `ag-legend` `ag-bubble` `ag-quick-actions`
+컴포넌트 `ag-btn` `ag-btn-group` `ag-segmented` `ag-chip` `ag-meter-chips` `ag-badge` (`--good/--warn/--crit/--info` 상태 · `--cat1~4` 범주 · `--solid` · `--count` — count 는 모양만이라 어떤 톤과도 조합) `ag-dot` (`--cat1~4` 포함) `ag-delta` `ag-card` (`a.ag-card` / `button.ag-card` 는 정렬·밑줄·폰트 자동 처리, `is-selected`) `ag-tile` (가로 라벨↔값 · `--stack` 세로 · `--inverse`) `ag-list` `ag-stat` `ag-avatar` `ag-person` `ag-table` `ag-table-foot` `ag-pagination` `ag-field` `ag-input` `ag-select` `ag-textarea` `ag-check` `ag-switch` `ag-input-group` (앞 아이콘 · `--end` 뒤 버튼 · 둘 다 조합 가능) `ag-form-grid` (auto-fit 기본 · `--2/--3/--4` 열 고정 — `--full` 섞을 때는 고정 · 필드 `--span2/--span3/--full`) `ag-tabs` `ag-progress` `ag-meter-row` `ag-alert` `ag-insight` `ag-toast` (`--good` `--warn` `--crit` `--info`, 왼쪽 톤 바) `ag-dropdown` / `ag-menu` `ag-modal` `ag-drawer` `[data-tip]` `ag-empty` `ag-skeleton` `ag-kv` `ag-timeline` `ag-chart` `ag-legend` `ag-bubble` `ag-quick-actions`
 
 전체 모양과 조합 예시는 `examples/components.html` 에서 확인하세요.
 
@@ -207,6 +208,7 @@ AG.charts.chartjsDefaults(Chart);             // Chart.js 전역 기본값
 
 ```sh
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. lightningcss 가 있으면 사용 (npm i -g lightningcss-cli), esbuild 있으면 JS 도 minify
+python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
 ```
 

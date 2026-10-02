@@ -36,6 +36,8 @@
   -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - var(--_thick)), #000 calc(100% - var(--_thick) + 1px));
 }
 .ag-donut--sm { --_size: 120px; --_thick: 16px; }
+.ag-donut--sm .ag-donut__center strong { font-size: var(--ag-text-lg); }
+.ag-donut--sm .ag-donut__center span { display: none; }
 .ag-donut--lg { --_size: 240px; --_thick: 28px; }
 .ag-donut--thin { --_thick: 12px; }
 .ag-donut-wrap { position: relative; display: inline-grid; place-items: center; }
@@ -199,21 +201,18 @@
 
 /* ---- 스파크라인 (인라인 SVG용 클래스) --------------------------------------
    <svg class="ag-spark" viewBox="0 0 100 28" preserveAspectRatio="none"><path class="ag-spark__area" d="…"/><path class="ag-spark__line" d="…"/></svg>
-   끝점 강조(.ag-spark__end)는 preserveAspectRatio="none" 에서 찌그러지므로 기본 비율(xMidYMid)일 때만 쓴다. */
+   (끝점 원 .ag-spark__end 는 제거 — preserveAspectRatio="none" 에서 찌그러져 쓸 수 없었다) */
 .ag-spark { width: 100%; height: 28px; overflow: visible; display: block; }
 .ag-spark--sm { height: 20px; }
 .ag-spark--lg { height: 44px; }
 .ag-spark__line { fill: none; stroke: var(--ag-chart-1); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
 .ag-spark__area { fill: var(--ag-chart-1); opacity: .14; stroke: none; }
-.ag-spark__end { fill: var(--ag-chart-1); stroke: var(--ag-surface); stroke-width: 1.5; vector-effect: non-scaling-stroke; }
-.ag-spark--good .ag-spark__line, .ag-spark--good .ag-spark__end { stroke: var(--ag-good); fill: var(--ag-good); }
-.ag-spark--good .ag-spark__line { fill: none; }
+.ag-spark--good .ag-spark__line { stroke: var(--ag-good); }
 .ag-spark--good .ag-spark__area { fill: var(--ag-good); }
-.ag-spark--crit .ag-spark__line, .ag-spark--crit .ag-spark__end { stroke: var(--ag-crit); fill: var(--ag-crit); }
-.ag-spark--crit .ag-spark__line { fill: none; }
+.ag-spark--crit .ag-spark__line { stroke: var(--ag-crit); }
 .ag-spark--crit .ag-spark__area { fill: var(--ag-crit); }
 .ag-spark--2 .ag-spark__line { stroke: var(--ag-chart-2); }
-.ag-spark--2 .ag-spark__area, .ag-spark--2 .ag-spark__end { fill: var(--ag-chart-2); }
+.ag-spark--2 .ag-spark__area { fill: var(--ag-chart-2); }
 
 /* 스탯 + 스파크라인 조합 카드 */
 .ag-stat-card { display: flex; flex-direction: column; gap: var(--ag-space-3); }

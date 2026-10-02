@@ -5,6 +5,10 @@
 - 컬러 테마를 색 이름 7종으로: `red` `orange` `yellow` `green` `blue` `indigo` `violet` — 원색을 한 톤 눌러 자연스럽게, 다크·라이트 각각, 액센트 위 글자 대비 확인.
 - 사내 전용 문서·템플릿을 걷어내고 Go html/template 적용 예시만 일반화해 남김. MIT 라이선스.
 - 샘플 페이지 프로필을 Andy 로. 컬러 테마 선택은 하단 데모 네비에서 (모든 페이지).
+- **조합 매트릭스** `examples/matrix.html` (`tools/gen_matrix.py` 생성): 배지 12톤 × 9모양, 버튼 7변형 × 9상태, 카드·타일·입력·피드백·차트·패턴·유틸 전 변형을 격자로. 여기서 바로 잡힌 누락: `.ag-badge--solid.ag-badge--info / --accent2`, `.ag-banner--info`, `.ag-donut--sm` 중앙 글자 넘침.
+- 미검증 셀렉터 정리: 124개 중 쓸 것은 매트릭스/레이아웃 페이지에 예시 추가(focus-wide·dual-nosidebar·underline 탭 토글 포함), 죽은 것 삭제 — `.ag-glow`, `.ag-table--skeleton`, `.ag-auth__logo/__logo-mark/__footer`(구 인증 마크업), `.ag-spark__end`. 남은 미검증 0 (JS 가 문자열로 붙이는 모드 클래스 제외).
+- `.ag-input-group--end` 가 `padding-left` 를 덮어 선행 아이콘과 같이 못 쓰던 문제 — 오른쪽 여백만 추가하도록. 아이콘 + `--end` 조합 동작.
+- `.ag-field--span2 / --span3` (form-grid 중간 폭, "Host 2칸 : Port 1칸"). 720px 이하 자동 전체 폭.
 - `a.ag-card` / `button.ag-card` 기본값(왼쪽 정렬·밑줄 제거·폰트 상속·전체 폭·포커스 링 — `display` 는 건드리지 않아 `.ag-card` 의 flex column·gap 이 그대로 적용) + `.ag-card.is-selected`. 카드를 링크/버튼으로 쓸 때 인라인 style 이 필요 없다. 유틸 `.ag-text-left`, `.ag-scroll-y`(`--sm/--md/--lg`, `--ag-scroll-max`) 추가.
 - `.ag-tile--stack` (라벨 위·값 아래 세로 타일) 추가 — 기본 `.ag-tile` 은 가로 space-between 이라 세로 콘텐츠를 넣으면 가운데가 비던 오용 대응. `.ag-form-grid--2/--3/--4` 열 고정 변형 추가 — auto-fit 에 `--full` 이 섞이면 넓은 화면에서 트랙이 쪼개지는 문제의 올바른 사용법. 카탈로그에 예시·주의 문구, principles "쓰지 말 것" 에 추가.
 - `.ag-badge--count` 가 뒤에 선언돼 `--accent` 등 톤 배경을 덮던 버그 — count 는 모양만 담당하고 배경은 톤 변형이 정하도록 분리. `--count --accent/--crit/--cat1/--inverse` 조합 전부 동작.

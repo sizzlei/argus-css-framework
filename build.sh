@@ -18,7 +18,7 @@ ORDER="tokens base layout components charts patterns utilities"
 
 # 린트: tokens.css 와 themes/ 밖의 hex 리터럴은 허용 목록(흰/검 글자, 마스크, Slack·Google 버튼, @media print 회색)만
 BAD=$(grep -nE "#[0-9a-fA-F]{3,8}\b" css/base.css css/layout.css css/components.css css/charts.css css/patterns.css css/utilities.css css/extras/*.css \
-  | grep -vE "#fff\b|#ffffff|#000\b|#0b1a14|#1a1400|#04110b|#2eb67d|#259e6b|#e01e5a|#c01b4f|#1f1f1f|#dadce0|#f8f9fa|#c6c6c6|#131314|#e3e3e3|#8e918f|#1b1b1c|#6ee7b7|#fda4af|#111\b|#333\b|#555\b|#999\b|#bbb\b|#ddd\b|#eee\b|#f3f3f3|data:image" || true)
+  | grep -vE "#fff\b|#ffffff|#000\b|#0b1a14|#1a1400|#04111a|#04110b|#2eb67d|#259e6b|#e01e5a|#c01b4f|#1f1f1f|#dadce0|#f8f9fa|#c6c6c6|#131314|#e3e3e3|#8e918f|#1b1b1c|#6ee7b7|#fda4af|#111\b|#333\b|#555\b|#999\b|#bbb\b|#ddd\b|#eee\b|#f3f3f3|data:image" || true)
 if [ -n "$BAD" ]; then echo "리터럴 색상 발견 — 토큰으로 바꾸거나 build.sh 허용 목록에 추가:"; echo "$BAD"; exit 1; fi
 
 rm -rf dist && mkdir -p dist/themes
