@@ -152,6 +152,15 @@ async def main():
             check(f"seq ({th}): apex heatmap preset → 6 ranges (0 + 5 steps) from series, shades off, grid stroke", r["ranges"] == 6 and r["shades"] is False and bool(r["stroke"]) and r["n7"] == 7, str({k: r[k] for k in ("ranges", "shades", "stroke", "n7")}))
             await pg.close()
 
+        # ── 9d. .ag-list__item.is-active: 선택 상태가 배경·테두리로 구분되고 button 리셋이 걸린다 ──
+        pg = await page(b, "components.html")
+        r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-list"><button class="ag-list__item is-active"><span class="ag-list__label">A</span></button><button class="ag-list__item"><span class="ag-list__label">B</span></button></div><div class="ag-list ag-list--divided"><button class="ag-list__item is-active">C</button></div>';document.body.appendChild(d);
+          const [a,b]=d.querySelectorAll('.ag-list:not(.ag-list--divided) .ag-list__item');const c=d.querySelector('.ag-list--divided .ag-list__item');const sa=getComputedStyle(a),sb=getComputedStyle(b),sc=getComputedStyle(c);
+          return {bg:sa.backgroundColor!==sb.backgroundColor,border:sa.borderColor!==sb.borderColor,width:Math.abs(a.getBoundingClientRect().width-a.parentElement.getBoundingClientRect().width)<1,align:sa.textAlign,font:sa.fontFamily===getComputedStyle(document.body).fontFamily,divBar:sc.boxShadow!=='none'}}""")
+        check("list: is-active differs from sibling (bg + border), button fills width, left-aligned, inherits font", r["bg"] and r["border"] and r["width"] and r["align"] in ("left", "start") and r["font"], str(r))
+        check("list: --divided is-active shows inset accent bar", r["divBar"])
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

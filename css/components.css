@@ -240,7 +240,9 @@ button.ag-card:focus-visible, a.ag-card:focus-visible { outline: none; box-shado
 .ag-tile--stack small, .ag-tile--stack .ag-tile__label { font-size: var(--ag-text-xs); color: var(--ag-text-3); font-weight: 500; }
 .ag-tile--stack strong { font-size: var(--ag-text-lg); font-weight: 600; letter-spacing: -0.01em; }
 
-/* 리스트 아이템 (Triage 1234 / Fixing 0) */
+/* 리스트 아이템 (Triage 1234 / Fixing 0).
+   선택 가능한 목록(팀·태그 필터 등)은 <a>/<button> 으로 만들고 is-active 로 선택 상태 — 사이드바 밖에서 .ag-sidebar__item 을 빌려 쓰지 않는다.
+   <button class="ag-list__item is-active"><span class="ag-list__label">DBA</span><span class="ag-badge ag-badge--count">12</span></button> */
 .ag-list { display: flex; flex-direction: column; gap: var(--ag-space-2); }
 .ag-list__item {
   display: flex;
@@ -254,9 +256,14 @@ button.ag-card:focus-visible, a.ag-card:focus-visible { outline: none; box-shado
   box-shadow: var(--ag-card-edge);
   color: inherit;
   text-decoration: none;
-  transition: background var(--ag-dur) var(--ag-ease);
+  transition: background var(--ag-dur) var(--ag-ease), border-color var(--ag-dur) var(--ag-ease);
 }
+button.ag-list__item { width: 100%; text-align: left; font: inherit; cursor: pointer; }
+a.ag-list__item { cursor: pointer; }
 a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface-hover); text-decoration: none; }
+.ag-list__item.is-active { background: var(--ag-accent-soft); border-color: var(--ag-accent); color: var(--ag-text); }
+.ag-list__item.is-active .ag-icon { color: var(--ag-accent); }
+.ag-list__item.is-active .ag-badge--count { background: var(--ag-accent); color: var(--ag-text-on-accent); }
 .ag-list__label { display: inline-flex; align-items: center; gap: var(--ag-space-3); font-weight: 500; min-width: 0; }
 .ag-list__label span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ag-list__item--meter { flex-wrap: wrap; row-gap: 8px; }
@@ -265,6 +272,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-list--divided { gap: 0; }
 .ag-list--divided .ag-list__item { background: none; border: 0; border-bottom: 1px solid var(--ag-border); border-radius: 0; padding-inline: 0; }
 .ag-list--divided .ag-list__item:last-child { border-bottom: 0; }
+.ag-list--divided .ag-list__item.is-active { background: none; box-shadow: inset 3px 0 0 var(--ag-accent); padding-inline: 12px 0; color: var(--ag-text); }
 
 /* ---- Stat (38 Critical issues) --------------------------------------- */
 .ag-stat { display: flex; flex-direction: column; gap: var(--ag-space-1); min-width: 0; }

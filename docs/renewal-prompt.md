@@ -148,6 +148,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 설정 비교 | 변경 전후 diff | `.ag-diff` > `__line.is-add/.is-del/.is-ctx` · 나란히 `.ag-compare` |
 | 태그 | 키=값 태그 편집 | `.ag-tags` > `.ag-tag` (`__key` `__val` `__remove`) · 입력 `.ag-tag-input` |
 | 대시보드 | Treemap / 도넛 / 주간 바 | ApexCharts + `AG.charts.apex` · JS 없는 대안 `.ag-treemap` `.ag-donut` `.ag-cols` |
+| 공통 | 팀·태그·카테고리 필터 목록 (하나 선택) | `.ag-list` + `button.ag-list__item` + `is-active` — 사이드바 밖에서 `.ag-sidebar__item` 을 빌리지 않는다 |
 | 대시보드 | 분포 도넛 (ApexCharts) | `AG.charts.apex({chart:{type:'donut'}})` 또는 `.ag-donut` |
 | 대시보드 | 상태 bar + 분포 doughnut (Chart.js) | `AG.charts.chartjsDefaults(Chart)` 후 기존 코드 유지 |
 | 에디터 | EasyMDE 마크다운 에디터 | 래퍼 `<div class="ag-editor">` 로 감싸기 |
