@@ -569,6 +569,23 @@ new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor
         </div>
 
         <div class="ag-card ag-col-4">
+          <h3 class="ag-card__title">3단계 로그인 조각 · <code>.ag-auth__glass</code> 안</h3>
+          <p class="ag-text-xs ag-text-3">이메일 → OTP → 등록 흐름(templates/go-html-template/login.html)에서 쓰는 보조 요소. <code>.ag-otp-input</code> 은 한 칸짜리 6자리(login.html 의 <code>.ag-otp__cell</code> 분리 방식과 택일)</p>
+          <div class="ag-auth__glass ag-mt-3">
+            <span class="ag-auth__email-chip">andy@example.com<button type="button" aria-label="이메일 수정"><svg class="ag-icon ag-icon--sm"><use href="#i-x"/></svg></button></span>
+            <div class="ag-field"><label class="ag-label" for="otp-single">인증 코드</label><input class="ag-otp-input" id="otp-single" inputmode="numeric" maxlength="6" value="482913" aria-label="OTP 6자리"></div>
+            <div class="ag-auth__qr">
+              <span class="ag-auth__qr-icon"><svg class="ag-icon"><use href="#i-check"/></svg></span>
+              <h3>Authenticator 등록</h3>
+              <p>앱으로 스캔한 뒤 생성된 코드를 입력</p>
+              <div class="ag-qr" style="width:120px;height:120px"><svg class="ag-qr__img" viewBox="0 0 7 7" shape-rendering="crispEdges" aria-hidden="true"><path fill="#111" d="M0 0h3v3H0zM4 0h3v3H4zM0 4h3v3H0zM4 4h1v1H4zM6 4h1v1H6zM5 5h1v1H5zM4 6h1v1H4zM6 6h1v1H6z"/></svg></div>
+            </div>
+            <div class="ag-auth__foot">계정이 없나요? <a href="#">관리자에게 요청</a> · <a href="#">도움말</a></div>
+            <p class="ag-auth__mobile-foot" style="display:block">v1.1.0 · api <b>UP</b> · 960px 이하에서만 보이는 상태줄 (<code>__mobile-foot</code>, 여기선 강제 표시)</p>
+          </div>
+        </div>
+
+        <div class="ag-card ag-col-4">
           <h3 class="ag-card__title">.ag-slack (Block Kit 미리보기)</h3>
           <div class="ag-slack ag-slack--static">
             <div class="ag-slack__title"><span class="ag-dot"></span>미리보기 · #infra-notice</div>

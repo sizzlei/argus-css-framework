@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
+- 문서·카탈로그 정리: README 를 1.1.0 상태로 (dist 크기, 변형 선언 순서·소유권 원칙, 피드백 루프 처리 목록, `--ag-seq` 토큰 행, check.py 53항목, 빌드 체인). 카탈로그에 3단계 로그인 조각(`.ag-auth__email-chip` `.ag-otp-input` `.ag-auth__qr` `__qr-icon` `.ag-auth__foot` `__mobile-foot`) 카드 — CSS 에만 있고 예시가 없던 마지막 셀렉터들. 이제 `css/` 의 모든 클래스가 카탈로그·매트릭스·예시 중 한 곳에 나온다.
 - `button.ag-card` 에 `align-items: stretch` — 크로미움 UA 의 `button { align-items: center }` 가 안쪽 행을 shrink-wrap 시켜 `.ag-cluster--between` 오른쪽 정렬과 `.ag-code-block` 전체 폭이 깨지던 건. 서비스의 인라인 `align-items:stretch` 우회 불필요.
 - `.ag-list__item.is-active` 선택 상태 (액센트 soft 배경 + 액센트 테두리, count 배지 액센트) + `button.ag-list__item` 리셋(폭·정렬·폰트). `--divided` 안에서는 왼쪽 액센트 바. 팀 필터 같은 선택 목록이 사이드바 밖에서 `.ag-sidebar__item` 을 빌려 쓰던 건.
 - 순차 색 램프 토큰 `--ag-seq-1..5` (다크·라이트, `--ag-chart-1` → `--ag-surface-2` color-mix 15/36/57/78/100%) + `.ag-heat--1..5`. `AG.charts.sequential(n, base?)` 가 같은 값을 rgb 로 돌려주고, `AG.charts.heatRanges(min,max)` 가 Apex `colorScale.ranges` 를 만든다. `apex({type:'heatmap'})` 은 enableShades 를 끄고 series 범위로 램프를 자동 적용, 셀 경계는 `--ag-chart-grid` — 라이트에서 Apex 자체 shade 가 흰색으로 흐려져 셀이 사라지던 문제. `.ag-heat` 에 `--ag-chart-grid` 1px 안쪽 테두리를 넣어 값 0 셀도 카드와 구분. `--crit` 안의 `--empty` 가 crit 램프에 덮이던 것 수정.

@@ -20,22 +20,23 @@ A pure-CSS design system for admin pages — dark-first with a light theme, 7 co
 로컬에서는 저장소를 받아 `examples/index.html` 을 그냥 열면 된다 (빌드 불필요). 페이지 하단 왼쪽 네비로 이동, 우상단 버튼으로 다크/라이트 전환.
 
 ```
-dist/argus.min.css              ← 가장 단순한 선택: 이것 하나만 <link> (124KB, gzip 22KB)
+dist/argus.min.css              ← 가장 단순한 선택: 이것 하나만 <link> (134KB, gzip 23KB)
   — 또는 골라 쓰기 —
-dist/argus.core.min.css         ← 토큰·베이스·레이아웃·컴포넌트·유틸 (54KB, gzip 10KB). 최소 세트
-dist/argus.patterns.min.css     ← 인증·사이드바·로그·Slack·배너·알림·승인·⌘K·트리… (59KB, gzip 11KB)
-dist/argus.charts.min.css       ← CSS 차트 + Apex/Chart.js 보정 (11KB). 차트 있는 페이지만
+dist/argus.core.min.css         ← 토큰·베이스·레이아웃·컴포넌트·유틸 (62KB, gzip 12KB). 최소 세트
+dist/argus.patterns.min.css     ← 인증·사이드바·로그·Slack·배너·알림·승인·⌘K·트리… (61KB, gzip 11KB)
+dist/argus.charts.min.css       ← CSS 차트(도넛·바·히트맵·게이지…) + Apex/Chart.js 보정 (11KB, gzip 3KB). 차트 있는 페이지만
 dist/argus.auth-landing.min.css ← 랜딩형 인증 변형 (선택, 2KB)
 dist/themes/<color>.min.css     ← 컬러 테마 red / orange / yellow / green / blue / indigo / violet. css 다음에 한 줄 더 <link>
-dist/argus.js                   ← 선택. 테마 토글·탭·사이드바·드롭다운·모달·토스트·키보드·콤보박스 (minified)
-dist/argus.charts.js            ← 선택. ApexCharts / Chart.js 에 토큰 주입 (AG.charts.apex / chartjsDefaults)
+dist/argus.js                   ← 선택. 테마 토글·탭·사이드바·드롭다운·모달(소유권)·토스트·키보드·콤보박스·차트 호버 (11KB, gzip 3KB)
+dist/argus.charts.js            ← 선택. ApexCharts / Chart.js 에 토큰 주입 (AG.charts.apex / chartjsDefaults / sequential / heatRanges, 8KB)
 dist/VERSION
-css/ js/                        ← 소스. 읽을 땐 여기. (사람이 읽는 합본이 필요하면 `sh build.sh --readable`)
+css/ js/                        ← 소스. 읽을 땐 여기. js/modules/ 가 argus.js 로 합쳐진다 (사람이 읽는 합본이 필요하면 `sh build.sh --readable`)
 fonts/                          ← 폰트 self-host 키트 (fetch-fonts.sh → woff2 + fonts.css)
 index.html                      ← GitHub Pages 진입점 (examples/ 로 리다이렉트)
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
                                    index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
+tools/                          ← check.py(값 단언 회귀 53항목) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -86,6 +87,8 @@ Go `html/template` 앱이라면 `embed.FS` 로 `dist/` 파일 몇 개만 포함�
 - **토큰 우선**: 색·간격·라운드·그림자는 전부 `--ag-*` 변수. 앱별 커스터마이즈는 테마 파일 한 장 또는 `:root { --ag-accent: … }` 한 줄로.
 - **다크 기본, 라이트는 `data-theme="light"`**: 컴포넌트는 토큰만 참조하므로 테마 블록을 건드릴 일이 없습니다.
 - **상태색은 예약색**: `good / warn / crit / info` 는 상태 표시 전용. 엔진·태그·팀 같은 **범주**는 `--cat1~4`(배지·태그·점), 차트 시리즈는 `--ag-chart-1~4` — 같은 네 가지 색이라 화면 어디서든 범주 1 은 같은 색입니다 (두 테마 모두 색각이상 분리도 검증 완료). 다섯 번째 범주는 만들지 않습니다 → "기타".
+- **변형 선언 순서 = 우선순위**: 한 블록 안에서 모양(`--sm` `--count` `--stack`) → 톤(상태·액센트·범주) → 조합(`--solid`) 순으로 선언해 `:not()` 체인 없이 어떤 조합이든 예측 가능하게. 모양 변형은 색을 건드리지 않습니다. 폴백 규칙(컨테이너 없는 카드·버튼 간격)은 `:where()` 로 특이도 0.
+- **JS 는 자기가 연 것만 닫는다**: `argus.js` 의 바깥 클릭·ESC 는 `data-ag-open` 으로 연 오버레이에만 — Alpine/Vue 가 제어하는 것은 건드리지 않습니다 (아래 JS 헬퍼).
 - **유틸리티는 최소한**: 컴포넌트 클래스로 못 푸는 예외에만 `ag-mt-4`, `ag-text-3`, `ag-text-left/center/right`, `ag-scroll-y(--sm/--md/--lg)` 같은 유틸을 씁니다. Tailwind처럼 쓰려고 만든 게 아닙니다.
 
 ## 앱에 배포하기 (버전 관리)
@@ -142,11 +145,14 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 실제 서비스를 이 프레임워크로 갈아입히다 보면 "변형이 없다", "스크립트가 깨진다" 같은 건이 계속 나옵니다. 처리 원칙:
 
 1. **서비스 저장소에서 즉흥 CSS 를 만들지 않는다.** 없는 것은 그대로 두고(읽는 데 지장 없는 수준이면 기본 스타일로), 프레임워크에 "무엇이 어디서 몇 곳에 필요한지" 를 보고한다.
-2. 프레임워크에서 고친다 — CSS(`css/`) + **카탈로그 예시**(`examples/src/components.html`) + **README 컴포넌트 목록** + `CHANGELOG.md` 네 군데를 한 커밋에. 예시 없이 CSS 만 추가하지 않는다 (예시가 곧 회귀 테스트이자 문서).
-3. `sh build.sh && python3 build_examples.py` 후 1440/400px 다크·라이트 확인, 커밋.
+2. 프레임워크에서 고친다 — CSS(`css/`) + **카탈로그 예시**(`examples/src/components.html`) + **README 컴포넌트 목록** + `CHANGELOG.md` 네 군데를 한 커밋에. 변형을 추가했으면 `tools/gen_matrix.py` 목록에도, 서비스에서 들어온 버그면 `tools/check.py` 에 단언 하나. 예시 없이 CSS 만 추가하지 않는다 (예시가 곧 회귀 테스트이자 문서).
+3. `sh build.sh && python3 tools/gen_matrix.py && python3 build_examples.py && python3 tools/check.py` 통과 후 1440/400px 다크·라이트 확인, 커밋.
 4. 서비스는 `dist/` 를 다시 복사한다 (위 "앱에 배포하기").
 
-지금까지 이 루프로 들어온 것: `.ag-toast--warn/--info`, `.ag-provider__label`, `fonts/fetch-fonts.sh` 블록 파싱 두 건, 모바일 상단 바 넘침, `.ag-qr` 예시 누락 — 전부 `CHANGELOG.md` 1.0.0 항목에 있습니다.
+지금까지 이 루프로 들어온 것 (전부 `CHANGELOG.md` 에 있음):
+
+- 1.0.0: `.ag-toast--warn/--info`, `.ag-provider__label`, `fonts/fetch-fonts.sh` 블록 파싱 두 건, 모바일 상단 바 넘침, `.ag-qr` 예시 누락
+- 1.1.0: `.ag-badge--count` 가 톤을 덮던 것, `.ag-toast-stack--static` z-index, `a/button.ag-card` 의 display·`align-items`, `.ag-tile--stack`, `.ag-form-grid--2/--3/--4` + `--span2/--span3`, `.ag-input-group--end` 패딩, `.ag-text-left` `.ag-scroll-y`, 범주 아바타, 레이아웃 간격 토큰과 `.ag-page`, `--tabs` 초광폭, `.ag-glow` 복원, argus.js 오버레이 소유권·`<head>` 로드·Phosphor 아이콘, 히트맵 순차 램프 `--ag-seq-1..5` / `AG.charts.sequential`, `.ag-list__item.is-active`
 
 ## 토큰 요약
 
@@ -157,6 +163,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | 액센트 | `--ag-accent` (바이올렛) `--ag-accent-2` (핑크) | `*-soft` 는 투명 배경용 |
 | 상태 | `--ag-good` `--ag-warn` `--ag-crit` `--ag-info` | `*-soft` 동반 |
 | 차트 | `--ag-chart-1..4` `--ag-chart-hatch` `--ag-chart-grid` | 범주색 고정 순서 |
+| 순차 램프 | `--ag-seq-1..5` | 히트맵·밀도용 단일 색 5단계 (`--ag-chart-1` → `--ag-surface-2`). `.ag-heat--1..5` 와 `AG.charts.sequential(5)` 가 같은 값 |
 | 범주 | `--ag-cat-1..4` + `*-soft` `*-text` | 배지·태그·점에서 종류 구분. 차트 범주색과 같은 네 가지, 라이트는 글자색을 한 단계 깊게 |
 | 간격 | `--ag-space-1..12` | 4px 기준 |
 | 레이아웃 간격 | `--ag-gap-grid`(24) `--ag-gap-main`(32) `--ag-gap-section`(20) | 카드 사이 · 본문 블록 사이 · 섹션 헤드↔본문. 서비스가 `:root` 에서 한 번에 조정 |
@@ -169,7 +176,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 
 차트 (CSS 전용) `ag-donut` `ag-donut-legend` `ag-bars` `ag-cols` `ag-heatmap` (`--crit`) / `ag-heat` (`--l` 연속 또는 `--1…--5` = `--ag-seq-1..5`, `--empty`) `ag-heat-scale` `ag-gauge` `ag-ring` `ag-spark` `ag-stat-card` `ag-treemap` + ApexCharts 보정 (`.ag-chart .apexcharts-*`)
 
-패턴 `ag-daterange` `ag-banner` `ag-notif` `ag-meter-row--compact` `ag-approval` `ag-cmdk` `ag-wizard` `ag-combobox` `ag-tree` `ag-td--editable` `ag-skeleton-rows` · `data-density="compact"` · `@media print` (`.ag-print-header`) `ag-auth` (표준 인증: 어두운 표면 패널 + 점 격자 · `__logo-box` `__name` `__version` `__status` `__mobile-head` `__email-chip` `__qr` `__foot`; `--landing` 은 그라데이션 패널 변형) `ag-accordion` (details / `__toggle`+`is-open` / `--plain` / `--cards`) `ag-sidebar__node` (2단계 메뉴) `ag-modal-overlay` `ag-slack` (Block Kit 미리보기 전체) `ag-provider` `ag-account` `ag-user` `ag-pane` / `ag-pane-item` `ag-auth` `ag-otp` `ag-otp-input` `ag-qr` (흰 패딩 박스 180px, QR 자체는 img/svg/canvas 로) `ag-secret` `ag-status-screen` `ag-brand-mark` `ag-session` `ag-stepper` `ag-log` `ag-code` `ag-code-block` `ag-tok-*` `ag-editor` `ag-diff` `ag-compare` `ag-tag` (`--cat1~4`) `ag-tags` `ag-tag-input` `ag-dropzone` `ag-file` `ag-popover` `ag-accordion` `ag-bulkbar` `ag-tr--expand` `ag-table--sticky-col` `ag-spinner` `ag-loading-overlay` `ag-msg` `ag-health` `ag-glow` (`.ag-app` 배경 글로우, 선택) `ag-scrollbar-hide` · 사이드바 `is-collapsed` / `is-open` / `ag-sidebar-backdrop` / `ag-sidebar__group-toggle`
+패턴 `ag-daterange` `ag-banner` `ag-notif` `ag-meter-row--compact` `ag-approval` `ag-cmdk` `ag-wizard` `ag-combobox` `ag-tree` `ag-td--editable` `ag-skeleton-rows` · `data-density="compact"` · `@media print` (`.ag-print-header`) `ag-auth` (표준 인증: 어두운 표면 패널 + 점 격자 · `__logo-box` `__name` `__version` `__status` `__mobile-head` `__mobile-foot` · 폼 쪽 `__glass` `__email-chip` `__qr` `__qr-icon` `__foot`; `--landing` 은 그라데이션 패널 변형. 3단계 로그인 전체는 `templates/go-html-template/login.html`) `ag-accordion` (details / `__toggle`+`is-open` / `--plain` / `--cards`) `ag-sidebar__node` (2단계 메뉴) `ag-modal-overlay` `ag-slack` (Block Kit 미리보기 전체) `ag-provider` `ag-account` `ag-user` `ag-pane` / `ag-pane-item` `ag-otp` (칸 분리 `__cell`) / `ag-otp-input` (한 칸 6자리) `ag-qr` (흰 패딩 박스 180px, QR 자체는 img/svg/canvas 로) `ag-secret` `ag-status-screen` `ag-brand-mark` `ag-session` `ag-stepper` `ag-log` `ag-code` `ag-code-block` `ag-tok-*` `ag-editor` `ag-diff` `ag-compare` `ag-tag` (`--cat1~4`) `ag-tags` `ag-tag-input` `ag-dropzone` `ag-file` `ag-popover` `ag-accordion` `ag-bulkbar` `ag-tr--expand` `ag-table--sticky-col` `ag-spinner` `ag-loading-overlay` `ag-msg` `ag-health` `ag-glow` (`.ag-app` 배경 글로우, 선택) `ag-scrollbar-hide` · 사이드바 `is-collapsed` / `is-open` / `ag-sidebar-backdrop` / `ag-sidebar__group-toggle`
 
 컴포넌트 `ag-btn` `ag-btn-group` `ag-segmented` `ag-chip` `ag-meter-chips` `ag-badge` (`--good/--warn/--crit/--info` 상태 · `--cat1~4` 범주 · `--solid` · `--count` — count 는 모양만이라 어떤 톤과도 조합) `ag-dot` (`--cat1~4` 포함) `ag-delta` `ag-card` (`a.ag-card` / `button.ag-card` 는 정렬·밑줄·폰트·안쪽 행 전체 폭 자동 처리, `is-selected`) `ag-tile` (가로 라벨↔값 · `--stack` 세로 · `--inverse`) `ag-list` (`a/button.ag-list__item` + `is-active` 선택 목록 · `--divided` · `__item--meter`) `ag-stat` `ag-avatar` (`--good/--warn/--crit/--info/--accent2/--cat1~4/--neutral` · `--sm/--lg` · `--ring`) `ag-person` `ag-table` `ag-table-foot` `ag-pagination` `ag-field` `ag-input` `ag-select` `ag-textarea` `ag-check` `ag-switch` `ag-input-group` (앞 아이콘 · `--end` 뒤 버튼 · 둘 다 조합 가능) `ag-form-grid` (auto-fit 기본 · `--2/--3/--4` 열 고정 — `--full` 섞을 때는 고정 · 필드 `--span2/--span3/--full`) `ag-tabs` `ag-progress` `ag-meter-row` `ag-alert` `ag-insight` `ag-toast` (`--good` `--warn` `--crit` `--info`, 왼쪽 톤 바) `ag-dropdown` / `ag-menu` `ag-modal` `ag-drawer` `[data-tip]` `ag-empty` `ag-skeleton` `ag-kv` `ag-timeline` `ag-chart` `ag-legend` `ag-bubble` `ag-quick-actions`
 
@@ -193,7 +200,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | `data-ag-banner-close` / `.ag-daterange__presets .ag-chip[data-ag-days]` | 배너 닫기 / 날짜 프리셋이 두 date 입력을 채움 |
 | `[data-ag-cmdk]` | ⌘K / Ctrl+K 로 열리는 오버레이. 방향키·ESC 지원 |
 | 키보드 | 세그먼트·탭 ←→, 메뉴·cmdk·콤보박스·알림 ↑↓, ESC 로 모든 오버레이 닫기 |
-| `.ag-chart[data-ag-chart='[{x,y,label,value}]']` | 라인 차트 호버 툴팁 + 커서 |
+| `.ag-chart[data-ag-chart='[{x,y,label,value}]']` | 라인 차트 호버 툴팁 + 커서. 동적으로 추가한 차트는 `AG.chartHover()` 로 다시 붙임 |
 | `data-ag-sidebar-toggle` / `data-ag-sidebar-open` | 사이드바 접기(저장) / 모바일 열기 |
 | `.ag-sidebar__group[data-ag-group]` > `.ag-sidebar__group-toggle` | 그룹 접기(저장) |
 
@@ -205,7 +212,7 @@ AG.charts.chartjsDefaults(Chart);             // Chart.js 전역 기본값
 
 // 히트맵: 단일 색 순차 램프. CSS 토큰 --ag-seq-1..5 (= .ag-heat--1..5) 와 같은 색이라 CSS 셀과 Apex 셀이 맞고, 라이트에서 셀이 사라지지 않음
 new ApexCharts(el, AG.charts.apex({ chart:{type:'heatmap'}, series })).render();   // ranges 생략 → series 최소~최대 5등분, 셀 경계 --ag-chart-grid
-AG.charts.sequential(5)                       // ['rgb(…)', …] 연한→진한. sequential(n, '--ag-crit') 처럼 기준색 변경 가능
+AG.charts.sequential(5)                       // ['#2f2f49', …] 연한→진한 (#hex). sequential(n, '--ag-crit') 처럼 기준색 변경 가능
 AG.charts.heatRanges(0, 400)                  // Apex plotOptions.heatmap.colorScale.ranges 직접 지정할 때
 ```
 
@@ -221,7 +228,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 40항목 (Playwright). shots.py 는 스크린샷
+python3 tools/check.py      # 값 단언 회귀 53항목 (Playwright, 실패 시 exit 1). shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서
