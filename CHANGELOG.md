@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
+- `.ag-btn--ghost.ag-btn--danger` (투명·중립 → hover 시 crit-soft/crit 글자), `.ag-btn--outline.ag-btn--danger` (crit 테두리 → hover 시 crit-soft). 테이블 행의 삭제 버튼처럼 평소엔 조용해야 하는 파괴적 액션 — `--danger` 가 상시 붉게 칠해져 `--ghost` 와 조합이 안 되던 건.
 - 문서·카탈로그 정리: README 를 1.1.0 상태로 (dist 크기, 변형 선언 순서·소유권 원칙, 피드백 루프 처리 목록, `--ag-seq` 토큰 행, check.py 53항목, 빌드 체인). 카탈로그에 3단계 로그인 조각(`.ag-auth__email-chip` `.ag-otp-input` `.ag-auth__qr` `__qr-icon` `.ag-auth__foot` `__mobile-foot`) 카드 — CSS 에만 있고 예시가 없던 마지막 셀렉터들. 이제 `css/` 의 모든 클래스가 카탈로그·매트릭스·예시 중 한 곳에 나온다.
 - `button.ag-card` 에 `align-items: stretch` — 크로미움 UA 의 `button { align-items: center }` 가 안쪽 행을 shrink-wrap 시켜 `.ag-cluster--between` 오른쪽 정렬과 `.ag-code-block` 전체 폭이 깨지던 건. 서비스의 인라인 `align-items:stretch` 우회 불필요.
 - `.ag-list__item.is-active` 선택 상태 (액센트 soft 배경 + 액센트 테두리, count 배지 액센트) + `button.ag-list__item` 리셋(폭·정렬·폰트). `--divided` 안에서는 왼쪽 액센트 바. 팀 필터 같은 선택 목록이 사이드바 밖에서 `.ag-sidebar__item` 을 빌려 쓰던 건.

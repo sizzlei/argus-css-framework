@@ -164,6 +164,16 @@ async def main():
         check("list: --divided is-active shows inset accent bar", r["divBar"])
         await pg.close()
 
+        # ── 9e. 버튼 조합: ghost×danger 는 평소 투명·중립, hover 시 crit ──
+        pg = await page(b, "components.html")
+        r = await pg.evaluate("""()=>{const d=document.createElement('div');d.style.cssText='position:fixed;top:8px;left:8px;z-index:9999';d.innerHTML='<button class="ag-btn ag-btn--ghost ag-btn--danger" id="gd">x</button><button class="ag-btn ag-btn--ghost" id="g">x</button><button class="ag-btn ag-btn--danger" id="dg">x</button>';document.body.appendChild(d);
+          const c=id=>{const s=getComputedStyle(document.getElementById(id));return s.backgroundColor+'|'+s.color};return {gd:c('gd'),g:c('g'),dg:c('dg')}}""")
+        check("btn: ghost×danger idle == ghost (transparent, neutral)", r["gd"] == r["g"] and r["gd"] != r["dg"], str(r))
+        await pg.hover("#gd"); await pg.wait_for_timeout(250)
+        r2 = await pg.evaluate("()=>{const s=getComputedStyle(document.getElementById('gd'));const g=getComputedStyle(document.getElementById('g'));return {bg:s.backgroundColor, color:s.color, gcolor:g.color, crit:getComputedStyle(document.documentElement).getPropertyValue('--ag-crit').trim()}}")
+        check("btn: ghost×danger hover turns crit", r2["color"] != r2["gcolor"] and r2["bg"] != "rgba(0, 0, 0, 0)", str(r2))
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

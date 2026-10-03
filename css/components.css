@@ -42,6 +42,11 @@
 .ag-btn--outline { --_bg: transparent; --_bd: var(--ag-border-strong); }
 .ag-btn--danger { --_bg: var(--ag-crit-soft); --_fg: var(--ag-crit); --_bd: transparent; }
 .ag-btn--danger:hover { background: var(--ag-crit); color: #fff; border-color: transparent; }
+/* 조합(모양 × 톤 뒤에 선언): 행 액션의 삭제처럼 평소엔 중립, hover 에서만 경고 */
+.ag-btn--ghost.ag-btn--danger { --_bg: transparent; --_fg: var(--ag-text-2); }
+.ag-btn--ghost.ag-btn--danger:hover { background: var(--ag-crit-soft); color: var(--ag-crit); border-color: transparent; }
+.ag-btn--outline.ag-btn--danger { --_bg: transparent; --_fg: var(--ag-crit); --_bd: color-mix(in oklab, var(--ag-crit) 45%, transparent); }
+.ag-btn--outline.ag-btn--danger:hover { background: var(--ag-crit-soft); color: var(--ag-crit); border-color: var(--ag-crit); }
 .ag-btn--accent2 { --_bg: var(--ag-accent-2); --_fg: #fff; --_bd: transparent; }
 .ag-btn--accent2:hover { background: var(--ag-accent-2); opacity: .9; border-color: transparent; }
 

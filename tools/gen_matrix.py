@@ -60,6 +60,7 @@ rows = [
     row("아이콘 + 텍스트", [btn(v, "", ICON("plus", "ag-icon ag-icon--sm") + "추가") for v in BV]),
     row("disabled", [btn(v, dis=True) for v in BV]),
     row("--block", [btn(v, "ag-btn--block") for v in BV]),
+    row("× --danger (ghost/outline 은 평소 중립, hover 시 crit)", [btn(v, "ag-btn--danger") if v in ("ghost", "outline") else "<span class='ag-text-xs ag-text-3'>—</span>" for v in BV]),
 ]
 out.append(h("버튼 × 변형 × 크기 × 상태", "", "buttons"))
 out.append('<div class="ag-grid">' + card("ag-btn", table(BV, rows)) +
