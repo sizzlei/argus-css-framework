@@ -68,6 +68,9 @@ async def main():
         # ── 6. 카드: a/button 카드도 flex column + gap (display:block 이 gap 을 죽이던 버그) ──────
         r = await pg.evaluate("""()=>['a.ag-card','button.ag-card'].map(s=>{const e=document.querySelector(s);const c=getComputedStyle(e);return s+':'+c.display+'/'+c.flexDirection+'/'+c.textAlign})""")
         check("card: a/button keep flex column, left text", all("flex/column/left" in x for x in r), " ".join(r))
+        r = await pg.evaluate("""()=>{const b=document.createElement('button');b.className='ag-card';b.innerHTML='<div class="ag-cluster ag-cluster--between"><span>L</span><span>R</span></div>';document.body.appendChild(b);b.style.width='400px';
+          const cs=getComputedStyle(b),inner=b.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);return {ai:cs.alignItems,fill:Math.abs(b.firstElementChild.getBoundingClientRect().width-inner)<1}}""")
+        check("card: button.ag-card children fill width (UA align-items:center reset)", r["ai"] == "stretch" and r["fill"], str(r))
 
         # ── 7. 아바타·범주 톤 대비: soft 배경 위 글자 4.5:1 이상 (다크·라이트) ──────────────────
         for light in (False, True):
