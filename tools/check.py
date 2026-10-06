@@ -185,6 +185,21 @@ async def main():
             check(f"only-dark/light ({th}): exactly one Phosphor <i> visible, visible one keeps inline-block", ok, str(r))
             await pg.close()
 
+        # ── 9g. Phosphor <i> 가 svg .ag-icon 과 같은 대우: input-group 선행 아이콘 위치, .ag-user 캐럿 색, logo-box 크기 ──
+        pg = await page(b, "components.html")
+        r = await pg.evaluate("""()=>{const d=document.createElement('div');d.className='ag-card';d.innerHTML='<div class="ag-input-group"><i class="ph-bold ph-envelope" id="pi"></i><input class="ag-input" id="pin"></div>'
+          +'<div class="ag-input-group"><svg class="ag-icon" id="si"></svg><input class="ag-input"></div>'
+          +'<div class="ag-input-group ag-input-group--end"><input class="ag-input" id="noicon"><span class="ag-input-group__end"><button class="ag-btn ag-btn--sm ag-btn--ghost"><i class="ph-bold ph-x" id="endi"></i></button></span></div>'
+          +'<button class="ag-user"><span class="ag-user__text">x</span><i class="ph-bold ph-caret-down" id="pc"></i></button>'
+          +'<span class="ag-auth__logo-box"><i class="ph-bold ph-database" id="pl"></i></span>';document.body.appendChild(d);
+          const g=id=>getComputedStyle(document.getElementById(id));const inp=document.getElementById('pin').getBoundingClientRect(),ico=document.getElementById('pi').getBoundingClientRect();
+          return {pos:g('pi').position,left:g('pi').left,inside:ico.left>inp.left&&ico.left<inp.left+40,svgPos:g('si').position,endPos:g('endi').position,noiconPad:g('noicon').paddingLeft,
+            caret:g('pc').color,text3:getComputedStyle(document.documentElement).getPropertyValue('--ag-text-3').trim(),logo:g('pl').fontSize}}""")
+        check("phosphor: <i> in .ag-input-group is absolute at left 14px, inside the input", r["pos"] == "absolute" and r["left"] == "14px" and r["inside"] and r["svgPos"] == "absolute", str(r))
+        check("phosphor: <i> inside __end stays static; --end without leading icon keeps 14px padding", r["endPos"] == "static" and r["noiconPad"] == "14px", str(r))
+        check("phosphor: .ag-user caret colored text-3, .ag-auth__logo-box glyph 26px", r["logo"] == "26px" and r["caret"] != "rgb(255, 255, 255)", str(r))
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

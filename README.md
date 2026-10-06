@@ -36,7 +36,7 @@ index.html                      ← GitHub Pages 진입점 (examples/ 로 리다
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
                                    index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
-tools/                          ← check.py(값 단언 회귀 57항목) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
+tools/                          ← check.py(값 단언 회귀 60항목) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -184,7 +184,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 
 ## JS 헬퍼 (선택)
 
-`dist/argus.js` 는 data 속성으로만 동작합니다. **`<body>` 끝에서 로드하거나 `<head>` 에서 `defer` 로** — 1.1 부터는 `<head>` 에 그냥 넣어도 DOM 준비 후 초기화하지만, 클릭 위임은 로드 즉시 걸리므로 위치는 body 끝이 기본입니다. 아이콘은 `<svg class="ag-icon">` 과 Phosphor `<i class="ph-…">` 둘 다 접힌 사이드바·rail·dual 에서 살아남습니다.
+`dist/argus.js` 는 data 속성으로만 동작합니다. **`<body>` 끝에서 로드하거나 `<head>` 에서 `defer` 로** — 1.1 부터는 `<head>` 에 그냥 넣어도 DOM 준비 후 초기화하지만, 클릭 위임은 로드 즉시 걸리므로 위치는 body 끝이 기본입니다. 아이콘은 `<svg class="ag-icon">` 과 Phosphor `<i class="ph-…">` 둘 다 같은 대우를 받습니다 — 위치(입력칸 선행 아이콘)·색(사이드바·알림·토스트)·크기(로고 박스·드롭존) 규칙이 전부 `:is(.ag-icon, [class*="ph-"])` 라서 `<i>` 에 `ag-icon` 을 붙일 필요가 없고, 접힌 사이드바·rail·dual 에서도 살아남습니다.
 
 | 속성 | 동작 |
 |---|---|
@@ -228,7 +228,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 57항목 (Playwright, 실패 시 exit 1). shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
+python3 tools/check.py      # 값 단언 회귀 60항목 (Playwright, 실패 시 exit 1). shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서
