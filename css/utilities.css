@@ -104,8 +104,8 @@
 @media (max-width: 1200px) { .ag-hide-lg { display: none !important; } }
 @media (min-width: 721px)  { .ag-show-sm { display: none !important; } }
 
-/* Theme toggle helpers — <html data-theme="light"> 일 때만 보이는 요소 */
-.ag-only-dark  { display: revert; }
-.ag-only-light { display: none; }
-:root[data-theme="light"] .ag-only-dark  { display: none; }
-:root[data-theme="light"] .ag-only-light { display: revert; }
+/* Theme toggle helpers — 다크에서만 / 라이트에서만 보이는 요소 (테마 토글의 해·달 아이콘).
+   숨기는 규칙만 두고 "보이게 하는" 규칙은 없다 — 보이는 쪽은 요소 본래 display(svg inline, Phosphor <i> 의 inline-block)를 그대로 쓴다.
+   숨김 유틸이라 !important: phosphor.js 가 런타임에 <head> 끝에 넣는 [class^="ph-"] { display: inline-block } (같은 특이도, 캐스케이드상 뒤)가 덮지 못하게 */
+:root:not([data-theme="light"]) .ag-only-light { display: none !important; }
+:root[data-theme="light"]       .ag-only-dark  { display: none !important; }

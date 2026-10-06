@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
+- `.ag-only-dark` / `.ag-only-light` 가 Phosphor `<i>` 에서 안 먹던 건 — phosphor.js 가 런타임에 `<head>` 끝에 넣는 `[class^="ph-"] { display: inline-block }` 이 같은 특이도로 뒤에 와서 `display:none` 을 덮음. 숨기는 규칙만 `!important` 로 두고(`:root:not([data-theme=light]) .ag-only-light`, `:root[data-theme=light] .ag-only-dark`) 보이게 하는 규칙은 없애 요소 본래 display 를 유지. 다크에서 해·달이 둘 다 보이던 문제.
 - `.ag-btn--ghost.ag-btn--danger` (투명·중립 → hover 시 crit-soft/crit 글자), `.ag-btn--outline.ag-btn--danger` (crit 테두리 → hover 시 crit-soft). 테이블 행의 삭제 버튼처럼 평소엔 조용해야 하는 파괴적 액션 — `--danger` 가 상시 붉게 칠해져 `--ghost` 와 조합이 안 되던 건.
 - 문서·카탈로그 정리: README 를 1.1.0 상태로 (dist 크기, 변형 선언 순서·소유권 원칙, 피드백 루프 처리 목록, `--ag-seq` 토큰 행, check.py 53항목, 빌드 체인). 카탈로그에 3단계 로그인 조각(`.ag-auth__email-chip` `.ag-otp-input` `.ag-auth__qr` `__qr-icon` `.ag-auth__foot` `__mobile-foot`) 카드 — CSS 에만 있고 예시가 없던 마지막 셀렉터들. 이제 `css/` 의 모든 클래스가 카탈로그·매트릭스·예시 중 한 곳에 나온다.
 - `button.ag-card` 에 `align-items: stretch` — 크로미움 UA 의 `button { align-items: center }` 가 안쪽 행을 shrink-wrap 시켜 `.ag-cluster--between` 오른쪽 정렬과 `.ag-code-block` 전체 폭이 깨지던 건. 서비스의 인라인 `align-items:stretch` 우회 불필요.

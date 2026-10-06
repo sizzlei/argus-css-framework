@@ -174,6 +174,17 @@ async def main():
         check("btn: ghost×danger hover turns crit", r2["color"] != r2["gcolor"] and r2["bg"] != "rgba(0, 0, 0, 0)", str(r2))
         await pg.close()
 
+        # ── 9f. .ag-only-dark/--light: phosphor.js 가 <head> 끝에 주입하는 [class^="ph-"]{display:inline-block} 보다 이긴다 ──
+        for light in (False, True):
+            pg = await page(b, "components.html", light=light)
+            r = await pg.evaluate("""()=>{const st=document.createElement('style');st.textContent='[class^="ph-"],[class*=" ph-"]{display:inline-block}';document.head.appendChild(st);
+              const d=document.createElement('div');d.innerHTML='<i class="ph-bold ph-sun ag-only-dark"></i><i class="ph-bold ph-moon ag-only-light"></i>';document.body.appendChild(d);
+              const [s,m]=d.children;return {sun:getComputedStyle(s).display,moon:getComputedStyle(m).display}}""")
+            th = "light" if light else "dark"
+            ok = (r["moon"] == "none" and r["sun"] == "inline-block") if not light else (r["sun"] == "none" and r["moon"] == "inline-block")
+            check(f"only-dark/light ({th}): exactly one Phosphor <i> visible, visible one keeps inline-block", ok, str(r))
+            await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);
