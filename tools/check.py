@@ -236,6 +236,13 @@ async def main():
         check("table: --clickable rows pointer, action cell default, tr.is-clickable alone works", r["row"] == "pointer" and r["act"] == "default" and r["single"] == "pointer" and r["plain"] == "auto", str(r))
         await pg.close()
 
+        # ── 9k. .ag-segmented 항목 8개 @400px: 안에서 스크롤, 문서 가로 스크롤 없음 ──
+        pg = await page(b, "components.html", 400, 900)
+        r = await pg.evaluate("""()=>{const d=document.createElement('div');d.className='ag-card';d.innerHTML='<div class="ag-segmented" id="sg">'+Array.from({length:8},(_,i)=>'<button class="ag-segmented__item">탭 항목 '+(i+1)+'</button>').join('')+'</div>';document.body.appendChild(d);const sg=document.getElementById('sg');
+          return {inner:sg.scrollWidth>sg.clientWidth,ov:getComputedStyle(sg).overflowX,doc:document.documentElement.scrollWidth,vw:document.documentElement.clientWidth,wrap:getComputedStyle(sg.firstElementChild).whiteSpace}}""")
+        check("segmented: 8 items @400px scroll inside, no document overflow, items don't wrap", r["inner"] and r["ov"] == "auto" and r["doc"] <= r["vw"] and r["wrap"] == "nowrap", str(r))
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);
