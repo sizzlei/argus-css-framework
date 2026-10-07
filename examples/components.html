@@ -564,7 +564,9 @@ new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor
               <div class="ag-stack ag-flex-1" style="min-width:200px">
                 <p class="ag-text-sm ag-text-2">Authenticator 앱으로 스캔하거나 아래 키를 직접 입력</p>
                 <div class="ag-secret">JBSW Y3DP EHPK 3PXP<button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="복사"><svg class="ag-icon ag-icon--sm"><use href="#i-copy"/></svg></button></div>
-                <p class="ag-text-xs ag-text-3">QR 은 서비스가 <code>&lt;img&gt;</code>/<code>&lt;svg&gt;</code>/<code>&lt;canvas&gt;</code> 로 넣는다 — 프레임워크는 흰 패딩 박스와 180px 크기만 잡는다. 예시 QR 은 otpauth 데모 URL.</p>
+                <p class="ag-text-xs ag-text-3">QR 은 서비스가 <code>&lt;img&gt;</code>/<code>&lt;svg&gt;</code>/<code>&lt;canvas&gt;</code> 로 넣는다 — 프레임워크는 흰 패딩 박스와 180px 크기만 잡는다. 예시 QR 은 otpauth 데모 URL. 생성 전에는 <code>.ag-qr__pending</code> 이 같은 180px 자리를 잡는다 →</p>
+              </div>
+              <div class="ag-qr"><div class="ag-qr__pending">QR 코드 생성 중…</div>
               </div>
             </div>
           </div>
@@ -914,6 +916,16 @@ innodb_buffer_pool_size = 48G</pre></div>
 innodb_buffer_pool_size = 56G</pre></div>
           </div>
           <dl class="ag-kv ag-kv--stack"><dt>엔드포인트</dt><dd class="ag-mono">order-db-writer.cluster-abc123…:3306</dd><dt>파라미터 그룹</dt><dd>prod-order-mysql80</dd></dl>
+        </div>
+        <div class="ag-card ag-col-4 ag-stack">
+          <h3 class="ag-card__title">.ag-quick-actions · <code>__body</code> 2줄 라벨</h3>
+          <div class="ag-quick-actions">
+            <a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--1"><svg class="ag-icon"><use href="#i-database"/></svg></span>스냅샷 생성</a>
+            <a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--2"><svg class="ag-icon"><use href="#i-shield"/></svg></span>권한 발급</a>
+            <a class="ag-quick-action" href="#" target="_blank" rel="noopener"><span class="ag-quick-action__icon ag-quick-action__icon--3"><svg class="ag-icon"><use href="#i-sparkle"/></svg></span><span class="ag-quick-action__body"><span class="ag-quick-action__title">온보딩 가이드</span><span class="ag-quick-action__meta">새 창에서 열림 · 위키</span></span><svg class="ag-icon ag-icon--sm ag-quick-action__end"><use href="#i-arrow-up-right"/></svg></a>
+            <a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--4"><svg class="ag-icon"><use href="#i-refresh"/></svg></span><span class="ag-quick-action__body"><span class="ag-quick-action__title">파라미터 적용</span><span class="ag-quick-action__meta">마지막 적용 2시간 전</span></span></a>
+          </div>
+          <p class="ag-text-xs ag-text-3">한 줄이면 텍스트를 바로, 제목+부제면 <code>__body</code> 안에 <code>__title</code>/<code>__meta</code>. 오른쪽 끝 아이콘은 <code>__end</code>.</p>
         </div>
         <div class="ag-card ag-col-4 ag-stack">
           <h3 class="ag-card__title">도넛 크기 · 두꺼운 바 · 그룹 막대</h3>

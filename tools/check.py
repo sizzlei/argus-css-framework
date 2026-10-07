@@ -200,6 +200,15 @@ async def main():
         check("phosphor: .ag-user caret colored text-3, .ag-auth__logo-box glyph 26px", r["logo"] == "26px" and r["caret"] != "rgb(255, 255, 255)", str(r))
         await pg.close()
 
+        # ── 9h. .ag-qr__pending 은 img 와 같은 180px / .ag-quick-action__body 는 남은 폭을 채우고 __meta 가 말줄임 ──
+        pg = await page(b, "components.html")
+        r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-qr"><div class="ag-qr__pending">…</div></div><div class="ag-quick-actions" style="width:400px"><a class="ag-quick-action" href="#"><span class="ag-quick-action__icon"></span><span class="ag-quick-action__body"><span class="ag-quick-action__title">T</span><span class="ag-quick-action__meta">'+'m'.repeat(80)+'</span></span><svg class="ag-icon ag-icon--sm ag-quick-action__end"></svg></a></div>';document.body.appendChild(d);
+          const p=d.querySelector('.ag-qr__pending').getBoundingClientRect(),a=d.querySelector('.ag-quick-action'),b=d.querySelector('.ag-quick-action__body'),m=d.querySelector('.ag-quick-action__meta');
+          return {w:p.width,h:p.height,fits:a.scrollWidth<=a.clientWidth+1,bodyFlex:getComputedStyle(b).flexGrow,clip:m.scrollWidth>m.clientWidth&&getComputedStyle(m).textOverflow==='ellipsis'}}""")
+        check("qr: __pending occupies 180×180", r["w"] == 180 and r["h"] == 180, str(r))
+        check("quick-action: __body fills, long __meta ellipsizes without overflowing the tile", r["fits"] and r["bodyFlex"] == "1" and r["clip"], str(r))
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

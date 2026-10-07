@@ -122,7 +122,10 @@
 
 /* QR 박스 (OTP 등록) */
 .ag-qr { display: inline-grid; place-content: center; padding: 12px; border-radius: var(--ag-radius-lg); background: #fff; border: 1px solid var(--ag-border); }
-.ag-qr img, .ag-qr svg, .ag-qr canvas { width: 180px; height: 180px; display: block; }
+.ag-qr img, .ag-qr svg, .ag-qr canvas, .ag-qr__pending { width: 180px; height: 180px; display: block; }
+/* 생성 중 플레이스홀더 — 같은 180px 자리를 차지해 QR 이 들어와도 레이아웃이 안 움직인다. 박스가 항상 흰색이라 회색은 테마 무관 리터럴 */
+.ag-qr__pending { display: grid; place-items: center; text-align: center; border-radius: var(--ag-radius-sm); color: #555; font-size: var(--ag-text-xs);
+  background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%); background-size: 200% 100%; animation: ag-shimmer 1.4s linear infinite; }
 .ag-secret { display: flex; align-items: center; gap: 8px; padding: 10px 12px; border-radius: var(--ag-radius-md); background: var(--ag-surface-2); border: 1px dashed var(--ag-border-strong); font-family: var(--ag-font-mono); font-size: var(--ag-text-sm); word-break: break-all; }
 .ag-secret .ag-btn { margin-left: auto; flex: none; }
 

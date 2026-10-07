@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
+- `.ag-qr__pending` — QR 생성 전 180px 플레이스홀더(shimmer, 흰 박스 위라 테마 무관 회색). 템플릿의 인라인 크기·`#666` 우회 제거. `.ag-quick-action__body` > `__title` + `__meta` 2줄 라벨, `__end` 오른쪽 끝 아이콘 — 부제를 `data-tip` 으로 돌리던 건.
 - 아이콘을 문맥으로 잡는 규칙 47개(`.ag-input-group` 선행 아이콘 위치, `.ag-user` 캐럿, `.ag-auth__logo-box`·`.ag-brand-mark`·`.ag-dropzone`… 크기, 사이드바·cmdk·토스트·알림·승인 색)를 전부 `:is(.ag-icon, [class*="ph-"])` 로 — Phosphor `<i>` 가 svg 와 같은 대우를 받는다. 크기 규칙에는 `font-size` 동반. `.ag-input-group--end:not(:has(> …))` 도 포함. 로그인 이메일 입력의 Phosphor 아이콘이 입력칸 밖으로 밀리던 건. 템플릿의 `<i class="ph-… ag-icon">` 우회 제거.
 - `.ag-only-dark` / `.ag-only-light` 가 Phosphor `<i>` 에서 안 먹던 건 — phosphor.js 가 런타임에 `<head>` 끝에 넣는 `[class^="ph-"] { display: inline-block }` 이 같은 특이도로 뒤에 와서 `display:none` 을 덮음. 숨기는 규칙만 `!important` 로 두고(`:root:not([data-theme=light]) .ag-only-light`, `:root[data-theme=light] .ag-only-dark`) 보이게 하는 규칙은 없애 요소 본래 display 를 유지. 다크에서 해·달이 둘 다 보이던 문제.
 - `.ag-btn--ghost.ag-btn--danger` (투명·중립 → hover 시 crit-soft/crit 글자), `.ag-btn--outline.ag-btn--danger` (crit 테두리 → hover 시 crit-soft). 테이블 행의 삭제 버튼처럼 평소엔 조용해야 하는 파괴적 액션 — `--danger` 가 상시 붉게 칠해져 `--ghost` 와 조합이 안 되던 건.

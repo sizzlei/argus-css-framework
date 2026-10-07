@@ -813,6 +813,11 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   transition: background var(--ag-dur) var(--ag-ease), border-color var(--ag-dur) var(--ag-ease);
 }
 .ag-quick-action:hover { background: var(--ag-surface-hover); border-color: var(--ag-border-strong); text-decoration: none; }
+/* 2줄 라벨: <span class="ag-quick-action__body"><span class="ag-quick-action__title">온보딩 가이드</span><span class="ag-quick-action__meta">새 창에서 열림</span></span> */
+.ag-quick-action__body { display: flex; flex-direction: column; gap: 2px; min-width: 0; flex: 1; }
+.ag-quick-action__title { font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-quick-action__meta { font-size: var(--ag-text-xs); font-weight: 400; color: var(--ag-text-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-quick-action__end { margin-left: auto; color: var(--ag-text-3); flex: none; }
 .ag-quick-action__icon { width: 30px; height: 30px; border-radius: 8px; display: grid; place-content: center; flex: none; }
 .ag-quick-action__icon :is(.ag-icon, [class*="ph-"]) { width: 15px; height: 15px; font-size: 15px; }
 .ag-quick-action__icon--1 { background: var(--ag-warn-soft);   color: var(--ag-warn); }

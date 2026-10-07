@@ -91,7 +91,7 @@ out.append('<div class="ag-grid">' + ''.join(f'<div class="ag-col-3">{cardv(v)}<
 <a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--1">{ICON("database")}</span>스냅샷 생성</a>
 <a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--2">{ICON("shield")}</span>권한 발급</a>
 <a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--3">{ICON("activity")}</span>슬로우 쿼리</a>
-<a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--4">{ICON("refresh")}</span>파라미터 적용</a>
+<a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--4">{ICON("refresh")}</span><span class="ag-quick-action__body"><span class="ag-quick-action__title">파라미터 적용 (__body 2줄)</span><span class="ag-quick-action__meta">__meta · 긴 부제는 말줄임으로 잘린다 — 아주 길게 써서 확인하는 문장</span></span>{ICON("arrow-up-right", "ag-icon ag-icon--sm ag-quick-action__end")}</a>
 </div>''', 6)
     + card("ag-grid--auto (자동 채움) · ag-col-9 + ag-col-3 · ag-spacer", '''<div class="ag-grid ag-grid--auto"><div class="ag-tile">auto 1</div><div class="ag-tile">auto 2</div><div class="ag-tile">auto 3</div><div class="ag-tile">auto 4</div></div>
 <div class="ag-grid"><div class="ag-tile ag-col-9">col-9</div><div class="ag-tile ag-col-3">col-3</div></div>
