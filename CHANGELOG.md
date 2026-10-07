@@ -1,6 +1,8 @@
 # Changelog
 
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
+- 단색 카드(`.ag-card--accent/--accent2/--inverse`)가 안쪽에서 `--ag-text/-2/-3` `--ag-border(-strong)` `--ag-surface-2/-3/-hover` 토큰을 재정의 — `.ag-text-2/-3` 만 보정하던 것을 토큰 단위로 바꿔 `.ag-label` `.ag-hint` `.ag-stat__label` `.ag-kv dt` `.ag-card__foot` `.ag-btn--outline` 등 토큰을 쓰는 모든 컴포넌트가 배경 위에서 읽힌다 (violet·yellow × 다크·라이트 대비 단언). 액센트 카드를 포기하고 일반 카드로 우회하던 건.
+- `--ag-chart-other` / `--ag-cat-other`(+`-soft` `-text`) — "기타" 조각용 중립 회색(다크 #7a7f90, 라이트 #a0a5b8, 명도 밴드 안). `.ag-bars__seg--other` `.ag-cols__bar--other` `.ag-dot--other` `.ag-badge--other` `.ag-avatar--other`. `AG.charts.palette(n)` 은 5번째(마지막)를 기타 회색으로, `apex()` 는 series 수에 맞춰 colors 자동 — 상위 4 + 기타 도넛/stacked bar 에서 기타가 1번 색을 반복하던 건.
 - `.ag-qr__pending` — QR 생성 전 180px 플레이스홀더(shimmer, 흰 박스 위라 테마 무관 회색). 템플릿의 인라인 크기·`#666` 우회 제거. `.ag-quick-action__body` > `__title` + `__meta` 2줄 라벨, `__end` 오른쪽 끝 아이콘 — 부제를 `data-tip` 으로 돌리던 건.
 - 아이콘을 문맥으로 잡는 규칙 47개(`.ag-input-group` 선행 아이콘 위치, `.ag-user` 캐럿, `.ag-auth__logo-box`·`.ag-brand-mark`·`.ag-dropzone`… 크기, 사이드바·cmdk·토스트·알림·승인 색)를 전부 `:is(.ag-icon, [class*="ph-"])` 로 — Phosphor `<i>` 가 svg 와 같은 대우를 받는다. 크기 규칙에는 `font-size` 동반. `.ag-input-group--end:not(:has(> …))` 도 포함. 로그인 이메일 입력의 Phosphor 아이콘이 입력칸 밖으로 밀리던 건. 템플릿의 `<i class="ph-… ag-icon">` 우회 제거.
 - `.ag-only-dark` / `.ag-only-light` 가 Phosphor `<i>` 에서 안 먹던 건 — phosphor.js 가 런타임에 `<head>` 끝에 넣는 `[class^="ph-"] { display: inline-block }` 이 같은 특이도로 뒤에 와서 `display:none` 을 덮음. 숨기는 규칙만 `!important` 로 두고(`:root:not([data-theme=light]) .ag-only-light`, `:root[data-theme=light] .ag-only-dark`) 보이게 하는 규칙은 없애 요소 본래 display 를 유지. 다크에서 해·달이 둘 다 보이던 문제.

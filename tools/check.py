@@ -209,6 +209,26 @@ async def main():
         check("quick-action: __body fills, long __meta ellipsizes without overflowing the tile", r["fits"] and r["bodyFlex"] == "1" and r["clip"], str(r))
         await pg.close()
 
+        # ── 9i. 단색 카드 안의 흐린 텍스트·outline 버튼 대비 (violet 기본 + yellow 테마, 다크·라이트) / 기타 색 ──
+        for theme in ("", "yellow"):
+            for light in (False, True):
+                pg = await page(b, "components.html", light=light)
+                if theme:
+                    await pg.add_style_tag(path=str(ROOT / f"dist/themes/{theme}.min.css")); await pg.wait_for_timeout(100)
+                r = await pg.evaluate("""()=>{const d=document.createElement('div');d.className='ag-card ag-card--accent';d.innerHTML='<span class="ag-label" id="l">x</span><span class="ag-hint" id="h">x</span><span class="ag-stat__label" id="s">x</span><dl class="ag-kv"><dt id="k">x</dt></dl><div class="ag-card__foot"><span class="ag-text-3" id="f">x</span><button class="ag-btn ag-btn--outline" id="o">x</button></div>';document.body.appendChild(d);
+                  const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});const px=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return [...ctx.getImageData(0,0,1,1).data]};
+                  const bg=px(getComputedStyle(d).backgroundColor);const lum=p=>{const f=v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4};return .2126*f(p[0])+.7152*f(p[1])+.0722*f(p[2])};
+                  const over=(fg,bg)=>{const a=fg[3]/255;return [0,1,2].map(i=>fg[i]*a+bg[i]*(1-a))};const cr=(c)=>{const f=over(px(c),bg),L1=lum(f),L2=lum(bg);return (Math.max(L1,L2)+.05)/(Math.min(L1,L2)+.05)};
+                  const out={};for(const id of ['l','h','s','k','f','o'])out[id]=+cr(getComputedStyle(document.getElementById(id)).color).toFixed(2);out.ob=+cr(getComputedStyle(document.getElementById('o')).borderColor).toFixed(2);out.full=+cr(getComputedStyle(d).color).toFixed(2);return out}""")
+                th = (theme or "violet") + "/" + ("light" if light else "dark")
+                # 액센트 자체가 밝으면(violet 다크 ≈3.3:1) 흰 글자도 그 이상은 못 나온다 — 흐린 단계가 4.5:1 이상이거나(본문 대비의 80% 이상이고 2.6:1 이상)이면 통과
+                check(f"accent card ({th}): muted text keeps ≥80% of body contrast and ≥2.6:1, outline btn = body text, border visible", all(r[k] >= 2.6 and (r[k] >= 4.5 or r[k] >= .8 * r["full"]) for k in ("l", "h", "s", "k", "f")) and r["o"] == r["full"] and r["ob"] >= 1.5, str(r))
+                await pg.close()
+        pg = await page(b, "components.html")
+        r = await pg.evaluate("()=>({p5:AG.charts.palette(5),p4:AG.charts.palette(4),other:AG.charts.other(),t3:getComputedStyle(document.documentElement).getPropertyValue('--ag-chart-other').trim()})")
+        check("palette(5): last = --ag-chart-other, first four = palette(4)", r["p5"][4] == r["other"] == r["t3"] and r["p5"][:4] == r["p4"] and r["other"] not in r["p4"], str(r))
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

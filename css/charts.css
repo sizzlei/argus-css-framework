@@ -81,6 +81,7 @@
 .ag-bars__seg--2 { background: var(--ag-chart-2); }
 .ag-bars__seg--3 { background: var(--ag-chart-3); }
 .ag-bars__seg--4 { background: var(--ag-chart-4); }
+.ag-bars__seg--other { background: var(--ag-chart-other); }
 .ag-bars__seg--accent { background: var(--ag-accent); }
 .ag-bars__seg--muted { background: var(--ag-surface-3); }
 .ag-bars__seg--hatch { background: var(--ag-chart-hatch), var(--ag-surface-3); }
@@ -114,6 +115,7 @@
 .ag-cols__bar--2 { background: var(--ag-chart-2); }
 .ag-cols__bar--3 { background: var(--ag-chart-3); }
 .ag-cols__bar--4 { background: var(--ag-chart-4); }
+.ag-cols__bar--other { background: var(--ag-chart-other); }
 .ag-cols__bar--muted { background: var(--ag-surface-3); }
 .ag-cols__label { font-size: var(--ag-text-xs); color: var(--ag-text-3); text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ag-cols__col:hover .ag-cols__bar { filter: brightness(1.15); }

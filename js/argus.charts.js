@@ -9,6 +9,7 @@
       AG.charts.chartjsDefaults(Chart);                     // Chart.js 전역 기본값 주입
       new Chart(ctx, { type:'bar', data:{ datasets:[{ data, backgroundColor: AG.charts.palette() }] } });
 
+      AG.charts.palette(5)                                  // 상위 4 범주색 + 마지막 "기타" 중립 회색(--ag-chart-other)
       AG.charts.sequential(5)                               // 히트맵용 순차 램프 — CSS 토큰 --ag-seq-1..5 와 같은 색 (rgb 문자열)
       AG.charts.apex({ chart:{type:'heatmap'}, series, plotOptions:{ heatmap:{ colorScale:{ ranges: AG.charts.heatRanges(0, 400) } } } })
 */
@@ -35,6 +36,7 @@
   function tokens() {
     return {
       c: [token('--ag-chart-1'), token('--ag-chart-2'), token('--ag-chart-3'), token('--ag-chart-4')],
+      other: token('--ag-chart-other') || token('--ag-text-3'),
       good: token('--ag-good'), warn: token('--ag-warn'), crit: token('--ag-crit'), info: token('--ag-info'),
       accent: token('--ag-accent'), accent2: token('--ag-accent-2'),
       text: token('--ag-text'), text2: token('--ag-text-2'), text3: token('--ag-text-3'),
@@ -60,12 +62,15 @@
 
   AG.charts = {
     tokens: tokens,
-    /* 범주색 n개. 5개 이상은 "기타"로 묶기를 권장하지만, 필요하면 소프트 톤으로 반복한다. */
+    /* 범주색 n개. 상위 4개는 범주색, 5번째는 "기타" 중립 회색(--ag-chart-other) — 상위 4 + 기타 = 5조각이 1번 색을 반복하지 않는다.
+       6개 이상은 범주색을 다시 돌지만(권장하지 않음) 마지막 조각은 항상 기타. 데이터를 "상위 4 + 기타" 로 미리 묶는 쪽이 맞다. */
     palette: function (n) {
       var t = tokens(), out = [];
-      for (var i = 0; i < (n || 4); i++) out.push(t.c[i % 4]);
+      n = n || 4;
+      for (var i = 0; i < n; i++) out.push(i < 4 ? t.c[i] : i === n - 1 ? t.other : t.c[(i - 4) % 4]);
       return out;
     },
+    other: function () { return tokens().other; },
     status: function () { var t = tokens(); return { good: t.good, warn: t.warn, crit: t.crit, info: t.info }; },
 
     /* ---- 순차 램프 (히트맵·밀도) ----
@@ -110,7 +115,7 @@
           animations: { speed: 400, animateGradually: { enabled: false } }
         },
         theme: { mode: t.dark ? 'dark' : 'light' },
-        colors: t.c,
+        colors: AG.charts.palette(Math.max(4, (userOptions && Array.isArray(userOptions.series) ? userOptions.series.length : 0))),   /* 5개면 마지막이 기타 회색 */
         stroke: { width: type === 'line' || type === 'area' ? 2 : 0, curve: 'smooth', lineCap: 'round' },
         fill: type === 'area' ? { type: 'gradient', gradient: { shadeIntensity: 0, opacityFrom: .22, opacityTo: 0, stops: [0, 100] } } : { opacity: 1 },
         dataLabels: { enabled: false },

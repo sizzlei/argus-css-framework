@@ -110,6 +110,7 @@
   --ag-chart-2: #f2508c;
   --ag-chart-3: #189fb8;
   --ag-chart-4: #c97a14;
+  --ag-chart-other: #7a7f90;   /* "기타" 조각 — 5번째 범주색이 아니라 중립 회색. 명도 밴드(0.48–0.67) 안, 채도 없음 */
   --ag-chart-grid: rgb(255 255 255 / .06);
   --ag-chart-axis: var(--ag-text-3);
   --ag-chart-hatch: repeating-linear-gradient(135deg, rgb(255 255 255 / .22) 0 2px, transparent 2px 6px);
@@ -128,6 +129,7 @@
   --ag-cat-2: var(--ag-chart-2); --ag-cat-2-text: #f66b9d;           --ag-cat-2-soft: rgb(242 80 140 / .18);
   --ag-cat-3: var(--ag-chart-3); --ag-cat-3-text: #3fb8cf;           --ag-cat-3-soft: rgb(24 159 184 / .20);
   --ag-cat-4: var(--ag-chart-4); --ag-cat-4-text: #e0963a;           --ag-cat-4-soft: rgb(201 122 20 / .20);
+  --ag-cat-other: var(--ag-chart-other); --ag-cat-other-text: var(--ag-text-2); --ag-cat-other-soft: rgb(122 127 144 / .22);
 }
 
 /* ======================================================================
@@ -180,6 +182,7 @@
   --ag-chart-2: #e0266f;
   --ag-chart-3: #0891b2;
   --ag-chart-4: #d97706;
+  --ag-chart-other: #a0a5b8;
   --ag-chart-grid: rgb(16 18 32 / .07);
   --ag-chart-hatch: repeating-linear-gradient(135deg, rgb(16 18 32 / .18) 0 2px, transparent 2px 6px);
 
@@ -195,6 +198,7 @@
   --ag-cat-2-text: #b81e5b; --ag-cat-2-soft: rgb(224 38 111 / .12);
   --ag-cat-3-text: #0a7490; --ag-cat-3-soft: rgb(8 145 178 / .13);
   --ag-cat-4-text: #9a5200; --ag-cat-4-soft: rgb(217 119 6 / .14);
+  --ag-cat-other-text: var(--ag-text-2); --ag-cat-other-soft: rgb(160 165 184 / .22);
 
   --ag-shadow-sm: 0 1px 2px rgb(16 18 32 / .06);
   --ag-shadow-md: 0 8px 24px -8px rgb(16 18 32 / .14);

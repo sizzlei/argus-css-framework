@@ -36,7 +36,7 @@ index.html                      ← GitHub Pages 진입점 (examples/ 로 리다
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
                                    index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
-tools/                          ← check.py(값 단언 회귀 62항목) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
+tools/                          ← check.py(값 단언 회귀 67항목) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -86,7 +86,7 @@ Go `html/template` 앱이라면 `embed.FS` 로 `dist/` 파일 몇 개만 포함�
 - **접두사 `ag-`**: 기존 페이지의 Bootstrap / 자체 CSS와 충돌 없이 점진 적용. BEM 변형(`block__element--modifier`), 상태는 `is-active`, `is-selected`, `is-invalid`.
 - **토큰 우선**: 색·간격·라운드·그림자는 전부 `--ag-*` 변수. 앱별 커스터마이즈는 테마 파일 한 장 또는 `:root { --ag-accent: … }` 한 줄로.
 - **다크 기본, 라이트는 `data-theme="light"`**: 컴포넌트는 토큰만 참조하므로 테마 블록을 건드릴 일이 없습니다.
-- **상태색은 예약색**: `good / warn / crit / info` 는 상태 표시 전용. 엔진·태그·팀 같은 **범주**는 `--cat1~4`(배지·태그·점), 차트 시리즈는 `--ag-chart-1~4` — 같은 네 가지 색이라 화면 어디서든 범주 1 은 같은 색입니다 (두 테마 모두 색각이상 분리도 검증 완료). 다섯 번째 범주는 만들지 않습니다 → "기타".
+- **상태색은 예약색**: `good / warn / crit / info` 는 상태 표시 전용. 엔진·태그·팀 같은 **범주**는 `--cat1~4`(배지·태그·점), 차트 시리즈는 `--ag-chart-1~4` — 같은 네 가지 색이라 화면 어디서든 범주 1 은 같은 색입니다 (두 테마 모두 색각이상 분리도 검증 완료). 다섯 번째 범주는 만들지 않습니다 → "기타" 는 중립 회색 `--ag-chart-other` (`AG.charts.palette(5)` 의 마지막, `.ag-dot--other`).
 - **변형 선언 순서 = 우선순위**: 한 블록 안에서 모양(`--sm` `--count` `--stack`) → 톤(상태·액센트·범주) → 조합(`--solid`) 순으로 선언해 `:not()` 체인 없이 어떤 조합이든 예측 가능하게. 모양 변형은 색을 건드리지 않습니다. 폴백 규칙(컨테이너 없는 카드·버튼 간격)은 `:where()` 로 특이도 0.
 - **JS 는 자기가 연 것만 닫는다**: `argus.js` 의 바깥 클릭·ESC 는 `data-ag-open` 으로 연 오버레이에만 — Alpine/Vue 가 제어하는 것은 건드리지 않습니다 (아래 JS 헬퍼).
 - **유틸리티는 최소한**: 컴포넌트 클래스로 못 푸는 예외에만 `ag-mt-4`, `ag-text-3`, `ag-text-left/center/right`, `ag-scroll-y(--sm/--md/--lg)` 같은 유틸을 씁니다. Tailwind처럼 쓰려고 만든 게 아닙니다.
@@ -162,9 +162,9 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | 잉크 | `--ag-text` `--ag-text-2` `--ag-text-3` | 본문 / 보조 / 메타 |
 | 액센트 | `--ag-accent` (바이올렛) `--ag-accent-2` (핑크) | `*-soft` 는 투명 배경용 |
 | 상태 | `--ag-good` `--ag-warn` `--ag-crit` `--ag-info` | `*-soft` 동반 |
-| 차트 | `--ag-chart-1..4` `--ag-chart-hatch` `--ag-chart-grid` | 범주색 고정 순서 |
+| 차트 | `--ag-chart-1..4` `--ag-chart-other` `--ag-chart-hatch` `--ag-chart-grid` | 범주색 고정 순서. `other` 는 "기타" 조각용 중립 회색 — 상위 4 + 기타 = 5조각이 1번 색을 반복하지 않음 |
 | 순차 램프 | `--ag-seq-1..5` | 히트맵·밀도용 단일 색 5단계 (`--ag-chart-1` → `--ag-surface-2`). `.ag-heat--1..5` 와 `AG.charts.sequential(5)` 가 같은 값 |
-| 범주 | `--ag-cat-1..4` + `*-soft` `*-text` | 배지·태그·점에서 종류 구분. 차트 범주색과 같은 네 가지, 라이트는 글자색을 한 단계 깊게 |
+| 범주 | `--ag-cat-1..4` `--ag-cat-other` + `*-soft` `*-text` | 배지·태그·점에서 종류 구분. 차트 범주색과 같은 네 가지 + 기타(`.ag-badge--other` `.ag-dot--other` `.ag-avatar--other`), 라이트는 글자색을 한 단계 깊게 |
 | 간격 | `--ag-space-1..12` | 4px 기준 |
 | 레이아웃 간격 | `--ag-gap-grid`(24) `--ag-gap-main`(32) `--ag-gap-section`(20) | 카드 사이 · 본문 블록 사이 · 섹션 헤드↔본문. 서비스가 `:root` 에서 한 번에 조정 |
 | 라운드 | `--ag-radius-sm/md/lg/xl/pill` | 8 / 12 / 18 / 24 / 999 |
@@ -174,11 +174,11 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 
 레이아웃 `ag-app` `ag-app--sidebar` `ag-topbar` `ag-nav` `ag-sidebar` `ag-main` `ag-page` (x-data 같은 본문 래퍼에 — 블록 간격 이어받음, `--tight`) `ag-page-header` `ag-section` `ag-grid` + `ag-col-N` `ag-stack` `ag-cluster` `ag-row` `ag-breadcrumb`
 
-차트 (CSS 전용) `ag-donut` `ag-donut-legend` `ag-bars` `ag-cols` `ag-heatmap` (`--crit`) / `ag-heat` (`--l` 연속 또는 `--1…--5` = `--ag-seq-1..5`, `--empty`) `ag-heat-scale` `ag-gauge` `ag-ring` `ag-spark` `ag-stat-card` `ag-treemap` + ApexCharts 보정 (`.ag-chart .apexcharts-*`)
+차트 (CSS 전용) `ag-donut` `ag-donut-legend` `ag-bars` (`__seg--1~4/--other/--accent/--muted/--hatch`) `ag-cols` (`__bar--1~4/--other/--muted`) `ag-heatmap` (`--crit`) / `ag-heat` (`--l` 연속 또는 `--1…--5` = `--ag-seq-1..5`, `--empty`) `ag-heat-scale` `ag-gauge` `ag-ring` `ag-spark` `ag-stat-card` `ag-treemap` + ApexCharts 보정 (`.ag-chart .apexcharts-*`)
 
 패턴 `ag-daterange` `ag-banner` `ag-notif` `ag-meter-row--compact` `ag-approval` `ag-cmdk` `ag-wizard` `ag-combobox` `ag-tree` `ag-td--editable` `ag-skeleton-rows` · `data-density="compact"` · `@media print` (`.ag-print-header`) `ag-auth` (표준 인증: 어두운 표면 패널 + 점 격자 · `__logo-box` `__name` `__version` `__status` `__mobile-head` `__mobile-foot` · 폼 쪽 `__glass` `__email-chip` `__qr` `__qr-icon` `__foot`; `--landing` 은 그라데이션 패널 변형. 3단계 로그인 전체는 `templates/go-html-template/login.html`) `ag-accordion` (details / `__toggle`+`is-open` / `--plain` / `--cards`) `ag-sidebar__node` (2단계 메뉴) `ag-modal-overlay` `ag-slack` (Block Kit 미리보기 전체) `ag-provider` `ag-account` `ag-user` `ag-pane` / `ag-pane-item` `ag-otp` (칸 분리 `__cell`) / `ag-otp-input` (한 칸 6자리) `ag-qr` (흰 패딩 박스 180px, QR 자체는 img/svg/canvas 로 · 생성 전 `__pending` 플레이스홀더) `ag-secret` `ag-status-screen` `ag-brand-mark` `ag-session` `ag-stepper` `ag-log` `ag-code` `ag-code-block` `ag-tok-*` `ag-editor` `ag-diff` `ag-compare` `ag-tag` (`--cat1~4`) `ag-tags` `ag-tag-input` `ag-dropzone` `ag-file` `ag-popover` `ag-accordion` `ag-bulkbar` `ag-tr--expand` `ag-table--sticky-col` `ag-spinner` `ag-loading-overlay` `ag-msg` `ag-health` `ag-glow` (`.ag-app` 배경 글로우, 선택) `ag-scrollbar-hide` · 사이드바 `is-collapsed` / `is-open` / `ag-sidebar-backdrop` / `ag-sidebar__group-toggle`
 
-컴포넌트 `ag-btn` (`--primary/--outline/--ghost/--inverse/--danger/--accent2` · `--sm/--lg/--icon/--block` · 조합 `--ghost.--danger` 는 평소 중립 → hover 시 crit, `--outline.--danger` 는 crit 테두리 — 테이블 행의 삭제 버튼용) `ag-btn-group` `ag-segmented` `ag-chip` `ag-meter-chips` `ag-badge` (`--good/--warn/--crit/--info` 상태 · `--cat1~4` 범주 · `--solid` · `--count` — count 는 모양만이라 어떤 톤과도 조합) `ag-dot` (`--cat1~4` 포함) `ag-delta` `ag-card` (`a.ag-card` / `button.ag-card` 는 정렬·밑줄·폰트·안쪽 행 전체 폭 자동 처리, `is-selected`) `ag-tile` (가로 라벨↔값 · `--stack` 세로 · `--inverse`) `ag-list` (`a/button.ag-list__item` + `is-active` 선택 목록 · `--divided` · `__item--meter`) `ag-stat` `ag-avatar` (`--good/--warn/--crit/--info/--accent2/--cat1~4/--neutral` · `--sm/--lg` · `--ring`) `ag-person` `ag-table` `ag-table-foot` `ag-pagination` `ag-field` `ag-input` `ag-select` `ag-textarea` `ag-check` `ag-switch` `ag-input-group` (앞 아이콘 · `--end` 뒤 버튼 · 둘 다 조합 가능) `ag-form-grid` (auto-fit 기본 · `--2/--3/--4` 열 고정 — `--full` 섞을 때는 고정 · 필드 `--span2/--span3/--full`) `ag-tabs` `ag-progress` `ag-meter-row` `ag-alert` `ag-insight` `ag-toast` (`--good` `--warn` `--crit` `--info`, 왼쪽 톤 바) `ag-dropdown` / `ag-menu` `ag-modal` `ag-drawer` `[data-tip]` `ag-empty` `ag-skeleton` `ag-kv` `ag-timeline` `ag-chart` `ag-legend` `ag-bubble` `ag-quick-actions` / `ag-quick-action` (`__icon--1~4` · 2줄 라벨 `__body` > `__title` + `__meta` · `__end`)
+컴포넌트 `ag-btn` (`--primary/--outline/--ghost/--inverse/--danger/--accent2` · `--sm/--lg/--icon/--block` · 조합 `--ghost.--danger` 는 평소 중립 → hover 시 crit, `--outline.--danger` 는 crit 테두리 — 테이블 행의 삭제 버튼용) `ag-btn-group` `ag-segmented` `ag-chip` `ag-meter-chips` `ag-badge` (`--good/--warn/--crit/--info` 상태 · `--cat1~4` 범주 · `--solid` · `--count` — count 는 모양만이라 어떤 톤과도 조합) `ag-dot` (`--cat1~4` 포함) `ag-delta` `ag-card` (`--accent/--accent2/--inverse` 단색 카드는 안쪽 텍스트·테두리·서브표면 토큰을 재정의해 `.ag-label` `.ag-hint` `.ag-stat__label` `.ag-kv dt` `.ag-card__foot` `.ag-btn--outline` 이 보정 없이 읽힘 · `--accent-soft` · `--interactive` · `a.ag-card` / `button.ag-card` 는 정렬·밑줄·폰트·안쪽 행 전체 폭 자동 처리, `is-selected`) `ag-tile` (가로 라벨↔값 · `--stack` 세로 · `--inverse`) `ag-list` (`a/button.ag-list__item` + `is-active` 선택 목록 · `--divided` · `__item--meter`) `ag-stat` `ag-avatar` (`--good/--warn/--crit/--info/--accent2/--cat1~4/--neutral` · `--sm/--lg` · `--ring`) `ag-person` `ag-table` `ag-table-foot` `ag-pagination` `ag-field` `ag-input` `ag-select` `ag-textarea` `ag-check` `ag-switch` `ag-input-group` (앞 아이콘 · `--end` 뒤 버튼 · 둘 다 조합 가능) `ag-form-grid` (auto-fit 기본 · `--2/--3/--4` 열 고정 — `--full` 섞을 때는 고정 · 필드 `--span2/--span3/--full`) `ag-tabs` `ag-progress` `ag-meter-row` `ag-alert` `ag-insight` `ag-toast` (`--good` `--warn` `--crit` `--info`, 왼쪽 톤 바) `ag-dropdown` / `ag-menu` `ag-modal` `ag-drawer` `[data-tip]` `ag-empty` `ag-skeleton` `ag-kv` `ag-timeline` `ag-chart` `ag-legend` `ag-bubble` `ag-quick-actions` / `ag-quick-action` (`__icon--1~4` · 2줄 라벨 `__body` > `__title` + `__meta` · `__end`)
 
 전체 모양과 조합 예시는 `examples/components.html` 에서 확인하세요.
 
@@ -209,6 +209,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 const chart = new ApexCharts(el, AG.charts.apex({ chart:{type:'donut',height:280}, series:[108,61,17], labels:['MySQL','PostgreSQL','Oracle'] }));
 chart.render(); AG.charts.register(chart);   // data-theme 바뀌면 자동 재렌더
 AG.charts.chartjsDefaults(Chart);             // Chart.js 전역 기본값
+AG.charts.palette(5)                          // 범주색 4 + 마지막 "기타" 중립 회색(--ag-chart-other). apex() 는 series 수에 맞춰 자동
 
 // 히트맵: 단일 색 순차 램프. CSS 토큰 --ag-seq-1..5 (= .ag-heat--1..5) 와 같은 색이라 CSS 셀과 Apex 셀이 맞고, 라이트에서 셀이 사라지지 않음
 new ApexCharts(el, AG.charts.apex({ chart:{type:'heatmap'}, series })).render();   // ranges 생략 → series 최소~최대 5등분, 셀 경계 --ag-chart-grid
@@ -228,7 +229,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 62항목 (Playwright, 실패 시 exit 1). shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
+python3 tools/check.py      # 값 단언 회귀 67항목 (Playwright, 실패 시 exit 1). shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서

@@ -9,7 +9,7 @@ css/            소스. 빌드 순서 = tokens → base → layout → component
 dist/           build.sh 산출물(전부 minified). 직접 수정 금지. argus.min.css(전체) / core·patterns·charts·auth-landing.min.css(골라 쓰기) / themes/*.min.css / *.js
 js/modules/     선택 헬퍼 소스. 10-core(테마·사이드바·탭) 20-overlay(드롭다운·모달·배너·날짜·토스트닫기·확장행) 30-keyboard 40-chart-hover 50-toast. build 가 합친다
 js/argus.charts.js  ApexCharts/Chart.js 프리셋
-tools/          check.py 값 단언 회귀(62항목, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
+tools/          check.py 값 단언 회귀(67항목, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
 examples/src/   예시 페이지 소스. <!--@icons--> 는 _icons.html 스프라이트로 치환됨
 examples/       build_examples.py 산출물. 직접 수정 금지. GitHub Pages 가 main 브랜치 루트를 그대로 서빙하므로 커밋 전 반드시 빌드 (루트 index.html 은 examples/ 로 리다이렉트, .nojekyll 로 _icons.html 등 밑줄 파일 유지)
 docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프롬프트 키트
@@ -38,7 +38,7 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 - 접두사 `ag-`. BEM 변형: `.ag-block`, `.ag-block__element`, `.ag-block--modifier`.
 - 상태는 `is-*` (`is-active`, `is-selected`, `is-invalid`, `is-collapsed`, `is-open`, `is-loading`).
 - 크기는 `--sm / --md(기본, 생략) / --lg`. 톤은 `--good / --warn / --crit / --info / --accent / --accent2 / --inverse`.
-- 차트 시리즈 번호는 `--1 … --4`. 5번째 범주색을 만들지 않는다 (→ "기타"로 묶는다).
+- 차트 시리즈 번호는 `--1 … --4`. 5번째 범주색을 만들지 않는다 (→ "기타"로 묶고 `--ag-chart-other` 중립 회색 / `--other` 변형을 쓴다).
 - 아이콘을 문맥으로 잡는 규칙은 `:is(.ag-icon, [class*="ph-"])` 로 쓴다 (svg 와 Phosphor `<i>` 동일 대우). 크기는 width/height 와 함께 `font-size`. 캐럿만 골라야 하면 `[class*="ph-caret"]`.
 - 숫자가 든 컴포넌트에는 `font-variant-numeric: tabular-nums` 가 상속되는지 확인한다 (`.ag-num`, table, stat, badge 는 이미 적용).
 
@@ -49,6 +49,7 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 - 다크가 기본(`:root`). 라이트는 `:root[data-theme="light"]` 블록에서 **토큰만** 재정의한다.
 - 컴포넌트 규칙 안에 `[data-theme]` 셀렉터나 `prefers-color-scheme` 를 쓰지 않는다. 테마는 토큰이 처리한다.
 - 새 토큰은 반드시 다크·라이트 양쪽에 정의한다. 한쪽만 있으면 빌드는 통과하지만 화면이 깨진다.
+- 단색 카드(`--accent/--accent2/--inverse`) 안의 텍스트 보정은 개별 클래스가 아니라 카드가 토큰(`--ag-text*`, `--ag-border*`, `--ag-surface-2/3/hover`)을 재정의하는 방식으로 한다. 새 컴포넌트가 토큰만 쓰면 자동으로 따라온다.
 - 상태색(good/warn/crit/info)은 상태 표시 전용. 차트 시리즈·장식에 쓰지 않는다.
 - 차트 범주색을 바꾸면 dataviz 검증(명도 밴드 다크 0.48–0.67 / 라이트 0.43–0.77, 인접쌍 CVD ΔE ≥ 8)을 두 테마 모두 다시 통과시킨다.
 
