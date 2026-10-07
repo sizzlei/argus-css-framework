@@ -265,6 +265,17 @@ async def main():
             check(f"tag ({'light' if light else 'dark'}): --crit colors val+border, --cat1 leaves val default, crit val ≥ 4.5:1", r["critVal"] and r["catVal"] and r["critBorder"] and r["cr"] >= 4.5, str(r))
             await pg.close()
 
+        # ── 9n. ag-chip 상태 변형: soft 글자 대비 4.5:1(다크·라이트), --outline 과 조합 시 톤이 이김, --solid 조합 ──
+        for light in (False, True):
+            pg = await page(b, "components.html", light=light)
+            r = await pg.evaluate("""()=>{const d=document.createElement('div');d.className='ag-card';d.innerHTML=['good','warn','crit','info'].map(t=>'<span class="ag-chip ag-chip--'+t+'" id="c-'+t+'">x</span>').join('')+'<span class="ag-chip ag-chip--outline ag-chip--crit" id="oc">x</span>'+['good','warn','crit','info'].map(t=>'<span class="ag-chip ag-chip--solid ag-chip--'+t+'" id="sc-'+t+'">x</span><span class="ag-badge ag-badge--solid ag-badge--'+t+'" id="sb-'+t+'">x</span>').join('')+'<span class="ag-chip" id="c0">x</span>';document.body.appendChild(d);
+              const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});const px=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return [...ctx.getImageData(0,0,1,1).data]};const lum=p=>{const f=v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4};return .2126*f(p[0])+.7152*f(p[1])+.0722*f(p[2])};
+              const card=px(getComputedStyle(d).backgroundColor);const over=(fg,bg)=>{const a=fg[3]/255;return [0,1,2].map(i=>fg[i]*a+bg[i]*(1-a))};
+              const cr=id=>{const s=getComputedStyle(document.getElementById(id));const bg=over(px(s.backgroundColor),card),fg=over(px(s.color),bg);const L1=lum(fg),L2=lum(bg);return +((Math.max(L1,L2)+.05)/(Math.min(L1,L2)+.05)).toFixed(2)};
+              const g=id=>getComputedStyle(document.getElementById(id));return {cr:['good','warn','crit','info'].map(t=>cr('c-'+t)),solid:Math.min(...['good','warn','crit','info'].flatMap(t=>[cr('sc-'+t),cr('sb-'+t)])),outlineToned:g('oc').color===g('c-crit').color&&g('oc').backgroundColor!=='rgba(0, 0, 0, 0)',plain:g('c0').color}}""")
+            check(f"chip/badge ({'light' if light else 'dark'}): status soft text ≥ 4.5:1, every solid chip+badge ≥ 4.5:1, --outline+--crit keeps crit tone", all(c >= 4.5 for c in r["cr"]) and r["solid"] >= 4.5 and r["outlineToned"], str(r))
+            await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

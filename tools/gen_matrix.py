@@ -69,7 +69,7 @@ out.append('<div class="ag-grid">' + card("ag-btn", table(BV, rows)) +
 <div class="ag-segmented"><button class="ag-segmented__item is-active">전체</button><button class="ag-segmented__item">prod</button><button class="ag-segmented__item">stg</button></div>
 <div class="ag-segmented ag-segmented--sm"><button class="ag-segmented__item is-active">A</button><button class="ag-segmented__item">B</button></div>
 <span class="ag-chip">칩</span><span class="ag-chip is-active">선택</span><button class="ag-chip" type="button">버튼 칩 ×</button>
-</div>''') + '</div></section>\n')
+</div><div class="demo">''' + ''.join(f'<span class="ag-chip ag-chip--sm ag-chip--{t}">{t}</span>' for t in ["good","warn","crit","info"]) + ''.join(f'<span class="ag-chip ag-chip--sm ag-chip--solid ag-chip--{t}">solid {t}</span>' for t in ["good","warn","crit","info"]) + ''.join(f'<span class="ag-chip ag-chip--outline ag-chip--sm ag-chip--{t}">outline+{t}</span>' for t in ["warn","crit"]) + '''</div>''') + '</div></section>\n')
 
 # ---------- 카드 · 타일 ----------
 CV = ["", "accent", "accent2", "inverse", "elevated", "interactive", "sm"]

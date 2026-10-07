@@ -9,7 +9,7 @@ css/            소스. 빌드 순서 = tokens → base → layout → component
 dist/           build.sh 산출물(전부 minified). 직접 수정 금지. argus.min.css(전체) / core·patterns·charts·auth-landing.min.css(골라 쓰기) / themes/*.min.css / *.js
 js/modules/     선택 헬퍼 소스. 10-core(테마·사이드바·탭) 20-overlay(드롭다운·모달·배너·날짜·토스트닫기·확장행) 30-keyboard 40-chart-hover 50-toast. build 가 합친다
 js/argus.charts.js  ApexCharts/Chart.js 프리셋
-tools/          check.py 값 단언 회귀(74항목, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
+tools/          check.py 값 단언 회귀(76항목, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
 examples/src/   예시 페이지 소스. <!--@icons--> 는 _icons.html 스프라이트로 치환됨
 examples/       build_examples.py 산출물. 직접 수정 금지. GitHub Pages 가 main 브랜치 루트를 그대로 서빙하므로 커밋 전 반드시 빌드 (루트 index.html 은 examples/ 로 리다이렉트, .nojekyll 로 _icons.html 등 밑줄 파일 유지)
 docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프롬프트 키트

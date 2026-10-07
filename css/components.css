@@ -111,6 +111,16 @@
 .ag-chip--inverse { background: var(--ag-inverse);  color: var(--ag-text-on-inverse); border-color: transparent; }
 .ag-chip--hatch   { background: var(--ag-chart-hatch), var(--ag-surface-2); }
 .ag-chip--outline { background: transparent; border-color: var(--ag-border-strong); }
+/* 상태 변형 (soft 배경 + 상태 글자색 + 톤 테두리) — "쿼리 오류 난 점검 코드" 처럼 되돌리기 전까지 눈에 띄어야 하는 항목.
+   색만으로 말하지 않는다: 아이콘·텍스트 동반. 톤 변형이라 --sm/--outline 뒤, 조합 --solid 는 그 뒤 */
+.ag-chip--good { background: var(--ag-good-soft); color: var(--ag-good-text); border-color: color-mix(in oklab, var(--ag-good) 40%, transparent); }
+.ag-chip--warn { background: var(--ag-warn-soft); color: var(--ag-warn-text); border-color: color-mix(in oklab, var(--ag-warn) 40%, transparent); }
+.ag-chip--crit { background: var(--ag-crit-soft); color: var(--ag-crit-text); border-color: color-mix(in oklab, var(--ag-crit) 40%, transparent); }
+.ag-chip--info { background: var(--ag-info-soft); color: var(--ag-info-text); border-color: color-mix(in oklab, var(--ag-info) 40%, transparent); }
+.ag-chip--solid.ag-chip--good { background: var(--ag-good-solid); color: var(--ag-text-on-good); border-color: transparent; }
+.ag-chip--solid.ag-chip--warn { background: var(--ag-warn-solid); color: var(--ag-text-on-warn); border-color: transparent; }
+.ag-chip--solid.ag-chip--crit { background: var(--ag-crit-solid); color: var(--ag-text-on-crit); border-color: transparent; }
+.ag-chip--solid.ag-chip--info { background: var(--ag-info-solid); color: var(--ag-text-on-info); border-color: transparent; }
 .ag-chip__label { font-size: var(--ag-text-sm); color: var(--ag-text-2); font-weight: 500; }
 
 /* 라벨이 위에 붙는 미터 칩 묶음 */
@@ -154,10 +164,10 @@
 .ag-badge--other { background: var(--ag-cat-other-soft); color: var(--ag-cat-other-text); }
 .ag-badge--inverse { background: var(--ag-inverse); color: var(--ag-text-on-inverse); }
 /* ③ 톤 × solid */
-.ag-badge--solid.ag-badge--good   { background: var(--ag-good);   color: #0b1a14; }
-.ag-badge--solid.ag-badge--warn   { background: var(--ag-warn);   color: #1a1400; }
-.ag-badge--solid.ag-badge--crit   { background: var(--ag-crit);   color: #fff; }
-.ag-badge--solid.ag-badge--info   { background: var(--ag-info);   color: #04111a; }
+.ag-badge--solid.ag-badge--good   { background: var(--ag-good-solid);   color: var(--ag-text-on-good); }
+.ag-badge--solid.ag-badge--warn   { background: var(--ag-warn-solid);   color: var(--ag-text-on-warn); }
+.ag-badge--solid.ag-badge--crit   { background: var(--ag-crit-solid);   color: var(--ag-text-on-crit); }
+.ag-badge--solid.ag-badge--info   { background: var(--ag-info-solid);   color: var(--ag-text-on-info); }
 .ag-badge--solid.ag-badge--accent { background: var(--ag-accent); color: var(--ag-text-on-accent); }
 .ag-badge--solid.ag-badge--accent2{ background: var(--ag-accent-2); color: #fff; }
 .ag-badge--solid.ag-badge--cat1 { background: var(--ag-cat-1); color: #fff; }
