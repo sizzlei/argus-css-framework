@@ -39,10 +39,10 @@ rows = [
     row("--count --solid", [badge(t, "ag-badge--count ag-badge--solid", "7") for t in TONES]),
 ]
 out.append(h("배지 × 톤 × 모양", "12톤 × 9모양. 셀 하나라도 회색/기본으로 떨어지면 소스 순서 버그", "badges"))
-tags = ''.join(f'<span class="ag-tag ag-tag--cat{i}"><span class="ag-tag__key">cat{i}</span><span class="ag-tag__val">값</span></span>' for i in range(1,5)) + '<span class="ag-tag"><span class="ag-tag__key">기본</span><span class="ag-tag__val">값</span><button class="ag-tag__remove" aria-label="제거">×</button></span>'
+tags = ''.join(f'<span class="ag-tag ag-tag--cat{i}"><span class="ag-tag__key">cat{i}</span><span class="ag-tag__val">값</span></span>' for i in range(1,5)) + '<span class="ag-tag ag-tag--other"><span class="ag-tag__key">other</span><span class="ag-tag__val">기타</span></span>' + ''.join(f'<span class="ag-tag ag-tag--{t}"><span class="ag-tag__key">{t}</span><span class="ag-tag__val">{l}</span><button class="ag-tag__remove" aria-label="제거">×</button></span>' for t,l in [("good","동기화됨"),("warn","값 3종"),("crit","제거 예약"),("info","신규")]) + '<span class="ag-tag"><span class="ag-tag__key">기본</span><span class="ag-tag__val">값</span><button class="ag-tag__remove" aria-label="제거">×</button></span>'
 AV = ["", "good", "warn", "crit", "info", "accent2", "cat1", "cat2", "cat3", "cat4", "neutral"]
 av_rows = [row(sz or "기본", [f'<span class="ag-avatar{(" ag-avatar--"+t) if t else ""}{(" "+sz) if sz else ""}">AN</span>' for t in AV]) for sz in ["ag-avatar--sm", "", "ag-avatar--lg", "ag-avatar--ring"]]
-out.append('<div class="ag-grid">' + card("ag-badge", table(TONES, rows)) + card("ag-tag × 범주", f'<div class="demo">{tags}</div>', 4) + card("ag-avatar × 톤 × 크기", table(AV, av_rows), 8) + '</div></section>\n')
+out.append('<div class="ag-grid">' + card("ag-badge", table(TONES, rows)) + card("ag-tag × 범주 · other · 상태(good/warn/crit/info)", f'<div class="demo">{tags}</div>', 4) + card("ag-avatar × 톤 × 크기", table(AV, av_rows), 8) + '</div></section>\n')
 
 # ---------- 버튼 ----------
 BV = ["", "primary", "outline", "ghost", "inverse", "danger", "accent2"]

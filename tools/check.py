@@ -254,6 +254,17 @@ async def main():
         check("secret inline: data-ag-reveal toggles input.is-masked", r3["masked"] is False and r3["pressed"] == "true", str(r3))
         await pg.close()
 
+        # ── 9m. ag-tag 상태 변형: 키·값·테두리가 상태색, 범주 변형은 값은 기본색 (다크·라이트 값 글자 대비 4.5:1) ──
+        for light in (False, True):
+            pg = await page(b, "components.html", light=light)
+            r = await pg.evaluate("""()=>{const d=document.createElement('div');d.className='ag-card';d.innerHTML='<span class="ag-tag ag-tag--crit" id="tc"><span class="ag-tag__key">k</span><span class="ag-tag__val">v</span></span><span class="ag-tag ag-tag--cat1" id="t1"><span class="ag-tag__key">k</span><span class="ag-tag__val">v</span></span><span class="ag-tag" id="t0"><span class="ag-tag__key">k</span><span class="ag-tag__val">v</span></span>';document.body.appendChild(d);
+              const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});const px=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return [...ctx.getImageData(0,0,1,1).data]};const lum=p=>{const f=v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4};return .2126*f(p[0])+.7152*f(p[1])+.0722*f(p[2])};
+              const cr=(fg,bg)=>{const a=px(fg),b=px(bg);const L1=lum(a),L2=lum(b);return (Math.max(L1,L2)+.05)/(Math.min(L1,L2)+.05)};
+              const v=id=>getComputedStyle(document.querySelector('#'+id+' .ag-tag__val')).color,bd=id=>getComputedStyle(document.getElementById(id)).borderColor,bg=id=>getComputedStyle(document.getElementById(id)).backgroundColor;
+              return {critVal:v('tc')!==v('t0'),catVal:v('t1')===v('t0'),critBorder:bd('tc')!==bd('t0'),cr:+cr(v('tc'),bg('tc')).toFixed(2)}}""")
+            check(f"tag ({'light' if light else 'dark'}): --crit colors val+border, --cat1 leaves val default, crit val ≥ 4.5:1", r["critVal"] and r["catVal"] and r["critBorder"] and r["cr"] >= 4.5, str(r))
+            await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

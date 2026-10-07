@@ -148,6 +148,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 설정 비교 | 변경 전후 diff | `.ag-diff` > `__line.is-add/.is-del/.is-ctx` · 나란히 `.ag-compare` |
 | 태그 | 키=값 태그 편집 | `.ag-tags` > `.ag-tag` (`__key` `__val` `__remove`) · 입력 `.ag-tag-input` |
 | 대시보드 | Treemap / 도넛 / 주간 바 | ApexCharts + `AG.charts.apex` · JS 없는 대안 `.ag-treemap` `.ag-donut` `.ag-cols` |
+| 태그 | 태그 키 집계 칩의 상태(제거 예약·값 여러 종류) | `.ag-tag--crit` / `.ag-tag--warn` (+ 아이콘·"값 N종" 텍스트) — 범주는 `--cat1~4`, 기타는 `--other` |
 | 시크릿 | 여러 줄 키·인증서 가림(blur + Click to Reveal) | `.ag-secret-field--block` + `textarea.is-masked` + `.ag-secret-field__reveal[data-ag-reveal]` |
 | 공통 | 뷰 전환(기간·보기 모드) 3~4개 | `.ag-segmented` (`--sm`) — 5개 이상이면 `.ag-nav`(캡슐) 또는 `.ag-tabs`(밑줄) 로. 둘 다 안에서 가로 스크롤 |
 | 목록 | 행 전체 클릭 → 상세 | `.ag-table--clickable` + `tr[tabindex="0"][data-href]`, JS 는 `.ag-td--actions` 안 클릭은 무시 |

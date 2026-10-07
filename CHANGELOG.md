@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
+- `.ag-tag--good/--warn/--crit/--info` 상태 변형(테두리·키·값 전체에 상태색, 범주 변형은 키만) + `.ag-tag--other`. 태그 키 집계에서 "제거 예약"·"값 N종" 을 색으로 구분할 수단이 없던 건. 색만으로 말하지 않도록 예시는 아이콘·텍스트 동반.
 - `.ag-secret-field--block` — 여러 줄 시크릿(YAML·인증서·키)용 `textarea.is-masked`: 글자 투명 + 번진 text-shadow + blur, 선택·복사·포인터 차단, 가운데 `__reveal` 버튼(`:has(.is-masked)` 일 때만). `-webkit-text-security` 가 input 전용이라 textarea 를 가릴 수단이 없던 건. argus.js `data-ag-reveal` 이 input·textarea 공통으로 `is-masked` 토글(`ag:secret-toggle`).
 - `.ag-segmented` 에 `max-width: 100%; overflow-x: auto`(스크롤바 숨김) + 항목 `flex: none` — `.ag-nav` 와 같이 항목이 많아도 뷰포트를 밀지 않음. 탭 5개 화면에서 400px 가로 스크롤이 나던 건. 매핑표에 선택 기준(3~4개 segmented / 그 이상 nav·tabs) 추가.
 - `.ag-table--clickable` / `tr.is-clickable` — 행 전체가 링크인 목록: `cursor: pointer`, hover 에 액센트 기운, `tr[tabindex]` 포커스 링, `.ag-td--actions` 안은 기본 커서. 커서가 기본값이라 클릭 가능함이 드러나지 않던 건.

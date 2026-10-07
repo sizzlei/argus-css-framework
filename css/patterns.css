@@ -348,6 +348,22 @@
 .ag-tag--accent { border-color: transparent; background: var(--ag-accent-soft); color: var(--ag-accent); }
 .ag-tag--accent .ag-tag__key { background: color-mix(in oklab, var(--ag-accent) 24%, transparent); color: var(--ag-accent); }
 .ag-tag--accent .ag-tag__val { color: var(--ag-accent); }
+.ag-tag--other .ag-tag__key { background: var(--ag-cat-other-soft); color: var(--ag-cat-other-text); }
+/* 상태 변형 — 범주(키만 색)와 달리 태그 전체(테두리·키·값)에 상태색. "제거 예약"(crit)·"값 여러 종류"(warn) 처럼 되돌리기 전까지 눈에 띄어야 하는 상태.
+   색만으로 말하지 않는다: 아이콘이나 "값 3종" 같은 텍스트를 함께 둔다 */
+.ag-tag--good { border-color: color-mix(in oklab, var(--ag-good) 45%, transparent); }
+.ag-tag--warn { border-color: color-mix(in oklab, var(--ag-warn) 45%, transparent); }
+.ag-tag--crit { border-color: color-mix(in oklab, var(--ag-crit) 45%, transparent); }
+.ag-tag--info { border-color: color-mix(in oklab, var(--ag-info) 45%, transparent); }
+.ag-tag--good .ag-tag__key { background: var(--ag-good-soft); color: var(--ag-good-text); }
+.ag-tag--warn .ag-tag__key { background: var(--ag-warn-soft); color: var(--ag-warn-text); }
+.ag-tag--crit .ag-tag__key { background: var(--ag-crit-soft); color: var(--ag-crit-text); }
+.ag-tag--info .ag-tag__key { background: var(--ag-info-soft); color: var(--ag-info-text); }
+.ag-tag--good .ag-tag__val { color: var(--ag-good-text); }
+.ag-tag--warn .ag-tag__val { color: var(--ag-warn-text); }
+.ag-tag--crit .ag-tag__val { color: var(--ag-crit-text); }
+.ag-tag--info .ag-tag__val { color: var(--ag-info-text); }
+.ag-tag--crit .ag-tag__remove { border-left-color: color-mix(in oklab, var(--ag-crit) 45%, transparent); }
 .ag-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .ag-tag-input { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 40px; padding: 5px 8px; border-radius: var(--ag-radius-md); background: var(--ag-surface-2); border: 1px solid var(--ag-border); cursor: text; }
 .ag-tag-input:focus-within { border-color: var(--ag-accent); box-shadow: var(--ag-ring); background: var(--ag-surface); }

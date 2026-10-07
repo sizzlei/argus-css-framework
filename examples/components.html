@@ -518,6 +518,13 @@ new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor
               <span class="ag-tag ag-tag--accent"><span class="ag-tag__key">owner</span><span class="ag-tag__val">infra-eng</span></span>
               <span class="ag-tag"><span class="ag-tag__val">pii</span></span>
             </div>
+            <p class="ag-text-xs ag-text-3 ag-mt-2">상태 변형 — 태그 전체에 상태색 (범주 <code>--cat1~4</code> 는 키만). 색에만 기대지 않도록 아이콘·"값 N종" 텍스트를 함께:</p>
+            <div class="ag-tags ag-mt-2">
+              <span class="ag-tag ag-tag--crit" title="제거 예약 — 다음 동기화에서 삭제"><span class="ag-tag__key"><svg class="ag-icon ag-icon--sm"><use href="#i-trash"/></svg></span><span class="ag-tag__val">legacy-owner</span><button class="ag-tag__remove" aria-label="예약 취소">×</button></span>
+              <span class="ag-tag ag-tag--warn"><span class="ag-tag__key">env</span><span class="ag-tag__val">값 3종</span></span>
+              <span class="ag-tag ag-tag--good"><span class="ag-tag__key">cost-center</span><span class="ag-tag__val">동기화됨</span></span>
+              <span class="ag-tag ag-tag--info"><span class="ag-tag__key">backup</span><span class="ag-tag__val">신규</span></span>
+            </div>
             <div class="ag-tag-input ag-mt-3"><span class="ag-tag"><span class="ag-tag__key">env</span><span class="ag-tag__val">prod</span><button class="ag-tag__remove" aria-label="제거">×</button></span><span class="ag-tag"><span class="ag-tag__val">mysql</span><button class="ag-tag__remove" aria-label="제거">×</button></span><input id="tag-in" placeholder="key:value 입력 후 Enter"></div>
           </div>
           <div>
