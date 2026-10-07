@@ -134,7 +134,12 @@
 .ag-sidebar__item .ag-badge { margin-left: auto; }
 .ag-sidebar__footer { margin-top: auto; }
 
-/* ---- Main / Page ----------------------------------------------------- */
+/* ---- Main / Page -----------------------------------------------------
+   본문 폭: 기본은 --ag-content-max(1600px) 안에서 가운데 정렬 — 읽기용 콘솔(목록·상세·폼)에 맞춘 값.
+   넓은 모니터에서 전면을 써야 하는 앱(대시보드·모니터링·감사 결과처럼 패널이 가로로 늘어나는 화면)은
+   <div class="ag-app ag-app--fluid">: 상한 없이 거터만 남긴다. 다른 모드와 조합 가능(ag-app--sidebar ag-app--fluid). focus 는 영향 없음.
+   서비스 전체에 걸려면 :root { --ag-content-max: none } 한 줄도 같다. */
+.ag-app--fluid { --ag-content-max: none; }
 .ag-main {
   flex: 1;
   width: 100%;

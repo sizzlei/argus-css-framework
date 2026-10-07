@@ -235,6 +235,7 @@
 
 <!-- 데모용 모드 스위처 (컬러 테마는 하단 데모 네비에서) -->
 <div class="ag-mode-switch ag-row ag-gap-2" style="background:var(--ag-bg-elevated);padding:6px;border-radius:var(--ag-radius-pill);border:1px solid var(--ag-border)">
+<label class="ag-check ag-text-xs" id="opt-fluid" title="--fluid: 1600px 상한 없이 전면 (대시보드·넓은 모니터)"><input type="checkbox" data-opt="ag-app--fluid"><span>fluid</span></label>
 <label class="ag-check ag-text-xs" id="opt-wide" hidden><input type="checkbox" data-opt="ag-app--focus-wide"><span>wide</span></label>
 <label class="ag-check ag-text-xs" id="opt-noside" hidden><input type="checkbox" data-opt="ag-app--dual-nosidebar"><span>no-sidebar</span></label>
 <div class="ag-segmented" role="group" aria-label="레이아웃 모드" style="box-shadow:none">
@@ -266,8 +267,8 @@
       $('row-nav').hidden = m !== 'tabs';
       $('row-main').style.display = m === 'tabs' ? '' : 'contents';
       $('top-search').hidden = m === 'focus';
-      $('opt-wide').hidden = m !== 'focus'; $('opt-noside').hidden = m !== 'dual';
-      app.classList.remove('ag-app--focus-wide', 'ag-app--dual-nosidebar');
+      $('opt-wide').hidden = m !== 'focus'; $('opt-noside').hidden = m !== 'dual'; $('opt-fluid').hidden = m === 'focus' || m === 'dual';
+      app.classList.remove('ag-app--focus-wide', 'ag-app--dual-nosidebar', 'ag-app--fluid');
       document.querySelectorAll('[data-opt]').forEach(function (c) { c.checked = false; });
       $('pane').hidden = m !== 'dual';
       $('content-grid').hidden = m === 'focus' || m === 'dual';

@@ -276,6 +276,15 @@ async def main():
             check(f"chip/badge ({'light' if light else 'dark'}): status soft text ≥ 4.5:1, every solid chip+badge ≥ 4.5:1, --outline+--crit keeps crit tone", all(c >= 4.5 for c in r["cr"]) and r["solid"] >= 4.5 and r["outlineToned"], str(r))
             await pg.close()
 
+        # ── 9o. 폭: 기본 1600 상한 @2560 / --fluid 는 전면(거터만) / focus 는 영향 없음 ──
+        pg = await page(b, "layouts.html", 2560, 900)
+        r = await pg.evaluate("""()=>{const app=document.querySelector('.ag-app'),m=document.querySelector('.ag-main');const w1=m.getBoundingClientRect().width;app.classList.add('ag-app--fluid');const w2=m.getBoundingClientRect().width;const sb=document.querySelector('.ag-sidebar');const avail=document.documentElement.clientWidth-(sb&&!sb.hidden?sb.getBoundingClientRect().width:0);app.classList.remove('ag-app--fluid');return {w1:Math.round(w1),w2:Math.round(w2),avail:Math.round(avail)}}""")
+        check("width: default main ≤ 1600 @2560, --fluid fills available width", r["w1"] <= 1600 and abs(r["w2"] - r["avail"]) <= 2, str(r))
+        await pg.click('[data-mode="focus"]'); await pg.wait_for_timeout(150)
+        r2 = await pg.evaluate("()=>{const app=document.querySelector('.ag-app'),m=document.querySelector('.ag-main');app.classList.add('ag-app--fluid');const w=Math.round(m.getBoundingClientRect().width);app.classList.remove('ag-app--fluid');return w}")
+        check("width: --fluid does not widen focus mode (760)", r2 <= 760, str(r2))
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

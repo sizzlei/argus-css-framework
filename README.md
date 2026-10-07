@@ -36,7 +36,7 @@ index.html                      ← GitHub Pages 진입점 (examples/ 로 리다
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
                                    index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
-tools/                          ← check.py(값 단언 회귀 76항목) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
+tools/                          ← check.py(값 단언 회귀 78항목) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -132,7 +132,8 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | `.ag-app--rail` | rail | 84px 아이콘 레일, 모바일은 `.ag-sidebar--bottom-tabs` 로 하단 탭 |
 | `.ag-app--tabs` | tabs | 2단 상단 바 (`.ag-topbar__row--main` + `--nav`) |
 | `.ag-app--focus` | focus | 네비 없는 좁은 중앙 컬럼 (설정·마법사) |
-| `.ag-app--dual` | dual | 사이드바 + `.ag-pane` 목록 + 상세 |
+| `.ag-app--dual` | dual | 사이드바 + `.ag-pane` 목록 + 상세 (본문 상한 없음) |
+| + `.ag-app--fluid` | 폭 옵션 | 본문 `.ag-main` 의 1600px 상한(`--ag-content-max`) 해제 — 넓은 모니터에서 전면을 쓰는 대시보드·모니터링·감사 화면. top/sidebar/rail/tabs 와 조합. 서비스 전체는 `:root { --ag-content-max: none }` |
 
 사용자 프로필은 모드와 무관하게 상단 바 우측 `.ag-user` 드롭다운에 둡니다.
 
@@ -166,13 +167,14 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | 순차 램프 | `--ag-seq-1..5` | 히트맵·밀도용 단일 색 5단계 (`--ag-chart-1` → `--ag-surface-2`). `.ag-heat--1..5` 와 `AG.charts.sequential(5)` 가 같은 값 |
 | 범주 | `--ag-cat-1..4` `--ag-cat-other` + `*-soft` `*-text` | 배지·태그·점에서 종류 구분. 차트 범주색과 같은 네 가지 + 기타(`.ag-badge--other` `.ag-dot--other` `.ag-avatar--other`), 라이트는 글자색을 한 단계 깊게 |
 | 간격 | `--ag-space-1..12` | 4px 기준 |
+| 본문 폭 | `--ag-content-max`(1600px) `--ag-gutter`(clamp 16–40px) | `.ag-main` 상한과 좌우 여백. 전면은 `.ag-app--fluid` 또는 토큰 `none` |
 | 레이아웃 간격 | `--ag-gap-grid`(24) `--ag-gap-main`(32) `--ag-gap-section`(20) | 카드 사이 · 본문 블록 사이 · 섹션 헤드↔본문. 서비스가 `:root` 에서 한 번에 조정 |
 | 라운드 | `--ag-radius-sm/md/lg/xl/pill` | 8 / 12 / 18 / 24 / 999 |
 | 타이포 | `--ag-text-xs..4xl` `--ag-font-sans` `--ag-font-mono` | 본문 14px |
 
 ## 컴포넌트 목록
 
-레이아웃 `ag-app` `ag-app--sidebar` `ag-topbar` `ag-nav` `ag-sidebar` `ag-main` `ag-page` (x-data 같은 본문 래퍼에 — 블록 간격 이어받음, `--tight`) `ag-page-header` `ag-section` `ag-grid` + `ag-col-N` `ag-stack` `ag-cluster` `ag-row` `ag-breadcrumb`
+레이아웃 `ag-app` `ag-app--sidebar` (+ `ag-app--fluid` 전면 폭) `ag-topbar` `ag-nav` `ag-sidebar` `ag-main` `ag-page` (x-data 같은 본문 래퍼에 — 블록 간격 이어받음, `--tight`) `ag-page-header` `ag-section` `ag-grid` + `ag-col-N` `ag-stack` `ag-cluster` `ag-row` `ag-breadcrumb`
 
 차트 (CSS 전용) `ag-donut` `ag-donut-legend` `ag-bars` (`__seg--1~4/--other/--accent/--muted/--hatch`) `ag-cols` (`__bar--1~4/--other/--muted`) `ag-heatmap` (`--crit`) / `ag-heat` (`--l` 연속 또는 `--1…--5` = `--ag-seq-1..5`, `--empty`) `ag-heat-scale` `ag-gauge` `ag-ring` `ag-spark` `ag-stat-card` `ag-treemap` + ApexCharts 보정 (`.ag-chart .apexcharts-*`)
 
@@ -230,7 +232,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 76항목 (Playwright, 실패 시 exit 1). shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
+python3 tools/check.py      # 값 단언 회귀 78항목 (Playwright, 실패 시 exit 1). shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서

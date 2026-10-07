@@ -83,7 +83,8 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 모바일 오버레이 `fixed inset-0 bg-slate-900/80 lg:hidden` | `.ag-sidebar-backdrop` + `.is-open`, 버튼 `[data-ag-sidebar-open]` |
 | 사이드바 그룹 아코디언 (`toggleGroup`) | `.ag-sidebar__group[data-ag-group]` > `.ag-sidebar__group-toggle` |
 | 접힘 툴팁 (Alpine `showTooltip`) | `.ag-sidebar__item[data-tip="…"]` (CSS 전용) |
-| `max-w-7xl mx-auto px-5` | `.ag-main` (자동) |
+| `max-w-7xl mx-auto px-5` | `.ag-main` (자동, 1600px 상한). 원본이 상한 없이 전면을 썼거나 대시보드·감사 결과처럼 패널이 가로로 늘어나면 `.ag-app--fluid` 추가 |
+| `max-w-5xl` / `container` 같은 본문 안쪽 폭 제한 | 제거 — 폭은 `.ag-main` 과 `.ag-grid` 가 정한다 |
 | `grid grid-cols-12 gap-5` + `col-span-6 lg:col-span-3` | `.ag-grid` + `.ag-col-6` / `.ag-col-3` (반응형 내장) |
 | `flex items-center justify-between` | `.ag-cluster.ag-cluster--between` 또는 `.ag-card__head` |
 | `space-y-3` | `.ag-stack` |
@@ -184,6 +185,8 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | `ag-app--dual` | 목록을 보면서 하나를 열어보는 화면 | 공지함, 알림함 |
 
 한 서비스 안에서 화면별로 모드를 섞어도 된다 (예: 본문은 sidebar, 설정은 focus). 상단 바와 `.ag-user` 는 항상 같은 자리.
+
+**폭:** 기본 본문 상한은 1600px. 이전 앱이 상한 없이 전면을 썼다면(또는 2560px 이상 모니터가 주 사용 환경이면) 셸에 `ag-app--fluid` 를 더해 전면으로 — 좁아졌다는 피드백의 대부분이 이 차이다. 화면 단위로 켜고 끌 수 있고, 서비스 전체면 `:root { --ag-content-max: none }`.
 
 ### 3-5. Slack 미리보기 `.sp-*` → `.ag-slack__*` 치환표
 
