@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
+- `.ag-table--clickable` / `tr.is-clickable` — 행 전체가 링크인 목록: `cursor: pointer`, hover 에 액센트 기운, `tr[tabindex]` 포커스 링, `.ag-td--actions` 안은 기본 커서. 커서가 기본값이라 클릭 가능함이 드러나지 않던 건.
 - 단색 카드(`.ag-card--accent/--accent2/--inverse`)가 안쪽에서 `--ag-text/-2/-3` `--ag-border(-strong)` `--ag-surface-2/-3/-hover` 토큰을 재정의 — `.ag-text-2/-3` 만 보정하던 것을 토큰 단위로 바꿔 `.ag-label` `.ag-hint` `.ag-stat__label` `.ag-kv dt` `.ag-card__foot` `.ag-btn--outline` 등 토큰을 쓰는 모든 컴포넌트가 배경 위에서 읽힌다 (violet·yellow × 다크·라이트 대비 단언). 액센트 카드를 포기하고 일반 카드로 우회하던 건.
 - `--ag-chart-other` / `--ag-cat-other`(+`-soft` `-text`) — "기타" 조각용 중립 회색(다크 #7a7f90, 라이트 #a0a5b8, 명도 밴드 안). `.ag-bars__seg--other` `.ag-cols__bar--other` `.ag-dot--other` `.ag-badge--other` `.ag-avatar--other`. `AG.charts.palette(n)` 은 5번째(마지막)를 기타 회색으로, `apex()` 는 series 수에 맞춰 colors 자동 — 상위 4 + 기타 도넛/stacked bar 에서 기타가 1번 색을 반복하던 건.
 - `.ag-qr__pending` — QR 생성 전 180px 플레이스홀더(shimmer, 흰 박스 위라 테마 무관 회색). 템플릿의 인라인 크기·`#666` 우회 제거. `.ag-quick-action__body` > `__title` + `__meta` 2줄 라벨, `__end` 오른쪽 끝 아이콘 — 부제를 `data-tip` 으로 돌리던 건.

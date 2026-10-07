@@ -402,6 +402,11 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-table tbody tr:hover { background: var(--ag-surface-hover); }
 .ag-table tbody tr:last-child td { border-bottom: 0; }
 .ag-table tr.is-selected { background: var(--ag-accent-soft); }
+/* 행 전체가 링크인 목록 — 테이블에 --clickable, 또는 일부 행만 tr.is-clickable. 키보드는 tr[tabindex="0"] + Enter 를 서비스 JS 가 처리 */
+.ag-table--clickable tbody tr, .ag-table tr.is-clickable { cursor: pointer; }
+.ag-table--clickable tbody tr:hover, .ag-table tr.is-clickable:hover { background: color-mix(in oklab, var(--ag-accent) 7%, var(--ag-surface-hover)); }
+.ag-table--clickable tbody tr:focus-visible, .ag-table tr.is-clickable:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--ag-accent); }
+.ag-table--clickable tbody tr .ag-td--actions, .ag-table tr.is-clickable .ag-td--actions { cursor: default; }   /* 액션 셀 안의 버튼은 행 클릭과 분리 — 서비스 JS 는 e.target.closest('.ag-td--actions') 면 무시 */
 .ag-table td.ag-td--wrap { white-space: normal; min-width: 240px; }
 .ag-table .ag-td--num, .ag-table .ag-th--num { text-align: right; }
 .ag-table .ag-td--actions { text-align: right; width: 1%; }

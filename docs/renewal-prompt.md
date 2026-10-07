@@ -148,6 +148,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 설정 비교 | 변경 전후 diff | `.ag-diff` > `__line.is-add/.is-del/.is-ctx` · 나란히 `.ag-compare` |
 | 태그 | 키=값 태그 편집 | `.ag-tags` > `.ag-tag` (`__key` `__val` `__remove`) · 입력 `.ag-tag-input` |
 | 대시보드 | Treemap / 도넛 / 주간 바 | ApexCharts + `AG.charts.apex` · JS 없는 대안 `.ag-treemap` `.ag-donut` `.ag-cols` |
+| 목록 | 행 전체 클릭 → 상세 | `.ag-table--clickable` + `tr[tabindex="0"][data-href]`, JS 는 `.ag-td--actions` 안 클릭은 무시 |
 | 대시보드 | 인사(Greeting)·강조 카드 안의 라벨·힌트·푸터·outline 버튼 | `.ag-card--accent` 그대로 — 안쪽 토큰이 재정의되므로 보정 클래스 불필요. `--inverse` 버튼으로 바꿀 필요 없음 |
 | 공통 | 빠른 작업 격자(제목 + 부제 2줄, 외부 링크) | `.ag-quick-actions` > `.ag-quick-action` + `__body`(`__title`/`__meta`) + `__end` |
 | 인증 | QR 생성 중 자리표시 | `.ag-qr > .ag-qr__pending` (인라인 크기·색 불필요) |

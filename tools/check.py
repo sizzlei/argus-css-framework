@@ -229,6 +229,13 @@ async def main():
         check("palette(5): last = --ag-chart-other, first four = palette(4)", r["p5"][4] == r["other"] == r["t3"] and r["p5"][:4] == r["p4"] and r["other"] not in r["p4"], str(r))
         await pg.close()
 
+        # ── 9j. .ag-table--clickable: 행 커서 pointer, 액션 셀은 default ──
+        pg = await page(b, "components.html")
+        r = await pg.evaluate("""()=>{const tr=document.querySelector('.ag-table--clickable tbody tr');const td=tr.querySelector('.ag-td--actions');const d=document.createElement('table');d.className='ag-table';d.innerHTML='<tbody><tr class="is-clickable"><td>x</td></tr><tr><td>y</td></tr></tbody>';document.body.appendChild(d);const [a,b]=d.querySelectorAll('tr');
+          return {row:getComputedStyle(tr).cursor,act:td?getComputedStyle(td).cursor:'?',single:getComputedStyle(a).cursor,plain:getComputedStyle(b).cursor}}""")
+        check("table: --clickable rows pointer, action cell default, tr.is-clickable alone works", r["row"] == "pointer" and r["act"] == "default" and r["single"] == "pointer" and r["plain"] == "auto", str(r))
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);
