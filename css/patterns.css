@@ -538,10 +538,29 @@
 .ag-slack__channel { display: flex; align-items: center; gap: 8px; font-size: var(--ag-text-sm); color: var(--ag-text-2); padding-bottom: 8px; border-bottom: 1px solid var(--ag-border); }
 .ag-slack__channel strong { color: var(--ag-text); font-weight: 600; }
 
-/* ---- 키 / 시크릿 표시 ------------------------------------------------------- */
+/* ---- 키 / 시크릿 표시 -------------------------------------------------------
+   한 줄: <div class="ag-secret-field"><input class="ag-input is-masked" value="…"><button class="ag-btn ag-btn--icon ag-btn--outline" data-ag-reveal>👁</button></div>
+   여러 줄(YAML·인증서·키 파일): --block + textarea. -webkit-text-security 는 input 전용이라 textarea 는 블러 + 클릭-드러내기.
+   <div class="ag-secret-field ag-secret-field--block">
+     <textarea class="ag-textarea is-masked" rows="6">-----BEGIN …</textarea>
+     <button class="ag-secret-field__reveal ag-btn ag-btn--sm ag-btn--outline" type="button" data-ag-reveal>값 표시</button>
+   </div>
+   data-ag-reveal(argus.js)이 같은 필드 안의 .is-masked 를 토글한다. 서비스 JS 로 직접 해도 됨 — is-masked 만 떼면 된다. */
 .ag-secret-field { display: flex; align-items: center; gap: 6px; }
-.ag-secret-field .ag-input { font-family: var(--ag-font-mono); letter-spacing: .08em; }
+.ag-secret-field .ag-input, .ag-secret-field .ag-textarea { font-family: var(--ag-font-mono); }
+.ag-secret-field .ag-input { letter-spacing: .08em; }
 .ag-secret-field .ag-input.is-masked { -webkit-text-security: disc; }
+.ag-secret-field--block { position: relative; display: block; }
+.ag-secret-field--block .ag-textarea.is-masked {
+  color: transparent; text-shadow: 0 0 9px var(--ag-text-2);   /* 글리프 윤곽 없이 번진 흔적만 — 블러 해제 공격에 글자가 남지 않는다 */
+  filter: blur(3px);
+  user-select: none; -webkit-user-select: none; pointer-events: none; caret-color: transparent;
+  overflow: hidden; resize: none;
+}
+.ag-secret-field--block .ag-textarea.is-masked::selection { background: transparent; }
+.ag-secret-field__reveal { position: absolute; inset: 0; margin: auto; width: max-content; height: max-content; z-index: 1; box-shadow: var(--ag-shadow-md); display: none; }
+.ag-secret-field--block:has(.is-masked) .ag-secret-field__reveal { display: inline-flex; }
+.ag-secret-field--block:has(.is-masked)::after { content: ""; position: absolute; inset: 0; border-radius: var(--ag-radius-md); background: color-mix(in oklab, var(--ag-surface) 35%, transparent); pointer-events: none; }
 
 /* ---- 헬스 리스트 (서비스/연결 상태 행) ------------------------------------- */
 .ag-health { display: flex; flex-direction: column; }

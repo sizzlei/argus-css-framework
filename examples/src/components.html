@@ -525,6 +525,21 @@ new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor
           </div>
         </div>
 
+        <div class="ag-card ag-col-4 ag-stack">
+          <h3 class="ag-card__title">.ag-secret-field · <code>--block</code> (여러 줄 가림)</h3>
+          <div class="ag-field"><label class="ag-label" for="sf1">API 토큰 (한 줄 · -webkit-text-security)</label>
+            <div class="ag-secret-field"><input class="ag-input is-masked" id="sf1" value="argus_live_7f3a9c2e5b1d" readonly><button class="ag-btn ag-btn--icon ag-btn--outline" type="button" aria-label="값 표시" aria-pressed="false" data-ag-reveal><svg class="ag-icon"><use href="#i-eye"/></svg></button><button class="ag-btn ag-btn--icon ag-btn--outline" type="button" aria-label="복사"><svg class="ag-icon"><use href="#i-copy"/></svg></button></div></div>
+          <div class="ag-field"><label class="ag-label" for="sf2">Key Value (여러 줄 · 블러 + 클릭-드러내기)</label>
+            <div class="ag-secret-field ag-secret-field--block">
+              <textarea class="ag-textarea is-masked" id="sf2" rows="6" readonly>-----BEGIN PRIVATE KEY-----
+MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC7Vp3
+k2m9xQ1zR8fT4yU6wE2nH5sL0dP9vB3cX7aM1oK4jG8hF6eD2tS9uY
+-----END PRIVATE KEY-----</textarea>
+              <button class="ag-secret-field__reveal ag-btn ag-btn--sm ag-btn--outline" type="button" data-ag-reveal><svg class="ag-icon ag-icon--sm"><use href="#i-eye"/></svg>값 표시</button>
+            </div></div>
+          <p class="ag-text-xs ag-text-3"><code>data-ag-reveal</code>(argus.js)이 같은 필드의 <code>is-masked</code> 를 토글. 가림 상태는 글자를 투명하게 하고 번진 그림자만 남겨 블러 해제로 복원되지 않고, 선택·복사도 막힌다. 서비스 JS 로 하려면 <code>is-masked</code> 만 떼면 된다.</p>
+        </div>
+
         <div class="ag-card ag-col-4">
           <h3 class="ag-card__title">3단계 로그인 조각 · <code>.ag-auth__glass</code> 안</h3>
           <p class="ag-text-xs ag-text-3">이메일 → OTP → 등록 흐름(templates/go-html-template/login.html)에서 쓰는 보조 요소. <code>.ag-otp-input</code> 은 한 칸짜리 6자리(login.html 의 <code>.ag-otp__cell</code> 분리 방식과 택일)</p>

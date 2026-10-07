@@ -49,6 +49,19 @@
     var dClose = e.target.closest('[data-ag-detail-close]');
     if (dClose) { var db = dClose.closest('.ag-app--dual'); if (db) db.classList.remove('is-detail'); }
 
+    /* ---- 시크릿 드러내기/가리기: 같은 .ag-secret-field 안의 .is-masked 토글 (input·textarea 공통) ---- */
+    var rev = e.target.closest('[data-ag-reveal]');
+    if (rev) {
+      var sf = rev.closest('.ag-secret-field');
+      var tgt = sf && sf.querySelector('.ag-input, .ag-textarea');
+      if (tgt) {
+        var masked = tgt.classList.toggle('is-masked');
+        rev.setAttribute('aria-pressed', String(!masked));
+        if (!masked && rev.classList.contains('ag-secret-field__reveal')) tgt.focus();
+        tgt.dispatchEvent(new CustomEvent('ag:secret-toggle', { bubbles: true, detail: { masked: masked } }));
+      }
+    }
+
     /* ---- 배너 닫기 / 날짜 프리셋 칩 ---- */
     var bClose = e.target.closest('[data-ag-banner-close]');
     if (bClose) { var bn = bClose.closest('.ag-banner'); if (bn) bn.remove(); }

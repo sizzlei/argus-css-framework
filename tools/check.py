@@ -243,6 +243,17 @@ async def main():
         check("segmented: 8 items @400px scroll inside, no document overflow, items don't wrap", r["inner"] and r["ov"] == "auto" and r["doc"] <= r["vw"] and r["wrap"] == "nowrap", str(r))
         await pg.close()
 
+        # ── 9l. secret-field--block: 가림 상태(투명 글자·블러·선택 불가·reveal 표시) → 클릭 후 해제 ──
+        pg = await page(b, "components.html")
+        r = await pg.evaluate("""()=>{const ta=document.getElementById('sf2'),b=ta.parentElement.querySelector('.ag-secret-field__reveal');const s=getComputedStyle(ta);return {color:s.color,blur:s.filter,sel:s.userSelect,pe:s.pointerEvents,btn:getComputedStyle(b).display}}""")
+        check("secret --block masked: transparent text, blur, no select/pointer, reveal button shown", r["color"] == "rgba(0, 0, 0, 0)" and "blur" in r["blur"] and r["sel"] == "none" and r["pe"] == "none" and r["btn"] != "none", str(r))
+        await pg.click("#sf2 ~ .ag-secret-field__reveal"); await pg.wait_for_timeout(100)
+        r2 = await pg.evaluate("""()=>{const ta=document.getElementById('sf2'),b=ta.parentElement.querySelector('.ag-secret-field__reveal');const s=getComputedStyle(ta);return {masked:ta.classList.contains('is-masked'),color:s.color,blur:s.filter,btn:getComputedStyle(b).display,pressed:b.getAttribute('aria-pressed'),focus:document.activeElement===ta}}""")
+        check("secret --block revealed: is-masked off, text visible, reveal hidden, focused", not r2["masked"] and r2["color"] != "rgba(0, 0, 0, 0)" and r2["blur"] == "none" and r2["btn"] == "none" and r2["pressed"] == "true" and r2["focus"], str(r2))
+        r3 = await pg.evaluate("""()=>{const i=document.getElementById('sf1'),b=i.parentElement.querySelector('[data-ag-reveal]');b.click();return {masked:i.classList.contains('is-masked'),pressed:b.getAttribute('aria-pressed')}}""")
+        check("secret inline: data-ag-reveal toggles input.is-masked", r3["masked"] is False and r3["pressed"] == "true", str(r3))
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

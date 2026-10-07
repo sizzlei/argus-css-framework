@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
+- `.ag-secret-field--block` — 여러 줄 시크릿(YAML·인증서·키)용 `textarea.is-masked`: 글자 투명 + 번진 text-shadow + blur, 선택·복사·포인터 차단, 가운데 `__reveal` 버튼(`:has(.is-masked)` 일 때만). `-webkit-text-security` 가 input 전용이라 textarea 를 가릴 수단이 없던 건. argus.js `data-ag-reveal` 이 input·textarea 공통으로 `is-masked` 토글(`ag:secret-toggle`).
 - `.ag-segmented` 에 `max-width: 100%; overflow-x: auto`(스크롤바 숨김) + 항목 `flex: none` — `.ag-nav` 와 같이 항목이 많아도 뷰포트를 밀지 않음. 탭 5개 화면에서 400px 가로 스크롤이 나던 건. 매핑표에 선택 기준(3~4개 segmented / 그 이상 nav·tabs) 추가.
 - `.ag-table--clickable` / `tr.is-clickable` — 행 전체가 링크인 목록: `cursor: pointer`, hover 에 액센트 기운, `tr[tabindex]` 포커스 링, `.ag-td--actions` 안은 기본 커서. 커서가 기본값이라 클릭 가능함이 드러나지 않던 건.
 - 단색 카드(`.ag-card--accent/--accent2/--inverse`)가 안쪽에서 `--ag-text/-2/-3` `--ag-border(-strong)` `--ag-surface-2/-3/-hover` 토큰을 재정의 — `.ag-text-2/-3` 만 보정하던 것을 토큰 단위로 바꿔 `.ag-label` `.ag-hint` `.ag-stat__label` `.ag-kv dt` `.ag-card__foot` `.ag-btn--outline` 등 토큰을 쓰는 모든 컴포넌트가 배경 위에서 읽힌다 (violet·yellow × 다크·라이트 대비 단언). 액센트 카드를 포기하고 일반 카드로 우회하던 건.
