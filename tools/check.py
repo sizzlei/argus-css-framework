@@ -333,6 +333,25 @@ async def main():
         check("P3: @400 banner icon sits beside the first text line (not on its own row)", r["sameTop"] and r["iconLeft"], str(r))
         await pg.close()
 
+        # ── 1.3 시각 보강: 카드 광택·글로우 토큰, 카드 아이콘, 셀 스파크라인, grid--tight ──
+        pg = await page(b, "components.html")
+        v = await pg.evaluate("""()=>{const c=document.querySelector('.ag-card:not([class*="--"])');const cs=getComputedStyle(c);
+          const ic=document.querySelector('.ag-card__icon');const ir=ic.getBoundingClientRect();
+          const sp=document.querySelector('.ag-table td > .ag-spark');const sr=sp.getBoundingClientRect();
+          const g=document.querySelector('.ag-grid--tight');
+          const app=document.querySelector('.ag-app');
+          return {sheen:cs.backgroundImage.includes('linear-gradient'), icw:ir.width, ich:ir.height, spw:sr.width, gap:getComputedStyle(g).gap, glow:getComputedStyle(app).backgroundImage.includes('radial-gradient')}}""")
+        check("1.3: 다크 카드 background-image = --ag-surface-sheen(linear-gradient)", v["sheen"], str(v))
+        check("1.3: .ag-app 배경 글로우(radial-gradient) 적용", v["glow"], str(v))
+        check("1.3: .ag-card__icon 30×30", v["icw"] == 30 and v["ich"] == 30, str(v))
+        check("1.3: 테이블 셀 안 .ag-spark 폭 96px (% 폭 0 방지)", abs(v["spw"] - 96) < 1, str(v))
+        check("1.3: .ag-grid--tight gap 12px", v["gap"] == "12px", str(v))
+        await pg.close()
+        pg = await page(b, "components.html", light=True)
+        v = await pg.evaluate("""()=>{const c=document.querySelector('.ag-card:not([class*="--"])');return getComputedStyle(c).backgroundImage}""")
+        check("1.3: 라이트 카드는 광택 없음(--ag-surface-sheen: none)", v == "none", v)
+        await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():

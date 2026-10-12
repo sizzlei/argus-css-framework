@@ -208,6 +208,7 @@
   padding: var(--ag-space-6);
   border-radius: var(--ag-radius-xl);
   background: var(--ag-surface);
+  background-image: var(--ag-surface-sheen);
   border: 1px solid var(--ag-border);
   box-shadow: var(--ag-card-edge), var(--ag-card-shadow);
   min-width: 0;
@@ -260,6 +261,26 @@ button.ag-card:focus-visible, a.ag-card:focus-visible { outline: none; box-shado
 }
 .ag-card__title { font-size: var(--ag-text-lg); font-weight: 600; letter-spacing: -0.01em; }
 .ag-card__subtitle { font-size: var(--ag-text-xs); color: var(--ag-text-3); margin-top: 3px; }
+/* 1.3: 카드 제목 앞 아이콘 타일 — 섹션을 한눈에 구분. 모양 → 톤 순서 */
+.ag-card__icon {
+  width: 30px; height: 30px; flex: none;
+  border-radius: var(--ag-radius-sm);
+  display: grid; place-content: center;
+  background: var(--ag-surface-3); color: var(--ag-text-2);
+}
+.ag-card__icon :is(.ag-icon, [class*="ph-"]) { width: 16px; height: 16px; font-size: 16px; }
+.ag-card__icon--accent { background: var(--ag-accent-soft); color: var(--ag-accent-text); }
+.ag-card__icon--good { background: var(--ag-good-soft); color: var(--ag-good-text); }
+.ag-card__icon--warn { background: var(--ag-warn-soft); color: var(--ag-warn-text); }
+.ag-card__icon--crit { background: var(--ag-crit-soft); color: var(--ag-crit-text); }
+.ag-card__icon--info { background: var(--ag-info-soft); color: var(--ag-info-text); }
+.ag-card__icon--1 { background: var(--ag-cat-1-soft); color: var(--ag-cat-1-text); }
+.ag-card__icon--2 { background: var(--ag-cat-2-soft); color: var(--ag-cat-2-text); }
+.ag-card__icon--3 { background: var(--ag-cat-3-soft); color: var(--ag-cat-3-text); }
+.ag-card__icon--4 { background: var(--ag-cat-4-soft); color: var(--ag-cat-4-text); }
+.ag-card__heading { display: flex; align-items: center; gap: var(--ag-space-3); min-width: 0; }   /* 아이콘 + 제목(+부제) 묶음 */
+.ag-card__heading > div { min-width: 0; }
+.ag-card--accent .ag-card__icon, .ag-card--accent2 .ag-card__icon, .ag-card--inverse .ag-card__icon { background: color-mix(in oklab, var(--_on) 16%, transparent); color: var(--_on); }
 .ag-card__body { display: flex; flex-direction: column; gap: var(--ag-space-3); min-width: 0; }
 .ag-card__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--ag-space-3); flex-wrap: wrap; font-size: var(--ag-text-sm); color: var(--ag-text-3); }
 
@@ -282,6 +303,7 @@ button.ag-card:focus-visible, a.ag-card:focus-visible { outline: none; box-shado
 .ag-tile--stack { flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 4px; }
 .ag-tile--stack small, .ag-tile--stack .ag-tile__label { font-size: var(--ag-text-xs); color: var(--ag-text-3); font-weight: 500; }
 .ag-tile--stack strong { font-size: var(--ag-text-lg); font-weight: 600; letter-spacing: -0.01em; }
+.ag-tile--stack > :is(.ag-cluster, .ag-spark, .ag-progress) { width: 100%; }   /* 1.3: 메트릭 타일 — 머리줄·스파크라인이 타일 폭을 채운다 */
 
 /* 리스트 아이템 (Triage 1234 / Fixing 0).
    선택 가능한 목록(팀·태그 필터 등)은 <a>/<button> 으로 만들고 is-active 로 선택 상태 — 사이드바 밖에서 .ag-sidebar__item 을 빌려 쓰지 않는다.
@@ -390,6 +412,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-avatar--cat4 { background: var(--ag-cat-4-soft); color: var(--ag-cat-4-text); }
 .ag-avatar--other { background: var(--ag-cat-other-soft); color: var(--ag-cat-other-text); }
 .ag-avatar--neutral { background: var(--ag-surface-3); color: var(--ag-text-2); }
+.ag-avatar--xs { width: 22px; height: 22px; font-size: 10px; }   /* 1.3: 테이블 셀 안 담당자 */
 .ag-avatar--sm { width: 28px; height: 28px; font-size: var(--ag-text-xs); }
 .ag-avatar--lg { width: 56px; height: 56px; font-size: var(--ag-text-lg); }
 .ag-avatar--ring { box-shadow: 0 0 0 2px var(--ag-bg), 0 0 0 4px var(--ag-accent); }
@@ -833,6 +856,10 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-timeline__item.is-warn::before { background: var(--ag-warn); }
 .ag-timeline__time { font-size: var(--ag-text-xs); color: var(--ag-text-3); font-family: var(--ag-font-mono); }
 .ag-timeline__title { color: var(--ag-text); font-weight: 500; }
+.ag-timeline__meta { font-size: var(--ag-text-xs); color: var(--ag-text-3); margin-top: 2px; }
+.ag-timeline__head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--ag-space-3); }   /* 제목 왼쪽 · 시각 오른쪽 */
+.ag-timeline__head .ag-timeline__time { flex: none; }
+.ag-timeline--compact .ag-timeline__item { padding-bottom: var(--ag-space-3); }
 
 /* ---- Chart scaffolding ---------------------------------------------- */
 .ag-chart { position: relative; width: 100%; min-width: 0; }

@@ -56,7 +56,7 @@
   <main class="ag-main">
     <div class="ag-page-header">
       <div class="ag-page-header__title">
-        <span class="ag-eyebrow">v1.2.1 · 접두사 <code>ag-</code></span>
+        <span class="ag-eyebrow">v1.3.0 · 접두사 <code>ag-</code></span>
         <h1>컴포넌트 가이드</h1>
         <p class="ag-text-2" style="max-width:62ch">순수 CSS 하나로 동작합니다. <code>&lt;link rel="stylesheet" href="argus.css"&gt;</code> 한 줄이면 되고, 라이트 테마는 <code>&lt;html data-theme="light"&gt;</code> 로 켭니다. 오른쪽 위 버튼으로 두 테마를 바로 비교해 보세요.</p>
       </div>
@@ -202,6 +202,7 @@
           <span class="ag-delta ag-delta--inline ag-delta--up">+3.2%</span>
         </div>
         <div class="demo">
+          <span class="ag-avatar ag-avatar--xs">MI</span>
           <span class="ag-avatar ag-avatar--sm">AN</span>
           <span class="ag-avatar">JA</span>
           <span class="ag-avatar ag-avatar--lg ag-avatar--ring ag-avatar--accent2">SO</span>
@@ -263,7 +264,19 @@
             </div>
           </div>
         </div>
-        <div class="ag-card ag-col-4"><h3 class="ag-card__title">.ag-timeline</h3><div class="ag-timeline"><div class="ag-timeline__item is-crit"><div class="ag-timeline__time">14:02</div><div class="ag-timeline__title">경보 발생</div>CloudWatch</div><div class="ag-timeline__item is-good"><div class="ag-timeline__time">03:00</div><div class="ag-timeline__title">스냅샷 완료</div>1.2 TiB</div><div class="ag-timeline__item"><div class="ag-timeline__time">어제</div><div class="ag-timeline__title">변경 요청</div>James</div></div></div>
+        <div class="ag-card ag-col-4"><h3 class="ag-card__title">.ag-timeline · <code>__head</code> + <code>__meta</code> · <code>--compact</code></h3><div class="ag-timeline ag-timeline--compact"><div class="ag-timeline__item is-crit"><div class="ag-timeline__head"><div class="ag-timeline__title">제목 왼쪽 · 시각 오른쪽</div><span class="ag-timeline__time">14:02</span></div><div class="ag-timeline__meta">.ag-timeline__meta — 한 줄 보조 정보 (1.3)</div></div><div class="ag-timeline__item is-good"><div class="ag-timeline__head"><div class="ag-timeline__title">스냅샷 완료</div><span class="ag-timeline__time">03:00</span></div><div class="ag-timeline__meta">1.2 TiB · 6m 12s</div></div></div><hr><div class="ag-timeline"><div class="ag-timeline__item is-crit"><div class="ag-timeline__time">14:02</div><div class="ag-timeline__title">경보 발생</div>CloudWatch</div><div class="ag-timeline__item is-good"><div class="ag-timeline__time">03:00</div><div class="ag-timeline__title">스냅샷 완료</div>1.2 TiB</div><div class="ag-timeline__item"><div class="ag-timeline__time">어제</div><div class="ag-timeline__title">변경 요청</div>James</div></div></div>
+        <div class="ag-card ag-col-8"><div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--2"><svg class="ag-icon"><use href="#i-activity"/></svg></span><div><h3 class="ag-card__title">테이블 셀 스파크라인 · <code>.ag-grid--tight</code> 메트릭 타일</h3><p class="ag-card__subtitle">.ag-card__heading &gt; .ag-card__icon--{accent|good|warn|crit|info|1..4} + 제목/부제 (1.3) — 톤 전체는 매트릭스</p></div></div><span class="ag-badge ag-badge--sm">1.3</span></div>
+          <div class="ag-table-wrap"><table class="ag-table ag-table--dense"><thead><tr><th>인스턴스</th><th class="ag-th--num">평균</th><th>추이 (<code>td &gt; .ag-spark</code> 96px)</th><th>상태</th></tr></thead><tbody>
+            <tr><td>order-db-reader-1</td><td class="ag-td--num ag-num ag-text-crit">2.41s</td><td><svg class="ag-spark ag-spark--crit" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,22 L15,20 L30,21 L45,14 L60,9 L75,6 L90,8 L100,4"/></svg></td><td><span class="ag-badge ag-badge--crit">인덱스 누락</span></td></tr>
+            <tr><td>catalog-docdb</td><td class="ag-td--num ag-num">1.03s</td><td><svg class="ag-spark ag-spark--good" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,8 L15,10 L30,12 L45,14 L60,16 L75,18 L90,20 L100,22"/></svg></td><td><span class="ag-badge ag-badge--good">개선 중</span></td></tr>
+          </tbody></table></div>
+          <div class="ag-grid ag-grid--tight">
+            <div class="ag-tile ag-tile--stack ag-col-6"><div class="ag-cluster ag-cluster--between"><span class="ag-tile__label">CPU 사용률</span><strong class="ag-text-crit">92%</strong></div><svg class="ag-spark ag-spark--lg ag-spark--crit" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,20 L20,18 L40,17 L60,10 L80,4 L100,3 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,20 L20,18 L40,17 L60,10 L80,4 L100,3"/></svg><div class="ag-cluster ag-cluster--between ag-text-xs ag-text-3"><span>13:00</span><span>14:00</span></div></div>
+            <div class="ag-tile ag-tile--stack ag-col-3"><div class="ag-cluster ag-cluster--between"><span class="ag-tile__label">읽기 IOPS</span><strong>12.4k</strong></div><svg class="ag-spark" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,14 L25,12 L50,15 L75,9 L100,10"/></svg></div>
+            <div class="ag-tile ag-tile--stack ag-col-3"><div class="ag-cluster ag-cluster--between"><span class="ag-tile__label">버퍼 풀 히트</span><strong class="ag-text-good">99.2%</strong></div><svg class="ag-spark ag-spark--good" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,8 L25,9 L50,8 L75,9 L100,8"/></svg></div>
+          </div>
+          <p class="ag-text-xs ag-text-3">타일 안 <code>.ag-cluster/.ag-spark/.ag-progress</code> 는 타일 폭을 채운다. 카드 사이는 <code>--ag-gap-grid</code>, 카드 안 타일 격자는 <code>.ag-grid--tight</code>(12px).</p>
+        </div>
       </div>
     </section>
 

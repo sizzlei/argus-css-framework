@@ -221,6 +221,7 @@
 .ag-spark { width: 100%; height: 28px; overflow: visible; display: block; }
 .ag-spark--sm { height: 20px; }
 .ag-spark--lg { height: 44px; }
+.ag-table td > .ag-spark { width: var(--ag-spark-w, 96px); height: 22px; }   /* 1.3: 테이블 셀 안 스파크라인 — 셀은 % 폭이 0 이 되므로 고정 폭 */
 .ag-spark__line { fill: none; stroke: var(--ag-chart-1); stroke-width: 1.5; vector-effect: non-scaling-stroke; stroke-linejoin: round; stroke-linecap: round; }
 .ag-spark__area { fill: var(--ag-chart-1); opacity: .14; stroke: none; }
 .ag-spark--good .ag-spark__line { stroke: var(--ag-good); }

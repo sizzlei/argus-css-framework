@@ -102,12 +102,41 @@
       </div>
     </div>
 
+
+    <!-- KPI 스트립: 스탯 카드 + 스파크라인 -->
+    <div class="ag-grid">
+      <div class="ag-card ag-card--sm ag-col-3 ag-stat-card">
+        <div class="ag-stat-card__head"><span class="ag-stat-card__icon"><svg class="ag-icon"><use href="#i-activity"/></svg></span><span class="ag-delta ag-delta--inline ag-delta--up">+4.1%</span></div>
+        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">38.2<small>k</small></span><span class="ag-stat__label">QPS 합계</span></div>
+        <svg class="ag-spark" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,18 L10,16 L20,19 L30,14 L40,15 L50,11 L60,13 L70,9 L80,12 L90,8 L100,9 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,18 L10,16 L20,19 L30,14 L40,15 L50,11 L60,13 L70,9 L80,12 L90,8 L100,9"/></svg>
+        <div class="ag-stat-card__foot"><span>최근 24시간</span><span>피크 41.7k · 20:00</span></div>
+      </div>
+      <div class="ag-card ag-card--sm ag-col-3 ag-stat-card">
+        <div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--info"><svg class="ag-icon"><use href="#i-git"/></svg></span><span class="ag-delta ag-delta--inline ag-delta--flat">0.0s</span></div>
+        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">0.3<small>s</small></span><span class="ag-stat__label">복제 지연 최대</span></div>
+        <svg class="ag-spark" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,22 L10,21 L20,22 L30,20 L40,21 L50,6 L60,18 L70,21 L80,22 L90,21 L100,22 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,22 L10,21 L20,22 L30,20 L40,21 L50,6 L60,18 L70,21 L80,22 L90,21 L100,22"/></svg>
+        <div class="ag-stat-card__foot"><span>order-db-reader-2</span><span>스파이크 1회 · 11:40</span></div>
+      </div>
+      <div class="ag-card ag-card--sm ag-col-3 ag-stat-card">
+        <div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--warn"><svg class="ag-icon"><use href="#i-hdd"/></svg></span><span class="ag-delta ag-delta--inline ag-delta--up">+1.8 TiB</span></div>
+        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">412<small>TiB</small></span><span class="ag-stat__label">스토리지 할당 · 사용 91%</span></div>
+        <svg class="ag-spark ag-spark--crit" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,20 L10,19 L20,19 L30,18 L40,17 L50,16 L60,15 L70,13 L80,12 L90,10 L100,8 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,20 L10,19 L20,19 L30,18 L40,17 L50,16 L60,15 L70,13 L80,12 L90,10 L100,8"/></svg>
+        <div class="ag-stat-card__foot"><span>최근 30일</span><span>이 추세면 <strong>23일</strong> 후 95%</span></div>
+      </div>
+      <div class="ag-card ag-card--sm ag-col-3 ag-stat-card">
+        <div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--good"><svg class="ag-icon"><use href="#i-shield"/></svg></span><span class="ag-badge ag-badge--sm ag-badge--good">ISMS</span></div>
+        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">98.9<small>%</small></span><span class="ag-stat__label">백업 성공률 · 30일</span></div>
+        <svg class="ag-spark ag-spark--good" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,8 L10,8 L20,9 L30,8 L40,8 L50,10 L60,8 L70,8 L80,12 L90,8 L100,8 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,8 L10,8 L20,9 L30,8 L40,8 L50,10 L60,8 L70,8 L80,12 L90,8 L100,8"/></svg>
+        <div class="ag-stat-card__foot"><span>5,580 / 5,642 건</span><span>실패 2 · 재시도 성공 60</span></div>
+      </div>
+    </div>
+
     <!-- Row 1 -->
     <div class="ag-grid">
 
       <!-- 요약 -->
       <section class="ag-card ag-col-3">
-        <div class="ag-card__head"><h2 class="ag-card__title">상태 요약</h2></div>
+        <div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--good"><svg class="ag-icon"><use href="#i-check-circle"/></svg></span><h2 class="ag-card__title">상태 요약</h2></div><span class="ag-text-xs ag-text-3">1분 전 갱신</span></div>
         <div class="ag-list">
           <a class="ag-list__item" href="resources.html"><span class="ag-list__label"><span class="ag-dot ag-dot--good"></span><span>정상</span></span><span class="ag-badge ag-badge--count">171</span></a>
           <a class="ag-list__item" href="resources.html"><span class="ag-list__label"><span class="ag-dot ag-dot--warn"></span><span>주의</span></span><span class="ag-badge ag-badge--count">11</span></a>
@@ -122,7 +151,7 @@
       <!-- 차트 -->
       <section class="ag-card ag-col-6">
         <div class="ag-card__head">
-          <h2 class="ag-card__title">슬로우 쿼리 추이</h2>
+          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--2"><svg class="ag-icon"><use href="#i-activity"/></svg></span><h2 class="ag-card__title">슬로우 쿼리 추이</h2></div>
           <div class="ag-segmented">
             <button class="ag-segmented__item" aria-pressed="false">12개월</button>
             <button class="ag-segmented__item is-active" aria-pressed="true">30일</button>
@@ -169,33 +198,131 @@
     <div class="ag-grid">
       <section class="ag-card ag-card--flush ag-col-8">
         <div class="ag-card__head">
-          <div><h2 class="ag-card__title">AWS 리소스 사용량</h2><p class="ag-card__subtitle">ap-northeast-2 · 프로덕션 계정</p></div>
+          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--info"><svg class="ag-icon"><use href="#i-cloud"/></svg></span><div><h2 class="ag-card__title">AWS 리소스 사용량</h2><p class="ag-card__subtitle">ap-northeast-2 · 프로덕션 계정 · 5분 전 갱신</p></div></div>
           <a class="ag-btn ag-btn--sm ag-btn--outline" href="resources.html">전체 보기<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-right"/></svg></a>
         </div>
         <div class="ag-table-wrap ag-mt-4">
-          <table class="ag-table">
+          <table class="ag-table ag-table--striped">
             <thead><tr><th>리소스</th><th>타입</th><th class="ag-th--num">수량</th><th style="min-width:180px">사용률 (CPU · 용량 · 메모리)</th><th>상태</th></tr></thead>
             <tbody>
               <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-database"/></svg>RDS / Aurora</span></td><td class="ag-text-2">db.r6g.2xlarge 외</td><td class="ag-td--num ag-num">78</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>CPU 평균</span><strong>61%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:61%"></div></div></div></td><td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td></tr>
               <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-server"/></svg>EC2 (self-managed DB)</span></td><td class="ag-text-2">r6i.4xlarge 외</td><td class="ag-td--num ag-num">43</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>CPU 평균</span><strong>84%</strong></div><div class="ag-progress ag-progress--sm ag-progress--warn"><div class="ag-progress__bar" style="width:84%"></div></div></div></td><td><span class="ag-badge ag-badge--warn"><span class="ag-dot ag-dot--warn"></span>주의</span></td></tr>
               <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-layers"/></svg>DocumentDB</span></td><td class="ag-text-2">db.r6g.large</td><td class="ag-td--num ag-num">34</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>CPU 평균</span><strong>37%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:37%"></div></div></div></td><td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td></tr>
               <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-hdd"/></svg>EBS gp3</span></td><td class="ag-text-2">총 412 TiB</td><td class="ag-td--num ag-num">318</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>용량</span><strong>91%</strong></div><div class="ag-progress ag-progress--sm ag-progress--crit"><div class="ag-progress__bar" style="width:91%"></div></div></div></td><td><span class="ag-badge ag-badge--crit"><span class="ag-dot ag-dot--crit"></span>증설 필요</span></td></tr>
+              <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-server"/></svg>Oracle (EC2)</span></td><td class="ag-text-2">r6i.8xlarge · RAC 2노드</td><td class="ag-td--num ag-num">6</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>CPU 평균</span><strong>55%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:55%"></div></div></div></td><td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td></tr>
               <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-cpu"/></svg>ElastiCache</span></td><td class="ag-text-2">cache.r7g.xlarge</td><td class="ag-td--num ag-num">21</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>메모리</span><strong>52%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:52%"></div></div></div></td><td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td></tr>
+              <tr><td class="ag-fw-500"><span class="ag-row"><svg class="ag-icon ag-text-3"><use href="#i-database"/></svg>RDS Proxy</span></td><td class="ag-text-2">order · member · wms</td><td class="ag-td--num ag-num">3</td><td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span>연결 풀</span><strong>48%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:48%"></div></div></div></td><td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td></tr>
             </tbody>
           </table>
         </div>
+        <div class="ag-card__foot" style="padding:12px 24px 0"><span>7개 리소스 그룹 · 총 503개</span><span>월 예상 비용 <strong class="ag-text">$184.2k</strong> · 전월 대비 <span class="ag-text-good">-3.1%</span></span></div>
       </section>
 
       <!-- 분포 버블 -->
       <section class="ag-card ag-col-4">
         <div class="ag-card__head">
-          <h2 class="ag-card__title">엔진 분포</h2>
+          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--1"><svg class="ag-icon"><use href="#i-layers"/></svg></span><h2 class="ag-card__title">엔진 분포</h2></div>
           <a class="ag-btn ag-btn--icon ag-btn--outline ag-btn--sm" href="resources.html" aria-label="리소스 보기"><svg class="ag-icon"><use href="#i-arrow-up-right"/></svg></a>
         </div>
         <div class="ag-relative" style="height:230px;max-width:280px;margin-inline:auto;width:100%">
           <div class="ag-bubble ag-bubble--2" style="position:absolute;left:0;top:6px;width:170px;font-size:46px"><strong>58%</strong><span>MySQL</span></div>
           <div class="ag-bubble ag-bubble--hatch" style="position:absolute;left:150px;top:0;width:84px;font-size:22px"><strong>9%</strong><span>Oracle</span></div>
           <div class="ag-bubble ag-bubble--1" style="position:absolute;left:135px;bottom:0;width:136px;font-size:36px"><strong>33%</strong><span>PostgreSQL</span></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Row 3: 최근 이벤트 · 점검 일정 · 스토리지 상위 -->
+    <div class="ag-grid">
+      <section class="ag-card ag-col-4">
+        <div class="ag-card__head">
+          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--crit"><svg class="ag-icon"><use href="#i-bell"/></svg></span><h2 class="ag-card__title">최근 이벤트</h2></div>
+          <a class="ag-btn ag-btn--sm ag-btn--ghost" href="layouts.html#dual">전체<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-right"/></svg></a>
+        </div>
+        <div class="ag-timeline ag-timeline--compact">
+          <div class="ag-timeline__item is-crit"><div class="ag-timeline__head"><div class="ag-timeline__title">order-db-writer CPU 92% 지속</div><span class="ag-timeline__time">14:02</span></div><div class="ag-timeline__meta">ALM-2041 · James 조치 중 · 슬로우 쿼리 318건/h</div></div>
+          <div class="ag-timeline__item is-warn"><div class="ag-timeline__head"><div class="ag-timeline__title">ebs-wms-03 사용률 91%</div><span class="ag-timeline__time">09:48</span></div><div class="ag-timeline__meta">증설 요청 INFRA-2044 자동 생성 · 1 TiB → 1.5 TiB</div></div>
+          <div class="ag-timeline__item"><div class="ag-timeline__head"><div class="ag-timeline__title">svc_analytics_ro 계정 발급 요청</div><span class="ag-timeline__time">08:10</span></div><div class="ag-timeline__meta">데이터팀 Mina · 읽기 전용 · 승인 대기</div></div>
+          <div class="ag-timeline__item is-good"><div class="ag-timeline__head"><div class="ag-timeline__title">catalog-docdb 복구 리허설 통과</div><span class="ag-timeline__time">03:00</span></div><div class="ag-timeline__meta">6m 12s · RPO 0 · 자동</div></div>
+          <div class="ag-timeline__item is-good"><div class="ag-timeline__head"><div class="ag-timeline__title">member-pg 마이너 패치 완료</div><span class="ag-timeline__time">어제 11:05</span></div><div class="ag-timeline__meta">Aurora PG 15.4 · failover 1회 · 8s</div></div>
+          <div class="ag-timeline__item"><div class="ag-timeline__head"><div class="ag-timeline__title">prod-order-mysql80 파라미터 변경</div><span class="ag-timeline__time">어제 10:30</span></div><div class="ag-timeline__meta">innodb_buffer_pool_size 48G → 56G · Sophie 승인</div></div>
+        </div>
+      </section>
+
+      <section class="ag-card ag-col-4">
+        <div class="ag-card__head">
+          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--warn"><svg class="ag-icon"><use href="#i-calendar"/></svg></span><h2 class="ag-card__title">점검 일정</h2></div>
+          <span class="ag-badge ag-badge--sm ag-badge--warn">이번 주 3건</span>
+        </div>
+        <div class="ag-list">
+          <a class="ag-list__item" href="detail.html"><span class="ag-list__label"><span class="ag-dot ag-dot--warn"></span><span>order-db 파라미터 적용 <span class="ag-text-3 ag-fw-400">· 쓰기 30초 중단</span></span></span><span class="ag-text-xs ag-text-3 ag-mono ag-nowrap">10/3 02:00</span></a>
+          <a class="ag-list__item" href="#"><span class="ag-list__label"><span class="ag-dot ag-dot--info"></span><span>member-pg 복구 리허설</span></span><span class="ag-text-xs ag-text-3 ag-mono ag-nowrap">10/4 03:00</span></a>
+          <a class="ag-list__item" href="#"><span class="ag-list__label"><span class="ag-dot ag-dot--info"></span><span>wms-ora-01 RAC 패치 <span class="ag-text-3 ag-fw-400">· 19c RU</span></span></span><span class="ag-text-xs ag-text-3 ag-mono ag-nowrap">10/5 01:00</span></a>
+          <a class="ag-list__item" href="#"><span class="ag-list__label"><span class="ag-dot"></span><span>ebs-wms-03 볼륨 증설</span></span><span class="ag-text-xs ag-text-3 ag-mono ag-nowrap">10/8 02:00</span></a>
+          <a class="ag-list__item" href="#"><span class="ag-list__label"><span class="ag-dot"></span><span>분기 접근권한 재검토 <span class="ag-text-3 ag-fw-400">· ISMS</span></span></span><span class="ag-text-xs ag-text-3 ag-mono ag-nowrap">10/14</span></a>
+        </div>
+        <div class="ag-card__foot ag-mt-auto"><span>AWS 유지보수 창 · 토 02:00–04:00 KST</span><a href="#">달력에 추가</a></div>
+      </section>
+
+      <section class="ag-card ag-col-4">
+        <div class="ag-card__head">
+          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--4"><svg class="ag-icon"><use href="#i-hdd"/></svg></span><h2 class="ag-card__title">스토리지 상위</h2></div>
+          <span class="ag-text-xs ag-text-3">사용률 기준</span>
+        </div>
+        <div class="ag-stack ag-stack--sm">
+          <div class="ag-meter-row"><div class="ag-meter-row__head"><span class="ag-row"><span class="ag-dot ag-dot--crit"></span>ebs-wms-03 <span class="ag-text-3">· 1 TiB</span></span><strong class="ag-text-crit">91%</strong></div><div class="ag-progress ag-progress--sm ag-progress--crit"><div class="ag-progress__bar" style="width:91%"></div></div></div>
+          <div class="ag-meter-row"><div class="ag-meter-row__head"><span class="ag-row"><span class="ag-dot ag-dot--warn"></span>order-db-writer <span class="ag-text-3">· 2 TiB</span></span><strong class="ag-text-warn">78%</strong></div><div class="ag-progress ag-progress--sm ag-progress--warn"><div class="ag-progress__bar" style="width:78%"></div></div></div>
+          <div class="ag-meter-row"><div class="ag-meter-row__head"><span class="ag-row"><span class="ag-dot ag-dot--good"></span>wms-ora-01 <span class="ag-text-3">· 8 TiB</span></span><strong>74%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:74%"></div></div></div>
+          <div class="ag-meter-row"><div class="ag-meter-row__head"><span class="ag-row"><span class="ag-dot ag-dot--good"></span>member-pg-writer <span class="ag-text-3">· 1 TiB</span></span><strong>48%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:48%"></div></div></div>
+          <div class="ag-meter-row"><div class="ag-meter-row__head"><span class="ag-row"><span class="ag-dot ag-dot--good"></span>catalog-docdb <span class="ag-text-3">· 1 TiB</span></span><strong>21%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:21%"></div></div></div>
+        </div>
+        <div class="ag-insight ag-mt-auto">
+          <span class="ag-insight__icon"><svg class="ag-icon"><use href="#i-sparkle"/></svg></span>
+          <p>ebs-wms-03 은 주당 <strong>+2.1%</strong> — 10/8 증설 전까지 <strong>여유 4%</strong>. 로그 보관 주기를 14일로 줄이면 1.5주를 법니다.</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Row 4: 최근 슬로우 쿼리 · 빠른 작업 -->
+    <div class="ag-grid">
+      <section class="ag-card ag-card--flush ag-col-8">
+        <div class="ag-card__head">
+          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--2"><svg class="ag-icon"><use href="#i-terminal"/></svg></span><div><h2 class="ag-card__title">최근 슬로우 쿼리</h2><p class="ag-card__subtitle">1s 초과 · 최근 1시간 · 다이제스트 기준 상위</p></div></div>
+          <div class="ag-cluster">
+            <div class="ag-segmented ag-segmented--sm"><button class="ag-segmented__item is-active" aria-pressed="true">전체</button><button class="ag-segmented__item" aria-pressed="false">MySQL</button><button class="ag-segmented__item" aria-pressed="false">PostgreSQL</button></div>
+            <a class="ag-btn ag-btn--sm ag-btn--outline" href="#">쿼리 분석<svg class="ag-icon ag-icon--sm"><use href="#i-arrow-up-right"/></svg></a>
+          </div>
+        </div>
+        <div class="ag-table-wrap ag-mt-4">
+          <table class="ag-table ag-table--clickable ag-table--sticky-end">
+            <thead><tr><th>다이제스트</th><th>인스턴스</th><th class="ag-th--num">호출</th><th class="ag-th--num">평균</th><th style="min-width:96px">추이</th><th>상태</th><th class="ag-th--actions"><span class="ag-sr-only">작업</span></th></tr></thead>
+            <tbody>
+              <tr tabindex="0"><td class="ag-td--query"><code class="ag-truncate" style="display:block;max-width:300px">SELECT … FROM order_item oi JOIN order o ON … WHERE o.created_at &gt; ?</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c1"></span>order-db-reader-1</span></td><td class="ag-td--num ag-num">1,284</td><td class="ag-td--num ag-num ag-text-crit">2.41s</td><td><svg class="ag-spark ag-spark--sm ag-spark--crit" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,22 L15,20 L30,21 L45,14 L60,9 L75,6 L90,8 L100,4"/></svg></td><td><span class="ag-badge ag-badge--crit">인덱스 누락</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr tabindex="0"><td class="ag-td--query"><code class="ag-truncate" style="display:block;max-width:300px">UPDATE member SET last_login_at = ? WHERE id = ?</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c2"></span>member-pg-writer</span></td><td class="ag-td--num ag-num">9,730</td><td class="ag-td--num ag-num ag-text-warn">1.12s</td><td><svg class="ag-spark ag-spark--sm ag-spark--2" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,16 L15,18 L30,15 L45,17 L60,12 L75,14 L90,13 L100,12"/></svg></td><td><span class="ag-badge ag-badge--warn">락 대기</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr tabindex="0"><td class="ag-td--query"><code class="ag-truncate" style="display:block;max-width:300px">SELECT COUNT(*) FROM shipment WHERE status IN (?,?,?) AND wh_id = ?</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c1"></span>wms-mysql-02</span></td><td class="ag-td--num ag-num">612</td><td class="ag-td--num ag-num">1.08s</td><td><svg class="ag-spark ag-spark--sm" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,14 L15,15 L30,13 L45,15 L60,14 L75,15 L90,14 L100,15"/></svg></td><td><span class="ag-badge">풀스캔</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr tabindex="0"><td class="ag-td--query"><code class="ag-truncate" style="display:block;max-width:300px">db.products.aggregate([{$match:{category:?}},{$group:…}])</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c3"></span>catalog-docdb</span></td><td class="ag-td--num ag-num">341</td><td class="ag-td--num ag-num">1.03s</td><td><svg class="ag-spark ag-spark--sm ag-spark--good" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,8 L15,10 L30,12 L45,14 L60,16 L75,18 L90,20 L100,22"/></svg></td><td><span class="ag-badge ag-badge--good">개선 중</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr tabindex="0"><td class="ag-td--query"><code class="ag-truncate" style="display:block;max-width:300px">SELECT * FROM promo_log WHERE promo_id = ? ORDER BY id DESC LIMIT 50</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c1"></span>promo-mysql-01</span></td><td class="ag-td--num ag-num">188</td><td class="ag-td--num ag-num">1.01s</td><td><svg class="ag-spark ag-spark--sm" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,20 L15,18 L30,19 L45,17 L60,18 L75,16 L90,17 L100,15"/></svg></td><td><span class="ag-badge">정렬</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="ag-card__foot" style="padding:12px 24px 0"><span>상위 5 / 43 다이제스트 · 전체 318건</span><span>평균 1.34s · p95 4.2s</span></div>
+      </section>
+
+      <section class="ag-card ag-col-4">
+        <div class="ag-card__head">
+          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--accent"><svg class="ag-icon"><use href="#i-zap"/></svg></span><h2 class="ag-card__title">빠른 작업</h2></div>
+        </div>
+        <div class="ag-quick-actions">
+          <a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--1"><svg class="ag-icon"><use href="#i-database"/></svg></span><span class="ag-quick-action__body"><span class="ag-quick-action__title">스냅샷 생성</span><span class="ag-quick-action__meta">수동 · 보관 7일</span></span></a>
+          <a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--2"><svg class="ag-icon"><use href="#i-shield"/></svg></span><span class="ag-quick-action__body"><span class="ag-quick-action__title">계정 발급</span><span class="ag-quick-action__meta">대기 1건</span></span></a>
+          <a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--3"><svg class="ag-icon"><use href="#i-refresh"/></svg></span><span class="ag-quick-action__body"><span class="ag-quick-action__title">파라미터 적용</span><span class="ag-quick-action__meta">마지막 어제 10:30</span></span></a>
+          <a class="ag-quick-action" href="#"><span class="ag-quick-action__icon ag-quick-action__icon--4"><svg class="ag-icon"><use href="#i-terminal"/></svg></span><span class="ag-quick-action__body"><span class="ag-quick-action__title">쿼리 분석</span><span class="ag-quick-action__meta">EXPLAIN · 인덱스 제안</span></span></a>
+        </div>
+        <hr>
+        <div class="ag-card__head"><h3 class="ag-eyebrow">담당 온콜</h3><span class="ag-text-xs ag-text-3">이번 주</span></div>
+        <div class="ag-stack ag-stack--sm">
+          <div class="ag-person"><span class="ag-avatar ag-avatar--sm ag-avatar--accent">JA</span><div class="ag-min-0"><div class="ag-person__name">James <span class="ag-badge ag-badge--sm ag-badge--good">1차</span></div><div class="ag-person__meta">MySQL · Aurora · 응답 3분</div></div></div>
+          <div class="ag-person"><span class="ag-avatar ag-avatar--sm ag-avatar--cat3">SO</span><div class="ag-min-0"><div class="ag-person__name">Sophie <span class="ag-badge ag-badge--sm">2차</span></div><div class="ag-person__meta">PostgreSQL · DocumentDB</div></div></div>
         </div>
       </section>
     </div>

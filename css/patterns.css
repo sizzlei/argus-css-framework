@@ -42,6 +42,25 @@
 .ag-auth__features { display: flex; flex-direction: column; gap: 12px; margin-top: var(--ag-space-8); }
 .ag-auth__feature { display: flex; align-items: center; gap: 12px; color: var(--ag-text-2); font-size: var(--ag-text-sm); }
 .ag-auth__feature :is(.ag-icon, [class*="ph-"]) { color: var(--ag-accent-text); }
+/* 1.3: 브랜드 패널 숫자 띠 + 라이브 타일 — 빈 가운데를 채우되 로그인 폼보다 조용하게 */
+.ag-auth__facts { display: flex; flex-wrap: wrap; gap: var(--ag-space-6) var(--ag-space-8); margin-top: var(--ag-space-8); padding-top: var(--ag-space-6); border-top: 1px solid var(--ag-border); }
+.ag-auth__fact { display: flex; flex-direction: column; gap: 2px; }
+.ag-auth__fact strong { font-size: var(--ag-text-2xl); font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.ag-auth__fact span { font-size: var(--ag-text-xs); color: var(--ag-text-3); }
+.ag-auth__tiles { display: flex; flex-direction: column; gap: 8px; margin-top: var(--ag-space-8); max-width: 360px; }
+.ag-auth__tile {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 14px; border-radius: var(--ag-radius-md);
+  background: color-mix(in oklab, var(--ag-surface) 72%, transparent);
+  border: 1px solid var(--ag-border);
+  backdrop-filter: blur(8px);
+  font-size: var(--ag-text-sm); color: var(--ag-text-2);
+}
+.ag-auth__tile strong { color: var(--ag-text); font-weight: 500; }
+.ag-auth__tile .ag-badge, .ag-auth__tile time { margin-left: auto; }
+.ag-auth__tile time { font-family: var(--ag-font-mono); font-size: var(--ag-text-xs); color: var(--ag-text-3); }
+.ag-auth__tile:nth-child(2) { margin-left: 16px; }
+.ag-auth__tile:nth-child(3) { margin-left: 32px; }
 .ag-auth__panel { display: flex; align-items: center; justify-content: center; padding: clamp(24px, 4vw, 48px); min-width: 0; }
 .ag-auth__card { width: 100%; max-width: 420px; min-width: 0; display: flex; flex-direction: column; gap: var(--ag-space-6); }
 .ag-auth__card > * { min-width: 0; }

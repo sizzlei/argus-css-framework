@@ -101,6 +101,8 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 기존 | ag- |
 |---|---|
 | `bg-white rounded-2xl border border-slate-200 shadow-sm p-5` / Bootstrap `.card` / `.surface-card` | `.ag-card` (+ `__head` `__title` `__subtitle` `__body` `__foot`) |
+| 카드 제목 앞 아이콘 `.card-icon` / `<i class="… text-indigo-500">` + 제목 | `.ag-card__heading` > `.ag-card__icon--{accent\|good\|warn\|crit\|info\|1..4}` + `<h2 class="ag-card__title">` — 섹션 종류별 톤 하나로 통일 |
+| 메트릭 미니 차트 타일 (CPU·커넥션 작은 그래프들) | `.ag-grid.ag-grid--tight` > `.ag-tile--stack.ag-col-N` (`.ag-cluster--between` 머리줄 + `.ag-spark`) |
 | 카드 안 작은 박스 `bg-slate-50 rounded-xl p-4` | `.ag-tile` 또는 `.ag-card.ag-card--sm` |
 | KPI `text-3xl font-extrabold` + 라벨 / `.kpi` `.kpi-value` | `.ag-stat` (`__value` `__label`) · 아이콘 있으면 `.ag-stat-card` |
 | 증감 `text-emerald-600 +12%` / `.kpi-trend-up` | `.ag-delta.ag-delta--up` (원형) / `--inline` (필) |
@@ -133,7 +135,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 툴팁 | `[data-tip="…"]` |
 | 빈 상태 `.empty-state` / `text-slate-400 py-16` | `.ag-empty` > `__icon` `__title` |
 | 로딩 `animate-pulse` | `.ag-skeleton` · 스피너 `.ag-spinner` · 버튼 `.is-loading` · htmx `.htmx-indicator` (내장) |
-| 활동/이력 `.activity-list` `.timeline` | `.ag-timeline` > `__item.is-good` |
+| 활동/이력 `.activity-list` `.timeline` | `.ag-timeline` > `__item.is-good` (`__head` 안에 `__title` + `__time`, 보조는 `__meta`; 촘촘하게 `--compact`) |
 | 키-값 정의 `dl.grid.grid-cols-3` | `dl.ag-kv` (`--stack`) |
 | 아바타 이니셜 / `.user-chip` `.avatar` | `.ag-avatar` · 이름+메타 `.ag-person` |
 | 세션 타이머 칩 (`sessionTimer`) / `.session-warn` | `.ag-session(.is-warning)` / `<dialog class="ag-modal">` |

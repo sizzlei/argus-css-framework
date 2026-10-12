@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.3.0 — 2026-10-12 · 화면 밀도 보강 (예시 + 시각 디테일)
+
+1.2 로 모양이 단정해진 대신 예시 화면이 허전해졌다는 피드백. 두 축으로 보강 — (1) 예시 페이지를 실제 운영 콘솔 밀도로 채우고, (2) 카드·페이지에 조용한 시각 단서 몇 가지를 프레임워크 차원에서 더했다. 새 클래스·토큰이 있어 minor. 서비스는 dist 재복사만으로 (1)의 시각 변화가 따라오고, 새 컴포넌트는 쓰고 싶을 때 쓴다.
+
+### 시각 (프레임워크)
+- **카드 광택** `--ag-surface-sheen` — `.ag-card` 의 `background-image`. 다크는 윗부분 2.8% 흰 그라데이션(판처럼 보이게), 라이트는 `none`(평면 유지). 단색 카드(`--accent/--accent2/--inverse`)는 `background:` 단축으로 덮여 영향 없음.
+- **페이지 글로우** `--ag-bg-glow` — `.ag-app` 상단에 테마 액센트 11%(라이트 7%)의 큰 radial. 테마 파일이 액센트를 바꾸면 글로우도 따라온다. 끄려면 `--ag-bg-glow: none`.
+- **카드 아이콘** `.ag-card__heading` > `.ag-card__icon` (30px 타일, `--accent/--good/--warn/--crit/--info/--1..4`) + 제목(+`__subtitle`). 단색 카드 안에서는 `--_on` 으로 자동 보정. 모양 → 톤 순서.
+- `.ag-timeline__head`(제목 왼쪽·시각 오른쪽) + `.ag-timeline__meta`(한 줄 보조) + `.ag-timeline--compact`.
+- 테이블 셀 안 스파크라인: `.ag-table td > .ag-spark` 폭 `--ag-spark-w`(96px) — 셀 안에서 % 폭이 0 이 되던 문제.
+- `.ag-grid--tight`(12px) 카드 안 타일 격자 · `.ag-tile--stack` 안 `.ag-cluster/.ag-spark/.ag-progress` 는 타일 폭을 채움 — 메트릭 타일 패턴.
+- `.ag-avatar--xs`(22px, 테이블 셀 담당자) · `.ag-nowrap` 유틸.
+- 로그인 브랜드 패널: `.ag-auth__facts`(숫자 띠) + `.ag-auth__tiles`(계단식 라이브 타일, 글래스) — 빈 가운데를 채우되 폼보다 조용하게.
+
+### 예시 (content)
+- index: KPI 스트립 4장(스파크라인) · 리소스 표 7행 + 푸터(비용) · 최근 이벤트(타임라인 6) · 점검 일정 · 스토리지 상위(미터) · 최근 슬로우 쿼리(표 + 셀 스파크라인 + sticky-end) · 빠른 작업 + 온콜. 1,100px → 2,400px.
+- resources: 스탯 카드 4장(스파크라인·맥락) · 표 7 → 14행 · 엔진/플랫폼 stacked · 환경/리전 · 최근 변경 타임라인.
+- detail: 스탯 카드 스파크라인 · 메트릭 카드(1시간, 타일 5) · 활성 세션 표 · 이벤트 +2 · 태그·담당 · 비용 구성 바.
+- layouts(sidebar): 엔진 바 5행 + 푸터 · 열린 알림 표 · 점검 일정. login: 숫자 띠 + 라이브 타일.
+- components: 타임라인 head/meta, 셀 스파크라인, grid--tight 타일, avatar xs. matrix: `ag-card__icon` × 톤 + 단색 카드 안.
+
+### 도구
+- `tools/check.py` 96항목 (+6: 광택·글로우·카드 아이콘 크기·셀 스파크 폭·grid--tight gap·라이트 광택 없음).
+
 ## 1.2.1 — 2026-10-12 · 접근성 감사 (WCAG 2.2 AA)
 
 axe-core 를 `tools/check.py` 게이트로 붙였다 (예시 6페이지 × 다크·라이트, serious/critical 위반 0 — `npm i` 로 axe-core 가 있으면 켜지고 없으면 건너뜀). 걸린 것(거의 전부 색 대비, 몇 개는 이름 없는 아이콘 버튼·제목 구조)을 서비스 쪽 예외가 아니라 토큰으로 풀었으므로 dist 재복사만으로 따라온다. 모양·밀도는 1.2.0 그대로, 색 몇 개가 한 톤 움직인다.
