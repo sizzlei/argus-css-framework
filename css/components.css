@@ -16,9 +16,9 @@
   align-items: center;
   justify-content: center;
   gap: var(--ag-space-2);
-  height: 40px;
-  padding: 0 18px;
-  border-radius: var(--ag-radius-pill);
+  height: var(--ag-control-h);
+  padding: 0 16px;
+  border-radius: var(--ag-radius-btn);
   background: var(--_bg);
   color: var(--_fg);
   border: 1px solid var(--_bd);
@@ -52,18 +52,19 @@
 .ag-btn--accent2 { --_bg: var(--ag-accent-2); --_fg: #fff; --_bd: transparent; }
 .ag-btn--accent2:hover { background: var(--ag-accent-2); opacity: .9; border-color: transparent; }
 
-.ag-btn--sm { height: 32px; padding: 0 12px; font-size: var(--ag-text-sm); }
-.ag-btn--lg { height: 48px; padding: 0 24px; font-size: var(--ag-text-lg); }
-.ag-btn--icon { width: 40px; padding: 0; }
-.ag-btn--icon.ag-btn--sm { width: 32px; }
-.ag-btn--icon.ag-btn--lg { width: 48px; }
+.ag-btn--sm { height: var(--ag-control-h-sm); padding: 0 11px; font-size: var(--ag-text-sm); border-radius: calc(var(--ag-radius-btn) - 2px); }
+.ag-btn--lg { height: var(--ag-control-h-lg); padding: 0 22px; font-size: var(--ag-text-lg); }
+.ag-btn--icon { width: var(--ag-control-h); padding: 0; }
+.ag-btn--icon.ag-btn--sm { width: var(--ag-control-h-sm); }
+.ag-btn--icon.ag-btn--lg { width: var(--ag-control-h-lg); }
+.ag-btn--pill { border-radius: var(--ag-radius-pill); }   /* 예전 모양이 필요한 곳(랜딩·인증)만 */
 .ag-btn--square { border-radius: var(--ag-radius-md); }
 .ag-btn--block { width: 100%; }
 
 .ag-btn-group { display: inline-flex; }
 .ag-btn-group .ag-btn { border-radius: 0; margin-left: -1px; }
-.ag-btn-group .ag-btn:first-child { border-radius: var(--ag-radius-pill) 0 0 var(--ag-radius-pill); margin-left: 0; }
-.ag-btn-group .ag-btn:last-child { border-radius: 0 var(--ag-radius-pill) var(--ag-radius-pill) 0; }
+.ag-btn-group .ag-btn:first-child { border-radius: var(--ag-radius-btn) 0 0 var(--ag-radius-btn); margin-left: 0; }
+.ag-btn-group .ag-btn:last-child { border-radius: 0 var(--ag-radius-btn) var(--ag-radius-btn) 0; }
 
 /* ---- Segmented control (12 months / 30 days / 1 week) ---------------- */
 .ag-segmented {
@@ -97,8 +98,8 @@
   display: inline-flex;
   align-items: center;
   gap: var(--ag-space-2);
-  height: 44px;
-  padding: 0 20px;
+  height: 36px;
+  padding: 0 16px;
   border-radius: var(--ag-radius-pill);
   background: var(--ag-surface-2);
   border: 1px solid var(--ag-border);
@@ -107,7 +108,7 @@
   font-weight: 500;
   white-space: nowrap;
 }
-.ag-chip--sm { height: 32px; padding: 0 14px; font-size: var(--ag-text-sm); }
+.ag-chip--sm { height: 28px; padding: 0 12px; font-size: var(--ag-text-sm); }
 .ag-chip--accent  { background: var(--ag-accent);   color: var(--ag-text-on-accent); border-color: transparent; }
 .ag-chip--accent2 { background: var(--ag-accent-2); color: #fff; border-color: transparent; }
 .ag-chip--inverse { background: var(--ag-inverse);  color: var(--ag-text-on-inverse); border-color: transparent; }
@@ -257,7 +258,7 @@ button.ag-card:focus-visible, a.ag-card:focus-visible { outline: none; box-shado
   gap: var(--ag-space-4);
   flex-wrap: wrap;
 }
-.ag-card__title { font-size: var(--ag-text-xl); font-weight: 600; letter-spacing: -0.015em; }
+.ag-card__title { font-size: var(--ag-text-lg); font-weight: 600; letter-spacing: -0.01em; }
 .ag-card__subtitle { font-size: var(--ag-text-xs); color: var(--ag-text-3); margin-top: 3px; }
 .ag-card__body { display: flex; flex-direction: column; gap: var(--ag-space-3); min-width: 0; }
 .ag-card__foot { display: flex; align-items: center; justify-content: space-between; gap: var(--ag-space-3); flex-wrap: wrap; font-size: var(--ag-text-sm); color: var(--ag-text-3); }
@@ -346,8 +347,8 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   align-items: center;
   justify-content: center;
   gap: 2px;
-  min-width: 48px;
-  height: 48px;
+  min-width: 40px;
+  height: 40px;
   padding: 0 10px;
   border-radius: var(--ag-radius-pill);
   font-size: 11px;
@@ -523,8 +524,8 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 
 .ag-input, .ag-select, .ag-textarea {
   width: 100%;
-  height: 40px;
-  padding: 0 14px;
+  height: var(--ag-control-h);
+  padding: 0 12px;
   border-radius: var(--ag-radius-md);
   background: var(--ag-surface-2);
   border: 1px solid var(--ag-border);
@@ -536,8 +537,8 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-input:focus, .ag-select:focus, .ag-textarea:focus { outline: none; border-color: var(--ag-accent); box-shadow: var(--ag-ring); background: var(--ag-surface); }
 .ag-input:disabled, .ag-select:disabled, .ag-textarea:disabled { opacity: .5; }
 .ag-input--pill { border-radius: var(--ag-radius-pill); padding-inline: 18px; }
-.ag-input--sm, .ag-select--sm { height: 32px; font-size: var(--ag-text-sm); padding-inline: 10px; }
-.ag-input--lg { height: 48px; font-size: var(--ag-text-lg); }
+.ag-input--sm, .ag-select--sm { height: var(--ag-control-h-sm); font-size: var(--ag-text-sm); padding-inline: 10px; }
+.ag-input--lg { height: var(--ag-control-h-lg); font-size: var(--ag-text-lg); }
 .ag-textarea { height: auto; min-height: 96px; padding: 10px 14px; resize: vertical; line-height: 1.5; }
 .ag-input--mono { font-family: var(--ag-font-mono); }
 
@@ -558,13 +559,13 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 
 /* 입력 + 아이콘 */
 .ag-input-group { position: relative; display: flex; align-items: center; min-width: 0; }
-.ag-input-group :is(.ag-icon, [class*="ph-"]) { position: absolute; left: 14px; color: var(--ag-text-3); pointer-events: none; }
-.ag-input-group .ag-input { padding-left: 42px; }
+.ag-input-group :is(.ag-icon, [class*="ph-"]) { position: absolute; left: 12px; color: var(--ag-text-3); pointer-events: none; }
+.ag-input-group .ag-input { padding-left: 38px; }
 .ag-input-group .ag-input-group__end { position: absolute; right: 8px; display: inline-flex; gap: 4px; }
 .ag-input-group .ag-input-group__end :is(.ag-icon, [class*="ph-"]) { position: static; }
 /* --end 는 오른쪽 여백만 추가한다 — 선행 아이콘(padding-left 42px)과 함께 써도 양쪽이 다 살아 있어야 한다 */
 .ag-input-group.ag-input-group--end .ag-input { padding-right: 48px; }
-.ag-input-group.ag-input-group--end:not(:has(> :is(.ag-icon, [class*="ph-"]))) .ag-input { padding-left: 14px; }
+.ag-input-group.ag-input-group--end:not(:has(> :is(.ag-icon, [class*="ph-"]))) .ag-input { padding-left: 12px; }
 
 /* 체크박스 / 라디오 */
 .ag-check { display: inline-flex; align-items: center; gap: 10px; cursor: pointer; font-size: var(--ag-text-md); color: var(--ag-text); }

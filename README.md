@@ -36,7 +36,7 @@ index.html                      ← GitHub Pages 진입점 (examples/ 로 리다
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
                                    index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
-tools/                          ← check.py(값 단언 회귀 85항목) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
+tools/                          ← check.py(값 단언 회귀 86항목) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -161,7 +161,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 |---|---|---|
 | 표면 | `--ag-bg` `--ag-surface` `--ag-surface-2` `--ag-surface-3` `--ag-inverse` | 바닥 → 카드 → 카드 안 타일 → 강조. `--ag-shadow-scroll` 은 가로 스크롤 가장자리 |
 | 잉크 | `--ag-text` `--ag-text-2` `--ag-text-3` | 본문 / 보조 / 메타 |
-| 액센트 | `--ag-accent` (바이올렛) `--ag-accent-2` (핑크) | `*-soft` 는 투명 배경용 |
+| 액센트 | `--ag-accent` (테마) `--ag-accent-2` | `*-soft` 는 투명 배경용. accent-2 는 브랜드 그라데이션·범주 2번용 — 버튼·칩·배지 같은 UI 요소에는 쓰지 않는다 (주요 동작이 둘이면 둘 다 아니다) |
 | 상태 | `--ag-good` `--ag-warn` `--ag-crit` `--ag-info` | `*-soft`(배경) `*-text`(단독 글자) `*-solid` + `--ag-text-on-*`(solid 배지·칩) 동반 |
 | 차트 | `--ag-chart-1..4` `--ag-chart-other` `--ag-chart-hatch` `--ag-chart-grid` | 범주색 고정 순서. `other` 는 "기타" 조각용 중립 회색 — 상위 4 + 기타 = 5조각이 1번 색을 반복하지 않음 |
 | 순차 램프 | `--ag-seq-1..5` | 히트맵·밀도용 단일 색 5단계 (`--ag-chart-1` → `--ag-surface-2`). `.ag-heat--1..5` 와 `AG.charts.sequential(5)` 가 같은 값 |
@@ -169,7 +169,8 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | 간격 | `--ag-space-1..12` | 4px 기준 |
 | 본문 폭 | `--ag-content-max`(1600px) `--ag-gutter`(clamp 16–40px) | `.ag-main` 상한과 좌우 여백. 전면은 `.ag-app--fluid` 또는 토큰 `none` |
 | 레이아웃 간격 | `--ag-gap-grid`(24) `--ag-gap-main`(32) `--ag-gap-section`(20) | 카드 사이 · 본문 블록 사이 · 섹션 헤드↔본문. 서비스가 `:root` 에서 한 번에 조정 |
-| 라운드 | `--ag-radius-sm/md/lg/xl/pill` | 8 / 12 / 18 / 24 / 999 |
+| 라운드 | `--ag-radius-sm/md/lg/xl/btn/pill` | 6 / 10 / 12 / 16 / 10(버튼) / 999 — 알약은 칩·배지·세그먼트·네비만 |
+| 컨트롤 높이 | `--ag-control-h/-sm/-lg` | 36 / 30 / 44 (터치 44/36/48, compact 32/26). 버튼·입력·셀렉트·사용자 메뉴가 참조 |
 | 타이포 | `--ag-text-xs..4xl`(11/13/14/17/20/28/38/40) `--ag-text-hero`(52) `--ag-font-sans` `--ag-font-mono` | 본문 14px · h1 28/600 · 카드 스탯 40 · 히어로 52 |
 | 밀도 | `--ag-cell-y`(11) `--ag-cell-x`(16) | 테이블 셀 패딩 → 행 ≈44px. `--dense` 8/12, `data-density=compact` 7/12 |
 
@@ -181,13 +182,13 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 
 패턴 `ag-daterange` `ag-banner` `ag-notif` `ag-meter-row--compact` `ag-approval` `ag-cmdk` `ag-wizard` `ag-combobox` `ag-tree` `ag-td--editable` `ag-skeleton-rows` · `data-density="compact"` · `@media print` (`.ag-print-header`) `ag-auth` (표준 인증: 어두운 표면 패널 + 점 격자 · `__logo-box` `__name` `__version` `__status` `__mobile-head` `__mobile-foot` · 폼 쪽 `__glass` `__email-chip` `__qr` `__qr-icon` `__foot`; `--landing` 은 그라데이션 패널 변형. 3단계 로그인 전체는 `templates/go-html-template/login.html`) `ag-accordion` (details / `__toggle`+`is-open` / `--plain` / `--cards`) `ag-sidebar__node` (2단계 메뉴) `ag-modal-overlay` `ag-slack` (Block Kit 미리보기 전체) `ag-provider` `ag-account` `ag-user` `ag-pane` / `ag-pane-item` `ag-otp` (칸 분리 `__cell`) / `ag-otp-input` (한 칸 6자리) `ag-qr` (흰 패딩 박스 180px, QR 자체는 img/svg/canvas 로 · 생성 전 `__pending` 플레이스홀더) `ag-secret` `ag-secret-field` (한 줄 `input.is-masked` / 여러 줄 `--block` + `textarea.is-masked` 블러 + `__reveal` 클릭-드러내기 · `data-ag-reveal`) `ag-status-screen` `ag-brand-mark` `ag-session` `ag-stepper` `ag-log` `ag-code` `ag-code-block` `ag-tok-*` `ag-editor` `ag-diff` `ag-compare` `ag-tag` (범주 `--cat1~4/--other` 는 키만 · 상태 `--good/--warn/--crit/--info` 는 태그 전체 — 제거 예약·값 여러 종류 같은 되돌리기 전 상태) `ag-tags` `ag-tag-input` `ag-dropzone` `ag-file` `ag-popover` `ag-accordion` `ag-bulkbar` `ag-tr--expand` `ag-table--sticky-col` `ag-spinner` `ag-loading-overlay` `ag-msg` `ag-health` `ag-glow` (`.ag-app` 배경 글로우, 선택) `ag-scrollbar-hide` · 사이드바 `is-collapsed` / `is-open` / `ag-sidebar-backdrop` / `ag-sidebar__group-toggle`
 
-컴포넌트 (`ag-segmented` 는 3~4개 선택지용 — 항목이 많으면 안에서 스크롤되긴 하지만 `ag-nav` 나 `ag-tabs` 가 맞다) `ag-btn` (`--primary/--outline/--ghost/--inverse/--danger/--accent2` · `--sm/--lg/--icon/--block` · 조합 `--ghost.--danger` 는 평소 중립 → hover 시 crit, `--outline.--danger` 는 crit 테두리 — 테이블 행의 삭제 버튼용, `--outline.--primary` 는 액센트 테두리 — 채움 primary 의 outline 짝) `ag-btn-group` `ag-segmented` `ag-chip` (`--sm` · `--accent/--accent2/--inverse/--outline/--hatch` · 상태 `--good/--warn/--crit/--info` + `--solid`) `ag-meter-chips` `ag-badge` (`--good/--warn/--crit/--info` 상태 · `--cat1~4` 범주 · `--solid` · `--count` — count 는 모양만이라 어떤 톤과도 조합 · `--plain` 점+글자, 종류 표시용 — 한 행에 알약은 상태 하나만) `ag-dot` (`--cat1~4` 포함) `ag-delta` `ag-card` (`--accent/--accent2/--inverse` 단색 카드는 안쪽 텍스트·테두리·서브표면 토큰을 재정의해 `.ag-label` `.ag-hint` `.ag-stat__label` `.ag-kv dt` `.ag-card__foot` `.ag-btn--outline` 이 보정 없이 읽힘 · `--accent-soft` · `--interactive` · `a.ag-card` / `button.ag-card` 는 정렬·밑줄·폰트·안쪽 행 전체 폭 자동 처리, `is-selected`) `ag-tile` (가로 라벨↔값 · `--stack` 세로 · `--inverse`) `ag-stat` (`__value` 40px · `--sm` 28 · `--hero` 52 한 화면 한 곳 · `ag-stat-row` KPI 묶음 — 모바일 3열) `ag-list` (`a/button.ag-list__item` + `is-active` 선택 목록 · `disabled` 흐림 · `--divided` · `__item--meter`) `ag-stat` `ag-avatar` (`--good/--warn/--crit/--info/--accent2/--cat1~4/--neutral` · `--sm/--lg` · `--ring`) `ag-person` `ag-table` (`--dense` `--striped` `--sticky-col` `--clickable` 행 전체 링크 · `--sticky-end` 끝 열(상태 + ⋯) 고정, `.ag-table-wrap` 은 가로 스크롤 가장자리 그림자 / `tr.is-clickable` `is-selected` `is-muted` `is-crit/is-warn` · `ag-td--num` `ag-td--actions`) `ag-table-foot` `ag-pagination` `ag-field` `ag-input` (`[type=range]` 슬라이더 포함) `ag-select` (`--sm/--pill/--inline` · `--list` 열린 리스트 박스 `size=N`) `ag-textarea` `ag-check` `ag-switch` `ag-input-group` (앞 아이콘 · `--end` 뒤 버튼 · 둘 다 조합 가능) `ag-form-grid` (auto-fit 기본 · `--2/--3/--4` 열 고정 — `--full` 섞을 때는 고정 · 필드 `--span2/--span3/--full`) `ag-tabs` `ag-progress` `ag-meter-row` `ag-alert` `ag-insight` `ag-toast` (`--good` `--warn` `--crit` `--info`, 왼쪽 톤 바) `ag-dropdown` / `ag-menu` `ag-modal` `ag-drawer` `[data-tip]` `ag-empty` `ag-skeleton` `ag-kv` `ag-timeline` `ag-chart` `ag-legend` `ag-bubble` `ag-quick-actions` / `ag-quick-action` (`__icon--1~4` · 2줄 라벨 `__body` > `__title` + `__meta` · `__end`)
+컴포넌트 (버튼은 10px 둥근 사각 — 예전 알약은 `ag-btn--pill` · `ag-segmented` 는 3~4개 선택지용 — 항목이 많으면 안에서 스크롤되긴 하지만 `ag-nav` 나 `ag-tabs` 가 맞다) `ag-btn` (`--primary/--outline/--ghost/--inverse/--danger/--accent2` · `--sm/--lg/--icon/--block` · 조합 `--ghost.--danger` 는 평소 중립 → hover 시 crit, `--outline.--danger` 는 crit 테두리 — 테이블 행의 삭제 버튼용, `--outline.--primary` 는 액센트 테두리 — 채움 primary 의 outline 짝) `ag-btn-group` `ag-segmented` `ag-chip` (`--sm` · `--accent/--accent2/--inverse/--outline/--hatch` · 상태 `--good/--warn/--crit/--info` + `--solid`) `ag-meter-chips` `ag-badge` (`--good/--warn/--crit/--info` 상태 · `--cat1~4` 범주 · `--solid` · `--count` — count 는 모양만이라 어떤 톤과도 조합 · `--plain` 점+글자, 종류 표시용 — 한 행에 알약은 상태 하나만) `ag-dot` (`--cat1~4` 포함) `ag-delta` `ag-card` (`--accent/--accent2/--inverse` 단색 카드는 안쪽 텍스트·테두리·서브표면 토큰을 재정의해 `.ag-label` `.ag-hint` `.ag-stat__label` `.ag-kv dt` `.ag-card__foot` `.ag-btn--outline` 이 보정 없이 읽힘 · `--accent-soft` · `--interactive` · `a.ag-card` / `button.ag-card` 는 정렬·밑줄·폰트·안쪽 행 전체 폭 자동 처리, `is-selected`) `ag-tile` (가로 라벨↔값 · `--stack` 세로 · `--inverse`) `ag-stat` (`__value` 40px · `--sm` 28 · `--hero` 52 한 화면 한 곳 · `ag-stat-row` KPI 묶음 — 모바일 3열) `ag-list` (`a/button.ag-list__item` + `is-active` 선택 목록 · `disabled` 흐림 · `--divided` · `__item--meter`) `ag-stat` `ag-avatar` (`--good/--warn/--crit/--info/--accent2/--cat1~4/--neutral` · `--sm/--lg` · `--ring`) `ag-person` `ag-table` (`--dense` `--striped` `--sticky-col` `--clickable` 행 전체 링크 · `--sticky-end` 끝 열(상태 + ⋯) 고정, `.ag-table-wrap` 은 가로 스크롤 가장자리 그림자 / `tr.is-clickable` `is-selected` `is-muted` `is-crit/is-warn` · `ag-td--num` `ag-td--actions`) `ag-table-foot` `ag-pagination` `ag-field` `ag-input` (`[type=range]` 슬라이더 포함) `ag-select` (`--sm/--pill/--inline` · `--list` 열린 리스트 박스 `size=N`) `ag-textarea` `ag-check` `ag-switch` `ag-input-group` (앞 아이콘 · `--end` 뒤 버튼 · 둘 다 조합 가능) `ag-form-grid` (auto-fit 기본 · `--2/--3/--4` 열 고정 — `--full` 섞을 때는 고정 · 필드 `--span2/--span3/--full`) `ag-tabs` `ag-progress` `ag-meter-row` `ag-alert` `ag-insight` `ag-toast` (`--good` `--warn` `--crit` `--info`, 왼쪽 톤 바) `ag-dropdown` / `ag-menu` `ag-modal` `ag-drawer` `[data-tip]` `ag-empty` `ag-skeleton` `ag-kv` `ag-timeline` `ag-chart` `ag-legend` `ag-bubble` `ag-quick-actions` / `ag-quick-action` (`__icon--1~4` · 2줄 라벨 `__body` > `__title` + `__meta` · `__end`)
 
 전체 모양과 조합 예시는 `examples/components.html` 에서 확인하세요.
 
 ## JS 헬퍼 (선택)
 
-`dist/argus.js` 는 data 속성으로만 동작합니다. **`<body>` 끝에서 로드하거나 `<head>` 에서 `defer` 로** — 1.1 부터는 `<head>` 에 그냥 넣어도 DOM 준비 후 초기화하지만, 클릭 위임은 로드 즉시 걸리므로 위치는 body 끝이 기본입니다. 아이콘은 `<svg class="ag-icon">` 과 Phosphor `<i class="ph-…">` 둘 다 같은 대우를 받습니다 — 위치(입력칸 선행 아이콘)·색(사이드바·알림·토스트)·크기(로고 박스·드롭존) 규칙이 전부 `:is(.ag-icon, [class*="ph-"])` 라서 `<i>` 에 `ag-icon` 을 붙일 필요가 없고, 접힌 사이드바·rail·dual 에서도 살아남습니다.
+`dist/argus.js` 는 data 속성으로만 동작합니다. **`<body>` 끝에서 로드하거나 `<head>` 에서 `defer` 로** — 1.1 부터는 `<head>` 에 그냥 넣어도 DOM 준비 후 초기화하지만, 클릭 위임은 로드 즉시 걸리므로 위치는 body 끝이 기본입니다. 아이콘은 `<svg class="ag-icon">`(stroke 1.75) 과 Phosphor `<i class="ph-…">`(regular/duotone — bold 는 선이 두꺼워 섞이면 티가 남) 둘 다 같은 대우를 받고, 크기는 16/18/20 세 단계만 씁니다 — 위치(입력칸 선행 아이콘)·색(사이드바·알림·토스트)·크기(로고 박스·드롭존) 규칙이 전부 `:is(.ag-icon, [class*="ph-"])` 라서 `<i>` 에 `ag-icon` 을 붙일 필요가 없고, 접힌 사이드바·rail·dual 에서도 살아남습니다.
 
 | 속성 | 동작 |
 |---|---|
@@ -233,7 +234,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 85항목 (Playwright, 실패 시 exit 1). shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
+python3 tools/check.py      # 값 단언 회귀 86항목 (Playwright, 실패 시 exit 1). shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서

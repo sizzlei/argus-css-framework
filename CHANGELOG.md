@@ -11,6 +11,14 @@
 - 스탯 숫자 `--ag-text-4xl` 52 → 40. 52 는 `--ag-text-hero` + `.ag-stat--hero` 로 한 화면 한 곳만. `.ag-stat-row` KPI 묶음은 720px 이하 3열 격자 + 28px 숫자 (2+1 로 꺾이던 모바일).
 - `.ag-badge--plain` — 종류(엔진·팀)는 점 + 글자, 알약은 상태 하나만. resources 예시의 엔진·prod 배지를 정리(행당 알약 3 → 1).
 
+### Phase 2 — 모양·크기·색·타이포
+- 모양 토큰: `--ag-radius-sm/md/lg/xl` 8/12/18/24 → 6/10/12/16, 버튼은 새 토큰 `--ag-radius-btn` 10px(알약 → 둥근 사각, 예전 모양은 `.ag-btn--pill`). 알약은 칩·배지·세그먼트·네비·사용자 메뉴에만.
+- 컨트롤 높이 토큰 `--ag-control-h/-sm/-lg` 36/30/44 (이전 40/32/48) — 버튼·입력·셀렉트·사용자 메뉴·태그 입력·콤보박스가 참조. `pointer: coarse`(터치)에서 44/36/48, `data-density=compact` 32/26. 칩 44 → 36(`--sm` 28), 증감 배지 48 → 40, 네비 항목 패딩 10/22 → 8/18, 입력 패딩 14 → 12.
+- 제목 스케일: h2 28 → 20, h3·카드 제목 20 → 17. (h1 은 Phase 1 에서 28)
+- 라이트 카드 그림자 제거(보더만, `--ag-card-shadow` 1px 만 남김) — 평면이 더 정확해 보이고 오버레이와 구분.
+- 보조색(accent-2 분홍)은 브랜드 그라데이션·범주 2번에만. 대시보드 칩·상세 환경 배지에서 제거(예시). 클래스는 유지하되 UI 요소에는 쓰지 않도록 매핑표에 명시.
+- 아이콘 가이드: Phosphor 는 `ph-regular`/`ph-duotone`(bold 금지), 크기는 16/18/20 셋.
+
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
 - `.ag-btn--outline.ag-btn--primary`(액센트 테두리, hover accent-soft — 채움 primary 의 outline 짝), `.ag-list__item:disabled`(`.ag-btn` 과 같은 .45 흐림 + pointer-events), `.ag-select--list`(`size=N` 열린 리스트 박스: 고정 높이·캐럿 제거, option 행 패딩·선택 강조). 상세 화면 버튼 짝, 계정 선택 모달, 복구 소스 DB 선택에서 들어온 건.
 - `.ag-app--fluid` — 본문 `.ag-main` 의 1600px 상한(`--ag-content-max`) 해제, 거터만 남김. 다른 모드와 조합. 2560px 모니터에서 1600px 로 모이는 게 "좁아졌다" 로 들어온 건 (이전 앱은 상한이 없었음). layouts.html 에 fluid 토글, 매핑표에 `max-w-*`/`container` 제거 규칙.

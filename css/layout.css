@@ -76,7 +76,7 @@
   display: inline-flex;
   align-items: center;
   gap: var(--ag-space-2);
-  padding: 10px 22px;
+  padding: 8px 18px;
   border-radius: var(--ag-radius-pill);
   color: var(--ag-text-2);
   font-size: var(--ag-text-md);

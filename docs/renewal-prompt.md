@@ -23,7 +23,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 - 레이아웃은 6개 모드 중 하나: `ag-app`(top) · `ag-app--sidebar` · `ag-app--rail` · `ag-app--tabs` · `ag-app--focus` · `ag-app--dual`. 같은 마크업에 모드 클래스만 다르다 (`examples/layouts.html` 에서 전환 비교). 사이드바 접힘은 `is-collapsed`, 모바일 열림은 `is-open`, 상태 저장은 `argus.js` 가 처리한다.
 - 사용자 프로필/로그아웃/테마는 **상단 바 우측** `.ag-topbar__actions` 의 `.ag-user` 드롭다운에 둔다. 사이드바 하단 프로필은 쓰지 않는다 (모드가 바뀌어도 자리가 같아야 하므로).
 - 외부 로그인(Google Workspace, Slack, SSO)은 `.ag-provider--google/--slack/--sso`. 구조는 `__logo` + `__label` (+ 선택 `__hint`) — 라벨은 반드시 `<span class="ag-provider__label">` 로 감싼다(줄바꿈 방지·말줄임). 제공자 로고는 공식 브랜드 에셋을 `web/public/img/` 에 두고 `<img>` 로 넣는다. 연결된 계정 화면은 `.ag-account`.
-- 아이콘은 Phosphor (`<i class="ph-bold ph-database">`) 를 그대로 쓴다 (`ag-icon` 을 같이 붙이지 않는다 — 위치·색·크기 규칙이 `:is(.ag-icon, [class*="ph-"])` 라 svg 와 같은 대우를 받고, 접힌 사이드바에서도 살아남는다). `argus.js` 는 `<body>` 끝(또는 `<head>` + `defer`)에서 로드한다. 프레임워크가 `.ag-btn`, `.ag-sidebar__item` 안의 Phosphor 크기를 맞춘다. 테마 토글 버튼 안에는 해·달 `<i>` 를 둘 다 넣고 `.ag-only-dark` / `.ag-only-light` 로 하나만 보이게 한다 (phosphor.js 주입 스타일보다 이기도록 돼 있음) — 단일 아이콘으로 우회할 필요 없음.
+- 아이콘은 Phosphor (`<i class="ph-regular ph-database">` 또는 `ph-duotone`; `ph-bold` 는 쓰지 않는다 — svg 아이콘과 선 굵기가 달라 섞이면 티가 난다) 를 그대로 쓴다. 크기는 16/18/20 셋 (`ag-icon` 을 같이 붙이지 않는다 — 위치·색·크기 규칙이 `:is(.ag-icon, [class*="ph-"])` 라 svg 와 같은 대우를 받고, 접힌 사이드바에서도 살아남는다). `argus.js` 는 `<body>` 끝(또는 `<head>` + `defer`)에서 로드한다. 프레임워크가 `.ag-btn`, `.ag-sidebar__item` 안의 Phosphor 크기를 맞춘다. 테마 토글 버튼 안에는 해·달 `<i>` 를 둘 다 넣고 `.ag-only-dark` / `.ag-only-light` 로 하나만 보이게 한다 (phosphor.js 주입 스타일보다 이기도록 돼 있음) — 단일 아이콘으로 우회할 필요 없음.
 - 차트: ApexCharts 는 `AG.charts.apex(options)` 로 감싸고 `AG.charts.register(chart)` 한다. Chart.js 는 `AG.charts.chartjsDefaults(Chart)` 를 먼저 호출한다. 시리즈 색을 직접 지정하지 않는다 (`AG.charts.palette()` 사용; 데이터는 "상위 4 + 기타" 로 묶고 기타는 `--ag-chart-other`/`.ag-dot--other` — `palette(5)` 의 마지막이 그 색). 히트맵은 `AG.charts.apex({chart:{type:'heatmap'}})` 그대로 쓰거나(series 범위로 `--ag-seq-1..5` 램프 자동) `AG.charts.sequential(n)` / `AG.charts.heatRanges(min,max)` 를 쓴다 — `enableShades` 로 직접 램프를 만들지 않는다. CSS 히트맵 셀은 `.ag-heat--1..5`. 상태색(good/warn/crit)은 차트 시리즈로 쓰지 않는다.
 - 테마: 다크 기본. 라이트 전환은 `<html data-theme="light">` + `[data-ag-theme-toggle]` 버튼. 서비스 자체 테마 로직(쿠키 등)이 있으면 `data-theme` 속성을 세팅하는 쪽으로 맞춘다.
 - 화면 전체를 감싸는 `<div x-data="…">` 래퍼에는 **`class="ag-page"`** 를 붙인다 (`.ag-main` 의 블록 간격이 래퍼 안으로 이어지도록. 클래스 없는 div / x-data 래퍼는 프레임워크가 자동으로 같은 스택으로 처리하지만, 명시가 안전하다).
@@ -84,6 +84,8 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 사이드바 그룹 아코디언 (`toggleGroup`) | `.ag-sidebar__group[data-ag-group]` > `.ag-sidebar__group-toggle` |
 | 접힘 툴팁 (Alpine `showTooltip`) | `.ag-sidebar__item[data-tip="…"]` (CSS 전용) |
 | `max-w-7xl mx-auto px-5` | `.ag-main` (자동, 1600px 상한). 원본이 상한 없이 전면을 썼거나 대시보드·감사 결과처럼 패널이 가로로 늘어나면 `.ag-app--fluid` 추가 |
+| `bg-pink-*` / `text-pink-*` / 분홍 보조색 버튼·배지 | `--accent` 로. accent-2 는 브랜드 그라데이션·범주 2번 전용 |
+| `rounded-full` 버튼 | `.ag-btn` (10px 둥근 사각이 기본). 알약이 꼭 필요하면 `.ag-btn--pill` |
 | `max-w-5xl` / `container` 같은 본문 안쪽 폭 제한 | 제거 — 폭은 `.ag-main` 과 `.ag-grid` 가 정한다 |
 | `grid grid-cols-12 gap-5` + `col-span-6 lg:col-span-3` | `.ag-grid` + `.ag-col-6` / `.ag-col-3` (반응형 내장) |
 | `flex items-center justify-between` | `.ag-cluster.ag-cluster--between` 또는 `.ag-card__head` |

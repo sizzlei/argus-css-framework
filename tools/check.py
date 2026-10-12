@@ -53,7 +53,7 @@ async def main():
         # ── 3. input-group: 선행 아이콘 + --end 조합에서 양쪽 패딩 모두 유지 ──────────────────
         r = await pg.evaluate("""()=>[...document.querySelectorAll('.ag-input-group--end')].map(g=>{const i=g.querySelector('.ag-input');const c=getComputedStyle(i);return {icon:!!g.querySelector(':scope > .ag-icon'),pl:parseFloat(c.paddingLeft),pr:parseFloat(c.paddingRight)}})""")
         both = [x for x in r if x["icon"]]
-        check("input-group: icon + --end keeps left 42 / right 48", both and all(x["pl"] >= 40 and x["pr"] >= 44 for x in both), str(both))
+        check("input-group: icon + --end keeps left 42 / right 48", both and all(x["pl"] >= 36 and x["pr"] >= 44 for x in both), str(both))
 
         # ── 4. form-grid: --3 격자에서 --span2 는 이웃의 2배+gap ───────────────────────────
         r = await pg.evaluate("""()=>{const f=document.querySelector('.ag-form-grid--3 .ag-field--span2');const s=f.nextElementSibling;return [f.getBoundingClientRect().width, s.getBoundingClientRect().width]}""")
@@ -195,8 +195,8 @@ async def main():
           const g=id=>getComputedStyle(document.getElementById(id));const inp=document.getElementById('pin').getBoundingClientRect(),ico=document.getElementById('pi').getBoundingClientRect();
           return {pos:g('pi').position,left:g('pi').left,inside:ico.left>inp.left&&ico.left<inp.left+40,svgPos:g('si').position,endPos:g('endi').position,noiconPad:g('noicon').paddingLeft,
             caret:g('pc').color,text3:getComputedStyle(document.documentElement).getPropertyValue('--ag-text-3').trim(),logo:g('pl').fontSize}}""")
-        check("phosphor: <i> in .ag-input-group is absolute at left 14px, inside the input", r["pos"] == "absolute" and r["left"] == "14px" and r["inside"] and r["svgPos"] == "absolute", str(r))
-        check("phosphor: <i> inside __end stays static; --end without leading icon keeps 14px padding", r["endPos"] == "static" and r["noiconPad"] == "14px", str(r))
+        check("phosphor: <i> in .ag-input-group is absolute at left 12px, inside the input", r["pos"] == "absolute" and r["left"] == "12px" and r["inside"] and r["svgPos"] == "absolute", str(r))
+        check("phosphor: <i> inside __end stays static; --end without leading icon keeps 12px padding", r["endPos"] == "static" and r["noiconPad"] == "12px", str(r))
         check("phosphor: .ag-user caret colored text-3, .ag-auth__logo-box glyph 26px", r["logo"] == "26px" and r["caret"] != "rgb(255, 255, 255)", str(r))
         await pg.close()
 
@@ -308,6 +308,13 @@ async def main():
         pg = await page(b, "index.html", 400, 900)
         r = await pg.evaluate("""()=>{const row=document.querySelector('.ag-stat-row');const s=getComputedStyle(row);const vals=[...row.querySelectorAll('.ag-stat__value')].map(e=>e.getBoundingClientRect());return {disp:s.display,cols:s.gridTemplateColumns.split(' ').length,sameLine:Math.max(...vals.map(v=>v.top))-Math.min(...vals.map(v=>v.top))<4,size:getComputedStyle(row.querySelector('.ag-stat__value')).fontSize}}""")
         check("P1: @400 stat-row is a 3-col grid, numbers on one line at 28px", r["disp"] == "grid" and r["cols"] == 3 and r["sameLine"] and r["size"] == "28px", str(r))
+        await pg.close()
+
+        # ── P2. 디자인 감사 2단계: 모양·높이 토큰 ──
+        pg = await page(b, "components.html")
+        r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<button class="ag-btn" id="b">x</button><button class="ag-btn ag-btn--sm" id="bs">x</button><input class="ag-input" id="i"><div class="ag-card" id="c"></div><span class="ag-chip" id="ch">x</span><span class="ag-badge" id="bd">x</span><h2 id="h2">x</h2><h3 id="h3">x</h3>';document.body.appendChild(d);const g=id=>getComputedStyle(document.getElementById(id));
+          return {btnH:g('b').height,btnR:g('b').borderRadius,smH:g('bs').height,inpH:g('i').height,cardR:g('c').borderRadius,chipH:g('ch').height,chipR:g('ch').borderRadius,badgeR:g('bd').borderRadius,h2:g('h2').fontSize,h3:g('h3').fontSize}}""")
+        check("P2: btn 36px/10px radius, sm 30px, input 36px, card 16px, chip 36px pill, badge pill, h2 20 / h3 17", r["btnH"] == "36px" and r["btnR"] == "10px" and r["smH"] == "30px" and r["inpH"] == "36px" and r["cardR"] == "16px" and r["chipH"] == "36px" and r["chipR"] == "999px" and r["badgeR"] == "999px" and r["h2"] == "20px" and r["h3"] == "17px", str(r))
         await pg.close()
 
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────

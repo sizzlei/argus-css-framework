@@ -39,11 +39,17 @@
   --ag-gap-section: var(--ag-space-5);   /* .ag-section 헤드 ↔ 본문 20px */
 
   /* ---- Radius — 예시처럼 둥근 캡슐/카드 ---- */
-  --ag-radius-sm: 8px;
-  --ag-radius-md: 12px;
-  --ag-radius-lg: 18px;
-  --ag-radius-xl: 24px;
+  /* 1.2: 도구형 모양 — 카드 16 · 타일 12 · 입력 10 · 작은 것 6. 라운드가 클수록 "앱", 작을수록 "도구". 알약은 칩·배지·세그먼트·네비에만 */
+  --ag-radius-sm: 6px;
+  --ag-radius-md: 10px;
+  --ag-radius-lg: 12px;
+  --ag-radius-xl: 16px;
+  --ag-radius-btn: 10px;    /* 버튼 (1.2: 알약 → 10px) */
   --ag-radius-pill: 999px;
+  /* 컨트롤 높이 — 버튼·입력·셀렉트·사용자 메뉴가 참조 (1.2: 40/32/48 → 36/30/44). 터치 환경(pointer: coarse)에서는 44/36/48 */
+  --ag-control-h: 36px;
+  --ag-control-h-sm: 30px;
+  --ag-control-h-lg: 44px;
 
   /* ---- Shadows ---- */
   --ag-shadow-sm: 0 1px 2px rgb(0 0 0 / .4);
@@ -156,7 +162,7 @@
   --ag-border: rgb(16 18 32 / .07);
   --ag-border-strong: rgb(16 18 32 / .15);
   --ag-card-edge: none;
-  --ag-card-shadow: 0 1px 2px rgb(16 18 32 / .05), 0 8px 24px -16px rgb(16 18 32 / .12);
+  --ag-card-shadow: 0 1px 2px rgb(16 18 32 / .04);   /* 1.2: 라이트는 보더만으로 평면 — 그림자는 오버레이·드롭다운의 것 */
   --ag-overlay: rgb(16 18 32 / .45);
 
   --ag-text: #14151d;
@@ -217,4 +223,9 @@
   --ag-shadow-md: 0 8px 24px -8px rgb(16 18 32 / .14);
   --ag-shadow-lg: 0 24px 48px -16px rgb(16 18 32 / .18);
   --ag-shadow-scroll: rgb(16 18 32 / .16);
+}
+
+/* 터치 환경: 컨트롤 최소 44px (손가락) */
+@media (pointer: coarse) {
+  :root { --ag-control-h: 44px; --ag-control-h-sm: 36px; --ag-control-h-lg: 48px; }
 }

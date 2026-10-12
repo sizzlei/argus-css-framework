@@ -365,7 +365,7 @@
 .ag-tag--info .ag-tag__val { color: var(--ag-info-text); }
 .ag-tag--crit .ag-tag__remove { border-left-color: color-mix(in oklab, var(--ag-crit) 45%, transparent); }
 .ag-tags { display: flex; flex-wrap: wrap; gap: 6px; }
-.ag-tag-input { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 40px; padding: 5px 8px; border-radius: var(--ag-radius-md); background: var(--ag-surface-2); border: 1px solid var(--ag-border); cursor: text; }
+.ag-tag-input { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: var(--ag-control-h); padding: 5px 8px; border-radius: var(--ag-radius-md); background: var(--ag-surface-2); border: 1px solid var(--ag-border); cursor: text; }
 .ag-tag-input:focus-within { border-color: var(--ag-accent); box-shadow: var(--ag-ring); background: var(--ag-surface); }
 .ag-tag-input input { flex: 1; min-width: 80px; height: 26px; border: 0; background: transparent; color: var(--ag-text); padding: 0 4px; }
 .ag-tag-input input:focus { outline: none; }
@@ -682,7 +682,7 @@
    </div> */
 .ag-user {
   display: inline-flex; align-items: center; gap: 10px;
-  height: 40px; padding: 0 10px 0 4px;
+  height: var(--ag-control-h); padding: 0 10px 0 4px;
   border-radius: var(--ag-radius-pill);
   border: 1px solid transparent;
   color: var(--ag-text);
@@ -715,7 +715,7 @@
 .ag-daterange__inputs .ag-input--sm { width: 134px; }
 .ag-daterange__sep { color: var(--ag-text-3); }
 .ag-daterange__presets { display: inline-flex; gap: 4px; flex-wrap: wrap; }
-.ag-daterange__presets .ag-chip { height: 32px; padding: 0 12px; font-size: var(--ag-text-sm); cursor: pointer; }
+.ag-daterange__presets .ag-chip { height: 28px; padding: 0 12px; font-size: var(--ag-text-sm); cursor: pointer; }
 .ag-daterange__presets .ag-chip.is-active { background: var(--ag-accent-soft); color: var(--ag-accent); border-color: color-mix(in oklab, var(--ag-accent) 35%, transparent); }
 .ag-daterange__presets .ag-chip:hover:not(.is-active) { background: var(--ag-surface-hover); }
 .ag-daterange--stack { flex-direction: column; align-items: flex-start; }
@@ -865,7 +865,7 @@
    <div class="ag-combobox is-open"><div class="ag-combobox__control"><span class="ag-tag">…</span><input placeholder="검색…"></div>
      <div class="ag-combobox__list"><div class="ag-combobox__option is-active">…</div>…</div></div> */
 .ag-combobox { position: relative; }
-.ag-combobox__control { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: 40px; padding: 5px 36px 5px 8px; border-radius: var(--ag-radius-md); background: var(--ag-surface-2); border: 1px solid var(--ag-border); cursor: text; }
+.ag-combobox__control { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; min-height: var(--ag-control-h); padding: 5px 36px 5px 8px; border-radius: var(--ag-radius-md); background: var(--ag-surface-2); border: 1px solid var(--ag-border); cursor: text; }
 .ag-combobox__control::after { content: ""; position: absolute; right: 14px; top: 16px; width: 8px; height: 8px; border-right: 1.5px solid var(--ag-text-3); border-bottom: 1.5px solid var(--ag-text-3); transform: rotate(45deg); pointer-events: none; }
 .ag-combobox.is-open .ag-combobox__control, .ag-combobox__control:focus-within { border-color: var(--ag-accent); box-shadow: var(--ag-ring); background: var(--ag-surface); }
 .ag-combobox__control input { flex: 1; min-width: 80px; height: 26px; border: 0; background: transparent; color: var(--ag-text); padding: 0 4px; }
@@ -943,9 +943,7 @@
 :root[data-density="compact"] .ag-card--sm { padding: 12px; }
 :root[data-density="compact"] .ag-stat__value { font-size: var(--ag-text-3xl); }
 :root[data-density="compact"] .ag-main { gap: var(--ag-space-4); padding-block: var(--ag-space-5) var(--ag-space-8); }
-:root[data-density="compact"] .ag-btn { height: 34px; padding-inline: 14px; }
-:root[data-density="compact"] .ag-btn--sm { height: 28px; }
-:root[data-density="compact"] .ag-input, :root[data-density="compact"] .ag-select { height: 34px; }
+:root[data-density="compact"] { --ag-control-h: 32px; --ag-control-h-sm: 26px; }
 
 /* ---- 인쇄 (B11) — 감사 리포트·결과 내보내기 -------------------------------- */
 @media print {
