@@ -47,10 +47,12 @@
       Array.prototype.forEach.call(seg.parentElement.children, function (c) {
         c.classList.remove('is-active');
         if (c.hasAttribute('aria-pressed')) c.setAttribute('aria-pressed', 'false');
+        if (c.hasAttribute('aria-checked')) c.setAttribute('aria-checked', 'false');   /* 1.4: role=radiogroup 세그먼트 */
         if (c.hasAttribute('aria-selected')) c.setAttribute('aria-selected', 'false');
       });
       seg.classList.add('is-active');
       if (seg.hasAttribute('aria-pressed')) seg.setAttribute('aria-pressed', 'true');
+      if (seg.hasAttribute('aria-checked')) seg.setAttribute('aria-checked', 'true');
       if (seg.hasAttribute('aria-selected')) seg.setAttribute('aria-selected', 'true');
       /* 탭 패널 전환 */
       var target = seg.getAttribute('data-ag-tab');

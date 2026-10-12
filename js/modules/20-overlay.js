@@ -14,17 +14,37 @@
     else if (el.classList.contains('ag-modal-overlay')) { el.classList.remove('is-open'); el.hidden = true; }
     else el.classList.remove('is-open');
     owned.delete(el);
+    /* 1.4: 포커스를 연 요소로 되돌린다 (키보드·스크린리더가 길을 잃지 않게) */
+    if (el.__agOpener && document.contains(el.__agOpener)) { try { el.__agOpener.focus({ preventScroll: true }); } catch (err) {} }
+    el.__agOpener = null;
     el.dispatchEvent(new CustomEvent('ag:overlay-closed', { bubbles: true, detail: { reason: reason } }));
     return true;
+  }
+  var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+  function focusFirst(el) {
+    var f = el.querySelector('[autofocus]') || el.querySelector(FOCUSABLE);
+    if (f) { try { f.focus({ preventScroll: true }); } catch (err) {} }
   }
   function openOverlay(el) {
     if (!el) return;
     owned.add(el);
-    if (el.tagName === 'DIALOG') el.showModal();
-    else if (el.classList.contains('ag-modal-overlay')) { el.hidden = false; el.classList.add('is-open'); }
-    else el.classList.add('is-open');
+    el.__agOpener = document.activeElement;
+    if (el.tagName === 'DIALOG') el.showModal();   /* <dialog> 는 포커스 트랩·초기 포커스를 브라우저가 한다 */
+    else if (el.classList.contains('ag-modal-overlay')) { el.hidden = false; el.classList.add('is-open'); focusFirst(el); }
+    else { el.classList.add('is-open'); if (el.classList.contains('ag-drawer')) focusFirst(el); }
     el.dispatchEvent(new CustomEvent('ag:overlay-open', { bubbles: true }));
   }
+  /* 1.4: <dialog> 가 아닌 모달·드로어 안에서 Tab 순환 (argus.js 가 연 것만) */
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    var box = e.target.closest && e.target.closest('.ag-modal-overlay.is-open, .ag-drawer.is-open');
+    if (!box || !owned.has(box)) return;
+    var f = Array.prototype.filter.call(box.querySelectorAll(FOCUSABLE), function (n) { return n.offsetParent !== null; });
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+  });
   AG.overlay = { open: openOverlay, close: closeOverlay, owns: function (el) { return owned.has(el); }, _owned: owned };
 
   document.addEventListener('click', function (e) {
@@ -33,7 +53,7 @@
     document.querySelectorAll('.ag-dropdown.is-open').forEach(function (d) {
       if (owned.has(d) && !d.contains(e.target)) { d.classList.remove('is-open'); owned.delete(d); }
     });
-    if (trig) { var dd = trig.closest('.ag-dropdown'); if (dd) { if (dd.classList.toggle('is-open')) owned.add(dd); else owned.delete(dd); } }
+    if (trig) { var dd = trig.closest('.ag-dropdown'); if (dd) { if (dd.classList.toggle('is-open')) { owned.add(dd); trig.setAttribute('aria-expanded', 'true'); } else { owned.delete(dd); trig.setAttribute('aria-expanded', 'false'); } } }
 
     /* ---- 모달 / 드로어 ---- */
     var open = e.target.closest('[data-ag-open]');

@@ -90,7 +90,7 @@
   transition: background var(--ag-dur) var(--ag-ease), color var(--ag-dur) var(--ag-ease);
 }
 .ag-segmented__item:hover { color: var(--ag-text); }
-.ag-segmented__item.is-active, .ag-segmented__item[aria-pressed="true"] { background: var(--ag-surface-3); color: var(--ag-text); }
+.ag-segmented__item.is-active, .ag-segmented__item[aria-pressed="true"], .ag-segmented__item[aria-checked="true"] { background: var(--ag-surface-3); color: var(--ag-text); }
 .ag-segmented--sm .ag-segmented__item { padding: 5px 12px; font-size: var(--ag-text-xs); }
 
 /* ---- Chip / 캡슐 (상단 20% / 25% / 40% / 15%) ------------------------- */

@@ -60,6 +60,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 - 색상 리터럴 0개. `grep -nE "#[0-9a-fA-F]{3,8}|rgb\(" web/views` 결과가 비어야 한다 (svg 아이콘 제외).
 - 400px 에서 가로 스크롤 없음. 테이블은 .ag-table-wrap 안에서만 스크롤.
 - 상태(정상/주의/장애)는 색만이 아니라 점·아이콘·텍스트로도 구분된다.
+- 모션·색 상한 — 상태 점에 무한 애니메이션 금지(`.ag-dot--pulse` 는 진행 중인 장애 하나에만 `.is-live`, 화면당 1개). 카드 아이콘 타일(`.ag-card__icon--good/warn/crit/info`)은 화면당 2개 이하. 지속시간은 토큰 셋(`--ag-dur/-move/-slow`)만. 11px 미만 글자 금지. 폼 오류는 `.ag-field__error`(아이콘+문구) + `aria-invalid`/`aria-describedby`. 세그먼트는 `role="radiogroup"` + `role="radio" aria-checked`.
 - 접근성(WCAG 2.2 AA) — 프레임워크 토큰만 쓰면 색 대비는 보장된다. 서비스가 지킬 것은 마크업: 아이콘만 있는 버튼·링크는 `aria-label`(보이는 텍스트가 있으면 그 텍스트를 포함) 또는 `.ag-sr-only` 텍스트 · 체크박스/⋯ 열 `<th>` 는 `.ag-sr-only` 텍스트 · 페이지마다 `<h1>` 하나, 카드 제목은 h2/h3 순서 · `<nav aria-label>` · 배너/공지 `role="region" aria-label` · 페이지네이션 `aria-label` + `aria-current="page"` · 라벨 없는 입력(날짜·검색)은 `aria-label` · 스크롤되는 `<pre>` 는 `tabindex="0"` · 글자색을 직접 쓰지 않는다(`--ag-accent` 를 `color:` 에 쓰지 말 것 → `--ag-accent-text`). 검증은 프레임워크 저장소의 `tools/check.py` 와 같은 방식으로 axe-core 를 돌려 serious/critical 0.
 - 한 화면에 액센트 카드(.ag-card--accent)는 최대 1개.
 - 대시보드 첫 화면(스크롤 전)에는 카드 7개 이하. 핵심 지표 3~4 + 차트 1 + 보조 2. 나머지는 아래로 내리거나 목록 화면으로.
@@ -135,6 +136,8 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 툴팁 | `[data-tip="…"]` |
 | 빈 상태 `.empty-state` / `text-slate-400 py-16` | `.ag-empty` > `__icon` `__title` |
 | 로딩 `animate-pulse` | `.ag-skeleton` · 스피너 `.ag-spinner` · 버튼 `.is-loading` · htmx `.htmx-indicator` (내장) |
+| 쿼리·명령 열 `<td><code class="truncate">` + 인라인 max-width | `<td class="ag-td--query"><code>…</code></td>` (폭 `--ag-query-w`) |
+| 비율 버블·원 차트 (`.bubble` 절대 좌표) | `.ag-bubbles` > `.ag-bubble--N[data-v]` + `AG.charts.bubbles()` — 면적이 값에 비례 |
 | 활동/이력 `.activity-list` `.timeline` | `.ag-timeline` > `__item.is-good` (`__head` 안에 `__title` + `__time`, 보조는 `__meta`; 촘촘하게 `--compact`) |
 | 키-값 정의 `dl.grid.grid-cols-3` | `dl.ag-kv` (`--stack`) |
 | 아바타 이니셜 / `.user-chip` `.avatar` | `.ag-avatar` · 이름+메타 `.ag-person` |

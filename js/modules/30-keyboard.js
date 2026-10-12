@@ -20,6 +20,17 @@
         }
       }
     }
+    /* 1.4: 클릭 가능한 행 — Enter/Space 는 행의 첫 링크(없으면 행 자체 click) */
+    if ((e.key === 'Enter' || e.key === ' ') && t.matches && t.matches('.ag-table--clickable tbody tr[tabindex], .ag-table tr.is-clickable[tabindex]')) {
+      var lnk = t.querySelector('a[href]');
+      if (lnk) lnk.click(); else t.click();
+      e.preventDefault();
+    }
+    /* 1.4: 드롭다운 트리거에서 ↓ 는 메뉴로 들어간다 */
+    if (e.key === 'ArrowDown' && t.matches && t.matches('[data-ag-dropdown]')) {
+      var ddm = t.closest('.ag-dropdown');
+      if (ddm) { if (!ddm.classList.contains('is-open')) t.click(); var first = ddm.querySelector('.ag-menu__item, .ag-notif__item'); if (first) { first.setAttribute('tabindex', '-1'); first.focus(); e.preventDefault(); } }
+    }
     if (e.key === 'Escape') {
       /* ESC 도 argus.js 가 연 것만 닫는다 — Alpine 등이 소유한 오버레이·드로어·드롭다운은 그쪽 상태를 어긋나게 하지 않도록 두는 것 */
       var ov = window.AG && AG.overlay;

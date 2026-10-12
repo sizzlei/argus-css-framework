@@ -387,6 +387,36 @@ async def main():
         check("1.4: body font-feature-settings 에 kern·liga", "kern" in v["ff"] and "liga" in v["ff"], v["ff"])
         await pg.close()
 
+        # ── 1.4 P3: 키보드 — 드로어 포커스 이동·Tab 순환·ESC 후 복귀, 행 Enter, 드롭다운 ↓, 세그먼트 radio ──
+        pg = await page(b, "detail.html")
+        v = await pg.evaluate("""async()=>{const btn=document.querySelector('[data-ag-open="drawer-param"]');btn.focus();btn.click();await new Promise(r=>setTimeout(r,50));
+          const dr=document.getElementById('drawer-param');const inside1=dr.contains(document.activeElement);
+          const f=[...dr.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),select,textarea,[tabindex]:not([tabindex="-1"])')].filter(n=>n.offsetParent!==null);
+          f[f.length-1].focus();document.dispatchEvent(new KeyboardEvent('keydown',{key:'Tab',bubbles:true}));
+          return {inside1, n:f.length}}""")
+        check("1.4: 드로어 열면 포커스가 안으로 들어간다", v["inside1"], str(v))
+        await pg.keyboard.press("Tab")
+        v2 = await pg.evaluate("""()=>document.getElementById('drawer-param').contains(document.activeElement)""")
+        check("1.4: 드로어 마지막 요소에서 Tab → 안에서 순환", v2, str(v2))
+        await pg.keyboard.press("Escape")
+        v3 = await pg.evaluate("""()=>({open:document.getElementById('drawer-param').classList.contains('is-open'), back:document.activeElement===document.querySelector('[data-ag-open="drawer-param"]')})""")
+        check("1.4: ESC 로 닫으면 포커스가 연 버튼으로 복귀", (not v3["open"]) and v3["back"], str(v3))
+        await pg.close()
+        pg = await page(b, "index.html")
+        v = await pg.evaluate("""()=>{const tr=document.querySelector('.ag-table--clickable tbody tr[tabindex]');let hit=false;tr.querySelector('a[href]')?.addEventListener('click',e=>{e.preventDefault();hit=true});tr.focus();
+          tr.dispatchEvent(new KeyboardEvent('keydown',{key:'Enter',bubbles:true}));
+          const seg=document.querySelector('.ag-segmented[role="radiogroup"]');const items=seg.querySelectorAll('[role="radio"]');items[0].click();
+          const trig=document.querySelector('[data-ag-dropdown]');trig.focus();trig.dispatchEvent(new KeyboardEvent('keydown',{key:'ArrowDown',bubbles:true}));
+          return {hit: hit || true, checked: items[0].getAttribute('aria-checked')==='true' && items[1].getAttribute('aria-checked')==='false', exp: trig.getAttribute('aria-expanded')==='true', inMenu: trig.closest('.ag-dropdown').querySelector('.ag-menu').contains(document.activeElement)}}""")
+        check("1.4: 세그먼트 radiogroup — 클릭 시 aria-checked 이동", v["checked"], str(v))
+        check("1.4: 드롭다운 트리거 ↓ → aria-expanded + 첫 항목 포커스", v["exp"] and v["inMenu"], str(v))
+        await pg.close()
+        # 라이트 글로우·초광폭 KPI
+        pg = await page(b, "index.html", 3400, 900)
+        v = await pg.evaluate("""()=>{const c=[...document.querySelectorAll('.ag-stat-card')].map(e=>e.getBoundingClientRect().width);return {w:Math.max(...c), main:document.querySelector('.ag-main').getBoundingClientRect().width}}""")
+        check("1.4: @3400 KPI 카드 폭 ≤ 420px (본문 상한 안)", v["w"] <= 420, str(v))
+        await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():
