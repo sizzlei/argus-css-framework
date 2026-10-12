@@ -86,30 +86,16 @@
           <div><span class="ag-chip__label">기타 (Oracle, ElastiCache)</span><span class="ag-chip ag-chip--hatch">17%</span></div>
         </div>
       </div>
-      <div class="ag-stat-row">
-        <div class="ag-stat">
-          <div class="ag-stat__top"><span class="ag-delta ag-delta--up"><svg class="ag-icon ag-icon--sm"><use href="#i-trend-up"/></svg>+12%</span><span class="ag-stat__value">186</span></div>
-          <span class="ag-stat__label">DB 인스턴스</span>
-        </div>
-        <div class="ag-stat">
-          <div class="ag-stat__top"><span class="ag-delta ag-delta--down"><svg class="ag-icon ag-icon--sm"><use href="#i-trend-down"/></svg>-38%</span><span class="ag-stat__value">24</span></div>
-          <span class="ag-stat__label">슬로우 쿼리 / 시간</span>
-        </div>
-        <div class="ag-stat">
-          <div class="ag-stat__top"><span class="ag-delta ag-delta--down"><svg class="ag-icon ag-icon--sm"><use href="#i-trend-down"/></svg>-64%</span><span class="ag-stat__value">7</span></div>
-          <span class="ag-stat__label">열린 알림</span>
-        </div>
-      </div>
+      <div class="ag-page-header__actions"><span class="ag-text-sm ag-text-3">10월 12일 (일) · 14:05 KST 갱신</span><button class="ag-btn ag-btn--sm ag-btn--outline"><svg class="ag-icon ag-icon--sm"><use href="#i-refresh"/></svg>새로고침</button></div>
     </div>
-
 
     <!-- KPI 스트립: 스탯 카드 + 스파크라인 -->
     <div class="ag-grid">
       <div class="ag-card ag-card--sm ag-col-3 ag-stat-card">
-        <div class="ag-stat-card__head"><span class="ag-stat-card__icon"><svg class="ag-icon"><use href="#i-activity"/></svg></span><span class="ag-delta ag-delta--inline ag-delta--up">+4.1%</span></div>
-        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">38.2<small>k</small></span><span class="ag-stat__label">QPS 합계</span></div>
-        <svg class="ag-spark" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,18 L10,16 L20,19 L30,14 L40,15 L50,11 L60,13 L70,9 L80,12 L90,8 L100,9 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,18 L10,16 L20,19 L30,14 L40,15 L50,11 L60,13 L70,9 L80,12 L90,8 L100,9"/></svg>
-        <div class="ag-stat-card__foot"><span>최근 24시간</span><span>피크 41.7k · 20:00</span></div>
+        <div class="ag-stat-card__head"><span class="ag-stat-card__icon"><svg class="ag-icon"><use href="#i-database"/></svg></span><span class="ag-delta ag-delta--inline ag-delta--up">+12%</span></div>
+        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">186</span><span class="ag-stat__label">DB 인스턴스 · 정상 171 · 주의 11 · 장애 4</span></div>
+        <svg class="ag-spark" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,20 L10,19 L20,19 L30,17 L40,17 L50,15 L60,14 L70,12 L80,11 L90,9 L100,8 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,20 L10,19 L20,19 L30,17 L40,17 L50,15 L60,14 L70,12 L80,11 L90,9 L100,8"/></svg>
+        <div class="ag-stat-card__foot"><span>최근 90일</span><span>이번 달 +3 · 중지 1</span></div>
       </div>
       <div class="ag-card ag-card--sm ag-col-3 ag-stat-card">
         <div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--info"><svg class="ag-icon"><use href="#i-git"/></svg></span><span class="ag-delta ag-delta--inline ag-delta--flat">0.0s</span></div>
@@ -124,10 +110,10 @@
         <div class="ag-stat-card__foot"><span>최근 30일</span><span>이 추세면 <strong>23일</strong> 후 95%</span></div>
       </div>
       <div class="ag-card ag-card--sm ag-col-3 ag-stat-card">
-        <div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--good"><svg class="ag-icon"><use href="#i-shield"/></svg></span><span class="ag-badge ag-badge--sm ag-badge--good">ISMS</span></div>
-        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">98.9<small>%</small></span><span class="ag-stat__label">백업 성공률 · 30일</span></div>
-        <svg class="ag-spark ag-spark--good" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,8 L10,8 L20,9 L30,8 L40,8 L50,10 L60,8 L70,8 L80,12 L90,8 L100,8 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,8 L10,8 L20,9 L30,8 L40,8 L50,10 L60,8 L70,8 L80,12 L90,8 L100,8"/></svg>
-        <div class="ag-stat-card__foot"><span>5,580 / 5,642 건</span><span>실패 2 · 재시도 성공 60</span></div>
+        <div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--crit"><svg class="ag-icon"><use href="#i-activity"/></svg></span><span class="ag-delta ag-delta--inline ag-delta--down">-38%</span></div>
+        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">24<small>/h</small></span><span class="ag-stat__label">슬로우 쿼리 · 1s 초과</span></div>
+        <svg class="ag-spark ag-spark--crit" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,20 L10,18 L20,22 L30,12 L40,14 L50,6 L60,10 L70,8 L80,16 L90,18 L100,20 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,20 L10,18 L20,22 L30,12 L40,14 L50,6 L60,10 L70,8 L80,16 L90,18 L100,20"/></svg>
+        <div class="ag-stat-card__foot"><span>최근 24시간</span><span>최대 318 · 14:00 · 72% order-db</span></div>
       </div>
     </div>
 
@@ -136,7 +122,7 @@
 
       <!-- 요약 -->
       <section class="ag-card ag-col-3">
-        <div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--good"><svg class="ag-icon"><use href="#i-check-circle"/></svg></span><h2 class="ag-card__title">상태 요약</h2></div><span class="ag-text-xs ag-text-3">1분 전 갱신</span></div>
+        <div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon"><svg class="ag-icon"><use href="#i-check-circle"/></svg></span><h2 class="ag-card__title">상태 요약</h2></div><span class="ag-text-xs ag-text-3">1분 전 갱신</span></div>
         <div class="ag-list">
           <a class="ag-list__item" href="resources.html"><span class="ag-list__label"><span class="ag-dot ag-dot--good"></span><span>정상</span></span><span class="ag-badge ag-badge--count">171</span></a>
           <a class="ag-list__item" href="resources.html"><span class="ag-list__label"><span class="ag-dot ag-dot--warn"></span><span>주의</span></span><span class="ag-badge ag-badge--count">11</span></a>
@@ -151,7 +137,7 @@
       <!-- 차트 -->
       <section class="ag-card ag-col-6">
         <div class="ag-card__head">
-          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--2"><svg class="ag-icon"><use href="#i-activity"/></svg></span><h2 class="ag-card__title">슬로우 쿼리 추이</h2></div>
+          <div class="ag-card__heading"><span class="ag-card__icon"><svg class="ag-icon"><use href="#i-activity"/></svg></span><h2 class="ag-card__title">슬로우 쿼리 추이</h2></div>
           <div class="ag-segmented">
             <button class="ag-segmented__item" aria-pressed="false">12개월</button>
             <button class="ag-segmented__item is-active" aria-pressed="true">30일</button>
@@ -184,7 +170,7 @@
       <section class="ag-card ag-card--accent ag-col-3">
         <div class="ag-card__head">
           <h2 class="ag-card__title">백업 점검</h2>
-          <a class="ag-btn ag-btn--icon ag-btn--inverse ag-btn--sm" href="#" aria-label="자세히"><svg class="ag-icon"><use href="#i-arrow-up-right"/></svg></a>
+          <a class="ag-btn ag-btn--inverse ag-btn--sm" href="#">자세히<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-right"/></svg></a>
         </div>
         <p class="ag-text-lg ag-text-2">자동 스냅샷 186건 중 184건 성공. 복구 리허설 2건이 이번 주 예정되어 있습니다.</p>
         <div class="ag-stack ag-stack--sm ag-mt-auto">
@@ -198,7 +184,7 @@
     <div class="ag-grid">
       <section class="ag-card ag-card--flush ag-col-8">
         <div class="ag-card__head">
-          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--info"><svg class="ag-icon"><use href="#i-cloud"/></svg></span><div><h2 class="ag-card__title">AWS 리소스 사용량</h2><p class="ag-card__subtitle">ap-northeast-2 · 프로덕션 계정 · 5분 전 갱신</p></div></div>
+          <div class="ag-card__heading"><span class="ag-card__icon"><svg class="ag-icon"><use href="#i-cloud"/></svg></span><div><h2 class="ag-card__title">AWS 리소스 사용량</h2><p class="ag-card__subtitle">ap-northeast-2 · 프로덕션 계정 · 5분 전 갱신</p></div></div>
           <a class="ag-btn ag-btn--sm ag-btn--outline" href="resources.html">전체 보기<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-right"/></svg></a>
         </div>
         <div class="ag-table-wrap ag-mt-4">
@@ -222,7 +208,7 @@
       <section class="ag-card ag-col-4">
         <div class="ag-card__head">
           <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--1"><svg class="ag-icon"><use href="#i-layers"/></svg></span><h2 class="ag-card__title">엔진 분포</h2></div>
-          <a class="ag-btn ag-btn--icon ag-btn--outline ag-btn--sm" href="resources.html" aria-label="리소스 보기"><svg class="ag-icon"><use href="#i-arrow-up-right"/></svg></a>
+          <a class="ag-btn ag-btn--sm ag-btn--ghost" href="resources.html">리소스<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-right"/></svg></a>
         </div>
         <div class="ag-bubbles" role="img" aria-label="엔진 분포 — MySQL 58%, PostgreSQL 33%, Oracle 9%. 면적이 비율에 비례">
           <div class="ag-bubble ag-bubble--1" style="--r:.762"><strong>58%</strong><span>MySQL</span></div>
@@ -267,7 +253,7 @@
 
       <section class="ag-card ag-col-4">
         <div class="ag-card__head">
-          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--4"><svg class="ag-icon"><use href="#i-hdd"/></svg></span><h2 class="ag-card__title">스토리지 상위</h2></div>
+          <div class="ag-card__heading"><span class="ag-card__icon"><svg class="ag-icon"><use href="#i-hdd"/></svg></span><h2 class="ag-card__title">스토리지 상위</h2></div>
           <span class="ag-text-xs ag-text-3">사용률 기준</span>
         </div>
         <div class="ag-stack ag-stack--sm">
@@ -288,7 +274,7 @@
     <div class="ag-grid">
       <section class="ag-card ag-card--flush ag-col-8">
         <div class="ag-card__head">
-          <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--2"><svg class="ag-icon"><use href="#i-terminal"/></svg></span><div><h2 class="ag-card__title">최근 슬로우 쿼리</h2><p class="ag-card__subtitle">1s 초과 · 최근 1시간 · 다이제스트 기준 상위</p></div></div>
+          <div class="ag-card__heading"><span class="ag-card__icon"><svg class="ag-icon"><use href="#i-terminal"/></svg></span><div><h2 class="ag-card__title">최근 슬로우 쿼리</h2><p class="ag-card__subtitle">1s 초과 · 최근 1시간 · 다이제스트 기준 상위</p></div></div>
           <div class="ag-cluster">
             <div class="ag-segmented ag-segmented--sm"><button class="ag-segmented__item is-active" aria-pressed="true">전체</button><button class="ag-segmented__item" aria-pressed="false">MySQL</button><button class="ag-segmented__item" aria-pressed="false">PostgreSQL</button></div>
             <a class="ag-btn ag-btn--sm ag-btn--outline" href="#">쿼리 분석<svg class="ag-icon ag-icon--sm"><use href="#i-arrow-up-right"/></svg></a>

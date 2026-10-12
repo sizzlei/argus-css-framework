@@ -305,7 +305,7 @@ async def main():
         check("P1: stat 40px / hero 52px, badge--plain transparent", r["stat"] == "40px" and r["hero"] == "52px" and r["plainBg"] == "rgba(0, 0, 0, 0)", str(r))
         check("P1: table-wrap has 4 scroll-shadow gradients, sticky-end last cell sticky", r["bg"] == 4 and r["sticky"] == "sticky", str(r))
         await pg.close()
-        pg = await page(b, "index.html", 400, 900)
+        pg = await page(b, "components.html", 400, 900)
         r = await pg.evaluate("""()=>{const row=document.querySelector('.ag-stat-row');const s=getComputedStyle(row);const vals=[...row.querySelectorAll('.ag-stat__value')].map(e=>e.getBoundingClientRect());return {disp:s.display,cols:s.gridTemplateColumns.split(' ').length,sameLine:Math.max(...vals.map(v=>v.top))-Math.min(...vals.map(v=>v.top))<4,size:getComputedStyle(row.querySelector('.ag-stat__value')).fontSize}}""")
         check("P1: @400 stat-row is a 3-col grid, numbers on one line at 28px", r["disp"] == "grid" and r["cols"] == 3 and r["sameLine"] and r["size"] == "28px", str(r))
         await pg.close()
@@ -371,6 +371,20 @@ async def main():
         v = await pg.evaluate("""()=>{const e=document.querySelector('.ag-field__error');const cs=getComputedStyle(e);return {d:cs.display, c:cs.color, icon: !!e.querySelector('.ag-icon'), sw: getComputedStyle(document.querySelector('.ag-spark--warn .ag-spark__line')).stroke}}""")
         check("1.4: .ag-field__error 아이콘 + crit-text 글자", v["d"] == "flex" and v["icon"], str(v))
         check("1.4: .ag-spark--warn 선 색 = --ag-warn", v["sw"] != "" and v["sw"] != "none", str(v))
+        await pg.close()
+
+        # ── 1.4 P2: 카드 아이콘 상태색 ≤2/화면, h4 < h3, 9·10px 글자 없음, 글로우 8% ──
+        for name in ["index", "resources", "detail", "layouts"]:
+            pg = await page(b, name + ".html")
+            v = await pg.evaluate("""()=>{const st=[...document.querySelectorAll('.ag-card__icon')].filter(e=>/ag-card__icon--(good|warn|crit|info)/.test(e.className)&&e.offsetParent!==null).length;
+              let tiny=0;for(const el of document.querySelectorAll('body *')){if(el.offsetParent===null)continue;const f=parseFloat(getComputedStyle(el).fontSize);if(f<11&&el.textContent.trim())tiny++;}return {st,tiny}}""")
+            check(f"1.4: {name} 카드 아이콘 상태색 톤 ≤ 2", v["st"] <= 2, str(v))
+            check(f"1.4: {name} 11px 미만 글자 없음", v["tiny"] == 0, str(v))
+            await pg.close()
+        pg = await page(b, "components.html")
+        v = await pg.evaluate("""()=>{const h3=document.createElement('h3'),h4=document.createElement('h4');document.body.append(h3,h4);const r={h3:parseFloat(getComputedStyle(h3).fontSize),h4:parseFloat(getComputedStyle(h4).fontSize),ff:getComputedStyle(document.body).fontFeatureSettings};h3.remove();h4.remove();return r}""")
+        check("1.4: h4 < h3 (17 > 14/600)", v["h4"] < v["h3"], str(v))
+        check("1.4: body font-feature-settings 에 kern·liga", "kern" in v["ff"] and "liga" in v["ff"], v["ff"])
         await pg.close()
 
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──

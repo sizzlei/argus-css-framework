@@ -360,7 +360,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 /* KPI 행: <div class="ag-stat-row"> .ag-stat × 3~4. 720px 이하에서 3열 격자 + 작은 숫자 — 첫 화면의 핵심 수치는 한 줄에 */
 .ag-stat-row { display: flex; flex-wrap: wrap; gap: var(--ag-space-8); align-items: flex-end; }
 @media (max-width: 720px) {
-  .ag-stat-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--ag-space-3); }
+  .ag-stat-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--ag-space-3); align-items: start; }   /* 1.4: 라벨 줄 수가 달라도 숫자는 한 줄에 */
   .ag-stat-row .ag-stat__value, .ag-stat--hero .ag-stat__value { font-size: var(--ag-text-2xl); }
   .ag-stat-row .ag-stat__label { font-size: var(--ag-text-xs); }
   .ag-stat-row .ag-stat__top { flex-direction: column-reverse; align-items: flex-start; gap: 4px; }
@@ -376,7 +376,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   height: 40px;
   padding: 0 10px;
   border-radius: var(--ag-radius-pill);
-  font-size: 11px;
+  font-size: var(--ag-text-xs);
   letter-spacing: -0.01em;
   font-weight: 600;
   background: var(--ag-surface-3);
@@ -415,7 +415,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-avatar--cat4 { background: var(--ag-cat-4-soft); color: var(--ag-cat-4-text); }
 .ag-avatar--other { background: var(--ag-cat-other-soft); color: var(--ag-cat-other-text); }
 .ag-avatar--neutral { background: var(--ag-surface-3); color: var(--ag-text-2); }
-.ag-avatar--xs { width: 22px; height: 22px; font-size: 10px; }   /* 1.3: 테이블 셀 안 담당자 */
+.ag-avatar--xs { width: 22px; height: 22px; font-size: var(--ag-text-xs); }   /* 1.3: 테이블 셀 안 담당자 */
 .ag-avatar--sm { width: 28px; height: 28px; font-size: var(--ag-text-xs); }
 .ag-avatar--lg { width: 56px; height: 56px; font-size: var(--ag-text-lg); }
 .ag-avatar--ring { box-shadow: 0 0 0 2px var(--ag-bg), 0 0 0 4px var(--ag-accent); }
@@ -534,6 +534,8 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-pagination__item:hover { background: var(--ag-surface-hover); color: var(--ag-text); text-decoration: none; }
 .ag-pagination__item.is-active { background: var(--ag-surface-3); color: var(--ag-text); }
 .ag-pagination__item:disabled { opacity: .4; }
+/* 1.4: 공통 disabled — 세그먼트·칩·탭·네비·콤보박스 옵션 (버튼·입력·목록은 각자 규칙). 비활성 요소는 대비 기준 예외라 opacity 허용 */
+:is(.ag-segmented__item, .ag-chip, .ag-tabs__item, .ag-nav__item, .ag-combobox__option, .ag-quick-action):is(:disabled, [aria-disabled="true"]) { opacity: .45; pointer-events: none; }
 
 /* ---- Forms ----------------------------------------------------------- */
 .ag-field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
@@ -920,7 +922,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   box-shadow: 0 0 0 3px var(--ag-surface), 0 16px 32px -16px rgb(0 0 0 / .5);
 }
 .ag-bubble strong { font-size: 1em; font-weight: 400; letter-spacing: -0.03em; }
-.ag-bubble span { font-size: .45em; font-weight: 600; }   /* 큰 굵은 글자(≥18.7px/600) → 3:1 기준 */
+.ag-bubble span { font-size: max(var(--ag-text-xs), .45em); font-weight: 600; }   /* 큰 굵은 글자(≥18.7px/600) → 3:1 기준 */
 /* 1.4: 비율 버블 묶음 — 면적이 값에 비례하도록 지름 = --ag-bubble-max × --r, --r = √(비율). AG.charts.bubbles() 가 data-v 로 계산해 준다.
    <div class="ag-bubbles"><div class="ag-bubble ag-bubble--1" style="--r:.76">…</div>…</div> */
 .ag-bubbles { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; align-content: center; gap: 0; padding: 8px 0; flex: 1 1 auto; min-height: 160px; }   /* 카드 안에서 남는 높이의 가운데 */

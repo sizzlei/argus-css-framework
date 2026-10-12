@@ -274,7 +274,7 @@
 .ag-app--rail .ag-sidebar__item :is(.ag-icon, [class*="ph-"]) { width: 20px; height: 20px; font-size: 20px; }
 .ag-app--rail .ag-sidebar__item [class*="ph-"] { font-size: 20px; }
 .ag-app--rail .ag-sidebar__item > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 100%; }
-.ag-app--rail .ag-sidebar__item .ag-badge { position: absolute; top: 4px; right: 6px; margin: 0; height: 16px; min-width: 16px; padding: 0 4px; font-size: 9px; }
+.ag-app--rail .ag-sidebar__item .ag-badge { position: absolute; top: 4px; right: 6px; margin: 0; height: 16px; min-width: 16px; padding: 0 4px; font-size: var(--ag-text-xs); }
 .ag-app--rail .ag-sidebar__item { position: relative; }
 .ag-app--rail .ag-sidebar__item[data-tip]::after { display: none; }
 .ag-app--rail .ag-sidebar__footer { align-items: center; justify-content: center; }
@@ -295,7 +295,7 @@
   .ag-app--rail:has(.ag-sidebar--bottom-tabs) .ag-sidebar__hamburger { display: none; }
   .ag-app--rail .ag-sidebar--bottom-tabs .ag-sidebar__sub, .ag-app--rail .ag-sidebar--bottom-tabs .ag-sidebar__caret { display: none; }
   .ag-app--rail .ag-sidebar--bottom-tabs .ag-sidebar__node { display: contents; }
-  .ag-app--rail .ag-sidebar--bottom-tabs .ag-sidebar__item > span { font-size: 10px; }
+  .ag-app--rail .ag-sidebar--bottom-tabs .ag-sidebar__item > span { font-size: var(--ag-text-xs); }
   .ag-app--rail .ag-sidebar--bottom-tabs .ag-sidebar__group:nth-child(n+4) { display: none; } /* 탭바에는 처음 두 그룹만 */
 }
 

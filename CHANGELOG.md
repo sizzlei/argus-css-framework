@@ -12,6 +12,14 @@
 - `.ag-td--query`(한 줄 말줄임, 폭 `--ag-query-w` 300px) · `.ag-card--flush > .ag-table-wrap + .ag-card__foot`(표 아래 요약 푸터) · `.ag-list__item.is-current`(지금 보는 항목, 테두리만) · `.ag-mode-switch` 데모 크롬 CSS 로 — **예시 인라인 스타일(패딩·폭·opacity·절대배치·보더색) 0**, check.py 단언.
 - **버블 면적 = 값**: `.ag-bubbles` 컨테이너 + `--r = √비율`(지름 = `--ag-bubble-max` × `--r`). 58:33:9 가 면적비로 정확히. `AG.charts.bubbles(root)` 가 `data-v` 로 `--r` 계산. 예시의 절대 좌표 제거, 범례 추가.
 
+### Phase 2 — Refinement
+- **글자 크기 바닥 11px**: 9/10/10.5px 리터럴 13곳(Slack 태그·kbd·스텝 점·버전 배지·브랜드 small·코드 블록 lang·알림 카운트·사용자 메타·트리 카운트·레일 배지…) → `--ag-text-xs`. 버블 라벨은 `max(11px, .45em)`. check.py: 예시 4페이지에서 11px 미만 글자 0.
+- `h4` 14/600 · `h5` 13/600·text-2 — `h3`(17) 와 구분. 콘솔은 h1·h2·h3 로 끝내는 것을 권장(CLAUDE.md). `body` 에 `"kern" 1, "liga" 1` + `text-rendering: optimizeLegibility`.
+- **색 상한**: 카드 아이콘 타일의 상태색(good/warn/crit/info)은 화면당 2개 이하 — 나머지는 기본(회색)·accent·범주색. 대시보드 9개 → 상태색 2(이벤트 crit·점검 warn). check.py 단언. 페이지 글로우 11 → 8%.
+- 공통 disabled: 세그먼트·칩·탭·네비·콤보박스 옵션·퀵액션 `:disabled/[aria-disabled]`. 포커스 링은 전역 outline(2px + offset 2px) 과 `--ag-ring-focus` 가 같은 두께라 유지.
+- `.ag-stat-row` ≤720 격자에서 `align-items: start` — 라벨 줄 수가 달라도 숫자가 한 줄에(flex-end 가 격자로 넘어오던 버그).
+- 축소: 대시보드 인사말 옆 숫자 3개 제거(KPI 스트립 4장으로 통합 — 인스턴스·복제·스토리지·슬로우 쿼리; 백업은 액센트 카드가, 열린 알림은 종이 이미 말한다), 머리 오른쪽엔 갱신 시각 + 새로고침. 로그인 숫자 띠 "186" 중복 제거. 카드 머리 보조 동작은 ghost 텍스트 버튼 하나로(↗ 아이콘 버튼은 외부 링크 전용). `.ag-mode-switch` 데모 크롬 CSS 로.
+
 ## 1.3.0 — 2026-10-12 · 화면 밀도 보강 (예시 + 시각 디테일)
 
 1.2 로 모양이 단정해진 대신 예시 화면이 허전해졌다는 피드백. 두 축으로 보강 — (1) 예시 페이지를 실제 운영 콘솔 밀도로 채우고, (2) 카드·페이지에 조용한 시각 단서 몇 가지를 프레임워크 차원에서 더했다. 새 클래스·토큰이 있어 minor. 서비스는 dist 재복사만으로 (1)의 시각 변화가 따라오고, 새 컴포넌트는 쓰고 싶을 때 쓴다.
