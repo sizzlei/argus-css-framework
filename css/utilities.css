@@ -16,8 +16,8 @@
 .ag-text-warn { color: var(--ag-warn-text); }
 .ag-text-crit { color: var(--ag-crit-text); }
 .ag-text-info { color: var(--ag-info-text); }
-.ag-text-accent { color: var(--ag-accent); }
-.ag-text-accent2 { color: var(--ag-accent-2); }
+.ag-text-accent { color: var(--ag-accent-text); }
+.ag-text-accent2 { color: var(--ag-accent-2-text); }
 .ag-fw-400 { font-weight: 400; }
 .ag-fw-500 { font-weight: 500; }
 .ag-fw-600 { font-weight: 600; }

@@ -88,17 +88,21 @@
   /* 잉크 */
   --ag-text: #f3f4f9;
   --ag-text-2: #b4b7c9;
-  --ag-text-3: #858a9f;            /* 5.2:1 on surface — 11px 메타에도 AA */
+  --ag-text-3: #9196ab;            /* 5.5:1 on surface · 4.6 on surface-3 · 5.1 on accent-soft(active row) — 11px 메타에도 AA */
   --ag-text-disabled: #4f5262;
   --ag-text-on-accent: #ffffff;
   --ag-text-on-inverse: #0e0f14;
 
   /* 액센트 — 바이올렛 인디고 + 핑크 보조 */
-  --ag-accent: #7c6cff;
-  --ag-accent-hover: #917fff;
+  /* 액센트는 역할 둘 — 채움(--ag-accent: 버튼·배지 solid·액센트 카드, 위 글자는 --ag-text-on-accent 4.5:1) 과
+     글자(--ag-accent-text: 링크·활성 탭·아이콘, 표면 위 4.5:1). 다크에서 한 색으로는 둘 다 못 맞춘다 (흰 글자 위 4.5 ↔ 어두운 표면 위 4.5) */
+  --ag-accent: #6a59e8;          /* 흰 글자 5.0:1 (이전 #7c6cff 는 3.9) */
+  --ag-accent-hover: #7161ee;
+  --ag-accent-text: #9d90ff;     /* surface 위 6.7:1 */
   --ag-accent-soft: rgb(124 108 255 / .16);
   --ag-accent-2: #ff4d8d;
   --ag-accent-2-soft: rgb(255 77 141 / .16);
+  --ag-accent-2-text: #ff7aa8;   /* accent-2-soft 위 5.3:1 (단독 텍스트·soft 배지·아바타용) */
   --ag-inverse: #ffffff;           /* 흰 캡슐 (예시의 Status pages 25%) */
 
   /* 상태 — 전용 예약색, 시리즈 색으로 재사용 금지 */
@@ -113,7 +117,7 @@
   /* 단독 텍스트용 상태색 — 다크에선 기본 상태색이 이미 7:1 이상이라 동일 */
   --ag-good-text: var(--ag-good);
   --ag-warn-text: var(--ag-warn);
-  --ag-crit-text: var(--ag-crit);
+  --ag-crit-text: #fd8092;       /* crit-soft 위 4.9:1 (danger 버튼 글자) */
   --ag-info-text: var(--ag-info);
   /* solid 배지·칩: 다크는 밝은 상태색 위에 어두운 글자, 라이트는 깊은 상태색(*-text) 위에 흰 글자 — 네 가지 모두 4.5:1 이상 */
   --ag-good-solid: var(--ag-good); --ag-text-on-good: #0b1a14;
@@ -126,6 +130,10 @@
   --ag-chart-2: #f2508c;
   --ag-chart-3: #189fb8;
   --ag-chart-4: #c97a14;
+  --ag-text-on-accent-2: #1a0509;  /* accent-2 채움 위 글자 — 다크 분홍은 밝아 어두운 글자 */
+  --ag-text-on-cat-1: #111; --ag-text-on-cat-2: #111; --ag-text-on-cat-3: #111; --ag-text-on-cat-4: #111;   /* 범주색 solid 위 글자 (다크 범주색은 밝다, 모두 ≥5.6) */
+  --ag-treemap-base: var(--ag-bg);   /* 트리맵 타일 혼합 기준 — 다크는 바닥색(타일이 어두워져 밝은 글자가 선다) */
+  --ag-text-on-chart: #111;    /* 범주색을 배경으로 쓰는 버블·트리맵 글자 — 다크 범주색은 밝아서 어두운 글자(≥5.6:1), 라이트는 흰 글자(≥3.2:1, 큰 글자) */
   --ag-chart-other: #7a7f90;   /* "기타" 조각 — 5번째 범주색이 아니라 중립 회색. 명도 밴드(0.48–0.67) 안, 채도 없음 */
   --ag-chart-grid: rgb(255 255 255 / .06);
   --ag-chart-axis: var(--ag-text-3);
@@ -142,7 +150,7 @@
   /* 범주색 (엔진·태그·팀 같은 "종류" 구분) — 차트 범주색과 같은 네 가지. 상태색은 상태 전용이므로 범주에 쓰지 않는다.
      5번째 범주를 만들지 않는다 → "기타". 다크 글자색도 soft 배경 위 4.5:1 이 되게 살짝 밝힘 */
   --ag-cat-1: var(--ag-chart-1); --ag-cat-1-text: #9d90ff;           --ag-cat-1-soft: rgb(139 124 255 / .18);
-  --ag-cat-2: var(--ag-chart-2); --ag-cat-2-text: #f66b9d;           --ag-cat-2-soft: rgb(242 80 140 / .18);
+  --ag-cat-2: var(--ag-chart-2); --ag-cat-2-text: #f87ba7;           --ag-cat-2-soft: rgb(242 80 140 / .18);
   --ag-cat-3: var(--ag-chart-3); --ag-cat-3-text: #3fb8cf;           --ag-cat-3-soft: rgb(24 159 184 / .20);
   --ag-cat-4: var(--ag-chart-4); --ag-cat-4-text: #e0963a;           --ag-cat-4-soft: rgb(201 122 20 / .20);
   --ag-cat-other: var(--ag-chart-other); --ag-cat-other-text: var(--ag-text-2); --ag-cat-other-soft: rgb(122 127 144 / .22);
@@ -168,16 +176,18 @@
 
   --ag-text: #14151d;
   --ag-text-2: #4d5065;
-  --ag-text-3: #6a6e84;            /* 5.0:1 on white */
+  --ag-text-3: #626678;            /* 5.7:1 on white · 5.0 on surface-2(#eef0f5) · 4.6 on surface-3 */
   --ag-text-disabled: #b4b6c4;
   --ag-text-on-accent: #ffffff;
   --ag-text-on-inverse: #ffffff;
 
   --ag-accent: #5b4cf0;
   --ag-accent-hover: #4a3ce0;
+  --ag-accent-text: #4b3fd1;     /* 라이트: accent-soft 배경 위에서도 4.5:1 (= hover 톤) */
   --ag-accent-soft: rgb(91 76 240 / .12);
-  --ag-accent-2: #e0266f;
-  --ag-accent-2-soft: rgb(224 38 111 / .12);
+  --ag-accent-2: #db206a;        /* 흰 글자 4.7:1 */
+  --ag-accent-2-soft: rgb(219 32 106 / .12);
+  --ag-accent-2-text: #b5195a;   /* soft·surface-2 위 4.8:1 이상 */
   --ag-inverse: #14151d;
 
   --ag-good: #0f9f6e;
@@ -189,20 +199,24 @@
   --ag-info: #0b84c9;
   --ag-info-soft: rgb(11 132 201 / .12);
   /* 라이트: 흰 바탕 단독 텍스트는 한 단계 어둡게 (모두 4.5:1 이상) */
-  --ag-good-text: #0b7a55;
-  --ag-warn-text: #9a5600;
-  --ag-crit-text: #c42a48;
-  --ag-info-text: #0a6ea8;
+  --ag-good-text: #096544;        /* soft 배경(surface-2 위) 에서도 5.4:1 */
+  --ag-warn-text: #8f4f00;        /* warn-soft 위 5.0:1 */
+  --ag-crit-text: #ad2140;        /* 5.1:1 */
+  --ag-info-text: #09649a;        /* 4.8:1 */
   --ag-good-solid: var(--ag-good-text); --ag-text-on-good: #fff;
   --ag-warn-solid: var(--ag-warn-text); --ag-text-on-warn: #fff;
   --ag-crit-solid: var(--ag-crit-text); --ag-text-on-crit: #fff;
   --ag-info-solid: var(--ag-info-text); --ag-text-on-info: #fff;
 
   --ag-chart-1: #5b4cf0;
-  --ag-chart-2: #e0266f;
+  --ag-chart-2: #db206a;
   --ag-chart-3: #0891b2;
   --ag-chart-4: #d97706;
   --ag-chart-other: #a0a5b8;
+  --ag-text-on-chart: #fff;
+  --ag-text-on-accent-2: #fff;
+  --ag-text-on-cat-1: #fff; --ag-text-on-cat-2: #fff; --ag-text-on-cat-3: #111; --ag-text-on-cat-4: #111;   /* 라이트: 1·2 는 흰 글자(5.6/4.5), 3·4 는 어두운 글자(5.1/5.9) */
+  --ag-treemap-base: var(--ag-surface-2);
   --ag-chart-grid: rgb(16 18 32 / .07);
   --ag-chart-hatch: repeating-linear-gradient(135deg, rgb(16 18 32 / .18) 0 2px, transparent 2px 6px);
 
@@ -217,7 +231,7 @@
   --ag-cat-1-text: #4b3fd1; --ag-cat-1-soft: rgb(91 76 240 / .12);
   --ag-cat-2-text: #b81e5b; --ag-cat-2-soft: rgb(224 38 111 / .12);
   --ag-cat-3-text: #0a7490; --ag-cat-3-soft: rgb(8 145 178 / .13);
-  --ag-cat-4-text: #9a5200; --ag-cat-4-soft: rgb(217 119 6 / .14);
+  --ag-cat-4-text: #874800; --ag-cat-4-soft: rgb(217 119 6 / .14);
   --ag-cat-other-text: var(--ag-text-2); --ag-cat-other-soft: rgb(160 165 184 / .22);
 
   --ag-shadow-sm: 0 1px 2px rgb(16 18 32 / .06);

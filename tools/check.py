@@ -333,6 +333,22 @@ async def main():
         check("P3: @400 banner icon sits beside the first text line (not on its own row)", r["sameTop"] and r["iconLeft"], str(r))
         await pg.close()
 
+        # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
+        axe_path = ROOT / "node_modules/axe-core/axe.min.js"
+        if axe_path.exists():
+            axe_src = axe_path.read_text(encoding="utf-8")
+            worst = []
+            for name in ["index", "resources", "detail", "login", "layouts", "components"]:
+                for light in (False, True):
+                    pg = await page(b, name + ".html", light=light)
+                    await pg.add_script_tag(content=axe_src)
+                    vs = await pg.evaluate("""async()=>{const r=await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']}});return r.violations.filter(v=>['serious','critical'].includes(v.impact)).map(v=>v.id+'×'+v.nodes.length+' ('+v.nodes[0].target[0].slice(0,40)+')')}""")
+                    if vs: worst.append(f"{name}{'-L' if light else ''}: " + ", ".join(vs[:4]))
+                    await pg.close()
+            check("a11y: axe serious/critical violations = 0 on all pages (dark+light)", not worst, " | ".join(worst[:6]))
+        else:
+            print("  skip axe (npm i 로 axe-core 를 받으면 접근성 단언이 켜진다)")
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

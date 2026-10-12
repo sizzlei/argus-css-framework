@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.2.1 — 2026-10-12 · 접근성 감사 (WCAG 2.2 AA)
+
+axe-core 를 `tools/check.py` 게이트로 붙였다 (예시 6페이지 × 다크·라이트, serious/critical 위반 0 — `npm i` 로 axe-core 가 있으면 켜지고 없으면 건너뜀). 걸린 것(거의 전부 색 대비, 몇 개는 이름 없는 아이콘 버튼·제목 구조)을 서비스 쪽 예외가 아니라 토큰으로 풀었으므로 dist 재복사만으로 따라온다. 모양·밀도는 1.2.0 그대로, 색 몇 개가 한 톤 움직인다.
+
+### 색 대비 (1.4.3)
+- **액센트 역할 분리**: `--ag-accent` 는 채움(버튼·solid 배지·액센트 카드, 위 글자 `--ag-text-on-accent`), 새 토큰 `--ag-accent-text` 는 글자(링크·활성 탭·아이콘·soft 배지). 다크에서 한 색으로는 둘 다 못 맞춘다 — 다크 채움 #7c6cff → #6a59e8 (흰 글자 3.9 → 5.0:1), 글자는 #9d90ff(표면 위 6.7). 라이트 글자는 hover 톤 #4b3fd1(accent-soft 위에서도 4.5). 테마 7종 + `_template.css` 모두 `--ag-accent-text` 추가, 다크 채움 재조정(blue #3570d6 · indigo #5f67e3 · red #d33a4e), 라이트 orange #b0570f · yellow #8c6700 로 깊게. `color: var(--ag-accent)` 로 글자를 칠하던 자리는 전부 `--ag-accent-text`.
+- **accent-2(분홍) 글자 토큰** `--ag-accent-2-text` (다크 #ff7aa8 · 라이트 #b5195a) — soft 배지·아바타·`.ag-tok-num`·`.ag-tree__val--num`·`.ag-text-accent2`·퀵액션/스탯 아이콘. 라이트 `--ag-accent-2`·`--ag-chart-2` #e0266f → #db206a (흰 글자 4.49 → 4.7).
+- **범주색 위 글자**: `--ag-text-on-chart`(버블·트리맵), `--ag-text-on-accent-2`, `--ag-text-on-cat-1..4`(solid 배지·칩·버블). 다크 범주색은 밝아 #111, 라이트는 1·2 흰 글자 / 3·4 #111. 트리맵 타일은 `--ag-treemap-base`(다크 `--ag-bg`, 라이트 `--ag-surface-2`) 와 섞고 명도 상한 .7.
+- **메타 글자** `--ag-text-3` 다크 #858a9f → #9196ab (surface-3 4.6 · 활성 행 accent-soft 5.1), 라이트 #6b7084 → #626678. 11px 메타·태그 키·Slack 태그·알림 시각·cmdk 힌트가 모두 AA.
+- **상태 글자** `*-text` 라이트 한 단계 깊게 (good #096544 · warn #8f4f00 · crit #ad2140 · info #09649a), 다크 crit-text #fd8092 (crit-soft 위 4.9). 단독 글자 사용처를 `*-text` 로: soft 배지·증감·로그 줄·`.ag-tok`·diff·세션·Slack mention/inline-code·태그 제거·`.ag-btn--danger`(글자 `--ag-crit-text`, hover 는 채움)·outline danger. `.ag-tag--accent .ag-tag__key` 배경 24% → 14%.
+- **Slack 미리보기 버튼** 실제 Slack 톤으로 (primary #007a5a 5.3:1 · danger #c41e52 5.8:1 — 이전 #2eb67d 는 2.5).
+- `.ag-approval.is-rejected` 의 `opacity: .85` 제거 — 안쪽 배지·버튼·아바타 대비가 전부 깨졌다. 반려는 왼쪽 보더 + 결과 아이콘으로만.
+- `.ag-provider--google .ag-provider__hint` 다크 Google 버튼(#131314) 위 #a8abaa.
+- 단색 카드 안 `--ag-text-2/-3` 97%/94% 로.
+- **링크**: 본문 블록(p·li·td·알림·배너·힌트·빈 상태) 안의 링크는 밑줄(색만으로 구분 금지, 1.4.1). 알림·배너·토스트 안 링크는 `color: inherit; font-weight: 600` — 색 배경 위 액센트 글자 대비가 안 나온다.
+
+### 마크업 (예시 수정 — 서비스 리뉴얼도 같은 규칙, `docs/renewal-prompt.md` 품질 기준)
+- 아이콘만 있는 버튼·링크는 `aria-label` (또는 `.ag-sr-only` 텍스트). 알림 종 버튼은 보이는 숫자 + sr-only "알림" 으로 (`aria-label` 과 보이는 텍스트 불일치 규칙).
+- 체크박스/⋯ 열 `<th>` 는 `.ag-sr-only` 텍스트. 페이지마다 `<h1>` 하나(페이지 제목), 카드 제목은 `<h2>`/`<h3>` 순서대로 (eyebrow 는 `h6` 아님 → `<h3 class="ag-eyebrow">`, 이제 `.ag-eyebrow` 는 h 요소에서도 같은 모양).
+- `<nav aria-label="주 메뉴">`, 배너 `role="region" aria-label`, 레이아웃 모드 전환은 `role="region"`. 페이지네이션 `aria-label="페이지"` + 현재 `aria-current="page"`, 날짜 입력 `aria-label`. 스크롤되는 `<pre>` 는 `tabindex="0"`.
+- `.ag-secret-field__reveal` 높이 `--ag-control-h-sm` (24px 타깃, 2.5.8).
+
+### 도구
+- `tools/check.py` 90항목 (+ axe 게이트). `package.json` devDependency `axe-core`. 대비 값은 전부 토큰 주석에 적어 두었다.
 ## 1.2.0 — 2026-10-12 · 디자인 감사 (인프라 콘솔 성격으로)
 
 방향: "조용하고 빽빽하고 정확하게". 소비자 앱 인상(큰 라운드·알약 버튼·52px 숫자·분홍 보조색)을 눌러 데이터가 앞으로 나오게 한다. 토큰 위주 변경이라 서비스는 dist 재복사만으로 따라온다 — 모양·밀도가 눈에 띄게 바뀌므로 minor 버전.

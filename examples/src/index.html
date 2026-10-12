@@ -15,7 +15,7 @@
 
 <div class="ag-app">
 
-  <div class="ag-banner ag-banner--warn">
+  <div class="ag-banner ag-banner--warn" role="region" aria-label="공지">
     <svg class="ag-icon"><use href="#i-alert"/></svg>
     <div class="ag-banner__text"><strong>점검 예정</strong>10/3(목) 02:00–02:30 KST order-db 파라미터 적용으로 약 30초 쓰기 중단 · INFRA-2041</div>
     <a class="ag-btn ag-btn--sm ag-btn--outline" href="detail.html">자세히</a>
@@ -36,7 +36,7 @@
     <div class="ag-topbar__actions">
       <button class="ag-btn ag-btn--icon ag-btn--outline" aria-label="검색" data-tip="검색 ⌘K"><svg class="ag-icon"><use href="#i-search"/></svg></button>
       <div class="ag-dropdown">
-        <button class="ag-btn ag-btn--icon ag-btn--outline ag-notif-btn" data-ag-dropdown aria-label="알림 3건"><svg class="ag-icon"><use href="#i-bell"/></svg><span class="ag-notif-btn__count">3</span></button>
+        <button class="ag-btn ag-btn--icon ag-btn--outline ag-notif-btn" data-ag-dropdown><svg class="ag-icon"><use href="#i-bell"/></svg><span class="ag-sr-only">읽지 않은 알림</span><span class="ag-notif-btn__count">3</span></button>
         <div class="ag-menu ag-notif" role="menu">
           <div class="ag-notif__head"><strong>알림</strong><span class="ag-badge ag-badge--sm ag-badge--accent">3 새 알림</span><button class="ag-btn ag-btn--sm ag-btn--ghost">모두 읽음</button></div>
           <div class="ag-notif__list">

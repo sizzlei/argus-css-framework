@@ -23,7 +23,7 @@
 <div class="ag-app">
   <header class="ag-topbar">
     <a class="ag-topbar__brand" href="index.html"><span class="ag-dot ag-dot--accent"></span>Argus CSS Framework</a>
-    <nav class="ag-topbar__center ag-hide-md">
+    <nav class="ag-topbar__center ag-hide-md" aria-label="주 메뉴">
       <div class="ag-nav ag-nav--compact">
         <a class="ag-nav__item" href="#colors">색상</a>
         <a class="ag-nav__item" href="#type">타이포</a>
@@ -56,7 +56,7 @@
   <main class="ag-main">
     <div class="ag-page-header">
       <div class="ag-page-header__title">
-        <span class="ag-eyebrow">v0.5.0 · 접두사 <code>ag-</code></span>
+        <span class="ag-eyebrow">v1.2.1 · 접두사 <code>ag-</code></span>
         <h1>컴포넌트 가이드</h1>
         <p class="ag-text-2" style="max-width:62ch">순수 CSS 하나로 동작합니다. <code>&lt;link rel="stylesheet" href="argus.css"&gt;</code> 한 줄이면 되고, 라이트 테마는 <code>&lt;html data-theme="light"&gt;</code> 로 켭니다. 오른쪽 위 버튼으로 두 테마를 바로 비교해 보세요.</p>
       </div>
@@ -66,7 +66,7 @@
     <section class="ag-section" id="colors">
       <div class="ag-section__head"><h2>색상 토큰</h2><span class="ag-text-sm ag-text-3">상태색은 예약색 — 차트 시리즈로 재사용하지 않습니다</span></div>
       <div class="ag-card">
-        <h6>표면</h6>
+        <h3 class="ag-eyebrow">표면</h3>
         <div class="swatches">
           <div class="swatch"><i style="background:var(--ag-bg)"></i><code>--ag-bg</code></div>
           <div class="swatch"><i style="background:var(--ag-surface)"></i><code>--ag-surface</code></div>
@@ -74,7 +74,7 @@
           <div class="swatch"><i style="background:var(--ag-surface-3)"></i><code>--ag-surface-3</code></div>
           <div class="swatch"><i style="background:var(--ag-inverse)"></i><code>--ag-inverse</code></div>
         </div>
-        <h6>액센트 · 상태</h6>
+        <h3 class="ag-eyebrow">액센트 · 상태</h3>
         <div class="swatches">
           <div class="swatch"><i style="background:var(--ag-accent)"></i><code>--ag-accent</code></div>
           <div class="swatch"><i style="background:var(--ag-accent-2)"></i><code>--ag-accent-2</code></div>
@@ -83,7 +83,7 @@
           <div class="swatch"><i style="background:var(--ag-crit)"></i><code>--ag-crit</code></div>
           <div class="swatch"><i style="background:var(--ag-info)"></i><code>--ag-info</code></div>
         </div>
-        <h6>차트 범주색 (고정 순서, CVD 검증 완료)</h6>
+        <h3 class="ag-eyebrow">차트 범주색 (고정 순서, CVD 검증 완료)</h3>
         <div class="swatches">
           <div class="swatch"><i style="background:var(--ag-chart-1)"></i><code>--ag-chart-1</code></div>
           <div class="swatch"><i style="background:var(--ag-chart-2)"></i><code>--ag-chart-2</code></div>
@@ -98,12 +98,12 @@
     <section class="ag-section" id="type">
       <div class="ag-section__head"><h2>타이포그래피</h2><span class="ag-text-sm ag-text-3">Manrope + Noto Sans KR · 숫자는 tabular-nums</span></div>
       <div class="ag-card ag-stack ag-stack--lg">
-        <h1>h1 · 인스턴스 186개를 한 화면에서 <span class="ag-text-2 ag-fw-400">(36px / 500)</span></h1>
+        <h1>h1 · 인스턴스 186개를 한 화면에서 <span class="ag-text-2 ag-fw-400">(28px / 600)</span></h1>
         <h2>h2 · 슬로우 쿼리 추이 <span class="ag-text-3 ag-fw-400 ag-text-md">(26px / 500)</span></h2>
-        <h3>h3 · 카드 제목 <span class="ag-text-3 ag-fw-400 ag-text-md">(20px / 500)</span></h3>
+        <h3>h3 · 카드 제목 <span class="ag-text-3 ag-fw-400 ag-text-md">(17px / 600)</span></h3>
         <p style="max-width:65ch">본문 14px. 어드민 화면은 읽기보다 훑어보는 화면이라 기본 크기를 작게, 줄 간격은 1.5로 둡니다. <strong>강조는 600</strong>, 보조 텍스트는 <span class="ag-text-2">--ag-text-2</span>, 메타 정보는 <span class="ag-text-3">--ag-text-3</span>.</p>
         <p class="ag-row ag-wrap"><code>innodb_buffer_pool_size = 56G</code> <kbd>⌘</kbd><kbd>K</kbd> <span class="ag-mono">db.r6g.4xlarge</span></p>
-        <div class="ag-stat"><div class="ag-stat__top"><span class="ag-delta ag-delta--up"><svg class="ag-icon ag-icon--sm"><use href="#i-trend-up"/></svg>+12%</span><span class="ag-stat__value">1,842</span></div><span class="ag-stat__label">.ag-stat — 48px 숫자, weight 400, 음수 자간</span></div>
+        <div class="ag-stat"><div class="ag-stat__top"><span class="ag-delta ag-delta--up"><svg class="ag-icon ag-icon--sm"><use href="#i-trend-up"/></svg>+12%</span><span class="ag-stat__value">1,842</span></div><span class="ag-stat__label">.ag-stat — 40px 숫자(--ag-text-4xl), weight 400, 음수 자간 · 히어로 52 는 .ag-stat--hero</span></div>
       </div>
     </section>
 
@@ -215,8 +215,8 @@
     <section class="ag-section" id="cards">
       <div class="ag-section__head"><h2>카드 · 타일 · 리스트</h2></div>
       <div class="ag-grid">
-        <div class="ag-card ag-col-3"><div class="ag-card__head"><h3 class="ag-card__title">기본 카드</h3><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm"><svg class="ag-icon"><use href="#i-more"/></svg></button></div><p class="ag-text-2"><code>.ag-card</code> — 24px 라운드, 1px 보더, surface 배경.</p><div class="ag-card__foot"><span>푸터</span><a href="#">더보기</a></div></div>
-        <div class="ag-card ag-card--accent ag-col-3"><div class="ag-card__head"><div><span class="ag-label">Good day,</span><h3 class="ag-card__title">Andy</h3><span class="ag-hint">andy@example.com</span></div><a class="ag-btn ag-btn--icon ag-btn--outline ag-btn--sm" href="#"><svg class="ag-icon"><use href="#i-arrow-up-right"/></svg></a></div><div class="ag-stat"><span class="ag-stat__value">1,284</span><span class="ag-stat__label">Active users</span></div><dl class="ag-kv"><dt>리전</dt><dd>ap-northeast-2</dd></dl><div class="ag-card__foot"><span class="ag-text-3">헬스 23/24 정상</span><button class="ag-btn ag-btn--outline ag-btn--sm">자세히</button></div></div>
+        <div class="ag-card ag-col-3"><div class="ag-card__head"><h3 class="ag-card__title">기본 카드</h3><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="작업 메뉴"><svg class="ag-icon"><use href="#i-more"/></svg></button></div><p class="ag-text-2"><code>.ag-card</code> — 24px 라운드, 1px 보더, surface 배경.</p><div class="ag-card__foot"><span>푸터</span><a href="#">더보기</a></div></div>
+        <div class="ag-card ag-card--accent ag-col-3"><div class="ag-card__head"><div><span class="ag-label">Good day,</span><h3 class="ag-card__title">Andy</h3><span class="ag-hint">andy@example.com</span></div><a class="ag-btn ag-btn--icon ag-btn--outline ag-btn--sm" href="#" aria-label="자세히 보기"><svg class="ag-icon"><use href="#i-arrow-up-right"/></svg></a></div><div class="ag-stat"><span class="ag-stat__value">1,284</span><span class="ag-stat__label">Active users</span></div><dl class="ag-kv"><dt>리전</dt><dd>ap-northeast-2</dd></dl><div class="ag-card__foot"><span class="ag-text-3">헬스 23/24 정상</span><button class="ag-btn ag-btn--outline ag-btn--sm">자세히</button></div></div>
         <div class="ag-card ag-card--inverse ag-col-3"><div class="ag-card__head"><h3 class="ag-card__title">Inverse</h3></div><div class="ag-stat"><span class="ag-stat__value">$4,120</span><span class="ag-stat__label ag-text-2">월 예상 비용</span></div></div>
         <div class="ag-card ag-card--interactive ag-col-3"><div class="ag-card__head"><h3 class="ag-card__title">Interactive</h3><svg class="ag-icon ag-text-3"><use href="#i-chevron-right"/></svg></div><p class="ag-text-2">호버 시 보더/배경 변화. 클릭 가능한 카드에만.</p><p class="ag-text-xs ag-text-3">← 단색 카드(accent/accent2/inverse) 안에서는 텍스트·테두리·서브표면 토큰이 재정의돼 <code>.ag-label .ag-hint .ag-stat__label .ag-kv dt .ag-card__foot .ag-btn--outline</code> 이 보정 없이 읽힌다. 액센트색 요소(solid 배지 등)만 피한다.</p></div>
         <div class="ag-card ag-col-4"><h3 class="ag-card__title">.ag-list · <code>is-active</code> (선택 목록)</h3><div class="ag-list"><button class="ag-list__item is-active"><span class="ag-list__label"><span class="ag-dot ag-dot--c1"></span><span>DBA</span></span><span class="ag-badge ag-badge--count">12</span></button><button class="ag-list__item"><span class="ag-list__label"><span class="ag-dot ag-dot--c2"></span><span>Platform</span></span><span class="ag-badge ag-badge--count">7</span></button><button class="ag-list__item"><span class="ag-list__label"><span class="ag-dot ag-dot--c3"></span><span>Data</span></span><span class="ag-badge ag-badge--count">3</span></button><button class="ag-list__item" disabled><span class="ag-list__label"><span class="ag-dot ag-dot--c4"></span><span>Security</span></span><span class="ag-badge ag-badge--sm">등록됨</span></button></div><p class="ag-text-xs ag-text-3 ag-mt-2">팀·태그 필터처럼 하나를 고르는 목록은 <code>&lt;button class="ag-list__item"&gt;</code> + <code>is-active</code>, 이미 담긴 항목은 <code>disabled</code>(흐림 + 배지). 사이드바 밖에서 <code>.ag-sidebar__item</code> 을 빌리지 않는다</p></div>
@@ -297,15 +297,15 @@
         </div>
         <div class="ag-table-wrap ag-mt-4">
           <table class="ag-table ag-table--dense ag-table--clickable">
-            <thead><tr><th>인스턴스</th><th>엔진</th><th class="ag-th--num">CPU</th><th style="min-width:160px">스토리지</th><th>상태</th><th class="ag-td--actions"></th></tr></thead>
+            <thead><tr><th>인스턴스</th><th>엔진</th><th class="ag-th--num">CPU</th><th style="min-width:160px">스토리지</th><th>상태</th><th class="ag-td--actions"><span class="ag-sr-only">작업</span></th></tr></thead>
             <tbody>
-              <tr tabindex="0" data-href="detail.html"><td class="ag-fw-500">order-db-writer</td><td><span class="ag-badge"><span class="ag-dot ag-dot--c1"></span>MySQL</span></td><td class="ag-td--num ag-text-crit ag-fw-600">92%</td><td><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:60%"></div></div></td><td><span class="ag-badge ag-badge--crit">장애</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
-              <tr class="is-selected" tabindex="0" data-href="detail.html"><td class="ag-fw-500">member-pg-writer</td><td><span class="ag-badge"><span class="ag-dot ag-dot--c2"></span>PostgreSQL</span></td><td class="ag-td--num">41%</td><td><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:48%"></div></div></td><td><span class="ag-badge ag-badge--good">정상</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
-              <tr tabindex="0" data-href="detail.html"><td class="ag-fw-500">wms-ora-01</td><td><span class="ag-badge"><span class="ag-dot ag-dot--c3"></span>Oracle</span></td><td class="ag-td--num">55%</td><td><div class="ag-progress ag-progress--sm ag-progress--crit"><div class="ag-progress__bar" style="width:91%"></div></div></td><td><span class="ag-badge ag-badge--warn">용량 주의</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr tabindex="0" data-href="detail.html"><td class="ag-fw-500">order-db-writer</td><td><span class="ag-badge"><span class="ag-dot ag-dot--c1"></span>MySQL</span></td><td class="ag-td--num ag-text-crit ag-fw-600">92%</td><td><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:60%"></div></div></td><td><span class="ag-badge ag-badge--crit">장애</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="작업 메뉴"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr class="is-selected" tabindex="0" data-href="detail.html"><td class="ag-fw-500">member-pg-writer</td><td><span class="ag-badge"><span class="ag-dot ag-dot--c2"></span>PostgreSQL</span></td><td class="ag-td--num">41%</td><td><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:48%"></div></div></td><td><span class="ag-badge ag-badge--good">정상</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="작업 메뉴"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr tabindex="0" data-href="detail.html"><td class="ag-fw-500">wms-ora-01</td><td><span class="ag-badge"><span class="ag-dot ag-dot--c3"></span>Oracle</span></td><td class="ag-td--num">55%</td><td><div class="ag-progress ag-progress--sm ag-progress--crit"><div class="ag-progress__bar" style="width:91%"></div></div></td><td><span class="ag-badge ag-badge--warn">용량 주의</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="작업 메뉴"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
             </tbody>
           </table>
         </div>
-        <div class="ag-table-foot"><span>186개 중 1–3 · <code>.ag-table--clickable</code>: 행 전체가 상세 링크(커서·hover·포커스 링), <code>.ag-td--actions</code> 안은 제외</span><nav class="ag-pagination"><button class="ag-pagination__item" disabled><svg class="ag-icon ag-icon--sm"><use href="#i-chevron-left"/></svg></button><a class="ag-pagination__item is-active" href="#">1</a><a class="ag-pagination__item" href="#">2</a><a class="ag-pagination__item" href="#">3</a><button class="ag-pagination__item"><svg class="ag-icon ag-icon--sm"><use href="#i-chevron-right"/></svg></button></nav></div>
+        <div class="ag-table-foot"><span>186개 중 1–3 · <code>.ag-table--clickable</code>: 행 전체가 상세 링크(커서·hover·포커스 링), <code>.ag-td--actions</code> 안은 제외</span><nav class="ag-pagination"><button class="ag-pagination__item" disabled aria-label="이전 페이지"><svg class="ag-icon ag-icon--sm"><use href="#i-chevron-left"/></svg></button><a class="ag-pagination__item is-active" href="#">1</a><a class="ag-pagination__item" href="#">2</a><a class="ag-pagination__item" href="#">3</a><button class="ag-pagination__item" aria-label="다음 페이지"><svg class="ag-icon ag-icon--sm"><use href="#i-chevron-right"/></svg></button></nav></div>
       </div>
     </section>
 
@@ -609,7 +609,7 @@ k2m9xQ1zR8fT4yU6wE2nH5sL0dP9vB3cX7aM1oK4jG8hF6eD2tS9uY
         <div class="ag-card ag-col-6 ag-stack">
           <h3 class="ag-card__title">.ag-daterange</h3>
           <div class="ag-daterange">
-            <div class="ag-daterange__inputs"><input class="ag-input" type="date" id="dr1" value="2026-09-26"><span class="ag-daterange__sep">–</span><input class="ag-input" type="date" id="dr2" value="2026-10-02"></div>
+            <div class="ag-daterange__inputs"><input class="ag-input" type="date" id="dr1" aria-label="시작일" value="2026-09-26"><span class="ag-daterange__sep">–</span><input class="ag-input" type="date" id="dr2" aria-label="종료일" value="2026-10-02"></div>
             <div class="ag-daterange__presets"><button class="ag-chip" data-ag-days="1">오늘</button><button class="ag-chip is-active" data-ag-days="7">7일</button><button class="ag-chip" data-ag-days="30">30일</button><button class="ag-chip" data-ag-days="90">분기</button></div>
           </div>
           <span class="ag-daterange__summary">프리셋 칩이 두 입력을 채웁니다 (argus.js). 피커 자체는 네이티브 — 다크 보정 내장.</span>
@@ -631,7 +631,7 @@ k2m9xQ1zR8fT4yU6wE2nH5sL0dP9vB3cX7aM1oK4jG8hF6eD2tS9uY
           <h3 class="ag-card__title ag-mt-4">.ag-notif (알림 센터)</h3>
           <div class="ag-row ag-gap-4 ag-items-start ag-wrap">
             <div class="ag-dropdown is-open" style="position:relative">
-              <button class="ag-btn ag-btn--icon ag-btn--outline ag-notif-btn" data-ag-dropdown aria-label="알림"><svg class="ag-icon"><use href="#i-bell"/></svg><span class="ag-notif-btn__count">3</span></button>
+              <button class="ag-btn ag-btn--icon ag-btn--outline ag-notif-btn" data-ag-dropdown><svg class="ag-icon"><use href="#i-bell"/></svg><span class="ag-sr-only">읽지 않은 알림</span><span class="ag-notif-btn__count">3</span></button>
               <div class="ag-menu ag-notif ag-menu--left" style="position:static;margin-top:8px;min-width:320px">
                 <div class="ag-notif__head"><strong>알림</strong><span class="ag-badge ag-badge--sm ag-badge--accent">3</span><button class="ag-btn ag-btn--sm ag-btn--ghost">모두 읽음</button></div>
                 <div class="ag-notif__list">
@@ -789,7 +789,7 @@ k2m9xQ1zR8fT4yU6wE2nH5sL0dP9vB3cX7aM1oK4jG8hF6eD2tS9uY
         <div class="ag-card ag-col-6 ag-stack">
           <h3 class="ag-card__title">.ag-skeleton-rows · .ag-skeleton-card</h3>
           <div class="ag-skeleton-rows" style="--rows: 3"></div>
-          <div class="ag-table-wrap"><table class="ag-table ag-table--dense ag-table--loading"><thead><tr><th>인스턴스</th><th>엔진</th><th class="ag-th--num">CPU</th><th>상태</th><th class="ag-td--actions"></th></tr></thead><tbody><tr><td>order-db-writer</td><td>MySQL</td><td class="ag-td--num">92%</td><td>장애</td><td class="ag-td--actions">⋯</td></tr><tr><td>member-pg-writer</td><td>PostgreSQL</td><td class="ag-td--num">41%</td><td>정상</td><td class="ag-td--actions">⋯</td></tr><tr><td>wms-ora-01</td><td>Oracle</td><td class="ag-td--num">55%</td><td>주의</td><td class="ag-td--actions">⋯</td></tr></tbody></table></div>
+          <div class="ag-table-wrap"><table class="ag-table ag-table--dense ag-table--loading"><thead><tr><th>인스턴스</th><th>엔진</th><th class="ag-th--num">CPU</th><th>상태</th><th class="ag-td--actions"><span class="ag-sr-only">작업</span></th></tr></thead><tbody><tr><td>order-db-writer</td><td>MySQL</td><td class="ag-td--num">92%</td><td>장애</td><td class="ag-td--actions">⋯</td></tr><tr><td>member-pg-writer</td><td>PostgreSQL</td><td class="ag-td--num">41%</td><td>정상</td><td class="ag-td--actions">⋯</td></tr><tr><td>wms-ora-01</td><td>Oracle</td><td class="ag-td--num">55%</td><td>주의</td><td class="ag-td--actions">⋯</td></tr></tbody></table></div>
           <p class="ag-text-xs ag-text-3"><code>.ag-table--loading</code> — 헤더·열 폭은 그대로, 행만 shimmer (레이아웃 점프 없음). 자리표시 행에는 아무 글자나</p>
           <div class="ag-row ag-gap-4 ag-items-start"><div class="ag-skeleton-card ag-flex-1"><span class="ag-skeleton"></span><span class="ag-skeleton"></span><span class="ag-skeleton"></span></div><div class="ag-skeleton-card ag-flex-1"><span class="ag-skeleton"></span><span class="ag-skeleton"></span><span class="ag-skeleton"></span></div></div>
         </div>
@@ -821,7 +821,7 @@ k2m9xQ1zR8fT4yU6wE2nH5sL0dP9vB3cX7aM1oK4jG8hF6eD2tS9uY
           <p class="ag-text-sm ag-text-3"><code>data-ag-open="id"</code> / <code>data-ag-close</code>. Alpine 을 쓰는 서비스는 <code>x-show</code> 로 <code>.ag-modal-overlay</code> 를 그대로 토글 — argus.js 는 자기가 연 것만 바깥 클릭·ESC 로 닫으므로 충돌 없음. 닫기 전 <code>ag:overlay-close</code> 이벤트(cancelable).</p>
           <h3 class="ag-card__title ag-mt-4">툴팁 <code>[data-tip]</code></h3>
           <div class="ag-cluster">
-            <button class="ag-btn ag-btn--icon ag-btn--outline" data-tip="새로고침 (R)"><svg class="ag-icon"><use href="#i-refresh"/></svg></button>
+            <button class="ag-btn ag-btn--icon ag-btn--outline" data-tip="새로고침 (R)" aria-label="새로고침"><svg class="ag-icon"><use href="#i-refresh"/></svg></button>
             <span class="ag-badge ag-badge--crit" data-tip="CPU 92% · 2h 14m 지속">장애</span>
             <span class="ag-text-2" data-tip="순수 CSS, JS 없음" style="border-bottom:1px dashed var(--ag-border-strong)">마우스를 올려보세요</span>
           </div>
@@ -864,13 +864,13 @@ k2m9xQ1zR8fT4yU6wE2nH5sL0dP9vB3cX7aM1oK4jG8hF6eD2tS9uY
       <div class="ag-card ag-card--flush">
         <div class="ag-card__head">
           <div class="ag-table-toolbar ag-w-full">
-            <div class="ag-cluster"><div class="ag-input-group" style="width:240px"><svg class="ag-icon"><use href="#i-search"/></svg><input class="ag-input ag-input--sm ag-input--pill" placeholder="검색"></div><select class="ag-select ag-select--sm ag-select--pill ag-select--inline"><option>전체 엔진</option></select></div>
+            <div class="ag-cluster"><div class="ag-input-group" style="width:240px"><svg class="ag-icon"><use href="#i-search"/></svg><input class="ag-input ag-input--sm ag-input--pill" placeholder="검색"></div><select class="ag-select ag-select--sm ag-select--pill ag-select--inline" aria-label="엔진 필터"><option>전체 엔진</option></select></div>
             <div class="ag-cluster"><button class="ag-btn ag-btn--sm ag-btn--outline"><svg class="ag-icon ag-icon--sm"><use href="#i-download"/></svg>CSV</button><button class="ag-btn ag-btn--sm ag-btn--primary"><svg class="ag-icon ag-icon--sm"><use href="#i-plus"/></svg>추가</button></div>
           </div>
         </div>
         <div class="ag-table-wrap ag-mt-4">
           <table class="ag-table ag-table--dense ag-table--striped ag-table--sticky-col">
-            <thead><tr><th>인스턴스</th><th style="width:1%"></th><th>엔진</th><th>클래스</th><th>리전</th><th>VPC</th><th>파라미터 그룹</th><th class="ag-th--num">CPU</th><th class="ag-th--num">커넥션</th><th class="ag-th--num">스토리지</th><th>백업</th><th>담당</th><th>상태</th></tr></thead>
+            <thead><tr><th>인스턴스</th><th style="width:1%"><span class="ag-sr-only">선택</span></th><th>엔진</th><th>클래스</th><th>리전</th><th>VPC</th><th>파라미터 그룹</th><th class="ag-th--num">CPU</th><th class="ag-th--num">커넥션</th><th class="ag-th--num">스토리지</th><th>백업</th><th>담당</th><th>상태</th></tr></thead>
             <tbody>
               <tr class="is-crit is-expanded"><td class="ag-fw-500">order-db-writer</td><td><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" data-ag-expand aria-label="펼치기"><svg class="ag-icon ag-icon--sm ag-table__expander"><use href="#i-chevron-right"/></svg></button></td><td>MySQL 8.0.36</td><td class="ag-mono">db.r6g.4xlarge</td><td>ap-northeast-2a</td><td class="ag-mono">vpc-0a1b2c3d</td><td>prod-order-mysql80</td><td class="ag-td--num ag-text-crit">92%</td><td class="ag-td--num">1,842</td><td class="ag-td--num">1.2 TiB</td><td>03:00 · 7일</td><td>James</td><td><span class="ag-badge ag-badge--crit">장애</span></td></tr>
               <tr class="ag-tr--expand"><td colspan="13"><div class="ag-row ag-gap-8 ag-wrap ag-items-start"><dl class="ag-kv ag-kv--stack"><dt>엔드포인트</dt><dd class="ag-mono">order-db-writer.cluster-abc123.ap-northeast-2.rds.amazonaws.com</dd></dl><dl class="ag-kv ag-kv--stack"><dt>최근 이벤트</dt><dd>14:02 CPU 90% 초과 경보</dd></dl><dl class="ag-kv ag-kv--stack"><dt>리더</dt><dd>reader-1 (2c), reader-2 (2a)</dd></dl></div></td></tr>
@@ -904,9 +904,9 @@ k2m9xQ1zR8fT4yU6wE2nH5sL0dP9vB3cX7aM1oK4jG8hF6eD2tS9uY
         <div class="ag-card ag-col-4 ag-stack">
           <h3 class="ag-card__title">.ag-compare · .ag-kv--stack</h3>
           <div class="ag-compare">
-            <div class="ag-compare__col"><span class="ag-compare__label">변경 전</span><pre class="ag-code ag-code--readonly" style="min-height:0;white-space:pre-wrap">max_connections = 2000
+            <div class="ag-compare__col"><span class="ag-compare__label">변경 전</span><pre class="ag-code ag-code--readonly" tabindex="0" style="min-height:0;white-space:pre-wrap">max_connections = 2000
 innodb_buffer_pool_size = 48G</pre></div>
-            <div class="ag-compare__col"><span class="ag-compare__label">변경 후</span><pre class="ag-code" style="min-height:0;white-space:pre-wrap">max_connections = 3000
+            <div class="ag-compare__col"><span class="ag-compare__label">변경 후</span><pre class="ag-code" tabindex="0" style="min-height:0;white-space:pre-wrap">max_connections = 3000
 innodb_buffer_pool_size = 56G</pre></div>
           </div>
           <dl class="ag-kv ag-kv--stack"><dt>엔드포인트</dt><dd class="ag-mono">order-db-writer.cluster-abc123…:3306</dd><dt>파라미터 그룹</dt><dd>prod-order-mysql80</dd></dl>

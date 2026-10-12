@@ -9,7 +9,7 @@ css/            소스. 빌드 순서 = tokens → base → layout → component
 dist/           build.sh 산출물(전부 minified). 직접 수정 금지. argus.min.css(전체) / core·patterns·charts·auth-landing.min.css(골라 쓰기) / themes/*.min.css / *.js
 js/modules/     선택 헬퍼 소스. 10-core(테마·사이드바·탭) 20-overlay(드롭다운·모달·배너·날짜·토스트닫기·확장행) 30-keyboard 40-chart-hover 50-toast. build 가 합친다
 js/argus.charts.js  ApexCharts/Chart.js 프리셋
-tools/          check.py 값 단언 회귀(89항목, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
+tools/          check.py 값 단언 회귀(90항목 + axe 접근성 게이트, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
 examples/src/   예시 페이지 소스. <!--@icons--> 는 _icons.html 스프라이트로 치환됨
 examples/       build_examples.py 산출물. 직접 수정 금지. GitHub Pages 가 main 브랜치 루트를 그대로 서빙하므로 커밋 전 반드시 빌드 (루트 index.html 은 examples/ 로 리다이렉트, .nojekyll 로 _icons.html 등 밑줄 파일 유지)
 docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프롬프트 키트
@@ -44,6 +44,7 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 - 모양은 도구형: 라운드 토큰 6/10/12/16, 버튼 `--ag-radius-btn` 10. 알약은 칩·배지·세그먼트·네비·사용자 메뉴에만 — 새 컴포넌트에 `--ag-radius-pill` 을 쓸 땐 그 넷 중 하나인지 묻는다. 높이는 `--ag-control-h*`.
 - 밀도·크기는 토큰으로: 셀 패딩 `--ag-cell-y/x`, 스탯 `--ag-text-4xl`(40)·`--ag-text-hero`(52). h1 은 28 — 콘솔은 제목보다 내용을 읽는다.
 - 숫자가 든 컴포넌트에는 `font-variant-numeric: tabular-nums` 가 상속되는지 확인한다 (`.ag-num`, table, stat, badge 는 이미 적용).
+- 접근성(WCAG 2.2 AA)은 토큰이 책임진다. `color:` 에는 글자 토큰만 — 액센트는 `--ag-accent-text`(채움 `--ag-accent` 는 다크 표면 위 3.9:1), 상태는 `--ag-*-text`, 분홍은 `--ag-accent-2-text`, 범주색 배경 위는 `--ag-text-on-chart`/`--ag-text-on-cat-N`. 새 토큰은 두 테마 모두 4.5:1(11px 메타도)을 토큰 주석에 적고, `opacity` 로 요소를 흐리지 않는다(안쪽 대비가 같이 깨진다). 본문 안 링크는 밑줄. 예시 마크업은 아이콘 버튼 `aria-label`, sr-only `<th>`, 페이지당 h1 하나, `nav aria-label`, 배너 `role="region"`. `tools/check.py` 의 axe 게이트(serious/critical 0, 6페이지 × 2테마)가 회귀를 막는다.
 
 ## 테마
 
@@ -88,4 +89,5 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 - [ ] 400px 폭에서 가로 스크롤 없음
 - [ ] 새 클래스는 README 목록 + components.html 예시에 반영
 - [ ] `CHANGELOG.md` 갱신, `VERSION` 올림 (CSS 가 바뀌었으면)
+- [ ] axe 게이트 통과 (check.py 에 포함 — `npm i` 로 axe-core 가 있어야 켜진다). 대비가 걸리면 컴포넌트에서 예외를 만들지 말고 토큰을 고친다
 - [ ] 토큰 외 리터럴 색상 없음 (`grep -nE "#[0-9a-fA-F]{3,8}|rgb\(" css/*.css | grep -v tokens.css` 가 거의 비어 있어야 함)

@@ -60,6 +60,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 - 색상 리터럴 0개. `grep -nE "#[0-9a-fA-F]{3,8}|rgb\(" web/views` 결과가 비어야 한다 (svg 아이콘 제외).
 - 400px 에서 가로 스크롤 없음. 테이블은 .ag-table-wrap 안에서만 스크롤.
 - 상태(정상/주의/장애)는 색만이 아니라 점·아이콘·텍스트로도 구분된다.
+- 접근성(WCAG 2.2 AA) — 프레임워크 토큰만 쓰면 색 대비는 보장된다. 서비스가 지킬 것은 마크업: 아이콘만 있는 버튼·링크는 `aria-label`(보이는 텍스트가 있으면 그 텍스트를 포함) 또는 `.ag-sr-only` 텍스트 · 체크박스/⋯ 열 `<th>` 는 `.ag-sr-only` 텍스트 · 페이지마다 `<h1>` 하나, 카드 제목은 h2/h3 순서 · `<nav aria-label>` · 배너/공지 `role="region" aria-label` · 페이지네이션 `aria-label` + `aria-current="page"` · 라벨 없는 입력(날짜·검색)은 `aria-label` · 스크롤되는 `<pre>` 는 `tabindex="0"` · 글자색을 직접 쓰지 않는다(`--ag-accent` 를 `color:` 에 쓰지 말 것 → `--ag-accent-text`). 검증은 프레임워크 저장소의 `tools/check.py` 와 같은 방식으로 axe-core 를 돌려 serious/critical 0.
 - 한 화면에 액센트 카드(.ag-card--accent)는 최대 1개.
 - 대시보드 첫 화면(스크롤 전)에는 카드 7개 이하. 핵심 지표 3~4 + 차트 1 + 보조 2. 나머지는 아래로 내리거나 목록 화면으로.
 - 폰트는 `fonts/` self-host (fonts/README.md). Google Fonts 링크를 서비스에 그대로 두지 않는다.
@@ -227,7 +228,9 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 본문 `text-slate-800` `text-slate-200` | `var(--ag-text)` |
 | 보조 `text-slate-500` `text-white/60` | `var(--ag-text-2)` |
 | 메타 `text-slate-400` `text-white/40` `text-[10px]` | `var(--ag-text-3)` + `.ag-text-xs` |
-| 브랜드 색 하드코딩 `#DC2626` `#2563EB` `#10B981` … | `var(--ag-accent)` — 값은 `dist/themes/<color>.min.css` 가 공급. 템플릿에 hex 를 쓰지 않는다 |
+| 브랜드 색 하드코딩 `#DC2626` `#2563EB` `#10B981` … | 배경·보더는 `var(--ag-accent)`, **글자는 `var(--ag-accent-text)`** — 값은 `dist/themes/<color>.min.css` 가 공급. 템플릿에 hex 를 쓰지 않는다 |
+| 액센트 글자 `text-indigo-500` `text-brand` 링크·활성 탭·아이콘 | `var(--ag-accent-text)` (채움색 `--ag-accent` 는 다크 표면 위 글자 대비가 모자람) |
+| 상태 글자 단독 `text-red-500` `text-emerald-600` | `--ag-*-text` (배경 없는 글자) — `--ag-crit` 등은 점·보더·채움용 |
 | 성공 `emerald-*` `green-*` | `--ag-good` / `--ag-good-soft` |
 | 경고 `amber-*` `yellow-*` | `--ag-warn` / `--ag-warn-soft` |
 | 위험 `red-*` `rose-*` | `--ag-crit` / `--ag-crit-soft` |

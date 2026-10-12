@@ -130,7 +130,7 @@
 .ag-sidebar__item:hover { background: var(--ag-surface-hover); color: var(--ag-text); text-decoration: none; }
 .ag-sidebar__item.is-active { background: var(--ag-accent-soft); color: var(--ag-text); }
 .ag-sidebar__item :is(.ag-icon, [class*="ph-"]) { color: var(--ag-text-3); }
-.ag-sidebar__item.is-active :is(.ag-icon, [class*="ph-"]) { color: var(--ag-accent); }
+.ag-sidebar__item.is-active :is(.ag-icon, [class*="ph-"]) { color: var(--ag-accent-text); }
 .ag-sidebar__item .ag-badge { margin-left: auto; }
 .ag-sidebar__footer { margin-top: auto; }
 
@@ -311,10 +311,10 @@
 .ag-app--tabs .ag-topbar__row--nav .ag-nav__item { padding: 8px 14px; border-radius: var(--ag-radius-sm); font-size: var(--ag-text-sm); }
 .ag-app--tabs .ag-topbar__row--nav .ag-nav__item.is-active, .ag-app--tabs .ag-topbar__row--nav .ag-nav__item[aria-current="page"] { background: var(--ag-accent-soft); color: var(--ag-text); }
 .ag-app--tabs .ag-topbar__row--nav .ag-nav__item :is(.ag-icon, [class*="ph-"]) { color: var(--ag-text-3); }
-.ag-app--tabs .ag-topbar__row--nav .ag-nav__item.is-active :is(.ag-icon, [class*="ph-"]), .ag-app--tabs .ag-topbar__row--nav .ag-nav__item[aria-current="page"] :is(.ag-icon, [class*="ph-"]) { color: var(--ag-accent); }
+.ag-app--tabs .ag-topbar__row--nav .ag-nav__item.is-active :is(.ag-icon, [class*="ph-"]), .ag-app--tabs .ag-topbar__row--nav .ag-nav__item[aria-current="page"] :is(.ag-icon, [class*="ph-"]) { color: var(--ag-accent-text); }
 /* 밑줄 탭 변형 */
 .ag-app--tabs .ag-topbar__row--nav.ag-topbar__row--underline .ag-nav__item { border-radius: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; padding-block: 12px; }
-.ag-app--tabs .ag-topbar__row--nav.ag-topbar__row--underline .ag-nav__item.is-active, .ag-app--tabs .ag-topbar__row--nav.ag-topbar__row--underline .ag-nav__item[aria-current="page"] { background: transparent; border-bottom-color: var(--ag-accent); }
+.ag-app--tabs .ag-topbar__row--nav.ag-topbar__row--underline .ag-nav__item.is-active, .ag-app--tabs .ag-topbar__row--nav.ag-topbar__row--underline .ag-nav__item[aria-current="page"] { background: transparent; border-bottom-color: var(--ag-accent-text); }
 .ag-app--tabs .ag-topbar__search { flex: 1; max-width: 440px; }
 
 /* ---- focus: 좁은 중앙 컬럼 ---- */

@@ -40,16 +40,16 @@
 .ag-btn--ghost { --_bg: transparent; --_bd: transparent; --_fg: var(--ag-text-2); }
 .ag-btn--ghost:hover { color: var(--ag-text); border-color: transparent; }
 .ag-btn--outline { --_bg: transparent; --_bd: var(--ag-border-strong); }
-.ag-btn--danger { --_bg: var(--ag-crit-soft); --_fg: var(--ag-crit); --_bd: transparent; }
+.ag-btn--danger { --_bg: var(--ag-crit-soft); --_fg: var(--ag-crit-text); --_bd: transparent; }
 .ag-btn--danger:hover { background: var(--ag-crit); color: #fff; border-color: transparent; }
 /* 조합(모양 × 톤 뒤에 선언): 행 액션의 삭제처럼 평소엔 중립, hover 에서만 경고 */
 .ag-btn--ghost.ag-btn--danger { --_bg: transparent; --_fg: var(--ag-text-2); }
-.ag-btn--ghost.ag-btn--danger:hover { background: var(--ag-crit-soft); color: var(--ag-crit); border-color: transparent; }
-.ag-btn--outline.ag-btn--danger { --_bg: transparent; --_fg: var(--ag-crit); --_bd: color-mix(in oklab, var(--ag-crit) 45%, transparent); }
-.ag-btn--outline.ag-btn--danger:hover { background: var(--ag-crit-soft); color: var(--ag-crit); border-color: var(--ag-crit); }
-.ag-btn--outline.ag-btn--primary { --_bg: transparent; --_fg: var(--ag-accent); --_bd: color-mix(in oklab, var(--ag-accent) 45%, transparent); }   /* 채움 --primary 의 outline 짝 — 같은 비중의 버튼 둘(수정 / 위험 작업)을 나란히 둘 때 */
-.ag-btn--outline.ag-btn--primary:hover { background: var(--ag-accent-soft); color: var(--ag-accent); border-color: var(--ag-accent); }
-.ag-btn--accent2 { --_bg: var(--ag-accent-2); --_fg: #fff; --_bd: transparent; }
+.ag-btn--ghost.ag-btn--danger:hover { background: var(--ag-crit-soft); color: var(--ag-crit-text); border-color: transparent; }
+.ag-btn--outline.ag-btn--danger { --_bg: transparent; --_fg: var(--ag-crit-text); --_bd: color-mix(in oklab, var(--ag-crit) 45%, transparent); }
+.ag-btn--outline.ag-btn--danger:hover { background: var(--ag-crit-soft); color: var(--ag-crit-text); border-color: var(--ag-crit); }
+.ag-btn--outline.ag-btn--primary { --_bg: transparent; --_fg: var(--ag-accent-text); --_bd: color-mix(in oklab, var(--ag-accent) 45%, transparent); }   /* 채움 --primary 의 outline 짝 — 같은 비중의 버튼 둘(수정 / 위험 작업)을 나란히 둘 때 */
+.ag-btn--outline.ag-btn--primary:hover { background: var(--ag-accent-soft); color: var(--ag-accent-text); border-color: var(--ag-accent-text); }
+.ag-btn--accent2 { --_bg: var(--ag-accent-2); --_fg: var(--ag-text-on-accent-2); --_bd: transparent; }
 .ag-btn--accent2:hover { background: var(--ag-accent-2); opacity: .9; border-color: transparent; }
 
 .ag-btn--sm { height: var(--ag-control-h-sm); padding: 0 11px; font-size: var(--ag-text-sm); border-radius: calc(var(--ag-radius-btn) - 2px); }
@@ -110,7 +110,7 @@
 }
 .ag-chip--sm { height: 28px; padding: 0 12px; font-size: var(--ag-text-sm); }
 .ag-chip--accent  { background: var(--ag-accent);   color: var(--ag-text-on-accent); border-color: transparent; }
-.ag-chip--accent2 { background: var(--ag-accent-2); color: #fff; border-color: transparent; }
+.ag-chip--accent2 { background: var(--ag-accent-2); color: var(--ag-text-on-accent-2); border-color: transparent; }
 .ag-chip--inverse { background: var(--ag-inverse);  color: var(--ag-text-on-inverse); border-color: transparent; }
 .ag-chip--hatch   { background: var(--ag-chart-hatch), var(--ag-surface-2); }
 .ag-chip--outline { background: transparent; border-color: var(--ag-border-strong); }
@@ -154,12 +154,12 @@
 .ag-badge--lg { height: 32px; padding: 0 14px; font-size: var(--ag-text-sm); border-radius: var(--ag-radius-sm); }
 .ag-badge--count { min-width: 24px; padding: 0 7px; justify-content: center; color: var(--ag-text); }   /* 숫자는 본문색 — 톤이 붙으면 톤 색으로 */
 /* ② 톤 — 상태(good/warn/crit/info)는 상태 전용, 범주(cat1~4)는 종류 구분, accent/accent2/inverse 는 강조 */
-.ag-badge--good   { background: var(--ag-good-soft);   color: var(--ag-good); }
-.ag-badge--warn   { background: var(--ag-warn-soft);   color: var(--ag-warn); }
-.ag-badge--crit   { background: var(--ag-crit-soft);   color: var(--ag-crit); }
-.ag-badge--info   { background: var(--ag-info-soft);   color: var(--ag-info); }
-.ag-badge--accent { background: var(--ag-accent-soft); color: var(--ag-accent); }
-.ag-badge--accent2{ background: var(--ag-accent-2-soft); color: var(--ag-accent-2); }
+.ag-badge--good   { background: var(--ag-good-soft);   color: var(--ag-good-text); }
+.ag-badge--warn   { background: var(--ag-warn-soft);   color: var(--ag-warn-text); }
+.ag-badge--crit   { background: var(--ag-crit-soft);   color: var(--ag-crit-text); }
+.ag-badge--info   { background: var(--ag-info-soft);   color: var(--ag-info-text); }
+.ag-badge--accent { background: var(--ag-accent-soft); color: var(--ag-accent-text); }
+.ag-badge--accent2{ background: var(--ag-accent-2-soft); color: var(--ag-accent-2-text); }
 .ag-badge--cat1 { background: var(--ag-cat-1-soft); color: var(--ag-cat-1-text); }
 .ag-badge--cat2 { background: var(--ag-cat-2-soft); color: var(--ag-cat-2-text); }
 .ag-badge--cat3 { background: var(--ag-cat-3-soft); color: var(--ag-cat-3-text); }
@@ -174,11 +174,11 @@
 .ag-badge--solid.ag-badge--crit   { background: var(--ag-crit-solid);   color: var(--ag-text-on-crit); }
 .ag-badge--solid.ag-badge--info   { background: var(--ag-info-solid);   color: var(--ag-text-on-info); }
 .ag-badge--solid.ag-badge--accent { background: var(--ag-accent); color: var(--ag-text-on-accent); }
-.ag-badge--solid.ag-badge--accent2{ background: var(--ag-accent-2); color: #fff; }
-.ag-badge--solid.ag-badge--cat1 { background: var(--ag-cat-1); color: #fff; }
-.ag-badge--solid.ag-badge--cat2 { background: var(--ag-cat-2); color: #fff; }
-.ag-badge--solid.ag-badge--cat3 { background: var(--ag-cat-3); color: #fff; }
-.ag-badge--solid.ag-badge--cat4 { background: var(--ag-cat-4); color: #1a1400; }
+.ag-badge--solid.ag-badge--accent2{ background: var(--ag-accent-2); color: var(--ag-text-on-accent-2); }
+.ag-badge--solid.ag-badge--cat1 { background: var(--ag-cat-1); color: var(--ag-text-on-cat-1); }
+.ag-badge--solid.ag-badge--cat2 { background: var(--ag-cat-2); color: var(--ag-text-on-cat-2); }
+.ag-badge--solid.ag-badge--cat3 { background: var(--ag-cat-3); color: var(--ag-text-on-cat-3); }
+.ag-badge--solid.ag-badge--cat4 { background: var(--ag-cat-4); color: var(--ag-text-on-cat-4); }
 .ag-badge--solid.ag-badge--inverse { background: var(--ag-inverse); color: var(--ag-text-on-inverse); }
 
 /* 상태 점 */
@@ -225,11 +225,11 @@
   --_on: var(--ag-text-on-accent);
   background: var(--ag-accent); color: var(--_on); border-color: transparent;
 }
-.ag-card--accent2 { --_on: #fff; background: var(--ag-accent-2); color: var(--_on); border-color: transparent; }
+.ag-card--accent2 { --_on: var(--ag-text-on-accent-2); background: var(--ag-accent-2); color: var(--_on); border-color: transparent; }
 .ag-card--accent, .ag-card--accent2, .ag-card--inverse {
   --ag-text: var(--_on);
-  --ag-text-2: color-mix(in oklab, var(--_on) 92%, transparent);   /* 흐린 단계도 거의 불투명하게 — 밝은 액센트(violet 다크 3.3:1) 위에서는 여유가 없다 */
-  --ag-text-3: color-mix(in oklab, var(--_on) 86%, transparent);
+  --ag-text-2: color-mix(in oklab, var(--_on) 97%, transparent);   /* 흐린 단계도 거의 불투명하게 — 밝은 액센트(violet 다크 3.3:1) 위에서는 여유가 없다 */
+  --ag-text-3: color-mix(in oklab, var(--_on) 94%, transparent);
   --ag-border: color-mix(in oklab, var(--_on) 22%, transparent);
   --ag-border-strong: color-mix(in oklab, var(--_on) 45%, transparent);
   --ag-surface-2: color-mix(in oklab, var(--_on) 12%, transparent);
@@ -238,7 +238,7 @@
 }
 /* 두 번째 강조용 — 액센트 틴트 + 액센트 보더. 글자색은 그대로라 어느 테마에서나 안전 */
 .ag-card--accent-soft { background: color-mix(in oklab, var(--ag-accent) 12%, var(--ag-surface)); border-color: color-mix(in oklab, var(--ag-accent) 40%, transparent); }
-.ag-card--accent-soft .ag-card__title { color: var(--ag-accent); }
+.ag-card--accent-soft .ag-card__title { color: var(--ag-accent-text); }
 .ag-card--inverse { --_on: var(--ag-text-on-inverse); background: var(--ag-inverse); color: var(--_on); border-color: transparent; }
 .ag-card--interactive { cursor: pointer; transition: border-color var(--ag-dur) var(--ag-ease), transform var(--ag-dur) var(--ag-ease), background var(--ag-dur) var(--ag-ease); }
 .ag-card--interactive:hover { border-color: var(--ag-border-strong); background: var(--ag-surface-hover); transform: translateY(-1px); box-shadow: var(--ag-card-edge), var(--ag-shadow-md); }
@@ -249,7 +249,7 @@
 a.ag-card, button.ag-card { width: 100%; align-items: stretch; text-align: left; color: inherit; text-decoration: none; font: inherit; cursor: pointer; }
 a.ag-card:hover { text-decoration: none; }
 button.ag-card:focus-visible, a.ag-card:focus-visible { outline: none; box-shadow: var(--ag-ring-focus); }
-.ag-card.is-selected { border-color: var(--ag-accent); box-shadow: 0 0 0 1px var(--ag-accent) inset; }
+.ag-card.is-selected { border-color: var(--ag-accent-text); box-shadow: 0 0 0 1px var(--ag-accent) inset; }
 
 .ag-card__head {
   display: flex;
@@ -305,8 +305,8 @@ button.ag-list__item { width: 100%; text-align: left; font: inherit; cursor: poi
 .ag-list__item:disabled, .ag-list__item[aria-disabled="true"] { opacity: .45; pointer-events: none; }   /* 이미 등록·담긴 항목 — .ag-btn:disabled 와 같은 값. 색만으로 말하지 않도록 "등록됨" 배지 동반 */
 a.ag-list__item { cursor: pointer; }
 a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface-hover); text-decoration: none; }
-.ag-list__item.is-active { background: var(--ag-accent-soft); border-color: var(--ag-accent); color: var(--ag-text); }
-.ag-list__item.is-active :is(.ag-icon, [class*="ph-"]) { color: var(--ag-accent); }
+.ag-list__item.is-active { background: var(--ag-accent-soft); border-color: var(--ag-accent-text); color: var(--ag-text); }
+.ag-list__item.is-active :is(.ag-icon, [class*="ph-"]) { color: var(--ag-accent-text); }
 .ag-list__item.is-active .ag-badge--count { background: var(--ag-accent); color: var(--ag-text-on-accent); }
 .ag-list__label { display: inline-flex; align-items: center; gap: var(--ag-space-3); font-weight: 500; min-width: 0; }
 .ag-list__label span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -357,8 +357,8 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   background: var(--ag-surface-3);
   color: var(--ag-text-2);
 }
-.ag-delta--up   { background: var(--ag-good-soft); color: var(--ag-good); }
-.ag-delta--down { background: var(--ag-crit-soft); color: var(--ag-crit); }
+.ag-delta--up   { background: var(--ag-good-soft); color: var(--ag-good-text); }   /* soft 배경 위 글자는 *-text (라이트 4.5:1) */
+.ag-delta--down { background: var(--ag-crit-soft); color: var(--ag-crit-text); }
 .ag-delta--flat { background: var(--ag-surface-3); color: var(--ag-text-2); }
 .ag-delta--inline { height: 22px; min-width: 0; padding: 0 8px; }
 
@@ -371,7 +371,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   height: 40px;
   border-radius: 50%;
   background: var(--ag-accent-soft);
-  color: var(--ag-accent);
+  color: var(--ag-accent-text);
   font-size: var(--ag-text-sm);
   font-weight: 600;
   overflow: hidden;
@@ -383,7 +383,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-avatar--warn { background: var(--ag-warn-soft); color: var(--ag-warn-text); }
 .ag-avatar--crit { background: var(--ag-crit-soft); color: var(--ag-crit-text); }
 .ag-avatar--info { background: var(--ag-info-soft); color: var(--ag-info-text); }
-.ag-avatar--accent2 { background: var(--ag-accent-2-soft); color: var(--ag-accent-2); }
+.ag-avatar--accent2 { background: var(--ag-accent-2-soft); color: var(--ag-accent-2-text); }
 .ag-avatar--cat1 { background: var(--ag-cat-1-soft); color: var(--ag-cat-1-text); }
 .ag-avatar--cat2 { background: var(--ag-cat-2-soft); color: var(--ag-cat-2-text); }
 .ag-avatar--cat3 { background: var(--ag-cat-3-soft); color: var(--ag-cat-3-text); }
@@ -542,7 +542,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 }
 .ag-input::placeholder, .ag-textarea::placeholder { color: var(--ag-text-3); }
 .ag-input:hover, .ag-select:hover, .ag-textarea:hover { border-color: var(--ag-border-strong); }
-.ag-input:focus, .ag-select:focus, .ag-textarea:focus { outline: none; border-color: var(--ag-accent); box-shadow: var(--ag-ring); background: var(--ag-surface); }
+.ag-input:focus, .ag-select:focus, .ag-textarea:focus { outline: none; border-color: var(--ag-accent-text); box-shadow: var(--ag-ring); background: var(--ag-surface); }
 .ag-input:disabled, .ag-select:disabled, .ag-textarea:disabled { opacity: .5; }
 .ag-input--pill { border-radius: var(--ag-radius-pill); padding-inline: 18px; }
 .ag-input--sm, .ag-select--sm { height: var(--ag-control-h-sm); font-size: var(--ag-text-sm); padding-inline: 10px; }
@@ -581,7 +581,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-check input[type="radio"] { border-radius: 50%; }
 .ag-check input::before { content: ""; width: 10px; height: 10px; transform: scale(0); transition: transform var(--ag-dur) var(--ag-ease); background: var(--ag-text-on-accent); clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%); }
 .ag-check input[type="radio"]::before { clip-path: none; border-radius: 50%; width: 8px; height: 8px; }
-.ag-check input:checked { background: var(--ag-accent); border-color: var(--ag-accent); }
+.ag-check input:checked { background: var(--ag-accent); border-color: var(--ag-accent-text); }
 .ag-check input:checked::before { transform: scale(1); }
 .ag-check input:focus-visible { outline: 2px solid var(--ag-accent); outline-offset: 2px; }
 
@@ -589,7 +589,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-switch { position: relative; display: inline-flex; align-items: center; gap: 10px; cursor: pointer; }
 .ag-switch input { appearance: none; width: 40px; height: 22px; margin: 0; border-radius: var(--ag-radius-pill); background: var(--ag-surface-3); border: 1px solid var(--ag-border); position: relative; transition: background var(--ag-dur) var(--ag-ease); flex: none; }
 .ag-switch input::after { content: ""; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: var(--ag-text-2); transition: transform var(--ag-dur) var(--ag-ease), background var(--ag-dur) var(--ag-ease); }
-.ag-switch input:checked { background: var(--ag-accent); border-color: var(--ag-accent); }
+.ag-switch input:checked { background: var(--ag-accent); border-color: var(--ag-accent-text); }
 .ag-switch input:checked::after { transform: translateX(18px); background: #fff; }
 .ag-switch input:focus-visible { outline: 2px solid var(--ag-accent); outline-offset: 2px; }
 
@@ -607,7 +607,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   transition: color var(--ag-dur) var(--ag-ease);
 }
 .ag-tabs__item:hover { color: var(--ag-text); text-decoration: none; }
-.ag-tabs__item.is-active, .ag-tabs__item[aria-selected="true"] { color: var(--ag-text); border-bottom-color: var(--ag-accent); }
+.ag-tabs__item.is-active, .ag-tabs__item[aria-selected="true"] { color: var(--ag-text); border-bottom-color: var(--ag-accent-text); }
 .ag-tabs__item .ag-badge { margin-left: 6px; }
 
 /* ---- Progress / Meter ------------------------------------------------ */
@@ -879,16 +879,16 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   justify-content: center;
   border-radius: 50%;
   aspect-ratio: 1;
-  color: #fff;
+  color: var(--ag-text-on-chart);   /* 다크 범주색은 밝아서 어두운 글자, 라이트는 흰 글자 */
   line-height: 1.1;
   text-align: center;
   box-shadow: 0 0 0 3px var(--ag-surface), 0 16px 32px -16px rgb(0 0 0 / .5);
 }
 .ag-bubble strong { font-size: 1em; font-weight: 400; letter-spacing: -0.03em; }
-.ag-bubble span { font-size: .4em; opacity: .9; }
-.ag-bubble--1 { background: var(--ag-chart-1); }
-.ag-bubble--2 { background: var(--ag-chart-2); }
-.ag-bubble--3 { background: var(--ag-chart-3); }
+.ag-bubble span { font-size: .45em; font-weight: 600; }   /* 큰 굵은 글자(≥18.7px/600) → 3:1 기준 */
+.ag-bubble--1 { background: var(--ag-chart-1); color: var(--ag-text-on-cat-1); }
+.ag-bubble--2 { background: var(--ag-chart-2); color: var(--ag-text-on-cat-2); }
+.ag-bubble--3 { background: var(--ag-chart-3); color: var(--ag-text-on-cat-3); }
 .ag-bubble--hatch { background: var(--ag-chart-hatch), var(--ag-surface-2); color: var(--ag-text); border: 1px solid var(--ag-border-strong); }
 
 /* ---- Prompt / Ask box (Hi, Caroline) -------------------------------- */
@@ -916,6 +916,6 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-quick-action__icon { width: 30px; height: 30px; border-radius: 8px; display: grid; place-content: center; flex: none; }
 .ag-quick-action__icon :is(.ag-icon, [class*="ph-"]) { width: 15px; height: 15px; font-size: 15px; }
 .ag-quick-action__icon--1 { background: var(--ag-warn-soft);   color: var(--ag-warn); }
-.ag-quick-action__icon--2 { background: var(--ag-accent-2-soft); color: var(--ag-accent-2); }
+.ag-quick-action__icon--2 { background: var(--ag-accent-2-soft); color: var(--ag-accent-2-text); }
 .ag-quick-action__icon--3 { background: var(--ag-info-soft);   color: var(--ag-info); }
-.ag-quick-action__icon--4 { background: var(--ag-accent-soft); color: var(--ag-accent); }
+.ag-quick-action__icon--4 { background: var(--ag-accent-soft); color: var(--ag-accent-text); }

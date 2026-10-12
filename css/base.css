@@ -41,8 +41,11 @@ h6 { font-size: var(--ag-text-sm); text-transform: uppercase; letter-spacing: .0
 p { margin: 0; }
 p + p { margin-top: var(--ag-space-3); }
 
-a { color: var(--ag-accent); text-decoration: none; }
+a { color: var(--ag-accent-text); text-decoration: none; }
 a:hover { text-decoration: underline; text-underline-offset: 2px; }
+/* 본문 문장 속 링크는 색만으로 구분하지 않는다 (WCAG 1.4.1) — 밑줄. 네비·버튼·카드 링크는 모양으로 구분되므로 제외 */
+:is(p, li, dd, td, .ag-alert, .ag-banner__text, .ag-hint, .ag-empty, .ag-insight, .ag-auth__foot) a:not(.ag-btn):not(.ag-card):not(.ag-quick-action):not(.ag-list__item):not(.ag-nav__item):not(.ag-tabs__item) { text-decoration: underline; text-underline-offset: 2px; text-decoration-color: color-mix(in oklab, currentColor 55%, transparent); }
+:is(.ag-alert, .ag-banner__text, .ag-toast) a:not(.ag-btn) { color: inherit; font-weight: 600; }   /* 색 배경 위에서는 글자색을 물려받고 굵기로 구분 */
 
 small { font-size: var(--ag-text-sm); }
 strong, b { font-weight: 600; }

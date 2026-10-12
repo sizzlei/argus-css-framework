@@ -1,7 +1,8 @@
 /* Argus CSS Framework — 컬러 테마 템플릿. 파일명을 바꾸고 값만 채운다. 기본 제공: red orange yellow green blue indigo violet */
 :root {                                  /* 다크 */
-  --ag-accent: #7c6cff;
-  --ag-accent-hover: #917fff;
+  --ag-accent: #6a59e8;            /* 채움 — 위 글자(--ag-text-on-accent)와 4.5:1 */
+  --ag-accent-hover: #7161ee;
+  --ag-accent-text: #9d90ff;       /* 글자(링크·활성 탭) — 표면 위 4.5:1. 다크는 보통 채움보다 밝게 */
   --ag-accent-soft: rgb(124 108 255 / .16);
   --ag-text-on-accent: #ffffff;          /* 밝은 액센트(노랑·초록)는 어두운 글자 — 대비 4.5:1 확인 */
   --ag-brand-from: #7c6cff;              /* 브랜드 마크 그라데이션 */
@@ -10,6 +11,7 @@
 :root[data-theme="light"] {              /* 라이트 — 보통 한 단계 깊게 */
   --ag-accent: #5b4cf0;
   --ag-accent-hover: #4a3ce0;
+  --ag-accent-text: var(--ag-accent-hover);   /* 라이트 hover 는 한 단계 깊은 톤 — soft 배경 위에서도 4.5:1 */
   --ag-accent-soft: rgb(91 76 240 / .12);
   --ag-text-on-accent: #ffffff;
   --ag-brand-from: #5b4cf0;

@@ -36,7 +36,7 @@ index.html                      ← GitHub Pages 진입점 (examples/ 로 리다
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
                                    index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
-tools/                          ← check.py(값 단언 회귀 89항목) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
+tools/                          ← check.py(값 단언 회귀 90항목 + axe 접근성 게이트) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -89,6 +89,7 @@ Go `html/template` 앱이라면 `embed.FS` 로 `dist/` 파일 몇 개만 포함�
 - **상태색은 예약색**: `good / warn / crit / info` 는 상태 표시 전용. 엔진·태그·팀 같은 **범주**는 `--cat1~4`(배지·태그·점), 차트 시리즈는 `--ag-chart-1~4` — 같은 네 가지 색이라 화면 어디서든 범주 1 은 같은 색입니다 (두 테마 모두 색각이상 분리도 검증 완료). 다섯 번째 범주는 만들지 않습니다 → "기타" 는 중립 회색 `--ag-chart-other` (`AG.charts.palette(5)` 의 마지막, `.ag-dot--other`).
 - **변형 선언 순서 = 우선순위**: 한 블록 안에서 모양(`--sm` `--count` `--stack`) → 톤(상태·액센트·범주) → 조합(`--solid`) 순으로 선언해 `:not()` 체인 없이 어떤 조합이든 예측 가능하게. 모양 변형은 색을 건드리지 않습니다. 폴백 규칙(컨테이너 없는 카드·버튼 간격)은 `:where()` 로 특이도 0.
 - **JS 는 자기가 연 것만 닫는다**: `argus.js` 의 바깥 클릭·ESC 는 `data-ag-open` 으로 연 오버레이에만 — Alpine/Vue 가 제어하는 것은 건드리지 않습니다 (아래 JS 헬퍼).
+- **접근성은 토큰이 책임진다**: 모든 글자/배경 쌍이 WCAG AA(4.5:1, 11px 메타 포함) — 채움색과 글자색을 분리한 토큰(`--ag-accent` / `--ag-accent-text`, 상태 `*` / `*-text`, `--ag-accent-2-text`, 범주색 위 `--ag-text-on-*`)만 쓰면 서비스가 대비를 계산할 일이 없습니다. 본문 안 링크는 밑줄, 상태는 색 + 점/아이콘/텍스트, 키보드 포커스 링은 어떤 배경에서도 같은 두께. `tools/check.py` 가 axe-core 로 예시 전 페이지 × 두 테마에서 serious/critical 0 을 단언합니다.
 - **유틸리티는 최소한**: 컴포넌트 클래스로 못 푸는 예외에만 `ag-mt-4`, `ag-text-3`, `ag-text-left/center/right`, `ag-scroll-y(--sm/--md/--lg)` 같은 유틸을 씁니다. Tailwind처럼 쓰려고 만든 게 아닙니다.
 
 ## 앱에 배포하기 (버전 관리)
@@ -162,9 +163,9 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | 표면 | `--ag-bg` `--ag-surface` `--ag-surface-2` `--ag-surface-3` `--ag-inverse` | 바닥 → 카드 → 카드 안 타일 → 강조. `--ag-shadow-scroll` 은 가로 스크롤 가장자리 |
 | 포커스 | `--ag-ring`(입력, 글로우) `--ag-ring-focus`(키보드, 2px 틈 + 실선) | 어떤 배경 위에서도 같은 두께 |
 | 잉크 | `--ag-text` `--ag-text-2` `--ag-text-3` | 본문 / 보조 / 메타 |
-| 액센트 | `--ag-accent` (테마) `--ag-accent-2` | `*-soft` 는 투명 배경용. accent-2 는 브랜드 그라데이션·범주 2번용 — 버튼·칩·배지 같은 UI 요소에는 쓰지 않는다 (주요 동작이 둘이면 둘 다 아니다) |
+| 액센트 | `--ag-accent`(채움) `--ag-accent-text`(글자) — 테마가 공급 · `--ag-accent-2` `--ag-accent-2-text` | 채움 위 글자는 `--ag-text-on-accent`. 글자를 액센트로 칠할 땐 항상 `-text`(다크에서 채움색은 표면 위 대비가 모자람). `*-soft` 는 투명 배경용. accent-2 는 브랜드 그라데이션·범주 2번용 — 버튼·칩·배지 같은 UI 요소에는 쓰지 않는다 (주요 동작이 둘이면 둘 다 아니다) |
 | 상태 | `--ag-good` `--ag-warn` `--ag-crit` `--ag-info` | `*-soft`(배경) `*-text`(단독 글자) `*-solid` + `--ag-text-on-*`(solid 배지·칩) 동반 |
-| 차트 | `--ag-chart-1..4` `--ag-chart-other` `--ag-chart-hatch` `--ag-chart-grid` | 범주색 고정 순서. `other` 는 "기타" 조각용 중립 회색 — 상위 4 + 기타 = 5조각이 1번 색을 반복하지 않음 |
+| 차트 | `--ag-chart-1..4` `--ag-chart-other` `--ag-chart-hatch` `--ag-chart-grid` `--ag-text-on-chart` `--ag-treemap-base` | 범주색 고정 순서. 범주색을 배경으로 쓰는 버블·트리맵 글자는 `--ag-text-on-chart`(solid 배지·칩은 `--ag-text-on-cat-N`). `other` 는 "기타" 조각용 중립 회색 — 상위 4 + 기타 = 5조각이 1번 색을 반복하지 않음 |
 | 순차 램프 | `--ag-seq-1..5` | 히트맵·밀도용 단일 색 5단계 (`--ag-chart-1` → `--ag-surface-2`). `.ag-heat--1..5` 와 `AG.charts.sequential(5)` 가 같은 값 |
 | 범주 | `--ag-cat-1..4` `--ag-cat-other` + `*-soft` `*-text` | 배지·태그·점에서 종류 구분. 차트 범주색과 같은 네 가지 + 기타(`.ag-badge--other` `.ag-dot--other` `.ag-avatar--other`), 라이트는 글자색을 한 단계 깊게 |
 | 간격 | `--ag-space-1..12` | 4px 기준 |
@@ -235,7 +236,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 89항목 (Playwright, 실패 시 exit 1). shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
+python3 tools/check.py      # 값 단언 회귀 90항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서
