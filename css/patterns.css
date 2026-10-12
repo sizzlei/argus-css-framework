@@ -359,6 +359,7 @@
 .ag-tag__val { padding: 0 8px; color: var(--ag-text); display: inline-flex; align-items: center; height: 100%; }
 .ag-tag__remove { display: inline-grid; place-content: center; width: 20px; height: 100%; color: var(--ag-text-3); border-left: 1px solid var(--ag-border); }
 /* 범주 태그 — key 칸에 범주색 */
+.ag-tag--engine .ag-tag__key { background: var(--ag-engine-soft); color: var(--ag-engine-text); }
 .ag-tag--cat1 .ag-tag__key { background: var(--ag-cat-1-soft); color: var(--ag-cat-1-text); }
 .ag-tag--cat2 .ag-tag__key { background: var(--ag-cat-2-soft); color: var(--ag-cat-2-text); }
 .ag-tag--cat3 .ag-tag__key { background: var(--ag-cat-3-soft); color: var(--ag-cat-3-text); }

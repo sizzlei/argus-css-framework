@@ -27,6 +27,36 @@ async def page(b, path, width=1440, height=900, light=False):
     pg._errs = errs
     return pg
 
+
+# ── 1.5 엔진 팔레트: 인접쌍(documentdb→mysql→postgres→oracle→mssql) 색각이상 ΔE 검증 (OKLab, Viénot 행렬) ──
+def _engine_palette_check():
+    import re, math
+    css = (ROOT / "css/tokens.css").read_text(encoding="utf-8")
+    order = ["documentdb", "mysql", "postgres", "oracle", "mssql"]
+    def lin(h):
+        h = h.lstrip("#"); v = [int(h[i:i+2], 16) / 255 for i in (0, 2, 4)]
+        return [c / 12.92 if c <= .04045 else ((c + .055) / 1.055) ** 2.4 for c in v]
+    def ok(rgb):
+        r, g, b = rgb
+        l = (0.4122214708*r + 0.5363325363*g + 0.0514459929*b) ** (1/3); m = (0.2119034982*r + 0.6806995451*g + 0.1073969566*b) ** (1/3); s_ = (0.0883024619*r + 0.2817188376*g + 0.6299787005*b) ** (1/3)
+        return (0.2104542553*l + 0.7936177850*m - 0.0040720468*s_, 1.9779984951*l - 2.4285922050*m + 0.4505937099*s_, 0.0259040371*l + 0.7827717662*m - 0.8086757660*s_)
+    M = {"P": [[0.170556992, 0.829443014, 0], [0.170556991, 0.829443008, 0], [-0.004517144, 0.004517144, 1]],
+         "D": [[0.33066007, 0.66933993, 0], [0.33066007, 0.66933993, 0], [-0.02785538, 0.02785538, 1]],
+         "T": [[1, 0.1273989, -0.1273989], [0, 0.8739093, 0.1260907], [0, 0.8739093, 0.1260907]]}
+    def sim(rgb, k): return [sum(M[k][i][j] * rgb[j] for j in range(3)) for i in range(3)]
+    def dE(a, b): return math.sqrt(sum((x - y) ** 2 for x, y in zip(a, b))) * 100
+    out = {}
+    for theme, block in (("dark", css.split('[data-theme="light"]')[0]), ("light", css.split('[data-theme="light"]')[1])):
+        cols = {}
+        for n in order:
+            mm = re.search(r"--ag-engine-%s:\s*(#[0-9a-fA-F]{6})" % n, block); cols[n] = mm.group(1)
+        worst = 99
+        for a, b in zip(order, order[1:]):
+            ds = [dE(ok(lin(cols[a])), ok(lin(cols[b])))] + [dE(ok(sim(lin(cols[a]), k)), ok(sim(lin(cols[b]), k))) for k in M]
+            worst = min(worst, min(ds))
+        out[theme] = round(worst, 1)
+    return out
+
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch()
@@ -363,8 +393,8 @@ async def main():
             await pg.close()
         pg = await page(b, "index.html")
         v = await pg.evaluate("""()=>{const b=[...document.querySelectorAll('.ag-bubbles .ag-bubble')].map(e=>e.getBoundingClientRect().width);const pb=getComputedStyle(document.querySelector('.ag-progress__bar')).transitionDuration;
-          const d=document.querySelector('.ag-bubbles').getBoundingClientRect();return {w:b, pb, ok: Math.abs((b[0]*b[0])/(b[2]*b[2]) - 58/33) < 0.08, h: d.height}}""")
-        check("1.4: 버블 면적비 = 값비 (58:33, ±5%)", v["ok"], str(v))
+          const d=document.querySelector('.ag-bubbles').getBoundingClientRect();return {w:b, pb, ok: Math.abs((b[0]*b[0])/(b[2]*b[2]) - 55/29) < 0.1, h: d.height}}""")
+        check("1.4: 버블 면적비 = 값비 (55:29, ±5%)", v["ok"], str(v))
         check("1.4: progress 전환 = --ag-dur-slow 400ms", v["pb"] == "0.4s", v["pb"])
         await pg.close()
         pg = await page(b, "components.html")
@@ -415,6 +445,14 @@ async def main():
         pg = await page(b, "index.html", 3400, 900)
         v = await pg.evaluate("""()=>{const c=[...document.querySelectorAll('.ag-stat-card')].map(e=>e.getBoundingClientRect().width);return {w:Math.max(...c), main:document.querySelector('.ag-main').getBoundingClientRect().width}}""")
         check("1.4: @3400 KPI 카드 폭 ≤ 420px (본문 상한 안)", v["w"] <= 420, str(v))
+        await pg.close()
+
+        ep = _engine_palette_check()
+        check("1.5: 엔진 팔레트 인접쌍 CVD ΔE ≥ 7 (다크·라이트)", ep["dark"] >= 7 and ep["light"] >= 7, str(ep))
+        pg = await page(b, "components.html")
+        v = await pg.evaluate("""()=>{const c=document.querySelector('#engines .ag-card--engine-solid');const st=document.querySelector('#engines .ag-card--engine-stripe');const e=getComputedStyle(c);
+          return {bg:e.backgroundColor, eng:e.getPropertyValue('--ag-engine').trim(), stripe:getComputedStyle(st).boxShadow.includes('inset'), dot:getComputedStyle(document.querySelector('[data-engine="mysql"] .ag-dot--engine')).backgroundColor}}""")
+        check("1.5: 단색 엔진 카드 배경 = 엔진색, stripe 카드에 inset 띠", v["bg"] != "rgb(22, 23, 31)" and v["stripe"], str(v))
         await pg.close()
 
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──

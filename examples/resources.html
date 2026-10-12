@@ -159,6 +159,7 @@
           <button class="ag-segmented__item">PostgreSQL</button>
           <button class="ag-segmented__item">Oracle</button>
           <button class="ag-segmented__item">DocumentDB</button>
+          <button class="ag-segmented__item">MS-SQL</button>
         </div>
         <div class="ag-cluster">
           <select class="ag-select ag-select--sm ag-select--pill ag-select--inline" aria-label="환경"><option>모든 환경</option><option>prod</option><option>stg</option><option>dev</option></select>
@@ -185,10 +186,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr data-engine="mysql">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">order-db-writer</a><div class="ag-text-xs ag-text-3 ag-mono">prod-order-cluster</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c1"></span>MySQL 8.0.36</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>MySQL 8.0.36</span></td>
               <td class="ag-text-2">Aurora</td>
               <td><span class="ag-text-sm ag-text-3">prod</span></td>
               <td class="ag-mono ag-text-2">db.r6g.4xlarge</td>
@@ -198,10 +199,10 @@
               <td><span class="ag-badge ag-badge--crit"><span class="ag-dot ag-dot--crit"></span>장애</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="mysql">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">order-db-reader-1</a><div class="ag-text-xs ag-text-3 ag-mono">prod-order-cluster</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c1"></span>MySQL 8.0.36</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>MySQL 8.0.36</span></td>
               <td class="ag-text-2">Aurora</td>
               <td><span class="ag-text-sm ag-text-3">prod</span></td>
               <td class="ag-mono ag-text-2">db.r6g.4xlarge</td>
@@ -211,10 +212,10 @@
               <td><span class="ag-badge ag-badge--warn"><span class="ag-dot ag-dot--warn"></span>주의</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr class="is-selected">
+            <tr class="is-selected" data-engine="postgres">
               <td><label class="ag-check"><input type="checkbox" checked aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">member-pg-writer</a><div class="ag-text-xs ag-text-3 ag-mono">prod-member-pg</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c2"></span>PostgreSQL 15.4</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>PostgreSQL 15.4</span></td>
               <td class="ag-text-2">Aurora</td>
               <td><span class="ag-text-sm ag-text-3">prod</span></td>
               <td class="ag-mono ag-text-2">db.r6g.2xlarge</td>
@@ -224,10 +225,10 @@
               <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="oracle">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">wms-ora-01</a><div class="ag-text-xs ag-text-3 ag-mono">i-0f3a9c21be7d4e</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c3"></span>Oracle 19c</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>Oracle 19c</span></td>
               <td class="ag-text-2">EC2</td>
               <td><span class="ag-text-sm ag-text-3">prod</span></td>
               <td class="ag-mono ag-text-2">r6i.8xlarge</td>
@@ -237,10 +238,10 @@
               <td><span class="ag-badge ag-badge--warn"><span class="ag-dot ag-dot--warn"></span>용량 주의</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="documentdb">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">catalog-docdb</a><div class="ag-text-xs ag-text-3 ag-mono">prod-catalog-docdb</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c4"></span>DocumentDB 5.0</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>DocumentDB 5.0</span></td>
               <td class="ag-text-2">DocumentDB</td>
               <td><span class="ag-text-sm ag-text-3">prod</span></td>
               <td class="ag-mono ag-text-2">db.r6g.large</td>
@@ -250,10 +251,10 @@
               <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="mysql">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">promo-mysql-01</a><div class="ag-text-xs ag-text-3 ag-mono">i-07b1e3d9a04c22</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c1"></span>MySQL 8.0.34</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>MySQL 8.0.34</span></td>
               <td class="ag-text-2">EC2</td>
               <td><span class="ag-badge ag-badge--warn">stg</span></td>
               <td class="ag-mono ag-text-2">r6i.2xlarge</td>
@@ -263,10 +264,10 @@
               <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="postgres">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">settle-pg-01</a><div class="ag-text-xs ag-text-3 ag-mono">prod-settle-pg</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c2"></span>PostgreSQL 14.9</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>PostgreSQL 14.9</span></td>
               <td class="ag-text-2">RDS</td>
               <td><span class="ag-text-sm ag-text-3">prod</span></td>
               <td class="ag-mono ag-text-2">db.m6g.xlarge</td>
@@ -276,10 +277,10 @@
               <td><span class="ag-badge"><span class="ag-dot"></span>중지됨</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="postgres">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">member-pg-reader-1</a><div class="ag-text-xs ag-text-3 ag-mono">prod-member-pg</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c2"></span>PostgreSQL 15.4</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>PostgreSQL 15.4</span></td>
               <td class="ag-text-2">Aurora</td>
               <td><span class="ag-text-sm ag-text-3">prod</span></td>
               <td class="ag-mono ag-text-2">db.r6g.2xlarge</td>
@@ -289,10 +290,10 @@
               <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="mysql">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">wms-mysql-02</a><div class="ag-text-xs ag-text-3 ag-mono">prod-wms-cluster</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c1"></span>MySQL 8.0.36</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>MySQL 8.0.36</span></td>
               <td class="ag-text-2">Aurora</td>
               <td><span class="ag-text-sm ag-text-3">prod</span></td>
               <td class="ag-mono ag-text-2">db.r6g.4xlarge</td>
@@ -302,10 +303,10 @@
               <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="mysql">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">promo-mysql-02</a><div class="ag-text-xs ag-text-3 ag-mono">i-0a7c3e91f2d8b0</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c1"></span>MySQL 8.0.34</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>MySQL 8.0.34</span></td>
               <td class="ag-text-2">EC2</td>
               <td><span class="ag-badge ag-badge--sm">stg</span></td>
               <td class="ag-mono ag-text-2">r6i.2xlarge</td>
@@ -315,10 +316,10 @@
               <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="postgres">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">analytics-pg-01</a><div class="ag-text-xs ag-text-3 ag-mono">prod-analytics-pg</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c2"></span>PostgreSQL 16.2</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>PostgreSQL 16.2</span></td>
               <td class="ag-text-2">RDS</td>
               <td><span class="ag-text-sm ag-text-3">prod</span></td>
               <td class="ag-mono ag-text-2">db.r6g.xlarge</td>
@@ -328,10 +329,10 @@
               <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="other">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">session-redis-01</a><div class="ag-text-xs ag-text-3 ag-mono">prod-session-cache</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--other"></span>ElastiCache 7.1</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>ElastiCache 7.1</span></td>
               <td class="ag-text-2">ElastiCache</td>
               <td><span class="ag-text-sm ag-text-3">prod</span></td>
               <td class="ag-mono ag-text-2">cache.r7g.xlarge</td>
@@ -341,10 +342,10 @@
               <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="oracle">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">ledger-ora-02</a><div class="ag-text-xs ag-text-3 ag-mono">i-0c91fd27a3e5b1</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c3"></span>Oracle 19c</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>Oracle 19c</span></td>
               <td class="ag-text-2">EC2</td>
               <td><span class="ag-text-sm ag-text-3">prod</span></td>
               <td class="ag-mono ag-text-2">r6i.8xlarge</td>
@@ -354,10 +355,10 @@
               <td><span class="ag-badge ag-badge--crit"><span class="ag-dot ag-dot--crit"></span>CPU 장애</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
-            <tr>
+            <tr data-engine="documentdb">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">search-docdb</a><div class="ag-text-xs ag-text-3 ag-mono">dev-search-docdb</div></td>
-              <td><span class="ag-badge ag-badge--plain"><span class="ag-dot ag-dot--c4"></span>DocumentDB 5.0</span></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>DocumentDB 5.0</span></td>
               <td class="ag-text-2">DocumentDB</td>
               <td><span class="ag-badge ag-badge--sm">dev</span></td>
               <td class="ag-mono ag-text-2">db.t4g.medium</td>
@@ -367,11 +368,24 @@
               <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
+            <tr data-engine="mssql">
+              <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
+              <td><a href="detail.html" class="ag-fw-500 ag-text-1">erp-mssql-01</a><div class="ag-text-xs ag-text-3 ag-mono">i-0e4b7d19c3a2f6</div></td>
+              <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>SQL Server 2019</span></td>
+              <td class="ag-text-2">EC2</td>
+              <td><span class="ag-text-sm ag-text-3">prod</span></td>
+              <td class="ag-mono ag-text-2">r6i.4xlarge</td>
+              <td class="ag-td--num">31%</td>
+              <td class="ag-td--num">210 / 800</td>
+              <td><div class="ag-meter-row ag-meter-row--compact"><div class="ag-meter-row__head"><span class="ag-meter-row__keep">1.1 / 2.0 TiB</span><strong>55%</strong></div><div class="ag-progress ag-progress--sm"><div class="ag-progress__bar" style="width:55%"></div></div></div></td>
+              <td><span class="ag-badge ag-badge--good"><span class="ag-dot ag-dot--good"></span>정상</span></td>
+              <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
+            </tr>
           </tbody>
         </table>
       </div>
       <div class="ag-table-foot">
-        <span>186개 중 1–14 표시 · 1개 선택됨</span>
+        <span>186개 중 1–15 표시 · 1개 선택됨</span>
         <nav class="ag-pagination" aria-label="페이지">
           <button class="ag-pagination__item" disabled aria-label="이전"><svg class="ag-icon ag-icon--sm"><use href="#i-chevron-left"/></svg></button>
           <a class="ag-pagination__item is-active" href="#">1</a>
@@ -387,15 +401,16 @@
     <!-- 집계 · 최근 변경 -->
     <div class="ag-grid">
       <section class="ag-card ag-col-4">
-        <div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--1"><svg class="ag-icon"><use href="#i-layers"/></svg></span><h2 class="ag-card__title">엔진 · 플랫폼</h2></div><span class="ag-text-xs ag-text-3">186</span></div>
+        <div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon"><svg class="ag-icon"><use href="#i-layers"/></svg></span><h2 class="ag-card__title">엔진 · 플랫폼</h2></div><span class="ag-text-xs ag-text-3">186</span></div>
         <div class="ag-stack ag-stack--sm">
-          <div class="ag-meter-row"><div class="ag-meter-row__head"><span>엔진</span><strong>4 + 기타</strong></div><div class="ag-progress ag-progress--stacked ag-progress--lg"><div class="ag-progress__bar" style="width:58%;background:var(--ag-chart-1)"></div><div class="ag-progress__bar" style="width:24%;background:var(--ag-chart-2)"></div><div class="ag-progress__bar" style="width:9%;background:var(--ag-chart-3)"></div><div class="ag-progress__bar" style="width:6%;background:var(--ag-chart-4)"></div><div class="ag-progress__bar" style="width:3%;background:var(--ag-chart-other)"></div></div></div>
+          <div class="ag-meter-row"><div class="ag-meter-row__head"><span>엔진</span><strong>5 + 기타</strong></div><div class="ag-progress ag-progress--stacked ag-progress--lg"><div class="ag-progress__bar ag-progress__bar--engine" data-engine="mysql" style="width:55%"></div><div class="ag-progress__bar ag-progress__bar--engine" data-engine="postgres" style="width:29%"></div><div class="ag-progress__bar ag-progress__bar--engine" data-engine="oracle" style="width:8%"></div><div class="ag-progress__bar ag-progress__bar--engine" data-engine="documentdb" style="width:5%"></div><div class="ag-progress__bar ag-progress__bar--engine" data-engine="mssql" style="width:2%"></div><div class="ag-progress__bar ag-progress__bar--engine" data-engine="other" style="width:1%"></div></div></div>
           <div class="ag-legend">
-            <span class="ag-legend__item"><span class="ag-dot ag-dot--c1"></span>MySQL 108</span>
-            <span class="ag-legend__item"><span class="ag-dot ag-dot--c2"></span>PostgreSQL 44</span>
-            <span class="ag-legend__item"><span class="ag-dot ag-dot--c3"></span>Oracle 16</span>
-            <span class="ag-legend__item"><span class="ag-dot ag-dot--c4"></span>DocumentDB 12</span>
-            <span class="ag-legend__item"><span class="ag-dot ag-dot--other"></span>기타 6</span>
+            <span class="ag-legend__item" data-engine="mysql"><span class="ag-dot ag-dot--engine"></span>MySQL 102</span>
+            <span class="ag-legend__item" data-engine="postgres"><span class="ag-dot ag-dot--engine"></span>PostgreSQL 54</span>
+            <span class="ag-legend__item" data-engine="oracle"><span class="ag-dot ag-dot--engine"></span>Oracle 14</span>
+            <span class="ag-legend__item" data-engine="documentdb"><span class="ag-dot ag-dot--engine"></span>DocumentDB 10</span>
+            <span class="ag-legend__item" data-engine="mssql"><span class="ag-dot ag-dot--engine"></span>MS-SQL 4</span>
+            <span class="ag-legend__item" data-engine="other"><span class="ag-dot ag-dot--engine"></span>기타 2</span>
           </div>
           <div class="ag-meter-row ag-mt-2"><div class="ag-meter-row__head"><span>플랫폼</span><strong>Aurora 우세</strong></div><div class="ag-progress ag-progress--stacked ag-progress--lg"><div class="ag-progress__bar" style="width:42%;background:var(--ag-chart-1)"></div><div class="ag-progress__bar" style="width:23%;background:var(--ag-chart-2)"></div><div class="ag-progress__bar" style="width:18%;background:var(--ag-chart-3)"></div><div class="ag-progress__bar" style="width:17%;background:var(--ag-chart-other)"></div></div></div>
           <div class="ag-legend">

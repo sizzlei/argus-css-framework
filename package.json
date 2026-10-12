@@ -1,6 +1,6 @@
 {
   "name": "argus-css-framework",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "private": true,
   "description": "Pure-CSS design system for admin pages (dark-first, 7 color themes, 6 layout modes). Build tooling only — the deliverable is dist/.",
   "scripts": {

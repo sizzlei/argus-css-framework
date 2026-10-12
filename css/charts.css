@@ -78,6 +78,7 @@
 .ag-bars__seg:last-child { border-radius: 0 4px 4px 0; }
 .ag-bars__seg:only-child { border-radius: 4px; }
 .ag-bars__seg--1 { background: var(--ag-chart-1); }
+.ag-bars__seg--engine { background: var(--ag-engine); }   /* data-engine 은 row 나 seg 어느 쪽에나 */
 .ag-bars__seg--2 { background: var(--ag-chart-2); }
 .ag-bars__seg--3 { background: var(--ag-chart-3); }
 .ag-bars__seg--4 { background: var(--ag-chart-4); }
@@ -112,6 +113,7 @@
   transition: height var(--ag-dur-slow) var(--ag-ease);
 }
 .ag-cols__bar--1 { background: var(--ag-chart-1); }
+.ag-cols__bar--engine { background: var(--ag-engine); }
 .ag-cols__bar--2 { background: var(--ag-chart-2); }
 .ag-cols__bar--3 { background: var(--ag-chart-3); }
 .ag-cols__bar--4 { background: var(--ag-chart-4); }
@@ -234,6 +236,8 @@
 .ag-spark--warn .ag-spark__area { fill: var(--ag-warn); }
 .ag-spark--info .ag-spark__line { stroke: var(--ag-info); }
 .ag-spark--info .ag-spark__area { fill: var(--ag-info); }
+.ag-spark--engine .ag-spark__line { stroke: var(--ag-engine); }
+.ag-spark--engine .ag-spark__area { fill: var(--ag-engine); }
 .ag-spark--1 .ag-spark__line { stroke: var(--ag-chart-1); }
 .ag-spark--1 .ag-spark__area { fill: var(--ag-chart-1); }
 .ag-spark--3 .ag-spark__line { stroke: var(--ag-chart-3); }
@@ -253,6 +257,7 @@
   color: var(--ag-accent-text);
   flex: none;
 }
+.ag-stat-card__icon--engine { background: var(--ag-engine-soft); color: var(--ag-engine-text); }
 .ag-stat-card__icon--good { background: var(--ag-good-soft); color: var(--ag-good); }
 .ag-stat-card__icon--warn { background: var(--ag-warn-soft); color: var(--ag-warn); }
 .ag-stat-card__icon--crit { background: var(--ag-crit-soft); color: var(--ag-crit); }

@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.5.0 — 2026-10-12 · 엔진 고유색
+
+"어느 엔진인가" 를 브랜드색으로 — 상태색(good/warn/crit/info)·범주색(cat-1..4)과 별개의 세 번째 색 축. 카드는 배경만이 아니라 제목·테두리·띠·윗선·옅은 배경·그림자·단색 중 고른다. Andy 결정: DocumentDB 는 MongoDB 초록, MS-SQL 은 SQL Server 빨강·Oracle 은 와인으로 떨어뜨림, 차트까지 전부 엔진색.
+
+- 토큰 `--ag-engine-{mysql|postgres|oracle|documentdb|mssql|other}` + `-text`(글자, surface·soft 위 4.5:1) + `-soft` + `-solid` + `--ag-text-on-engine-*`. 다크는 밝힌 값(#f5ad45 · #6a9fd8 · #d54f96 · #27ad5c · #ff7060), 라이트는 브랜드값(#c96a00 · #336791 · #8e2449 · #13aa52 · #cc2927) + 깊은 글자색. **MySQL 은 로고의 주황** — 청록(#00758F)은 PostgreSQL 파랑과 색각이상 ΔE 4.6 으로 분리가 안 된다.
+- 훅: `data-engine="mysql"`(또는 `.ag-engine-mysql`)을 어느 요소에나 달면 그 안에서 `--ag-engine / -text / -soft / -solid / --ag-text-on-engine` 이 그 엔진 값. 컴포넌트는 `--engine` 변형 하나로 읽는다 — 엔진을 더할 때 토큰 다섯 + 훅 한 줄.
+- 카드: `.ag-card--engine-title`(제목·아이콘) · `--engine-border` · `--engine-stripe`(왼쪽 3px) · `--engine-top`(윗선) · `--engine-tint`(9% 배경) · `--engine-glow`(색 그림자) · `--engine-solid`(단색, 안쪽 토큰 재정의 + 엔진색 요소 자동 반전). 조합 가능 — 권장 stripe + title. `.ag-card__icon--engine`.
+- `.ag-badge--engine`(`--solid`/`--plain` 조합) · `.ag-dot--engine` · `.ag-chip--engine`(+is-active) · `.ag-avatar--engine` · `.ag-tag--engine` · `.ag-stat-card__icon--engine` · `.ag-list__item--engine`(띠) · `td.ag-td--engine`(띠) · `.ag-text-engine`.
+- 차트: `.ag-spark--engine` · `.ag-bars__seg--engine` · `.ag-cols__bar--engine` · `.ag-progress__bar--engine` · `.ag-bubble--engine` · `.ag-chart__line/area/marker--engine`(path 에 data-engine). `AG.charts.engine('mysql')` / `engines([...])` → Apex colors (별칭 aurora·mariadb·pg·docdb·mongo·sqlserver 인식, 모르면 other).
+- 팔레트 검증: 여러 엔진을 한 차트에 둘 때 순서 **documentdb → mysql → postgres → oracle → mssql** 로 인접쌍 CVD(P/D/T) ΔE 다크 ≥ 9.8 · 라이트 ≥ 7.4. 브랜드색이라 전체쌍 ≥ 8 은 불가(빨강 둘·초록) — 범례는 늘 점 + 이름, 엔진색을 상태로 읽지 않는다(MySQL 주황 ≠ warn). `tools/check.py` 가 tokens.css 를 읽어 인접쌍 ≥ 7 을 단언.
+- 버블: `container-type: inline-size` 로 72px 이하 조각은 숫자만(이름은 범례).
+- 예시: resources 표 행 `data-engine` + plain 배지 점, MS-SQL 행·필터 추가, 엔진 stacked 바·범례; index 슬로우 쿼리 라인·버블·범례·행 점; layouts 엔진 바·알림 표 대상 셀 띠; detail 클러스터 카드 stripe+title + Aurora MySQL 배지. 카탈로그 "엔진 고유색" 섹션, 매트릭스 엔진 × 컴포넌트 + 카드 7변형. 예시 엔진 수치 통일: MySQL 102 · PostgreSQL 54 · Oracle 14 · DocumentDB 10 · MS-SQL 4 · 기타 2 = 186.
+- `tools/check.py` 128항목.
+
 ## 1.4.0 — 2026-10-12 · 디자인 감사 2차 (모션·타이포·색 상한·축소)
 
 1.3 까지의 결과를 design-audit · ui-typography · motion · dataviz · a11y 스킬로 다시 감사(보고서는 프로젝트 문서). 큰 결함이 아니라 "규칙은 있는데 예외가 새는" 자리들 — 반복 모션, 리터럴 지속시간·글자 크기, 예시에 남은 인라인 스타일, 한 화면 색 개수, 버블 면적 왜곡. 새 토큰·클래스가 있어 minor.

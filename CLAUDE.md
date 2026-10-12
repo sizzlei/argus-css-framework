@@ -9,7 +9,7 @@ css/            소스. 빌드 순서 = tokens → base → layout → component
 dist/           build.sh 산출물(전부 minified). 직접 수정 금지. argus.min.css(전체) / core·patterns·charts·auth-landing.min.css(골라 쓰기) / themes/*.min.css / *.js
 js/modules/     선택 헬퍼 소스. 10-core(테마·사이드바·탭) 20-overlay(드롭다운·모달·배너·날짜·토스트닫기·확장행) 30-keyboard 40-chart-hover 50-toast. build 가 합친다
 js/argus.charts.js  ApexCharts/Chart.js 프리셋
-tools/          check.py 값 단언 회귀(126항목 + axe 접근성 게이트, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
+tools/          check.py 값 단언 회귀(128항목 + axe 접근성 게이트, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
 examples/src/   예시 페이지 소스. <!--@icons--> 는 _icons.html 스프라이트로 치환됨
 examples/       build_examples.py 산출물. 직접 수정 금지. GitHub Pages 가 main 브랜치 루트를 그대로 서빙하므로 커밋 전 반드시 빌드 (루트 index.html 은 examples/ 로 리다이렉트, .nojekyll 로 _icons.html 등 밑줄 파일 유지)
 docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프롬프트 키트
@@ -58,6 +58,7 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 - 새 토큰은 반드시 다크·라이트 양쪽에 정의한다. 한쪽만 있으면 빌드는 통과하지만 화면이 깨진다.
 - 단색 카드(`--accent/--accent2/--inverse`) 안의 텍스트 보정은 개별 클래스가 아니라 카드가 토큰(`--ag-text*`, `--ag-border*`, `--ag-surface-2/3/hover`)을 재정의하는 방식으로 한다. 새 컴포넌트가 토큰만 쓰면 자동으로 따라온다.
 - 상태색(good/warn/crit/info)은 상태 표시 전용. 차트 시리즈·장식에 쓰지 않는다.
+- 색 축은 셋: 상태(good/warn/crit/info) · 범주(cat-1..4, 엔진이 아닌 종류) · **엔진(`--ag-engine-*`, `data-engine` 훅 + `--engine` 변형)**. 엔진색 요소는 `[data-engine]` 안에서만 의미가 있고, 새 엔진은 tokens.css 다섯 토큰(다크·라이트) + components.css 훅 한 줄 + check.py 팔레트 순서. 엔진 컴포넌트 규칙은 components.css **끝** 블록에 둔다(카드·목록 기본 규칙 뒤에 와야 이긴다).
 - 차트 범주색을 바꾸면 dataviz 검증(명도 밴드 다크 0.48–0.67 / 라이트 0.43–0.77, 인접쌍 CVD ΔE ≥ 8)을 두 테마 모두 다시 통과시킨다.
 
 ## 컴포넌트를 추가할 때

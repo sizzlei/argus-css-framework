@@ -78,6 +78,19 @@ CV = ["", "accent", "accent2", "inverse", "elevated", "interactive", "sm"]
 def cardv(v):
     cls = "ag-card" + (f" ag-card--{v}" if v else "")
     return f'<div class="{cls}"><div class="ag-card__head"><h3 class="ag-card__title">{v or "기본"}</h3><span class="ag-badge ag-badge--sm">탭</span></div><div class="ag-card__body"><p class="ag-text-sm">본문 두 줄. 카드 안 간격은 gap 이 책임진다.</p><div class="ag-stat ag-stat--sm"><span class="ag-stat__label">값</span><span class="ag-stat__value">42</span></div></div></div>'
+ENG = ['mysql','postgres','oracle','documentdb','mssql','other']
+out.append(h("엔진 고유색 × 컴포넌트", "data-engine 훅 + --engine 변형. 상태·범주와 별개 축 (1.5)", "engines"))
+out.append('<div class="ag-grid">' + card("ag-badge / dot / chip / avatar / tag × engine", table(ENG, [
+    row("badge", [f'<span class="ag-badge ag-badge--engine" data-engine="{e}">{e}</span>' for e in ENG]),
+    row("badge --solid", [f'<span class="ag-badge ag-badge--solid ag-badge--engine" data-engine="{e}">{e}</span>' for e in ENG]),
+    row("badge --plain + dot", [f'<span class="ag-badge ag-badge--plain ag-badge--engine" data-engine="{e}"><span class="ag-dot ag-dot--engine"></span>{e}</span>' for e in ENG]),
+    row("chip", [f'<span class="ag-chip ag-chip--sm ag-chip--engine" data-engine="{e}">{e}</span>' for e in ENG]),
+    row("chip is-active", [f'<span class="ag-chip ag-chip--sm ag-chip--engine is-active" data-engine="{e}">{e}</span>' for e in ENG]),
+    row("avatar", [f'<span class="ag-avatar ag-avatar--sm ag-avatar--engine" data-engine="{e}">{e[:2].upper()}</span>' for e in ENG]),
+    row("tag", [f'<span class="ag-tag ag-tag--engine" data-engine="{e}"><span class="ag-tag__key">eng</span><span class="ag-tag__val">{e}</span></span>' for e in ENG]),
+    row("text / icon", [f'<span class="ag-row" data-engine="{e}"><span class="ag-card__icon ag-card__icon--engine">{ICON("database")}</span><span class="ag-text-engine">{e}</span></span>' for e in ENG]),
+])) + '</div>\n')
+out.append('<div class="ag-grid">' + ''.join(f'<div class="ag-card ag-card--sm ag-card--engine-{t} ag-col-3" data-engine="{ENG[i % 5]}"><div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--engine">{ICON("database")}</span><h3 class="ag-card__title">--engine-{t}</h3></div><span class="ag-badge ag-badge--sm ag-badge--engine">{ENG[i % 5]}</span></div><div class="ag-stat ag-stat--sm"><span class="ag-stat__value">42</span><span class="ag-stat__label">.ag-stat__label</span></div><div class="ag-card__foot"><span class="ag-text-3">foot</span><button class="ag-btn ag-btn--outline ag-btn--sm">outline</button></div></div>' for i, t in enumerate(["title", "border", "stripe", "top", "tint", "glow", "solid"])) + '</div></section>\n')
 out.append(h("카드 · 타일", "변형별 head/body/stat 포함. a / button 카드는 섹션 카드와 간격이 같아야 함", "cards"))
 out.append('<div class="ag-grid">' + ''.join(f'<div class="ag-col-3">{cardv(v)}</div>' for v in CV) +
     f'<div class="ag-col-3"><a class="ag-card ag-card--interactive" href="#"><div class="ag-card__head"><h3 class="ag-card__title">a.ag-card</h3>{ICON("arrow-up-right")}</div><p class="ag-text-sm">링크 카드 — 밑줄 없음, 왼쪽 정렬</p></a></div>'

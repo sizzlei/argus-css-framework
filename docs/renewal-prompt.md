@@ -138,6 +138,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 로딩 `animate-pulse` | `.ag-skeleton` · 스피너 `.ag-spinner` · 버튼 `.is-loading` · htmx `.htmx-indicator` (내장) |
 | 쿼리·명령 열 `<td><code class="truncate">` + 인라인 max-width | `<td class="ag-td--query"><code>…</code></td>` (폭 `--ag-query-w`) |
 | 비율 버블·원 차트 (`.bubble` 절대 좌표) | `.ag-bubbles` > `.ag-bubble--N[data-v]` + `AG.charts.bubbles()` — 면적이 값에 비례 |
+| 엔진 표시 — 엔진별 하드코딩 색 `.mysql{color:#00758f}` `.engine-badge--pg` 등 | 요소에 `data-engine="mysql\|postgres\|oracle\|documentdb\|mssql\|other"` + `.ag-badge--engine` / `.ag-dot--engine` / `.ag-card--engine-stripe.ag-card--engine-title` / `td.ag-td--engine`. 차트 시리즈색은 `AG.charts.engines(names)` |
 | 활동/이력 `.activity-list` `.timeline` | `.ag-timeline` > `__item.is-good` (`__head` 안에 `__title` + `__time`, 보조는 `__meta`; 촘촘하게 `--compact`) |
 | 키-값 정의 `dl.grid.grid-cols-3` | `dl.ag-kv` (`--stack`) |
 | 아바타 이니셜 / `.user-chip` `.avatar` | `.ag-avatar` · 이름+메타 `.ag-person` |
@@ -240,7 +241,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 경고 `amber-*` `yellow-*` | `--ag-warn` / `--ag-warn-soft` |
 | 위험 `red-*` `rose-*` | `--ag-crit` / `--ag-crit-soft` |
 | 정보 `blue-*` `sky-*` `cyan-*` | `--ag-info` / `--ag-info-soft` |
-| 차트 시리즈 하드코딩 `['#3b82f6','#6366f1','#10b981',…]` | `AG.charts.palette()` |
+| 차트 시리즈 하드코딩 `['#3b82f6','#6366f1','#10b981',…]` | `AG.charts.palette()` — 시리즈가 엔진이면 `AG.charts.engines(['mysql','postgres'])` |
 
 ---
 

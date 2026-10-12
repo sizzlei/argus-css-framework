@@ -132,6 +132,7 @@
 .ag-meter-chips .ag-chip__label { padding-left: 6px; }
 
 /* ---- Badge / Status -------------------------------------------------- */
+
 .ag-badge {
   display: inline-flex;
   align-items: center;
@@ -646,6 +647,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 /* ---- Progress / Meter ------------------------------------------------ */
 .ag-progress { position: relative; height: 8px; border-radius: var(--ag-radius-pill); background: var(--ag-surface-3); overflow: hidden; }
 .ag-progress__bar { height: 100%; border-radius: inherit; background: var(--ag-accent); transition: width var(--ag-dur-slow) var(--ag-ease); }
+.ag-progress__bar--engine { background: var(--ag-engine); }
 .ag-progress--sm { height: 4px; }
 .ag-progress--lg { height: 12px; }
 .ag-progress--good .ag-progress__bar { background: var(--ag-good); }
@@ -881,8 +883,10 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-chart__line--2 { stroke: var(--ag-chart-2); }
 .ag-chart__line--3 { stroke: var(--ag-chart-3); }
 .ag-chart__line--4 { stroke: var(--ag-chart-4); }
+.ag-chart__line--engine { stroke: var(--ag-engine); }   /* <path class="ag-chart__line ag-chart__line--engine" data-engine="mysql"> */
 .ag-chart__area--1 { fill: var(--ag-chart-1); opacity: .12; }
 .ag-chart__area--2 { fill: var(--ag-chart-2); opacity: .12; }
+.ag-chart__area--engine { fill: var(--ag-engine); opacity: .12; }
 .ag-chart__bar--1 { fill: var(--ag-chart-1); }
 .ag-chart__bar--2 { fill: var(--ag-chart-2); }
 .ag-chart__bar--3 { fill: var(--ag-chart-3); }
@@ -890,6 +894,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-chart__marker { fill: var(--ag-surface); stroke-width: 2.5; }
 .ag-chart__marker--1 { stroke: var(--ag-chart-1); }
 .ag-chart__marker--2 { stroke: var(--ag-chart-2); }
+.ag-chart__marker--engine { stroke: var(--ag-engine); }
 .ag-chart__cursor { stroke: var(--ag-text-3); stroke-dasharray: 3 4; }
 .ag-chart__tooltip {
   position: absolute;
@@ -929,7 +934,10 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-bubbles > .ag-bubble { width: calc(var(--ag-bubble-max) * var(--r, 1)); font-size: calc(var(--ag-bubble-max) * var(--r, 1) * .27); flex: none; }
 .ag-bubbles > .ag-bubble + .ag-bubble { margin-left: -10px; }
 .ag-bubbles > .ag-bubble:nth-child(even) { transform: translateY(-14%); }
+.ag-bubbles > .ag-bubble { container-type: inline-size; }
+@container (max-width: 72px) { .ag-bubble span { display: none; } }   /* 작은 조각은 숫자만 — 이름은 범례가 말한다 */
 .ag-bubble--1 { background: var(--ag-chart-1); color: var(--ag-text-on-cat-1); }
+.ag-bubble--engine { background: var(--ag-engine-solid); color: var(--ag-text-on-engine); }
 .ag-bubble--2 { background: var(--ag-chart-2); color: var(--ag-text-on-cat-2); }
 .ag-bubble--3 { background: var(--ag-chart-3); color: var(--ag-text-on-cat-3); }
 .ag-bubble--hatch { background: var(--ag-chart-hatch), var(--ag-surface-2); color: var(--ag-text); border: 1px solid var(--ag-border-strong); }
@@ -962,3 +970,49 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-quick-action__icon--2 { background: var(--ag-accent-2-soft); color: var(--ag-accent-2-text); }
 .ag-quick-action__icon--3 { background: var(--ag-info-soft);   color: var(--ag-info); }
 .ag-quick-action__icon--4 { background: var(--ag-accent-soft); color: var(--ag-accent-text); }
+
+/* ---- 엔진 고유색 (1.5) — 파일 끝: 카드·목록·배지 기본 규칙 뒤에 와야 톤이 이긴다 --------------------------------------------------------
+   어떤 요소든 data-engine="mysql|postgres|oracle|documentdb|mssql|other" (또는 .ag-engine-<name>) 를 달면 그 안에서
+   --ag-engine / -text / -soft / -solid / --ag-text-on-engine 이 그 엔진 값이 된다. 컴포넌트는 `--engine` 변형 하나로 그 값을 읽는다.
+   <div class="ag-card ag-card--engine-stripe" data-engine="postgres">…  <span class="ag-badge ag-badge--engine" data-engine="mysql">MySQL</span>
+   엔진을 더할 때: tokens.css 에 다섯 토큰(다크·라이트) + 아래 훅 한 줄. 차트 인접쌍 CVD 검증(tools/check.py) 다시. */
+[data-engine="mysql"],      .ag-engine-mysql      { --ag-engine: var(--ag-engine-mysql);      --ag-engine-text: var(--ag-engine-mysql-text);      --ag-engine-soft: var(--ag-engine-mysql-soft);      --ag-engine-solid: var(--ag-engine-mysql-solid);      --ag-text-on-engine: var(--ag-text-on-engine-mysql); }
+[data-engine="postgres"],   .ag-engine-postgres   { --ag-engine: var(--ag-engine-postgres);   --ag-engine-text: var(--ag-engine-postgres-text);   --ag-engine-soft: var(--ag-engine-postgres-soft);   --ag-engine-solid: var(--ag-engine-postgres-solid);   --ag-text-on-engine: var(--ag-text-on-engine-postgres); }
+[data-engine="oracle"],     .ag-engine-oracle     { --ag-engine: var(--ag-engine-oracle);     --ag-engine-text: var(--ag-engine-oracle-text);     --ag-engine-soft: var(--ag-engine-oracle-soft);     --ag-engine-solid: var(--ag-engine-oracle-solid);     --ag-text-on-engine: var(--ag-text-on-engine-oracle); }
+[data-engine="documentdb"], .ag-engine-documentdb { --ag-engine: var(--ag-engine-documentdb); --ag-engine-text: var(--ag-engine-documentdb-text); --ag-engine-soft: var(--ag-engine-documentdb-soft); --ag-engine-solid: var(--ag-engine-documentdb-solid); --ag-text-on-engine: var(--ag-text-on-engine-documentdb); }
+[data-engine="mssql"],      .ag-engine-mssql      { --ag-engine: var(--ag-engine-mssql);      --ag-engine-text: var(--ag-engine-mssql-text);      --ag-engine-soft: var(--ag-engine-mssql-soft);      --ag-engine-solid: var(--ag-engine-mssql-solid);      --ag-text-on-engine: var(--ag-text-on-engine-mssql); }
+[data-engine="other"],      .ag-engine-other      { --ag-engine: var(--ag-engine-other);      --ag-engine-text: var(--ag-engine-other-text);      --ag-engine-soft: var(--ag-engine-other-soft);      --ag-engine-solid: var(--ag-engine-other-solid);      --ag-text-on-engine: var(--ag-text-on-engine-other); }
+
+/* 카드 — 조합 가능한 톤 변형. 배경만이 아니라 제목·테두리·띠·그림자 중 고른다 (한 카드에 둘까지 권장: 예 stripe + title) */
+.ag-card--engine-title  .ag-card__title { color: var(--ag-engine-text); }
+.ag-card--engine-title  .ag-card__icon  { background: var(--ag-engine-soft); color: var(--ag-engine-text); }
+.ag-card--engine-border { border-color: color-mix(in oklab, var(--ag-engine) 55%, transparent); }
+.ag-card--engine-stripe { box-shadow: inset 3px 0 0 var(--ag-engine), var(--ag-card-edge), var(--ag-card-shadow); }
+.ag-card--engine-top    { border-top: 3px solid var(--ag-engine); }
+.ag-card--engine-tint   { background: color-mix(in oklab, var(--ag-engine) 9%, var(--ag-surface)); border-color: color-mix(in oklab, var(--ag-engine) 30%, transparent); }
+.ag-card--engine-glow   { box-shadow: var(--ag-card-edge), 0 10px 30px -14px color-mix(in oklab, var(--ag-engine) 55%, transparent), var(--ag-card-shadow); }
+.ag-card--engine-stripe.ag-card--engine-glow { box-shadow: inset 3px 0 0 var(--ag-engine), var(--ag-card-edge), 0 10px 30px -14px color-mix(in oklab, var(--ag-engine) 55%, transparent), var(--ag-card-shadow); }
+.ag-card--engine-solid  { --_on: var(--ag-text-on-engine); background: var(--ag-engine-solid); color: var(--_on); border-color: transparent; box-shadow: var(--ag-card-shadow); }
+.ag-card--engine-solid {
+  --ag-text: var(--_on); --ag-text-2: color-mix(in oklab, var(--_on) 97%, transparent); --ag-text-3: color-mix(in oklab, var(--_on) 94%, transparent);
+  --ag-border: color-mix(in oklab, var(--_on) 22%, transparent); --ag-border-strong: color-mix(in oklab, var(--_on) 45%, transparent);
+  --ag-surface-2: color-mix(in oklab, var(--_on) 12%, transparent); --ag-surface-3: color-mix(in oklab, var(--_on) 20%, transparent); --ag-surface-hover: color-mix(in oklab, var(--_on) 16%, transparent);
+}
+.ag-card--engine-solid .ag-card__icon { background: color-mix(in oklab, var(--_on) 16%, transparent); color: var(--_on); }
+.ag-card__icon--engine { background: var(--ag-engine-soft); color: var(--ag-engine-text); }
+
+/* 배지·점·칩·아바타·태그·스탯 아이콘 */
+.ag-badge--engine { background: var(--ag-engine-soft); color: var(--ag-engine-text); }
+.ag-badge--solid.ag-badge--engine { background: var(--ag-engine-solid); color: var(--ag-text-on-engine); }
+.ag-badge--plain.ag-badge--engine { background: transparent; color: var(--ag-text); }
+.ag-dot--engine { background: var(--ag-engine); }
+.ag-chip--engine { background: var(--ag-engine-soft); color: var(--ag-engine-text); border-color: transparent; }
+.ag-chip--engine.is-active, .ag-chip--engine[aria-pressed="true"] { background: var(--ag-engine-solid); color: var(--ag-text-on-engine); }
+.ag-avatar--engine { background: var(--ag-engine-soft); color: var(--ag-engine-text); }
+.ag-list__item--engine { box-shadow: inset 3px 0 0 var(--ag-engine); }
+.ag-table td.ag-td--engine { box-shadow: inset 3px 0 0 var(--ag-engine); }
+.ag-text-engine { color: var(--ag-engine-text); }
+/* 단색 엔진 카드 안의 엔진색 요소는 글자색(--_on) 기반으로 뒤집는다 — 같은 색 위에 같은 색이 되지 않게 */
+.ag-card--engine-solid :is(.ag-badge--engine, .ag-chip--engine, .ag-avatar--engine, .ag-tag--engine .ag-tag__key) { background: color-mix(in oklab, var(--_on) 16%, transparent); color: var(--_on); }
+.ag-card--engine-solid :is(.ag-dot--engine, .ag-progress__bar--engine, .ag-bars__seg--engine) { background: var(--_on); }
+.ag-card--engine-solid .ag-text-engine { color: var(--_on); }
