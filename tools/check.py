@@ -285,6 +285,16 @@ async def main():
         check("width: --fluid does not widen focus mode (760)", r2 <= 760, str(r2))
         await pg.close()
 
+        # ── 9p. outline×primary 액센트 테두리 / list__item:disabled 흐림 / select--list 높이·캐럿 ──
+        pg = await page(b, "components.html")
+        r = await pg.evaluate("""()=>{const d=document.createElement('div');d.className='ag-card';d.innerHTML='<button class="ag-btn ag-btn--outline ag-btn--primary" id="op">x</button><button class="ag-btn ag-btn--outline" id="o">x</button><div class="ag-list"><button class="ag-list__item" id="ld" disabled>x</button><button class="ag-list__item" id="le">x</button></div><select class="ag-select ag-select--list" id="sl" size="5"><option>a</option><option>b</option><option>c</option><option>d</option><option>e</option></select><select class="ag-select" id="s0"><option>a</option></select>';document.body.appendChild(d);
+          const g=id=>getComputedStyle(document.getElementById(id));const acc=getComputedStyle(document.documentElement).getPropertyValue('--ag-accent').trim();
+          return {opColor:g('op').color,oColor:g('o').color,opBorder:g('op').borderColor!==g('o').borderColor,ld:g('ld').opacity,le:g('le').opacity,ldPe:g('ld').pointerEvents,slH:document.getElementById('sl').getBoundingClientRect().height,s0H:document.getElementById('s0').getBoundingClientRect().height,slImg:g('sl').backgroundImage}}""")
+        check("btn: outline×primary takes accent text + distinct border", r["opColor"] != r["oColor"] and r["opBorder"], str(r))
+        check("list: disabled item dimmed (.45) and inert", r["ld"] == "0.45" and r["le"] == "1" and r["ldPe"] == "none", str(r))
+        check("select--list: taller than one row, no caret image", r["slH"] > 2.5 * r["s0H"] and r["slImg"] == "none", str(r))
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

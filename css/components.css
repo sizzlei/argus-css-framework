@@ -47,6 +47,8 @@
 .ag-btn--ghost.ag-btn--danger:hover { background: var(--ag-crit-soft); color: var(--ag-crit); border-color: transparent; }
 .ag-btn--outline.ag-btn--danger { --_bg: transparent; --_fg: var(--ag-crit); --_bd: color-mix(in oklab, var(--ag-crit) 45%, transparent); }
 .ag-btn--outline.ag-btn--danger:hover { background: var(--ag-crit-soft); color: var(--ag-crit); border-color: var(--ag-crit); }
+.ag-btn--outline.ag-btn--primary { --_bg: transparent; --_fg: var(--ag-accent); --_bd: color-mix(in oklab, var(--ag-accent) 45%, transparent); }   /* 채움 --primary 의 outline 짝 — 같은 비중의 버튼 둘(수정 / 위험 작업)을 나란히 둘 때 */
+.ag-btn--outline.ag-btn--primary:hover { background: var(--ag-accent-soft); color: var(--ag-accent); border-color: var(--ag-accent); }
 .ag-btn--accent2 { --_bg: var(--ag-accent-2); --_fg: #fff; --_bd: transparent; }
 .ag-btn--accent2:hover { background: var(--ag-accent-2); opacity: .9; border-color: transparent; }
 
@@ -297,6 +299,7 @@ button.ag-card:focus-visible, a.ag-card:focus-visible { outline: none; box-shado
   transition: background var(--ag-dur) var(--ag-ease), border-color var(--ag-dur) var(--ag-ease);
 }
 button.ag-list__item { width: 100%; text-align: left; font: inherit; cursor: pointer; }
+.ag-list__item:disabled, .ag-list__item[aria-disabled="true"] { opacity: .45; pointer-events: none; }   /* 이미 등록·담긴 항목 — .ag-btn:disabled 와 같은 값. 색만으로 말하지 않도록 "등록됨" 배지 동반 */
 a.ag-list__item { cursor: pointer; }
 a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface-hover); text-decoration: none; }
 .ag-list__item.is-active { background: var(--ag-accent-soft); border-color: var(--ag-accent); color: var(--ag-text); }
@@ -514,6 +517,11 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 }
 .ag-select--pill { border-radius: var(--ag-radius-pill); padding-left: 16px; }
 .ag-select--inline { width: auto; display: inline-flex; }
+/* 열린 리스트 박스 <select size="6" class="ag-select ag-select--list">: 고정 높이·캐럿을 걷어내고 option 을 행처럼. (:has 대신 명시 클래스) */
+.ag-select--list { height: auto; padding: 6px; background-image: none; overflow-y: auto; }
+.ag-select--list option { padding: 7px 10px; border-radius: var(--ag-radius-sm); }
+.ag-select--list option:checked { background: var(--ag-accent-soft); color: var(--ag-text); }
+.ag-select--list:focus option:checked { background: var(--ag-accent); color: var(--ag-text-on-accent); }
 
 /* 입력 + 아이콘 */
 .ag-input-group { position: relative; display: flex; align-items: center; min-width: 0; }

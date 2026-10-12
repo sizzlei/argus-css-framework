@@ -149,6 +149,10 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 설정 비교 | 변경 전후 diff | `.ag-diff` > `__line.is-add/.is-del/.is-ctx` · 나란히 `.ag-compare` |
 | 태그 | 키=값 태그 편집 | `.ag-tags` > `.ag-tag` (`__key` `__val` `__remove`) · 입력 `.ag-tag-input` |
 | 대시보드 | Treemap / 도넛 / 주간 바 | ApexCharts + `AG.charts.apex` · JS 없는 대안 `.ag-treemap` `.ag-donut` `.ag-cols` |
+| 폼 | `<select size="N">` 열린 리스트 박스 | `.ag-select.ag-select--list` |
+| 폼 | `<input type="range">` 슬라이더 | `.ag-input` (속성 선택자로 처리 — 별도 클래스 없음) |
+| 공통 | 같은 비중의 버튼 둘(수정 + 위험 작업) | `.ag-btn--outline.ag-btn--primary` + `.ag-btn--outline.ag-btn--danger` |
+| 공통 | 선택 목록에서 이미 담긴 항목 | `button.ag-list__item[disabled]` + "등록됨" 배지 |
 | 공통 | 결과 목차·필터 칩의 상태(오류·주의·적합) | `.ag-chip--crit/--warn/--good/--info` (`--sm`, 강조는 `--solid`) + 아이콘 |
 | 태그 | 태그 키 집계 칩의 상태(제거 예약·값 여러 종류) | `.ag-tag--crit` / `.ag-tag--warn` (+ 아이콘·"값 N종" 텍스트) — 범주는 `--cat1~4`, 기타는 `--other` |
 | 시크릿 | 여러 줄 키·인증서 가림(blur + Click to Reveal) | `.ag-secret-field--block` + `textarea.is-masked` + `.ag-secret-field__reveal[data-ag-reveal]` |

@@ -1,6 +1,7 @@
 # Changelog
 
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
+- `.ag-btn--outline.ag-btn--primary`(액센트 테두리, hover accent-soft — 채움 primary 의 outline 짝), `.ag-list__item:disabled`(`.ag-btn` 과 같은 .45 흐림 + pointer-events), `.ag-select--list`(`size=N` 열린 리스트 박스: 고정 높이·캐럿 제거, option 행 패딩·선택 강조). 상세 화면 버튼 짝, 계정 선택 모달, 복구 소스 DB 선택에서 들어온 건.
 - `.ag-app--fluid` — 본문 `.ag-main` 의 1600px 상한(`--ag-content-max`) 해제, 거터만 남김. 다른 모드와 조합. 2560px 모니터에서 1600px 로 모이는 게 "좁아졌다" 로 들어온 건 (이전 앱은 상한이 없었음). layouts.html 에 fluid 토글, 매핑표에 `max-w-*`/`container` 제거 규칙.
 - `.ag-chip--good/--warn/--crit/--info` 상태 변형(soft 배경·상태 글자·톤 테두리) + `--solid` 조합. solid 는 새 토큰 `--ag-*-solid` / `--ag-text-on-*`(다크: 밝은 상태색 + 어두운 글자, 라이트: 깊은 `*-text` 색 + 흰 글자) — `.ag-badge--solid` 도 같은 토큰으로 바꿔 라이트 crit(4.3:1)·다크 crit 흰 글자(2.7:1) 대비 미달을 해소. 점검 결과 목차 칩에서 쿼리 오류 코드를 구분할 수단이 없던 건 (`.ag-tag` 상태 변형과 같은 건).
 - `.ag-tag--good/--warn/--crit/--info` 상태 변형(테두리·키·값 전체에 상태색, 범주 변형은 키만) + `.ag-tag--other`. 태그 키 집계에서 "제거 예약"·"값 N종" 을 색으로 구분할 수단이 없던 건. 색만으로 말하지 않도록 예시는 아이콘·텍스트 동반.
