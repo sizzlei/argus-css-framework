@@ -614,7 +614,7 @@
 .ag-input[type="range"] { height: auto; padding: 0; background: transparent; border: 0; accent-color: var(--ag-accent-text); }
 .ag-check input, .ag-switch input { accent-color: var(--ag-accent-text); }
 
-/* ---- 아이콘 폰트 (Phosphor <i class="ph-bold ph-x">) 정렬 -------------------
+/* ---- 아이콘 폰트 (Phosphor <i class="ph ph-x">) 정렬 -------------------
    원칙: 아이콘을 문맥으로 잡는 규칙(위치·색·크기)은 전부 `:is(.ag-icon, [class*="ph-"])` 로 써서 svg 와 Phosphor <i> 가 같은 대우를 받는다.
    <i> 에 ag-icon 을 같이 붙일 필요 없음. 크기 규칙은 width/height 와 함께 font-size 를 둔다 (글리프는 font-size 로 커진다).
    예외: 캐럿만 돌려야 하는 아코디언은 [class*="ph-caret"] 로 좁힌다. 아래는 Phosphor 전용 기본값 */

@@ -9,14 +9,14 @@
     {{/* ─── 좌측 브랜드 패널 ─── */}}
     <aside class="ag-auth__brand">
         <div>
-            <span class="ag-auth__logo-box"><i class="ph-bold ph-database"></i></span>
+            <span class="ag-auth__logo-box"><i class="ph ph-database"></i></span>
             <div class="ag-auth__name">Console <span class="ag-auth__version">v{{.Version}}</span></div>
             <h1 class="ag-auth__headline">운영 자산을<br>한 곳에서 <em>안전하게</em></h1>
             <p class="ag-auth__sub">리소스 인벤토리 · 보안 감사 · 계정 관리</p>
             <div class="ag-auth__features">
-                <div class="ag-auth__feature"><i class="ph-bold ph-shield-check"></i>조직 이메일 + OTP 2단계 인증</div>
-                <div class="ag-auth__feature"><i class="ph-bold ph-clock-counter-clockwise"></i>모든 계정 발급·변경은 감사 로그에 기록</div>
-                <div class="ag-auth__feature"><i class="ph-bold ph-slack-logo"></i>잠금 해제·승인 결과는 Slack DM 으로</div>
+                <div class="ag-auth__feature"><i class="ph ph-shield-check"></i>조직 이메일 + OTP 2단계 인증</div>
+                <div class="ag-auth__feature"><i class="ph ph-clock-counter-clockwise"></i>모든 계정 발급·변경은 감사 로그에 기록</div>
+                <div class="ag-auth__feature"><i class="ph ph-slack-logo"></i>잠금 해제·승인 결과는 Slack DM 으로</div>
             </div>
         </div>
         <div>
@@ -35,7 +35,7 @@
         <div class="ag-auth__card">
 
             <div class="ag-auth__mobile-head">
-                <span class="ag-brand-mark"><i class="ph-bold ph-database"></i></span>
+                <span class="ag-brand-mark"><i class="ph ph-database"></i></span>
                 <h2>Console</h2>
                 <p>DBA 통합 관리 시스템</p>
             </div>
@@ -70,7 +70,7 @@
                         </div>
                     </div>
                     <button type="submit" class="ag-btn ag-btn--primary ag-btn--lg ag-btn--block ag-btn--square" :disabled="loading" :class="{ 'is-loading': loading }">
-                        다음 <i class="ph-bold ph-arrow-right"></i>
+                        다음 <i class="ph ph-arrow-right"></i>
                     </button>
                 </form>
 
@@ -82,7 +82,7 @@
                     <div class="ag-text-center">
                         <span class="ag-auth__email-chip">
                             <span x-text="email"></span>
-                            <button type="button" @click="step = 1; errorMessage = ''; code = ''" aria-label="이메일 수정"><i class="ph-bold ph-pencil-simple"></i></button>
+                            <button type="button" @click="step = 1; errorMessage = ''; code = ''" aria-label="이메일 수정"><i class="ph ph-pencil-simple"></i></button>
                         </span>
                     </div>
                     <div class="ag-field">
@@ -90,7 +90,7 @@
                         <input class="ag-otp-input" id="otp" x-model="code" type="text" inputmode="numeric" pattern="[0-9]*" maxlength="6" required x-ref="otpInput" placeholder="000000">
                     </div>
                     <button type="submit" class="ag-btn ag-btn--primary ag-btn--lg ag-btn--block ag-btn--square" :disabled="loading" :class="{ 'is-loading': loading }">
-                        로그인 <i class="ph-bold ph-sign-in"></i>
+                        로그인 <i class="ph ph-sign-in"></i>
                     </button>
                 </form>
 
@@ -136,10 +136,10 @@
                     <div class="ag-modal__panel" x-transition>
                         <div class="ag-modal__head">
                             <div class="ag-row">
-                                <span class="ag-avatar" style="background:var(--ag-warn-soft);color:var(--ag-warn)"><i class="ph-bold ph-lock-key" style="font-size:18px"></i></span>
+                                <span class="ag-avatar" style="background:var(--ag-warn-soft);color:var(--ag-warn)"><i class="ph ph-lock-key" style="font-size:18px"></i></span>
                                 <h3>계정 잠금 해제 요청</h3>
                             </div>
-                            <button type="button" class="ag-btn ag-btn--icon ag-btn--ghost" @click="closeUnlockModal()" aria-label="닫기"><i class="ph-bold ph-x"></i></button>
+                            <button type="button" class="ag-btn ag-btn--icon ag-btn--ghost" @click="closeUnlockModal()" aria-label="닫기"><i class="ph ph-x"></i></button>
                         </div>
                         <p class="ag-text-sm ag-text-2">
                             최근 <strong class="ag-text-warn" x-text="inactiveDays"></strong>일간 로그인 기록이 없어 계정이 비활성 잠금되었습니다.

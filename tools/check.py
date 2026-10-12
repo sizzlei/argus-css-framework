@@ -129,7 +129,7 @@ async def main():
         await pg.add_init_script("try{localStorage.setItem('ag-sidebar-collapsed','true')}catch(e){}")
         html = (ROOT / "examples/resources.html").read_text(encoding="utf-8")
         head_loaded = html.replace('<script src="../dist/argus.js"></script>', '').replace('</head>', '<script src="../dist/argus.js"></script></head>', 1)
-        head_loaded = head_loaded.replace('<span>개요</span>', '<i class="ph-bold ph-squares-four"></i><span>개요</span>', 1)
+        head_loaded = head_loaded.replace('<span>개요</span>', '<i class="ph ph-squares-four"></i><span>개요</span>', 1)
         tmp = ROOT / "examples/_check_head.html"; tmp.write_text(head_loaded, encoding="utf-8")
         try:
             await pg.goto(BASE + "_check_head.html"); await pg.wait_for_timeout(400)
@@ -178,7 +178,7 @@ async def main():
         for light in (False, True):
             pg = await page(b, "components.html", light=light)
             r = await pg.evaluate("""()=>{const st=document.createElement('style');st.textContent='[class^="ph-"],[class*=" ph-"]{display:inline-block}';document.head.appendChild(st);
-              const d=document.createElement('div');d.innerHTML='<i class="ph-bold ph-sun ag-only-dark"></i><i class="ph-bold ph-moon ag-only-light"></i>';document.body.appendChild(d);
+              const d=document.createElement('div');d.innerHTML='<i class="ph ph-sun ag-only-dark"></i><i class="ph ph-moon ag-only-light"></i>';document.body.appendChild(d);
               const [s,m]=d.children;return {sun:getComputedStyle(s).display,moon:getComputedStyle(m).display}}""")
             th = "light" if light else "dark"
             ok = (r["moon"] == "none" and r["sun"] == "inline-block") if not light else (r["sun"] == "none" and r["moon"] == "inline-block")
@@ -187,11 +187,11 @@ async def main():
 
         # ── 9g. Phosphor <i> 가 svg .ag-icon 과 같은 대우: input-group 선행 아이콘 위치, .ag-user 캐럿 색, logo-box 크기 ──
         pg = await page(b, "components.html")
-        r = await pg.evaluate("""()=>{const d=document.createElement('div');d.className='ag-card';d.innerHTML='<div class="ag-input-group"><i class="ph-bold ph-envelope" id="pi"></i><input class="ag-input" id="pin"></div>'
+        r = await pg.evaluate("""()=>{const d=document.createElement('div');d.className='ag-card';d.innerHTML='<div class="ag-input-group"><i class="ph ph-envelope" id="pi"></i><input class="ag-input" id="pin"></div>'
           +'<div class="ag-input-group"><svg class="ag-icon" id="si"></svg><input class="ag-input"></div>'
-          +'<div class="ag-input-group ag-input-group--end"><input class="ag-input" id="noicon"><span class="ag-input-group__end"><button class="ag-btn ag-btn--sm ag-btn--ghost"><i class="ph-bold ph-x" id="endi"></i></button></span></div>'
-          +'<button class="ag-user"><span class="ag-user__text">x</span><i class="ph-bold ph-caret-down" id="pc"></i></button>'
-          +'<span class="ag-auth__logo-box"><i class="ph-bold ph-database" id="pl"></i></span>';document.body.appendChild(d);
+          +'<div class="ag-input-group ag-input-group--end"><input class="ag-input" id="noicon"><span class="ag-input-group__end"><button class="ag-btn ag-btn--sm ag-btn--ghost"><i class="ph ph-x" id="endi"></i></button></span></div>'
+          +'<button class="ag-user"><span class="ag-user__text">x</span><i class="ph ph-caret-down" id="pc"></i></button>'
+          +'<span class="ag-auth__logo-box"><i class="ph ph-database" id="pl"></i></span>';document.body.appendChild(d);
           const g=id=>getComputedStyle(document.getElementById(id));const inp=document.getElementById('pin').getBoundingClientRect(),ico=document.getElementById('pi').getBoundingClientRect();
           return {pos:g('pi').position,left:g('pi').left,inside:ico.left>inp.left&&ico.left<inp.left+40,svgPos:g('si').position,endPos:g('endi').position,noiconPad:g('noicon').paddingLeft,
             caret:g('pc').color,text3:getComputedStyle(document.documentElement).getPropertyValue('--ag-text-3').trim(),logo:g('pl').fontSize}}""")

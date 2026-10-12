@@ -26,6 +26,9 @@
 - 확인: 라이트 글로우 7% 는 흰 카드 위에서 띠로 보이지 않음. 3400px 에서 KPI 카드 ≤ 420px(본문 상한 1600 안).
 - `tools/check.py` 126항목.
 
+### 정정 (1.4.1)
+- `docs/renewal-prompt.md` 의 `ph-regular` → `ph` (Phosphor 2.1.x regular 의 weight 클래스는 `ph`; `ph-regular` 는 존재하지 않음). `templates/go-html-template/login.html` 의 `ph-bold` 10곳 → `ph`. `check.py` 의 Phosphor 테스트 마크업도 `ph` 로 — bold 는 가이드에서 금지된 굵기라 검증 대상이 아니다.
+
 ## 1.3.0 — 2026-10-12 · 화면 밀도 보강 (예시 + 시각 디테일)
 
 1.2 로 모양이 단정해진 대신 예시 화면이 허전해졌다는 피드백. 두 축으로 보강 — (1) 예시 페이지를 실제 운영 콘솔 밀도로 채우고, (2) 카드·페이지에 조용한 시각 단서 몇 가지를 프레임워크 차원에서 더했다. 새 클래스·토큰이 있어 minor. 서비스는 dist 재복사만으로 (1)의 시각 변화가 따라오고, 새 컴포넌트는 쓰고 싶을 때 쓴다.
@@ -91,7 +94,7 @@ axe-core 를 `tools/check.py` 게이트로 붙였다 (예시 6페이지 × 다�
 - 제목 스케일: h2 28 → 20, h3·카드 제목 20 → 17. (h1 은 Phase 1 에서 28)
 - 라이트 카드 그림자 제거(보더만, `--ag-card-shadow` 1px 만 남김) — 평면이 더 정확해 보이고 오버레이와 구분.
 - 보조색(accent-2 분홍)은 브랜드 그라데이션·범주 2번에만. 대시보드 칩·상세 환경 배지에서 제거(예시). 클래스는 유지하되 UI 요소에는 쓰지 않도록 매핑표에 명시.
-- 아이콘 가이드: Phosphor 는 `ph-regular`/`ph-duotone`(bold 금지), 크기는 16/18/20 셋.
+- 아이콘 가이드: Phosphor 는 regular(`ph`)/`ph-duotone`(bold 금지), 크기는 16/18/20 셋.
 
 ### Phase 3 — 상태·모션·세부
 - `.ag-empty--error`(아이콘만 crit, 원인·시각은 설명에) · `.ag-empty--sm` · `.ag-empty__actions`(다시 시도 자리) — 운영 도구는 API 실패가 일상.
