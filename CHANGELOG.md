@@ -19,6 +19,14 @@
 - 보조색(accent-2 분홍)은 브랜드 그라데이션·범주 2번에만. 대시보드 칩·상세 환경 배지에서 제거(예시). 클래스는 유지하되 UI 요소에는 쓰지 않도록 매핑표에 명시.
 - 아이콘 가이드: Phosphor 는 `ph-regular`/`ph-duotone`(bold 금지), 크기는 16/18/20 셋.
 
+### Phase 3 — 상태·모션·세부
+- `.ag-empty--error`(아이콘만 crit, 원인·시각은 설명에) · `.ag-empty--sm` · `.ag-empty__actions`(다시 시도 자리) — 운영 도구는 API 실패가 일상.
+- `.ag-table--loading` — 헤더·열 폭 유지, 행만 shimmer(`td::after`). 레이아웃 점프 없이 기다린다. 숫자 열은 오른쪽 정렬 막대, 액션 열은 비움.
+- 키보드 포커스 링 `--ag-ring-focus`(배경색 2px 틈 + 액센트 2px 실선) — 버튼·카드·provider. 입력은 기존 `--ag-ring`(부드러운 글로우) 유지.
+- 오버레이 등장 모션 1종 `ag-rise`(4px 떠오르며 페이드, 180ms; 메뉴 140ms), `<dialog>` 배경 `ag-fade`. 닫힘은 즉시. reduced-motion 은 기존대로 .01ms.
+- 라이트 `--ag-surface-2` #f3f4f8 → #eef0f5, `--ag-surface-3` #e6e8f0 → #e3e6ee — 흰 카드 위 타일 경계가 보이도록.
+- 모바일 배너: 아이콘이 혼자 둘째 줄로 떨어지던 것 → 첫 줄 옆에 두고 버튼만 아래 전체 폭.
+
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
 - `.ag-btn--outline.ag-btn--primary`(액센트 테두리, hover accent-soft — 채움 primary 의 outline 짝), `.ag-list__item:disabled`(`.ag-btn` 과 같은 .45 흐림 + pointer-events), `.ag-select--list`(`size=N` 열린 리스트 박스: 고정 높이·캐럿 제거, option 행 패딩·선택 강조). 상세 화면 버튼 짝, 계정 선택 모달, 복구 소스 DB 선택에서 들어온 건.
 - `.ag-app--fluid` — 본문 `.ag-main` 의 1600px 상한(`--ag-content-max`) 해제, 거터만 남김. 다른 모드와 조합. 2560px 모니터에서 1600px 로 모이는 게 "좁아졌다" 로 들어온 건 (이전 앱은 상한이 없었음). layouts.html 에 fluid 토글, 매핑표에 `max-w-*`/`container` 제거 규칙.

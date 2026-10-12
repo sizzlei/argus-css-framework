@@ -151,6 +151,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 설정 비교 | 변경 전후 diff | `.ag-diff` > `__line.is-add/.is-del/.is-ctx` · 나란히 `.ag-compare` |
 | 태그 | 키=값 태그 편집 | `.ag-tags` > `.ag-tag` (`__key` `__val` `__remove`) · 입력 `.ag-tag-input` |
 | 대시보드 | Treemap / 도넛 / 주간 바 | ApexCharts + `AG.charts.apex` · JS 없는 대안 `.ag-treemap` `.ag-donut` `.ag-cols` |
+| 공통 | 목록 로딩 스피너 / 불러오기 실패 알림 | `.ag-table--loading`(자리표시 행 N개) / `.ag-empty.ag-empty--error` + `__actions`(다시 시도) |
 | 폼 | `<select size="N">` 열린 리스트 박스 | `.ag-select.ag-select--list` |
 | 폼 | `<input type="range">` 슬라이더 | `.ag-input` (속성 선택자로 처리 — 별도 클래스 없음) |
 | 공통 | 같은 비중의 버튼 둘(수정 + 위험 작업) | `.ag-btn--outline.ag-btn--primary` + `.ag-btn--outline.ag-btn--danger` |

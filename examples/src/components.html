@@ -328,6 +328,7 @@
             <div class="ag-meter-row"><div class="ag-meter-row__head"><span>엔진 분포 (stacked)</span><strong>186</strong></div><div class="ag-progress ag-progress--stacked ag-progress--lg"><div class="ag-progress__bar" style="width:58%;background:var(--ag-chart-1)"></div><div class="ag-progress__bar" style="width:33%;background:var(--ag-chart-2)"></div><div class="ag-progress__bar" style="width:9%;background:var(--ag-chart-3)"></div></div><div class="ag-legend ag-mt-2"><span class="ag-legend__item"><span class="ag-dot ag-dot--c1"></span>MySQL 58%</span><span class="ag-legend__item"><span class="ag-dot ag-dot--c2"></span>PostgreSQL 33%</span><span class="ag-legend__item"><span class="ag-dot ag-dot--c3"></span>Oracle 9%</span></div></div>
           </div>
           <div class="ag-card"><div class="ag-empty" style="padding:var(--ag-space-6)"><span class="ag-empty__icon"><svg class="ag-icon ag-icon--lg"><use href="#i-database"/></svg></span><div class="ag-empty__title">등록된 인스턴스가 없습니다</div><p>첫 인스턴스를 등록하면 여기에 상태가 표시됩니다.</p><button class="ag-btn ag-btn--primary ag-btn--sm"><svg class="ag-icon ag-icon--sm"><use href="#i-plus"/></svg>인스턴스 등록</button></div></div>
+          <div class="ag-card"><div class="ag-empty ag-empty--error ag-empty--sm"><span class="ag-empty__icon"><svg class="ag-icon ag-icon--lg"><use href="#i-alert"/></svg></span><div class="ag-empty__title">목록을 불러오지 못했습니다</div><p>CloudWatch API 응답 없음 (504) · 14:02:11</p><div class="ag-empty__actions"><button class="ag-btn ag-btn--sm ag-btn--outline"><svg class="ag-icon ag-icon--sm"><use href="#i-refresh"/></svg>다시 시도</button><button class="ag-btn ag-btn--sm ag-btn--ghost">오류 보고</button></div></div><p class="ag-text-xs ag-text-3 ag-mt-2"><code>.ag-empty--error</code> + <code>--sm</code> + <code>__actions</code> — 아이콘만 crit, 설명에 원인과 시각</p></div>
           <div class="ag-card ag-stack"><span class="ag-skeleton" style="width:40%;height:20px"></span><span class="ag-skeleton" style="height:14px"></span><span class="ag-skeleton" style="width:80%;height:14px"></span><div class="ag-row"><span class="ag-skeleton" style="width:40px;height:40px;border-radius:50%"></span><span class="ag-skeleton" style="flex:1;height:14px"></span></div></div>
         </div>
       </div>
@@ -787,7 +788,9 @@ k2m9xQ1zR8fT4yU6wE2nH5sL0dP9vB3cX7aM1oK4jG8hF6eD2tS9uY
         </div>
         <div class="ag-card ag-col-6 ag-stack">
           <h3 class="ag-card__title">.ag-skeleton-rows · .ag-skeleton-card</h3>
-          <div class="ag-skeleton-rows" style="--rows: 4"></div>
+          <div class="ag-skeleton-rows" style="--rows: 3"></div>
+          <div class="ag-table-wrap"><table class="ag-table ag-table--dense ag-table--loading"><thead><tr><th>인스턴스</th><th>엔진</th><th class="ag-th--num">CPU</th><th>상태</th><th class="ag-td--actions"></th></tr></thead><tbody><tr><td>order-db-writer</td><td>MySQL</td><td class="ag-td--num">92%</td><td>장애</td><td class="ag-td--actions">⋯</td></tr><tr><td>member-pg-writer</td><td>PostgreSQL</td><td class="ag-td--num">41%</td><td>정상</td><td class="ag-td--actions">⋯</td></tr><tr><td>wms-ora-01</td><td>Oracle</td><td class="ag-td--num">55%</td><td>주의</td><td class="ag-td--actions">⋯</td></tr></tbody></table></div>
+          <p class="ag-text-xs ag-text-3"><code>.ag-table--loading</code> — 헤더·열 폭은 그대로, 행만 shimmer (레이아웃 점프 없음). 자리표시 행에는 아무 글자나</p>
           <div class="ag-row ag-gap-4 ag-items-start"><div class="ag-skeleton-card ag-flex-1"><span class="ag-skeleton"></span><span class="ag-skeleton"></span><span class="ag-skeleton"></span></div><div class="ag-skeleton-card ag-flex-1"><span class="ag-skeleton"></span><span class="ag-skeleton"></span><span class="ag-skeleton"></span></div></div>
         </div>
         <div class="ag-card ag-col-6 ag-stack">

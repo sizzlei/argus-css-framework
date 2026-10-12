@@ -317,6 +317,22 @@ async def main():
         check("P2: btn 36px/10px radius, sm 30px, input 36px, card 16px, chip 36px pill, badge pill, h2 20 / h3 17", r["btnH"] == "36px" and r["btnR"] == "10px" and r["smH"] == "30px" and r["inpH"] == "36px" and r["cardR"] == "16px" and r["chipH"] == "36px" and r["chipR"] == "999px" and r["badgeR"] == "999px" and r["h2"] == "20px" and r["h3"] == "17px", str(r))
         await pg.close()
 
+        # ── P3. 디자인 감사 3단계: 포커스 링, empty--error, table--loading, 오버레이 모션, 라이트 surface-2, 모바일 배너 ──
+        pg = await page(b, "components.html")
+        r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<button class="ag-btn" id="fb">x</button><div class="ag-empty ag-empty--error"><span class="ag-empty__icon" id="ei">x</span></div><table class="ag-table ag-table--loading"><tbody><tr><td id="lt"><span id="li">text</span></td></tr></tbody></table><div class="ag-dropdown is-open"><div class="ag-menu" id="mn">x</div></div>';document.body.appendChild(d);
+          document.getElementById('fb').focus();const g=id=>getComputedStyle(document.getElementById(id));const crit=getComputedStyle(document.documentElement).getPropertyValue('--ag-crit-text').trim();
+          return {ring:g('fb').boxShadow.split('rgb').length-1,ei:g('ei').color,li:g('li').visibility,ltColor:g('lt').color,shimmer:getComputedStyle(document.getElementById('lt'),'::after').animationName,menuAnim:g('mn').animationName}}""")
+        check("P3: keyboard focus = two-layer solid ring, empty--error icon colored, table--loading hides text + shimmers, menu rises", r["ring"] >= 2 and r["li"] == "hidden" and r["ltColor"] == "rgba(0, 0, 0, 0)" and r["shimmer"] == "ag-shimmer" and r["menuAnim"] == "ag-rise", str(r))
+        await pg.close()
+        pg = await page(b, "components.html", light=True)
+        r = await pg.evaluate("()=>getComputedStyle(document.documentElement).getPropertyValue('--ag-surface-2').trim()")
+        check("P3: light --ag-surface-2 deepened to #eef0f5", r == "#eef0f5", r)
+        await pg.close()
+        pg = await page(b, "index.html", 400, 900)
+        r = await pg.evaluate("""()=>{const b=document.querySelector('.ag-banner');const i=b.querySelector('.ag-icon'),t=b.querySelector('.ag-banner__text');const ir=i.getBoundingClientRect(),tr=t.getBoundingClientRect();return {sameTop:Math.abs(ir.top-tr.top)<14,iconLeft:ir.left<tr.left}}""")
+        check("P3: @400 banner icon sits beside the first text line (not on its own row)", r["sameTop"] and r["iconLeft"], str(r))
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);

@@ -634,7 +634,7 @@
 }
 .ag-provider:hover { background: var(--ag-surface-hover); border-color: var(--ag-text-3); }
 .ag-provider:active { transform: translateY(1px); }
-.ag-provider:focus-visible { outline: none; box-shadow: var(--ag-ring); }
+.ag-provider:focus-visible { outline: none; box-shadow: var(--ag-ring-focus); }
 .ag-provider:disabled { opacity: .5; }
 .ag-provider__logo { width: 20px; height: 20px; display: grid; place-items: center; flex: none; }
 .ag-provider__logo img, .ag-provider__logo svg { width: 20px; height: 20px; display: block; }
@@ -750,7 +750,14 @@
 .ag-banner--sticky { position: sticky; top: 0; z-index: 41; }
 .ag-banner--readonly { background: var(--ag-chart-hatch), var(--ag-surface-2); }   /* 읽기 전용 모드: 해치 */
 .ag-topbar + .ag-banner { border-top: 0; }
-@media (max-width: 720px) { .ag-banner { flex-wrap: wrap; } .ag-banner__text { flex-basis: 100%; order: -1; } }
+/* 모바일: 아이콘은 글 첫 줄 옆에 그대로, 버튼 행만 아래로 (아이콘이 혼자 둘째 줄로 떨어지던 것) */
+@media (max-width: 720px) {
+  .ag-banner { flex-wrap: wrap; align-items: flex-start; row-gap: 8px; }
+  .ag-banner > :is(.ag-icon, [class*="ph-"]) { margin-top: 2px; }
+  .ag-banner__text { flex: 1 1 0; min-width: 0; }
+  .ag-banner__close { order: 1; }
+  .ag-banner__text ~ .ag-btn, .ag-banner__text ~ .ag-cluster { flex-basis: 100%; margin-left: calc(18px + var(--ag-space-3)); order: 2; }
+}
 
 /* ---- 알림 센터 드롭다운 (B3) ----------------------------------------------
    <div class="ag-dropdown"><button class="ag-btn ag-btn--icon ag-btn--outline ag-notif-btn" data-ag-dropdown><svg class="ag-icon">…</svg><span class="ag-notif-btn__dot"></span></button>

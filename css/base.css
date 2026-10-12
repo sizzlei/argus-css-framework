@@ -107,6 +107,9 @@ button { cursor: pointer; background: none; border: 0; padding: 0; }
   outline-offset: 2px;
   border-radius: 4px;
 }
+/* 오버레이 등장 1종만: 아래에서 살짝(4px) 떠오르며 페이드. 닫힘은 즉시. 드로어는 transform 전환 유지 */
+@keyframes ag-rise { from { opacity: 0; transform: translateY(4px) scale(.985); } }
+@keyframes ag-fade { from { opacity: 0; } }
 
 /* 스크롤바 — 가늘고 조용하게 */
 * { scrollbar-width: thin; scrollbar-color: var(--ag-surface-3) transparent; }

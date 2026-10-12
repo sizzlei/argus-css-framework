@@ -56,7 +56,8 @@
   --ag-shadow-md: 0 8px 24px -8px rgb(0 0 0 / .6);
   --ag-shadow-lg: 0 24px 48px -16px rgb(0 0 0 / .7);
   --ag-shadow-scroll: rgb(0 0 0 / .5);   /* 가로 스크롤 가장자리 그림자 (.ag-table-wrap) */
-  --ag-ring: 0 0 0 3px color-mix(in oklab, var(--ag-accent) 35%, transparent);
+  --ag-ring: 0 0 0 3px color-mix(in oklab, var(--ag-accent) 35%, transparent);   /* 입력 포커스(부드러운 글로우) */
+  --ag-ring-focus: 0 0 0 2px var(--ag-bg), 0 0 0 4px var(--ag-accent);          /* 키보드 포커스(버튼·카드·행) — 배경색 틈 + 실선, 어떤 배경 위에서도 같은 두께 */
 
   /* ---- Motion ---- */
   --ag-ease: cubic-bezier(.2,.8,.2,1);
@@ -156,8 +157,8 @@
   --ag-bg: #eef0f5;
   --ag-bg-elevated: #ffffff;
   --ag-surface: #ffffff;
-  --ag-surface-2: #f3f4f8;
-  --ag-surface-3: #e6e8f0;
+  --ag-surface-2: #eef0f5;   /* 1.2: #f3f4f8 → 카드(#fff)와의 경계가 약해 한 단계 */
+  --ag-surface-3: #e3e6ee;
   --ag-surface-hover: #f0f1f6;
   --ag-border: rgb(16 18 32 / .07);
   --ag-border-strong: rgb(16 18 32 / .15);
