@@ -30,7 +30,8 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.01em;
   text-wrap: balance;
 }
-h1 { font-size: var(--ag-text-3xl); font-weight: 500; letter-spacing: -0.025em; }
+h1 { font-size: var(--ag-text-2xl); font-weight: 600; letter-spacing: -0.02em; }   /* 1.2: 38/500 → 28/600. 제목이 크면 제목을 읽고 작으면 내용을 읽는다 — 콘솔은 후자 */
+.ag-h-display { font-size: var(--ag-text-3xl); font-weight: 500; letter-spacing: -0.025em; }   /* 랜딩·상태 화면처럼 제목이 곧 내용일 때만 */
 h2 { font-size: var(--ag-text-2xl); font-weight: 600; letter-spacing: -0.02em; }
 h3 { font-size: var(--ag-text-xl);  font-weight: 600; }
 h4 { font-size: var(--ag-text-lg); }

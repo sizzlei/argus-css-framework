@@ -165,6 +165,8 @@
 .ag-badge--cat4 { background: var(--ag-cat-4-soft); color: var(--ag-cat-4-text); }
 .ag-badge--other { background: var(--ag-cat-other-soft); color: var(--ag-cat-other-text); }
 .ag-badge--inverse { background: var(--ag-inverse); color: var(--ag-text-on-inverse); }
+/* 종류 표시용 — 알약 없이 점 + 글자. 행마다 알약이 셋이면 상태 알약이 묻힌다: 엔진·종류는 --plain, 알약은 상태에만 */
+.ag-badge--plain { background: transparent; border-color: transparent; padding-inline: 0; font-weight: 500; }
 /* ③ 톤 × solid */
 .ag-badge--solid.ag-badge--good   { background: var(--ag-good-solid);   color: var(--ag-text-on-good); }
 .ag-badge--solid.ag-badge--warn   { background: var(--ag-warn-solid);   color: var(--ag-text-on-warn); }
@@ -328,6 +330,15 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-stat__label { font-size: var(--ag-text-md); color: var(--ag-text-3); }
 .ag-stat--sm .ag-stat__value { font-size: var(--ag-text-2xl); }
 .ag-stat--sm .ag-stat__label { font-size: var(--ag-text-sm); }
+.ag-stat--hero .ag-stat__value { font-size: var(--ag-text-hero); }   /* 페이지 히어로 숫자 — 한 화면에 하나 */
+/* KPI 행: <div class="ag-stat-row"> .ag-stat × 3~4. 720px 이하에서 3열 격자 + 작은 숫자 — 첫 화면의 핵심 수치는 한 줄에 */
+.ag-stat-row { display: flex; flex-wrap: wrap; gap: var(--ag-space-8); align-items: flex-end; }
+@media (max-width: 720px) {
+  .ag-stat-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--ag-space-3); }
+  .ag-stat-row .ag-stat__value, .ag-stat--hero .ag-stat__value { font-size: var(--ag-text-2xl); }
+  .ag-stat-row .ag-stat__label { font-size: var(--ag-text-xs); }
+  .ag-stat-row .ag-stat__top { flex-direction: column-reverse; align-items: flex-start; gap: 4px; }
+}
 
 /* 증감 배지 — 원형 안에 화살표 + 수치 */
 .ag-delta {
@@ -390,7 +401,28 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-person__meta { font-size: var(--ag-text-sm); color: var(--ag-text-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
 /* ---- Table ----------------------------------------------------------- */
-.ag-table-wrap { overflow-x: auto; border-radius: var(--ag-radius-lg); border: 1px solid var(--ag-border); background: var(--ag-surface); }
+/* 가로 스크롤 단서: 스크롤 가능한 방향의 가장자리에 그림자 (background-attachment local/scroll 기법, CSS 전용).
+   잘린 열이 있다는 걸 사용자가 알아야 한다 — 상태 열이 화면 밖에 있는 목록이 그동안 조용히 지나갔다 */
+.ag-table-wrap {
+  overflow-x: auto; border-radius: var(--ag-radius-lg); border: 1px solid var(--ag-border);
+  background:
+    linear-gradient(90deg, var(--ag-surface) 40%, transparent) left / 48px 100% no-repeat local,
+    linear-gradient(270deg, var(--ag-surface) 40%, transparent) right / 48px 100% no-repeat local,
+    linear-gradient(90deg, var(--ag-shadow-scroll), transparent) left / 14px 100% no-repeat scroll,
+    linear-gradient(270deg, var(--ag-shadow-scroll), transparent) right / 14px 100% no-repeat scroll,
+    var(--ag-surface);
+}
+/* 끝 열 고정: <table class="ag-table ag-table--sticky-end"> — 마지막 열이 .ag-td--actions(⋯) 면 그 앞의 상태 열까지 두 열을 고정한다.
+   액션 열은 폭을 56px 로 못박아 상태 열의 right 오프셋을 계산 가능하게 (액션 버튼 1개 기준; 둘이면 --ag-actions-w 를 넓힌다) */
+.ag-table--sticky-end { --ag-actions-w: 56px; }
+.ag-table--sticky-end th:last-child, .ag-table--sticky-end td:last-child { position: sticky; right: 0; z-index: 2; background: var(--ag-surface); }
+.ag-table--sticky-end tr:has(> .ag-td--actions:last-child) > :nth-last-child(2),
+.ag-table--sticky-end tr:has(> .ag-th--actions:last-child) > :nth-last-child(2) { position: sticky; right: var(--ag-actions-w); z-index: 2; background: var(--ag-surface); }
+.ag-table--sticky-end tr:has(> .ag-td--actions:last-child) > :nth-last-child(2), .ag-table--sticky-end tr:not(:has(> .ag-td--actions:last-child)) > :last-child { box-shadow: -10px 0 12px -12px var(--ag-shadow-scroll); }
+.ag-table--sticky-end .ag-td--actions:last-child, .ag-table--sticky-end .ag-th--actions:last-child { width: var(--ag-actions-w); min-width: var(--ag-actions-w); box-sizing: border-box; }
+.ag-table--sticky-end thead th { z-index: 3; }
+.ag-table--sticky-end tbody tr:hover td { background-color: var(--ag-surface-hover); }
+.ag-table--sticky-end tr.is-selected td { background-color: color-mix(in oklab, var(--ag-accent) 14%, var(--ag-surface)); }
 .ag-card--flush .ag-table-wrap { border: 0; border-radius: 0; }
 .ag-table {
   width: 100%;
@@ -399,7 +431,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   font-size: var(--ag-text-md);
 }
 .ag-table th, .ag-table td {
-  padding: 14px 18px;
+  padding: var(--ag-cell-y) var(--ag-cell-x);
   text-align: left;
   vertical-align: middle;
   border-bottom: 1px solid var(--ag-border);
@@ -428,7 +460,8 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-table td.ag-td--wrap { white-space: normal; min-width: 240px; }
 .ag-table .ag-td--num, .ag-table .ag-th--num { text-align: right; }
 .ag-table .ag-td--actions { text-align: right; width: 1%; }
-.ag-table--dense th, .ag-table--dense td { padding: 9px 14px; font-size: var(--ag-text-sm); }
+.ag-table--dense { --ag-cell-y: 8px; --ag-cell-x: 12px; }
+.ag-table--dense th, .ag-table--dense td { font-size: var(--ag-text-sm); }
 .ag-table--striped tbody tr:nth-child(even) { background: color-mix(in oklab, var(--ag-surface-2) 50%, transparent); }
 .ag-table th.is-sorted { color: var(--ag-text); }
 .ag-table th .ag-sort { display: inline-flex; align-items: center; gap: 4px; color: inherit; text-transform: inherit; letter-spacing: inherit; font: inherit; }

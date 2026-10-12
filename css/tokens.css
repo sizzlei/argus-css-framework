@@ -16,7 +16,8 @@
   --ag-text-xl: 1.25rem;    /* 20 — 카드 제목 */
   --ag-text-2xl: 1.75rem;   /* 28 */
   --ag-text-3xl: 2.375rem;  /* 38 */
-  --ag-text-4xl: 3.25rem;   /* 52 — 스탯 숫자 */
+  --ag-text-4xl: 2.5rem;    /* 40 — 카드 안 스탯 숫자 (1.2: 52 → 40. 큰 숫자는 한 화면에 한 줄이면 충분) */
+  --ag-text-hero: 3.25rem;  /* 52 — 페이지 히어로 숫자 1곳 (.ag-stat--hero) */
   --ag-leading: 1.5;
   --ag-leading-tight: 1.2;
 
@@ -31,6 +32,8 @@
   --ag-space-10: 2.5rem;
   --ag-space-12: 3rem;
   /* 레이아웃 간격 — 카드 사이·섹션 사이·본문 블록 사이. 서비스가 한 번에 조이거나 풀 수 있게 토큰으로 */
+  --ag-cell-y: 11px;                     /* 테이블 셀 세로 패딩 — 행 ≈ 44px (1.2: 14 → 11. 인프라 목록은 행 수가 정보량) */
+  --ag-cell-x: 16px;
   --ag-gap-grid: var(--ag-space-6);      /* .ag-grid 카드 사이 24px */
   --ag-gap-main: var(--ag-space-8);      /* .ag-main 직계 블록(헤더 ↔ 그리드 ↔ 섹션) 사이 32px */
   --ag-gap-section: var(--ag-space-5);   /* .ag-section 헤드 ↔ 본문 20px */
@@ -46,6 +49,7 @@
   --ag-shadow-sm: 0 1px 2px rgb(0 0 0 / .4);
   --ag-shadow-md: 0 8px 24px -8px rgb(0 0 0 / .6);
   --ag-shadow-lg: 0 24px 48px -16px rgb(0 0 0 / .7);
+  --ag-shadow-scroll: rgb(0 0 0 / .5);   /* 가로 스크롤 가장자리 그림자 (.ag-table-wrap) */
   --ag-ring: 0 0 0 3px color-mix(in oklab, var(--ag-accent) 35%, transparent);
 
   /* ---- Motion ---- */
@@ -212,4 +216,5 @@
   --ag-shadow-sm: 0 1px 2px rgb(16 18 32 / .06);
   --ag-shadow-md: 0 8px 24px -8px rgb(16 18 32 / .14);
   --ag-shadow-lg: 0 24px 48px -16px rgb(16 18 32 / .18);
+  --ag-shadow-scroll: rgb(16 18 32 / .16);
 }

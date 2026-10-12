@@ -157,6 +157,9 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 태그 | 태그 키 집계 칩의 상태(제거 예약·값 여러 종류) | `.ag-tag--crit` / `.ag-tag--warn` (+ 아이콘·"값 N종" 텍스트) — 범주는 `--cat1~4`, 기타는 `--other` |
 | 시크릿 | 여러 줄 키·인증서 가림(blur + Click to Reveal) | `.ag-secret-field--block` + `textarea.is-masked` + `.ag-secret-field__reveal[data-ag-reveal]` |
 | 공통 | 뷰 전환(기간·보기 모드) 3~4개 | `.ag-segmented` (`--sm`) — 5개 이상이면 `.ag-nav`(캡슐) 또는 `.ag-tabs`(밑줄) 로. 둘 다 안에서 가로 스크롤 |
+| 목록 | 열이 많아 잘리는 테이블(상태·액션이 오른쪽 끝) | `.ag-table--sticky-end` — 상태 + ⋯ 두 열 고정, 스크롤 단서는 `.ag-table-wrap` 이 자동 |
+| 목록 | 행마다 엔진·환경·상태 배지 셋 | 엔진·종류는 `.ag-badge--plain`(점+글자), 환경은 prod 가 아닐 때만 배지, 알약은 상태 하나 |
+| 대시보드 | KPI 숫자 3~4개 한 줄 | `.ag-stat-row` > `.ag-stat` (모바일 3열). 52px 히어로(`--hero`)는 한 화면 한 곳 |
 | 목록 | 행 전체 클릭 → 상세 | `.ag-table--clickable` + `tr[tabindex="0"][data-href]`, JS 는 `.ag-td--actions` 안 클릭은 무시 |
 | 대시보드 | 인사(Greeting)·강조 카드 안의 라벨·힌트·푸터·outline 버튼 | `.ag-card--accent` 그대로 — 안쪽 토큰이 재정의되므로 보정 클래스 불필요. `--inverse` 버튼으로 바꿀 필요 없음 |
 | 공통 | 빠른 작업 격자(제목 + 부제 2줄, 외부 링크) | `.ag-quick-actions` > `.ag-quick-action` + `__body`(`__title`/`__meta`) + `__end` |

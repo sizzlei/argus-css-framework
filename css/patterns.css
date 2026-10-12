@@ -936,7 +936,8 @@
 /* ---- 밀도 토글 (B12) ----------------------------------------------------------
    <html data-density="compact"> — 테이블·리스트·카드 패딩을 한 단계 줄인다. 사용자 설정으로 .ag-user 메뉴에 스위치 */
 :root[data-density="compact"] { --ag-space-5: 1rem; --ag-space-6: 1.25rem; }
-:root[data-density="compact"] .ag-table th, :root[data-density="compact"] .ag-table td { padding: 8px 14px; font-size: var(--ag-text-sm); }
+:root[data-density="compact"] { --ag-cell-y: 7px; --ag-cell-x: 12px; }
+:root[data-density="compact"] .ag-table th, :root[data-density="compact"] .ag-table td { font-size: var(--ag-text-sm); }
 :root[data-density="compact"] .ag-list__item, :root[data-density="compact"] .ag-tile { padding: 9px 14px; }
 :root[data-density="compact"] .ag-card { gap: var(--ag-space-4); border-radius: var(--ag-radius-lg); }
 :root[data-density="compact"] .ag-card--sm { padding: 12px; }

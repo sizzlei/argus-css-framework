@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.2.0 — 2026-10-12 · 디자인 감사 (인프라 콘솔 성격으로)
+
+방향: "조용하고 빽빽하고 정확하게". 소비자 앱 인상(큰 라운드·알약 버튼·52px 숫자·분홍 보조색)을 눌러 데이터가 앞으로 나오게 한다. 토큰 위주 변경이라 서비스는 dist 재복사만으로 따라온다 — 모양·밀도가 눈에 띄게 바뀌므로 minor 버전.
+
+### Phase 1 — 위계·가시성·밀도
+- `.ag-table-wrap` 가로 스크롤 가장자리 그림자(`--ag-shadow-scroll`, background-attachment 기법) — 잘린 열이 있다는 단서. `.ag-table--sticky-end` 마지막 열(상태·액션) 고정.
+- 테이블 셀 패딩 토큰 `--ag-cell-y/--ag-cell-x` 11/16(행 ≈44px, 이전 14/18 ≈50px). `--dense` 8/12, `data-density=compact` 7/12.
+- `h1` 38/500 → 28/600 (`--ag-text-2xl`). 큰 제목이 필요한 랜딩·상태 화면은 `.ag-h-display`.
+- 스탯 숫자 `--ag-text-4xl` 52 → 40. 52 는 `--ag-text-hero` + `.ag-stat--hero` 로 한 화면 한 곳만. `.ag-stat-row` KPI 묶음은 720px 이하 3열 격자 + 28px 숫자 (2+1 로 꺾이던 모바일).
+- `.ag-badge--plain` — 종류(엔진·팀)는 점 + 글자, 알약은 상태 하나만. resources 예시의 엔진·prod 배지를 정리(행당 알약 3 → 1).
+
 ## 1.1.0 — 2026-10-03 · 첫 서비스(Harpoon) 적용 후 보강
 - `.ag-btn--outline.ag-btn--primary`(액센트 테두리, hover accent-soft — 채움 primary 의 outline 짝), `.ag-list__item:disabled`(`.ag-btn` 과 같은 .45 흐림 + pointer-events), `.ag-select--list`(`size=N` 열린 리스트 박스: 고정 높이·캐럿 제거, option 행 패딩·선택 강조). 상세 화면 버튼 짝, 계정 선택 모달, 복구 소스 DB 선택에서 들어온 건.
 - `.ag-app--fluid` — 본문 `.ag-main` 의 1600px 상한(`--ag-content-max`) 해제, 거터만 남김. 다른 모드와 조합. 2560px 모니터에서 1600px 로 모이는 게 "좁아졌다" 로 들어온 건 (이전 앱은 상한이 없었음). layouts.html 에 fluid 토글, 매핑표에 `max-w-*`/`container` 제거 규칙.

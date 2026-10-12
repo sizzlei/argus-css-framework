@@ -295,6 +295,21 @@ async def main():
         check("select--list: taller than one row, no caret image", r["slH"] > 2.5 * r["s0H"] and r["slImg"] == "none", str(r))
         await pg.close()
 
+        # ── P1. 디자인 감사 1단계: 셀 패딩 토큰, h1 28, 스탯 40/hero 52, 모바일 stat-row 3열, badge--plain, table-wrap 그림자, sticky-end ──
+        pg = await page(b, "resources.html")
+        r = await pg.evaluate("""()=>{const td=document.querySelector('.ag-table tbody td');const h1=document.createElement('h1');h1.textContent='t';document.body.appendChild(h1);const w=document.querySelector('.ag-table-wrap');const last=document.querySelector('.ag-table--sticky-end tbody tr td:last-child');
+          const d=document.createElement('div');d.innerHTML='<span class="ag-badge ag-badge--plain" id="bp">x</span><div class="ag-stat" id="st"><span class="ag-stat__value">1</span></div><div class="ag-stat ag-stat--hero" id="sh"><span class="ag-stat__value">1</span></div>';document.body.appendChild(d);
+          const t=document.createElement('table');t.className='ag-table';t.innerHTML='<tbody><tr><td id="td0">x</td></tr></tbody>';document.body.appendChild(t);
+          return {pad:getComputedStyle(document.getElementById('td0')).padding,dense:getComputedStyle(td).padding,h1:getComputedStyle(h1).fontSize,bg:getComputedStyle(w).backgroundImage.split('linear-gradient').length-1,sticky:last?getComputedStyle(last).position:'?',plainBg:getComputedStyle(document.getElementById('bp')).backgroundColor,stat:getComputedStyle(document.querySelector('#st .ag-stat__value')).fontSize,hero:getComputedStyle(document.querySelector('#sh .ag-stat__value')).fontSize}}""")
+        check("P1: cell padding 11px 16px (dense 8px 12px), h1 28px", r["pad"] == "11px 16px" and r["dense"] == "8px 12px" and r["h1"] == "28px", str(r))
+        check("P1: stat 40px / hero 52px, badge--plain transparent", r["stat"] == "40px" and r["hero"] == "52px" and r["plainBg"] == "rgba(0, 0, 0, 0)", str(r))
+        check("P1: table-wrap has 4 scroll-shadow gradients, sticky-end last cell sticky", r["bg"] == 4 and r["sticky"] == "sticky", str(r))
+        await pg.close()
+        pg = await page(b, "index.html", 400, 900)
+        r = await pg.evaluate("""()=>{const row=document.querySelector('.ag-stat-row');const s=getComputedStyle(row);const vals=[...row.querySelectorAll('.ag-stat__value')].map(e=>e.getBoundingClientRect());return {disp:s.display,cols:s.gridTemplateColumns.split(' ').length,sameLine:Math.max(...vals.map(v=>v.top))-Math.min(...vals.map(v=>v.top))<4,size:getComputedStyle(row.querySelector('.ag-stat__value')).fontSize}}""")
+        check("P1: @400 stat-row is a 3-col grid, numbers on one line at 28px", r["disp"] == "grid" and r["cols"] == 3 and r["sameLine"] and r["size"] == "28px", str(r))
+        await pg.close()
+
         # ── 10. 폴백 간격: 클래스 없는 부모 안에서만 ─────────────────────────────────────────
         pg = await page(b, "components.html")
         r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card">a</div><div class="ag-card">b</div><p><button class="ag-btn">x</button><button class="ag-btn">y</button></p><div class="ag-cluster"><button class="ag-btn">x</button><button class="ag-btn">y</button></div>';document.body.appendChild(d);
