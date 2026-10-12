@@ -140,7 +140,7 @@
         <div class="ag-list">
           <a class="ag-list__item" href="resources.html"><span class="ag-list__label"><span class="ag-dot ag-dot--good"></span><span>정상</span></span><span class="ag-badge ag-badge--count">171</span></a>
           <a class="ag-list__item" href="resources.html"><span class="ag-list__label"><span class="ag-dot ag-dot--warn"></span><span>주의</span></span><span class="ag-badge ag-badge--count">11</span></a>
-          <a class="ag-list__item" href="resources.html"><span class="ag-list__label"><span class="ag-dot ag-dot--crit ag-dot--pulse"></span><span>장애</span></span><span class="ag-badge ag-badge--count">4</span></a>
+          <a class="ag-list__item" href="resources.html"><span class="ag-list__label"><span class="ag-dot ag-dot--crit ag-dot--pulse is-live"></span><span>장애</span></span><span class="ag-badge ag-badge--count">4</span></a>
         </div>
         <div class="ag-insight ag-mt-auto">
           <span class="ag-insight__icon"><svg class="ag-icon"><use href="#i-sparkle"/></svg></span>
@@ -189,7 +189,7 @@
         <p class="ag-text-lg ag-text-2">자동 스냅샷 186건 중 184건 성공. 복구 리허설 2건이 이번 주 예정되어 있습니다.</p>
         <div class="ag-stack ag-stack--sm ag-mt-auto">
           <div class="ag-tile ag-tile--inverse"><span class="ag-tile__label">스냅샷 실패</span><span class="ag-badge ag-badge--count">2</span></div>
-          <div class="ag-tile ag-tile--inverse" style="opacity:.85"><span class="ag-tile__label">복구 리허설 예정</span><span class="ag-badge ag-badge--count">2</span></div>
+          <div class="ag-tile ag-tile--inverse"><span class="ag-tile__label">복구 리허설 예정</span><span class="ag-badge ag-badge--count">2</span></div>
         </div>
       </section>
     </div>
@@ -215,7 +215,7 @@
             </tbody>
           </table>
         </div>
-        <div class="ag-card__foot" style="padding:12px 24px 0"><span>7개 리소스 그룹 · 총 503개</span><span>월 예상 비용 <strong class="ag-text">$184.2k</strong> · 전월 대비 <span class="ag-text-good">-3.1%</span></span></div>
+        <div class="ag-card__foot"><span>7개 리소스 그룹 · 총 503개</span><span>월 예상 비용 <strong class="ag-text">$184.2k</strong> · 전월 대비 <span class="ag-text-good">-3.1%</span></span></div>
       </section>
 
       <!-- 분포 버블 -->
@@ -224,11 +224,12 @@
           <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--1"><svg class="ag-icon"><use href="#i-layers"/></svg></span><h2 class="ag-card__title">엔진 분포</h2></div>
           <a class="ag-btn ag-btn--icon ag-btn--outline ag-btn--sm" href="resources.html" aria-label="리소스 보기"><svg class="ag-icon"><use href="#i-arrow-up-right"/></svg></a>
         </div>
-        <div class="ag-relative" style="height:230px;max-width:280px;margin-inline:auto;width:100%">
-          <div class="ag-bubble ag-bubble--2" style="position:absolute;left:0;top:6px;width:170px;font-size:46px"><strong>58%</strong><span>MySQL</span></div>
-          <div class="ag-bubble ag-bubble--hatch" style="position:absolute;left:150px;top:0;width:84px;font-size:22px"><strong>9%</strong><span>Oracle</span></div>
-          <div class="ag-bubble ag-bubble--1" style="position:absolute;left:135px;bottom:0;width:136px;font-size:36px"><strong>33%</strong><span>PostgreSQL</span></div>
+        <div class="ag-bubbles" role="img" aria-label="엔진 분포 — MySQL 58%, PostgreSQL 33%, Oracle 9%. 면적이 비율에 비례">
+          <div class="ag-bubble ag-bubble--1" style="--r:.762"><strong>58%</strong><span>MySQL</span></div>
+          <div class="ag-bubble ag-bubble--hatch" style="--r:.300"><strong>9%</strong><span>Oracle</span></div>
+          <div class="ag-bubble ag-bubble--2" style="--r:.574"><strong>33%</strong><span>PostgreSQL</span></div>
         </div>
+        <div class="ag-legend ag-mt-auto"><span class="ag-legend__item"><span class="ag-dot ag-dot--c1"></span>MySQL 108</span><span class="ag-legend__item"><span class="ag-dot ag-dot--c2"></span>PostgreSQL 61</span><span class="ag-legend__item"><span class="ag-dot ag-dot--other"></span>Oracle 17</span></div>
       </section>
     </div>
 
@@ -297,15 +298,15 @@
           <table class="ag-table ag-table--clickable ag-table--sticky-end">
             <thead><tr><th>다이제스트</th><th>인스턴스</th><th class="ag-th--num">호출</th><th class="ag-th--num">평균</th><th style="min-width:96px">추이</th><th>상태</th><th class="ag-th--actions"><span class="ag-sr-only">작업</span></th></tr></thead>
             <tbody>
-              <tr tabindex="0"><td class="ag-td--query"><code class="ag-truncate" style="display:block;max-width:300px">SELECT … FROM order_item oi JOIN order o ON … WHERE o.created_at &gt; ?</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c1"></span>order-db-reader-1</span></td><td class="ag-td--num ag-num">1,284</td><td class="ag-td--num ag-num ag-text-crit">2.41s</td><td><svg class="ag-spark ag-spark--sm ag-spark--crit" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,22 L15,20 L30,21 L45,14 L60,9 L75,6 L90,8 L100,4"/></svg></td><td><span class="ag-badge ag-badge--crit">인덱스 누락</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
-              <tr tabindex="0"><td class="ag-td--query"><code class="ag-truncate" style="display:block;max-width:300px">UPDATE member SET last_login_at = ? WHERE id = ?</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c2"></span>member-pg-writer</span></td><td class="ag-td--num ag-num">9,730</td><td class="ag-td--num ag-num ag-text-warn">1.12s</td><td><svg class="ag-spark ag-spark--sm ag-spark--2" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,16 L15,18 L30,15 L45,17 L60,12 L75,14 L90,13 L100,12"/></svg></td><td><span class="ag-badge ag-badge--warn">락 대기</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
-              <tr tabindex="0"><td class="ag-td--query"><code class="ag-truncate" style="display:block;max-width:300px">SELECT COUNT(*) FROM shipment WHERE status IN (?,?,?) AND wh_id = ?</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c1"></span>wms-mysql-02</span></td><td class="ag-td--num ag-num">612</td><td class="ag-td--num ag-num">1.08s</td><td><svg class="ag-spark ag-spark--sm" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,14 L15,15 L30,13 L45,15 L60,14 L75,15 L90,14 L100,15"/></svg></td><td><span class="ag-badge">풀스캔</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
-              <tr tabindex="0"><td class="ag-td--query"><code class="ag-truncate" style="display:block;max-width:300px">db.products.aggregate([{$match:{category:?}},{$group:…}])</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c3"></span>catalog-docdb</span></td><td class="ag-td--num ag-num">341</td><td class="ag-td--num ag-num">1.03s</td><td><svg class="ag-spark ag-spark--sm ag-spark--good" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,8 L15,10 L30,12 L45,14 L60,16 L75,18 L90,20 L100,22"/></svg></td><td><span class="ag-badge ag-badge--good">개선 중</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
-              <tr tabindex="0"><td class="ag-td--query"><code class="ag-truncate" style="display:block;max-width:300px">SELECT * FROM promo_log WHERE promo_id = ? ORDER BY id DESC LIMIT 50</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c1"></span>promo-mysql-01</span></td><td class="ag-td--num ag-num">188</td><td class="ag-td--num ag-num">1.01s</td><td><svg class="ag-spark ag-spark--sm" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,20 L15,18 L30,19 L45,17 L60,18 L75,16 L90,17 L100,15"/></svg></td><td><span class="ag-badge">정렬</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr tabindex="0"><td class="ag-td--query"><code>SELECT … FROM order_item oi JOIN order o ON … WHERE o.created_at &gt; ?</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c1"></span>order-db-reader-1</span></td><td class="ag-td--num ag-num">1,284</td><td class="ag-td--num ag-num ag-text-crit">2.41s</td><td><svg class="ag-spark ag-spark--sm ag-spark--crit" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,22 L15,20 L30,21 L45,14 L60,9 L75,6 L90,8 L100,4"/></svg></td><td><span class="ag-badge ag-badge--crit">인덱스 누락</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr tabindex="0"><td class="ag-td--query"><code>UPDATE member SET last_login_at = ? WHERE id = ?</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c2"></span>member-pg-writer</span></td><td class="ag-td--num ag-num">9,730</td><td class="ag-td--num ag-num ag-text-warn">1.12s</td><td><svg class="ag-spark ag-spark--sm ag-spark--2" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,16 L15,18 L30,15 L45,17 L60,12 L75,14 L90,13 L100,12"/></svg></td><td><span class="ag-badge ag-badge--warn">락 대기</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr tabindex="0"><td class="ag-td--query"><code>SELECT COUNT(*) FROM shipment WHERE status IN (?,?,?) AND wh_id = ?</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c1"></span>wms-mysql-02</span></td><td class="ag-td--num ag-num">612</td><td class="ag-td--num ag-num">1.08s</td><td><svg class="ag-spark ag-spark--sm" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,14 L15,15 L30,13 L45,15 L60,14 L75,15 L90,14 L100,15"/></svg></td><td><span class="ag-badge">풀스캔</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr tabindex="0"><td class="ag-td--query"><code>db.products.aggregate([{$match:{category:?}},{$group:…}])</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c3"></span>catalog-docdb</span></td><td class="ag-td--num ag-num">341</td><td class="ag-td--num ag-num">1.03s</td><td><svg class="ag-spark ag-spark--sm ag-spark--good" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,8 L15,10 L30,12 L45,14 L60,16 L75,18 L90,20 L100,22"/></svg></td><td><span class="ag-badge ag-badge--good">개선 중</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
+              <tr tabindex="0"><td class="ag-td--query"><code>SELECT * FROM promo_log WHERE promo_id = ? ORDER BY id DESC LIMIT 50</code></td><td><span class="ag-row"><span class="ag-dot ag-dot--c1"></span>promo-mysql-01</span></td><td class="ag-td--num ag-num">188</td><td class="ag-td--num ag-num">1.01s</td><td><svg class="ag-spark ag-spark--sm" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__line" d="M0,20 L15,18 L30,19 L45,17 L60,18 L75,16 L90,17 L100,15"/></svg></td><td><span class="ag-badge">정렬</span></td><td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더 보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td></tr>
             </tbody>
           </table>
         </div>
-        <div class="ag-card__foot" style="padding:12px 24px 0"><span>상위 5 / 43 다이제스트 · 전체 318건</span><span>평균 1.34s · p95 4.2s</span></div>
+        <div class="ag-card__foot"><span>상위 5 / 43 다이제스트 · 전체 318건</span><span>평균 1.34s · p95 4.2s</span></div>
       </section>
 
       <section class="ag-card ag-col-4">

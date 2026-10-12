@@ -383,4 +383,4 @@
 }
 
 /* ---- 공통: 모드 전환 데모용 스위처 ---- */
-.ag-mode-switch { position: fixed; bottom: var(--ag-space-4); right: var(--ag-space-4); z-index: 95; box-shadow: var(--ag-shadow-lg); }
+.ag-mode-switch { position: fixed; bottom: var(--ag-space-4); right: var(--ag-space-4); z-index: 95; box-shadow: var(--ag-shadow-lg); background: var(--ag-bg-elevated); padding: 6px; border-radius: var(--ag-radius-pill); border: 1px solid var(--ag-border); }

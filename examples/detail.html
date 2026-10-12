@@ -92,7 +92,7 @@
       <div class="ag-page-header__title">
         <div class="ag-cluster">
           <h1>order-db-writer</h1>
-          <span class="ag-badge ag-badge--lg ag-badge--crit"><span class="ag-dot ag-dot--crit ag-dot--pulse"></span>장애</span>
+          <span class="ag-badge ag-badge--lg ag-badge--crit"><span class="ag-dot ag-dot--crit ag-dot--pulse is-live"></span>장애</span>
           <span class="ag-badge ag-badge--lg">prod</span>
         </div>
         <div class="ag-cluster ag-text-sm ag-text-3">
@@ -206,12 +206,12 @@
           <div class="ag-grid ag-grid--tight">
             <div class="ag-tile ag-tile--stack ag-col-6">
               <div class="ag-cluster ag-cluster--between"><span class="ag-tile__label">CPU 사용률</span><strong class="ag-text-crit">92%</strong></div>
-              <svg class="ag-spark ag-spark--lg ag-spark--crit" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,20 L8,19 L16,20 L24,18 L32,19 L40,17 L48,14 L56,10 L64,7 L72,5 L80,4 L88,3 L100,3 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,20 L8,19 L16,20 L24,18 L32,19 L40,17 L48,14 L56,10 L64,7 L72,5 L80,4 L88,3 L100,3"/></svg>
+              <svg class="ag-spark ag-spark--lg ag-spark--crit" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><line class="ag-spark__ref" x1="0" x2="100" y1="8" y2="8"/><path class="ag-spark__area" d="M0,20 L8,19 L16,20 L24,18 L32,19 L40,17 L48,14 L56,10 L64,7 L72,5 L80,4 L88,3 L100,3 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,20 L8,19 L16,20 L24,18 L32,19 L40,17 L48,14 L56,10 L64,7 L72,5 L80,4 L88,3 L100,3"/></svg>
               <div class="ag-cluster ag-cluster--between ag-text-xs ag-text-3"><span>13:00</span><span>임계 80% · 13:52 초과</span><span>14:00</span></div>
             </div>
             <div class="ag-tile ag-tile--stack ag-col-6">
               <div class="ag-cluster ag-cluster--between"><span class="ag-tile__label">커넥션</span><strong class="ag-text-warn">1,842</strong></div>
-              <svg class="ag-spark ag-spark--lg" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,16 L8,15 L16,16 L24,15 L32,14 L40,14 L48,9 L56,7 L64,6 L72,6 L80,5 L88,5 L100,4 L100,28 L0,28 Z" style="fill:var(--ag-warn)"/><path class="ag-spark__line" d="M0,16 L8,15 L16,16 L24,15 L32,14 L40,14 L48,9 L56,7 L64,6 L72,6 L80,5 L88,5 L100,4" style="stroke:var(--ag-warn)"/></svg>
+              <svg class="ag-spark ag-spark--lg ag-spark--warn" viewBox="0 0 100 28" preserveAspectRatio="none" aria-hidden="true"><path class="ag-spark__area" d="M0,16 L8,15 L16,16 L24,15 L32,14 L40,14 L48,9 L56,7 L64,6 L72,6 L80,5 L88,5 L100,4 L100,28 L0,28 Z"/><path class="ag-spark__line" d="M0,16 L8,15 L16,16 L24,15 L32,14 L40,14 L48,9 L56,7 L64,6 L72,6 L80,5 L88,5 L100,4"/></svg>
               <div class="ag-cluster ag-cluster--between ag-text-xs ag-text-3"><span>13:00</span><span>max 2,000 · 풀 92%</span><span>14:00</span></div>
             </div>
             <div class="ag-tile ag-tile--stack ag-col-4">
@@ -233,21 +233,21 @@
         <section class="ag-card ag-card--flush">
           <div class="ag-card__head">
             <div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--warn"><svg class="ag-icon"><use href="#i-terminal"/></svg></span><div><h2 class="ag-card__title">활성 세션</h2><p class="ag-card__subtitle">2초 초과 실행 중 · 자동 갱신 10s</p></div></div>
-            <div class="ag-cluster"><span class="ag-badge ag-badge--warn"><span class="ag-dot ag-dot--warn ag-dot--pulse"></span>락 대기 3</span><button class="ag-btn ag-btn--sm ag-btn--outline">PROCESSLIST</button></div>
+            <div class="ag-cluster"><span class="ag-badge ag-badge--warn"><span class="ag-dot ag-dot--warn"></span>락 대기 3</span><button class="ag-btn ag-btn--sm ag-btn--outline">PROCESSLIST</button></div>
           </div>
           <div class="ag-table-wrap ag-mt-4">
             <table class="ag-table ag-table--dense ag-table--clickable">
               <thead><tr><th>ID</th><th>사용자</th><th>호스트</th><th class="ag-th--num">시간</th><th>상태</th><th>쿼리</th></tr></thead>
               <tbody>
-                <tr tabindex="0"><td class="ag-mono">8812340</td><td>order_api</td><td class="ag-mono ag-text-3">10.12.4.31</td><td class="ag-td--num ag-num ag-text-crit">48s</td><td><span class="ag-badge ag-badge--sm ag-badge--crit">Sending data</span></td><td><code class="ag-truncate" style="display:block;max-width:300px">SELECT … FROM order_item oi JOIN order o ON oi.order_id = o.id WHERE o.created_at &gt; ?</code></td></tr>
-                <tr tabindex="0"><td class="ag-mono">8812377</td><td>order_api</td><td class="ag-mono ag-text-3">10.12.4.32</td><td class="ag-td--num ag-num ag-text-warn">12s</td><td><span class="ag-badge ag-badge--sm ag-badge--warn">Waiting for lock</span></td><td><code class="ag-truncate" style="display:block;max-width:300px">UPDATE order SET status = ? WHERE id = ?</code></td></tr>
-                <tr tabindex="0"><td class="ag-mono">8812391</td><td>order_api</td><td class="ag-mono ag-text-3">10.12.4.35</td><td class="ag-td--num ag-num ag-text-warn">9s</td><td><span class="ag-badge ag-badge--sm ag-badge--warn">Waiting for lock</span></td><td><code class="ag-truncate" style="display:block;max-width:300px">UPDATE order SET status = ? WHERE id = ?</code></td></tr>
-                <tr tabindex="0"><td class="ag-mono">8811902</td><td>batch_settle</td><td class="ag-mono ag-text-3">10.12.9.8</td><td class="ag-td--num ag-num">4s</td><td><span class="ag-badge ag-badge--sm">executing</span></td><td><code class="ag-truncate" style="display:block;max-width:300px">INSERT INTO settle_daily SELECT … GROUP BY seller_id</code></td></tr>
-                <tr tabindex="0"><td class="ag-mono">8812402</td><td>argus_ro</td><td class="ag-mono ag-text-3">10.12.0.4</td><td class="ag-td--num ag-num">2s</td><td><span class="ag-badge ag-badge--sm">executing</span></td><td><code class="ag-truncate" style="display:block;max-width:300px">SELECT … FROM information_schema.innodb_trx</code></td></tr>
+                <tr tabindex="0"><td class="ag-mono">8812340</td><td>order_api</td><td class="ag-mono ag-text-3">10.12.4.31</td><td class="ag-td--num ag-num ag-text-crit">48s</td><td><span class="ag-badge ag-badge--sm ag-badge--crit">Sending data</span></td><td class="ag-td--query"><code>SELECT … FROM order_item oi JOIN order o ON oi.order_id = o.id WHERE o.created_at &gt; ?</code></td></tr>
+                <tr tabindex="0"><td class="ag-mono">8812377</td><td>order_api</td><td class="ag-mono ag-text-3">10.12.4.32</td><td class="ag-td--num ag-num ag-text-warn">12s</td><td><span class="ag-badge ag-badge--sm ag-badge--warn">Waiting for lock</span></td><td class="ag-td--query"><code>UPDATE order SET status = ? WHERE id = ?</code></td></tr>
+                <tr tabindex="0"><td class="ag-mono">8812391</td><td>order_api</td><td class="ag-mono ag-text-3">10.12.4.35</td><td class="ag-td--num ag-num ag-text-warn">9s</td><td><span class="ag-badge ag-badge--sm ag-badge--warn">Waiting for lock</span></td><td class="ag-td--query"><code>UPDATE order SET status = ? WHERE id = ?</code></td></tr>
+                <tr tabindex="0"><td class="ag-mono">8811902</td><td>batch_settle</td><td class="ag-mono ag-text-3">10.12.9.8</td><td class="ag-td--num ag-num">4s</td><td><span class="ag-badge ag-badge--sm">executing</span></td><td class="ag-td--query"><code>INSERT INTO settle_daily SELECT … GROUP BY seller_id</code></td></tr>
+                <tr tabindex="0"><td class="ag-mono">8812402</td><td>argus_ro</td><td class="ag-mono ag-text-3">10.12.0.4</td><td class="ag-td--num ag-num">2s</td><td><span class="ag-badge ag-badge--sm">executing</span></td><td class="ag-td--query"><code>SELECT … FROM information_schema.innodb_trx</code></td></tr>
               </tbody>
             </table>
           </div>
-          <div class="ag-card__foot" style="padding:12px 24px 0"><span>5 / 1,842 세션 표시</span><span>락 홀더 <code>8812340</code> — KILL 은 승인 필요</span></div>
+          <div class="ag-card__foot"><span>5 / 1,842 세션 표시</span><span>락 홀더 <code>8812340</code> — KILL 은 승인 필요</span></div>
         </section>
       </div>
 
@@ -268,7 +268,7 @@
         <section class="ag-card">
           <div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon ag-card__icon--1"><svg class="ag-icon"><use href="#i-layers"/></svg></span><h2 class="ag-card__title">클러스터 구성</h2></div><span class="ag-text-xs ag-text-3">Multi-AZ</span></div>
           <div class="ag-list">
-            <div class="ag-list__item" style="border-color:var(--ag-accent)"><span class="ag-list__label"><span class="ag-dot ag-dot--crit"></span><span>order-db-writer</span></span><span class="ag-badge ag-badge--accent">WRITER</span></div>
+            <div class="ag-list__item is-current" aria-current="true"><span class="ag-list__label"><span class="ag-dot ag-dot--crit"></span><span>order-db-writer</span></span><span class="ag-badge ag-badge--accent">WRITER</span></div>
             <a class="ag-list__item" href="#"><span class="ag-list__label"><span class="ag-dot ag-dot--warn"></span><span>order-db-reader-1</span></span><span class="ag-badge">READER · 2c</span></a>
             <a class="ag-list__item" href="#"><span class="ag-list__label"><span class="ag-dot ag-dot--good"></span><span>order-db-reader-2</span></span><span class="ag-badge">READER · 2a</span></a>
           </div>

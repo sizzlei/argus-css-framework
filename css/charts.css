@@ -73,7 +73,7 @@
 }
 .ag-bars__label { color: var(--ag-text-2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ag-bars__track { display: flex; gap: 2px; height: 14px; border-radius: 4px; background: var(--ag-surface-2); overflow: hidden; }
-.ag-bars__seg { height: 100%; min-width: 2px; transition: width .4s var(--ag-ease); }
+.ag-bars__seg { height: 100%; min-width: 2px; transition: width var(--ag-dur-slow) var(--ag-ease); }
 .ag-bars__seg:first-child { border-radius: 4px 0 0 4px; }
 .ag-bars__seg:last-child { border-radius: 0 4px 4px 0; }
 .ag-bars__seg:only-child { border-radius: 4px; }
@@ -109,7 +109,7 @@
   min-height: 2px;
   border-radius: 4px 4px 2px 2px;
   background: var(--ag-chart-1);
-  transition: height .4s var(--ag-ease);
+  transition: height var(--ag-dur-slow) var(--ag-ease);
 }
 .ag-cols__bar--1 { background: var(--ag-chart-1); }
 .ag-cols__bar--2 { background: var(--ag-chart-2); }
@@ -230,6 +230,17 @@
 .ag-spark--crit .ag-spark__area { fill: var(--ag-crit); }
 .ag-spark--2 .ag-spark__line { stroke: var(--ag-chart-2); }
 .ag-spark--2 .ag-spark__area { fill: var(--ag-chart-2); }
+.ag-spark--warn .ag-spark__line { stroke: var(--ag-warn); }
+.ag-spark--warn .ag-spark__area { fill: var(--ag-warn); }
+.ag-spark--info .ag-spark__line { stroke: var(--ag-info); }
+.ag-spark--info .ag-spark__area { fill: var(--ag-info); }
+.ag-spark--1 .ag-spark__line { stroke: var(--ag-chart-1); }
+.ag-spark--1 .ag-spark__area { fill: var(--ag-chart-1); }
+.ag-spark--3 .ag-spark__line { stroke: var(--ag-chart-3); }
+.ag-spark--3 .ag-spark__area { fill: var(--ag-chart-3); }
+.ag-spark--4 .ag-spark__line { stroke: var(--ag-chart-4); }
+.ag-spark--4 .ag-spark__area { fill: var(--ag-chart-4); }
+.ag-spark__ref { stroke: var(--ag-text-3); stroke-width: 1; stroke-dasharray: 3 3; vector-effect: non-scaling-stroke; opacity: .7; }   /* 1.4: 기준선(임계치) — <line class="ag-spark__ref" x1="0" x2="100" y1=".." y2=".."/> */
 
 /* 스탯 + 스파크라인 조합 카드 */
 .ag-stat-card { display: flex; flex-direction: column; gap: var(--ag-space-3); }

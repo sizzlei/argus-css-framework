@@ -84,7 +84,7 @@
 .ag-auth__status b { font-weight: 700; font-size: 10px; letter-spacing: .08em; text-transform: uppercase; }
 .ag-auth__status i { font-style: normal; opacity: .45; }
 .ag-auth__status-dot { width: 7px; height: 7px; border-radius: 50%; background: rgb(255 255 255 / .5); flex: none; }
-.ag-auth__status-dot.is-up { background: var(--ag-good); color: var(--ag-good); box-shadow: 0 0 0 0 currentColor; animation: ag-pulse 1.8s var(--ag-ease) infinite; }
+.ag-auth__status-dot.is-up { background: var(--ag-good); }   /* 1.4: 정적 — 늘 보이는 상태 점은 움직이지 않는다 */
 .ag-auth__status-dot.is-down { background: var(--ag-crit); }
 .ag-auth__copyright { font-size: 11px; color: var(--ag-text-3); margin-top: 6px; }
 .ag-auth__glass {
@@ -207,7 +207,7 @@
     position: fixed; inset: 0 auto 0 0; z-index: 70;
     width: var(--ag-sidebar-w);
     transform: translateX(-100%);
-    transition: transform .25s var(--ag-ease);
+    transition: transform var(--ag-dur-move) var(--ag-ease);
     box-shadow: var(--ag-shadow-lg);
   }
   .ag-app--sidebar.is-open .ag-sidebar { transform: none; }
@@ -294,7 +294,7 @@
 .ag-log__line.is-debug { color: var(--ag-text-3); }
 .ag-log__cursor { display: inline-block; width: 7px; height: 13px; background: var(--ag-text-2); vertical-align: -2px; animation: ag-blink 1s steps(2) infinite; }
 @keyframes ag-blink { 50% { opacity: 0; } }
-.ag-log--live .ag-log__head::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ag-good); box-shadow: 0 0 0 0 var(--ag-good); animation: ag-pulse 1.8s var(--ag-ease) infinite; color: var(--ag-good); }
+.ag-log--live .ag-log__head::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--ag-good); }   /* 1.4: 정적 점 — '실행 중' 은 옆 배지 텍스트가 말한다 */
 .ag-log--fill .ag-log__body { max-height: none; flex: 1; }
 
 /* ---- 코드 / SQL 에디터용 textarea + 코드 블록 ------------------------------ */

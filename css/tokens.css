@@ -61,7 +61,12 @@
 
   /* ---- Motion ---- */
   --ag-ease: cubic-bezier(.2,.8,.2,1);
-  --ag-dur: 160ms;
+  --ag-dur: 160ms;          /* 상태 전환(hover·focus·열림) */
+  --ag-dur-move: 260ms;     /* 1.4: 패널·스위치가 자리를 옮기는 동작 */
+  --ag-dur-slow: 400ms;     /* 1.4: 데이터 바가 값으로 자라는 피드백 */
+  --ag-pulse-loop: 3;       /* 1.4: .ag-dot--pulse 반복 횟수 — 기본 3번 깜빡이고 멈춤. 진행 중 장애 하나에만 infinite 로 옵트인 */
+  --ag-query-w: 300px;      /* 1.4: 테이블 쿼리 열(.ag-td--query) 최대 폭 */
+  --ag-bubble-max: 210px;   /* 1.4: .ag-bubbles 에서 가장 큰 버블 지름 (--r = √비율) */
 
   /* ---- Layout ---- */
   --ag-topbar-h: 64px;

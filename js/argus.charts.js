@@ -73,6 +73,16 @@
     other: function () { return tokens().other; },
     status: function () { var t = tokens(); return { good: t.good, warn: t.warn, crit: t.crit, info: t.info }; },
 
+    /* ---- 비율 버블 (.ag-bubbles) ----
+       bubbles(root): root 안 .ag-bubble[data-v] 의 값을 합계로 나눠 --r = √(비율) 을 준다 → 면적이 값에 비례. CSS 만으로 쓰려면 --r 을 직접 적는다. */
+    bubbles: function (root) {
+      var els = (root || document).querySelectorAll('.ag-bubbles .ag-bubble[data-v]'), sum = 0, i;
+      for (i = 0; i < els.length; i++) sum += parseFloat(els[i].getAttribute('data-v')) || 0;
+      for (i = 0; i < els.length; i++) {
+        var v = parseFloat(els[i].getAttribute('data-v')) || 0;
+        els[i].style.setProperty('--r', sum ? Math.sqrt(v / sum).toFixed(3) : 1);
+      }
+    },
     /* ---- 순차 램프 (히트맵·밀도) ----
        sequential(n, base): 연한 → 진한 n색. n=5 (기본) 는 CSS 토큰 --ag-seq-1..5 와 정확히 같은 값.
        base 는 토큰 이름('--ag-crit') 또는 색 문자열. 기본은 --ag-chart-1. 다른 n 은 같은 식(15%→100%)을 등분해 계산.

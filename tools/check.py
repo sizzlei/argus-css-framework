@@ -352,6 +352,27 @@ async def main():
         check("1.3: 라이트 카드는 광택 없음(--ag-surface-sheen: none)", v == "none", v)
         await pg.close()
 
+        # ── 1.4 디자인 감사: 무한 모션 상한, 지속시간 토큰, 예시 인라인 스타일 0, 버블 면적, 오류 요소 ──
+        for name in ["index", "resources", "detail", "layouts", "login"]:
+            pg = await page(b, name + ".html")
+            v = await pg.evaluate("""()=>{let inf=0;for(const el of document.querySelectorAll('*')){const a=getComputedStyle(el).animationIterationCount;if(a&&a.split(',').some(x=>x.trim()==='infinite')&&el.offsetParent!==null&&!el.closest('.ag-skeleton,.ag-skeleton-rows,.ag-table--loading,.ag-spinner,.is-loading,.ag-log__cursor')&&!el.classList.contains('ag-spinner')&&!el.classList.contains('ag-skeleton'))inf++;}
+              const inl=[...document.querySelectorAll('[style]')].filter(e=>/padding|max-width|opacity|position:\s*absolute|border-color/.test(e.getAttribute('style'))&&!e.closest('svg')).length;
+              return {inf, inl}}""")
+            check(f"1.4: {name} 보이는 무한 애니메이션 ≤ 1 (스켈레톤·스피너 제외)", v["inf"] <= 1, str(v))
+            check(f"1.4: {name} 예시 인라인 스타일(패딩·폭·opacity·절대배치·보더색) 0", v["inl"] == 0, str(v))
+            await pg.close()
+        pg = await page(b, "index.html")
+        v = await pg.evaluate("""()=>{const b=[...document.querySelectorAll('.ag-bubbles .ag-bubble')].map(e=>e.getBoundingClientRect().width);const pb=getComputedStyle(document.querySelector('.ag-progress__bar')).transitionDuration;
+          const d=document.querySelector('.ag-bubbles').getBoundingClientRect();return {w:b, pb, ok: Math.abs((b[0]*b[0])/(b[2]*b[2]) - 58/33) < 0.08, h: d.height}}""")
+        check("1.4: 버블 면적비 = 값비 (58:33, ±5%)", v["ok"], str(v))
+        check("1.4: progress 전환 = --ag-dur-slow 400ms", v["pb"] == "0.4s", v["pb"])
+        await pg.close()
+        pg = await page(b, "components.html")
+        v = await pg.evaluate("""()=>{const e=document.querySelector('.ag-field__error');const cs=getComputedStyle(e);return {d:cs.display, c:cs.color, icon: !!e.querySelector('.ag-icon'), sw: getComputedStyle(document.querySelector('.ag-spark--warn .ag-spark__line')).stroke}}""")
+        check("1.4: .ag-field__error 아이콘 + crit-text 글자", v["d"] == "flex" and v["icon"], str(v))
+        check("1.4: .ag-spark--warn 선 색 = --ag-warn", v["sw"] != "" and v["sw"] != "none", str(v))
+        await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():
