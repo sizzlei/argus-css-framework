@@ -455,6 +455,13 @@ async def main():
         check("1.5: 단색 엔진 카드 배경 = 엔진색, stripe 카드에 inset 띠", v["bg"] != "rgb(22, 23, 31)" and v["stripe"], str(v))
         await pg.close()
 
+        # ── 1.5.1: 라이트 카드 box-shadow 유효 (--ag-card-edge 가 none 이면 목록 전체 무효) ──
+        pg = await page(b, "components.html", light=True)
+        v = await pg.evaluate("""()=>{const c=document.querySelector('.ag-card:not([class*="--"])');const st=document.querySelector('#engines .ag-card--engine-stripe');return {card:getComputedStyle(c).boxShadow, stripe:getComputedStyle(st).boxShadow}}""")
+        check("1.5.1: 라이트 .ag-card box-shadow ≠ none (1px 그림자 살아 있음)", v["card"] != "none" and "1px" in v["card"], str(v))
+        check("1.5.1: 라이트 엔진 stripe 카드 inset 띠 보임", "inset" in v["stripe"], str(v))
+        await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():

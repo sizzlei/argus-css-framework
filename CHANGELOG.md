@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1 — 2026-10-13 · 라이트 카드 그림자 복구 (argus-server 보고 ⑩)
+
+- 라이트 테마 `--ag-card-edge: none` → `0 0 #0000`. `box-shadow: var(--ag-card-edge), var(--ag-card-shadow)` 목록에 `none` 이 끼면 선언 전체가 무효가 되어 **라이트에서 모든 카드의 1px 그림자와 엔진색 띠(`--engine-stripe/-glow`)가 사라지고 있었다**. 1.2 에서 "라이트 카드 그림자 제거(보더만, 1px 만 남김)" 라고 적어 두고 실제로는 1px 까지 지워진 상태 — 감사 때 "라이트가 창백하다" 던 원인. 규칙을 CLAUDE.md 에: 쉼표 목록에서 쓰는 토큰은 `none` 금지, 빈 값은 `0 0 #0000`. check.py 가 라이트 카드 box-shadow ≠ none 과 stripe inset 을 단언(130항목).
+
 ## 1.5.0 — 2026-10-12 · 엔진 고유색
 
 "어느 엔진인가" 를 브랜드색으로 — 상태색(good/warn/crit/info)·범주색(cat-1..4)과 별개의 세 번째 색 축. 카드는 배경만이 아니라 제목·테두리·띠·윗선·옅은 배경·그림자·단색 중 고른다. Andy 결정: DocumentDB 는 MongoDB 초록, MS-SQL 은 SQL Server 빨강·Oracle 은 와인으로 떨어뜨림, 차트까지 전부 엔진색.

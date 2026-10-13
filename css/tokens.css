@@ -188,7 +188,7 @@
   --ag-surface-hover: #f0f1f6;
   --ag-border: rgb(16 18 32 / .07);
   --ag-border-strong: rgb(16 18 32 / .15);
-  --ag-card-edge: none;
+  --ag-card-edge: 0 0 #0000;   /* 1.5.1: `none` 이면 `box-shadow: var(--ag-card-edge), var(--ag-card-shadow)` 전체가 무효 → 라이트 카드 그림자·엔진 띠가 전부 사라졌다. 목록 안에서 쓰는 토큰은 '빈 그림자' 로 */
   --ag-surface-sheen: none;
   --ag-bg-glow: radial-gradient(90rem 44rem at 50% -18rem, color-mix(in oklab, var(--ag-accent) 7%, transparent), transparent 62%);
   --ag-card-shadow: 0 1px 2px rgb(16 18 32 / .04);   /* 1.2: 라이트는 보더만으로 평면 — 그림자는 오버레이·드롭다운의 것 */
