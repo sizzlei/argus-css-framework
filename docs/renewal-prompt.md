@@ -139,6 +139,8 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 쿼리·명령 열 `<td><code class="truncate">` + 인라인 max-width | `<td class="ag-td--query"><code>…</code></td>` (폭 `--ag-query-w`) |
 | 비율 버블·원 차트 (`.bubble` 절대 좌표) | `.ag-bubbles` > `.ag-bubble--N[data-v]` + `AG.charts.bubbles()` — 면적이 값에 비례 |
 | 엔진 표시 — 엔진별 하드코딩 색 `.mysql{color:#00758f}` `.engine-badge--pg` 등 | 요소에 `data-engine="mysql\|postgres\|oracle\|documentdb\|mssql\|other"` + `.ag-badge--engine` / `.ag-dot--engine` / `.ag-card--engine-stripe.ag-card--engine-title` / `td.ag-td--engine`. 차트 시리즈색은 `AG.charts.engines(names)` |
+| 사이드바 아래 빈 공간 / 바닥 위젯 (`.sidebar-footer` `.sidebar-status`) | 메뉴를 `.ag-sidebar__nav` 로 감싸고, 바닥은 `.ag-sidebar__panel`(상태·용량·환경 전환) + `.ag-sidebar__footer`(사용자). 패널 1~2개·160px 안 |
+| 드로어/슬라이드 패널 안 폼 (`.drawer-body` + 하단 고정 버튼) | `.ag-drawer` > `.ag-modal__head` + `form` > `.ag-drawer__body`(스크롤) + `.ag-drawer__foot`(바닥 고정 액션) |
 | 활동/이력 `.activity-list` `.timeline` | `.ag-timeline` > `__item.is-good` (`__head` 안에 `__title` + `__time`, 보조는 `__meta`; 촘촘하게 `--compact`) |
 | 키-값 정의 `dl.grid.grid-cols-3` | `dl.ag-kv` (`--stack`) |
 | 아바타 이니셜 / `.user-chip` `.avatar` | `.ag-avatar` · 이름+메타 `.ag-person` |

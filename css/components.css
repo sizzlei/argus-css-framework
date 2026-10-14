@@ -805,6 +805,16 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   transition: transform var(--ag-dur-move) var(--ag-ease);
 }
 .ag-drawer.is-open { transform: none; }
+/* 1.6: 드로어 남은 높이 — 머리 고정 · 본문(.ag-drawer__body)만 스크롤 · 푸터(.ag-drawer__foot, 액션)는 바닥에 고정.
+   <aside class="ag-drawer"><div class="ag-modal__head">…</div><form><div class="ag-drawer__body">…필드…</div><div class="ag-drawer__foot">…버튼…</div></form></aside>
+   __body 없이 쓰면 예전처럼 드로어 전체가 스크롤된다. */
+.ag-drawer:has(.ag-drawer__body) { overflow: hidden; padding-block: 0; }
+.ag-drawer:has(.ag-drawer__body) > :is(.ag-modal__head, .ag-drawer__head) { flex: none; padding-top: var(--ag-space-6); }
+.ag-drawer > form:has(.ag-drawer__body) { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; gap: var(--ag-space-5); }
+.ag-drawer__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; margin-inline: calc(-1 * var(--ag-space-6)); padding-inline: var(--ag-space-6); display: flex; flex-direction: column; gap: var(--ag-space-5); scrollbar-width: thin; }
+.ag-drawer__body > :last-child { padding-bottom: var(--ag-space-2); }
+.ag-drawer__foot { flex: none; margin-top: auto; display: flex; align-items: center; justify-content: flex-end; gap: var(--ag-space-2); padding: var(--ag-space-4) 0 var(--ag-space-6); border-top: 1px solid var(--ag-border); background: var(--ag-bg-elevated); }
+.ag-drawer__foot > .ag-text-3, .ag-drawer__foot > .ag-hint { margin-right: auto; }   /* 왼쪽 보조 문구(저장 시각·단축키) */
 
 /* ---- Tooltip (CSS only) --------------------------------------------- */
 [data-tip] { position: relative; }

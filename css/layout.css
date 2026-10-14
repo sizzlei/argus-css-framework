@@ -135,6 +135,39 @@
 .ag-sidebar__item.is-active :is(.ag-icon, [class*="ph-"]) { color: var(--ag-accent-text); }
 .ag-sidebar__item .ag-badge { margin-left: auto; }
 .ag-sidebar__footer { margin-top: auto; }
+/* 1.6: 사이드바 남은 높이 쓰기 — 구조 셋.
+   <aside class="ag-sidebar">
+     <div class="ag-sidebar__head">…</div>
+     <div class="ag-sidebar__nav">  ← 메뉴 그룹들. 남은 높이를 채우고 길면 여기만 스크롤 (머리·패널·푸터는 고정)
+       <nav class="ag-sidebar__group">…</nav> …
+     </div>
+     <div class="ag-sidebar__panel">…</div>   ← 바닥 패널: 상태 요약·용량 미터·환경 전환·공지 (여러 개 가능, 접히면 숨김)
+     <div class="ag-sidebar__footer">…</div>  ← 사용자
+   </aside>
+   __nav 없이 그룹을 바로 두면 예전처럼 사이드바 전체가 스크롤된다. */
+.ag-sidebar__nav { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; gap: var(--ag-space-6); overflow-y: auto; overscroll-behavior: contain; margin-inline: calc(-1 * var(--ag-space-4)); padding-inline: var(--ag-space-4); scrollbar-width: thin; }
+.ag-sidebar:has(> .ag-sidebar__nav) { overflow: hidden; }
+.ag-sidebar__panel {
+  margin-top: auto;
+  display: flex; flex-direction: column; gap: var(--ag-space-2);
+  padding: var(--ag-space-3) var(--ag-space-3);
+  border-radius: var(--ag-radius-md);
+  background: var(--ag-surface);
+  border: 1px solid var(--ag-border);
+  font-size: var(--ag-text-sm); color: var(--ag-text-2);
+}
+.ag-sidebar__nav + .ag-sidebar__panel { margin-top: 0; }          /* nav 가 이미 남은 높이를 먹었으면 패널은 바로 아래 */
+.ag-sidebar__panel + .ag-sidebar__panel, .ag-sidebar__panel + .ag-sidebar__footer, .ag-sidebar__nav + .ag-sidebar__footer { margin-top: 0; }
+.ag-sidebar__panel__head { display: flex; align-items: center; justify-content: space-between; gap: var(--ag-space-2); font-size: var(--ag-text-xs); font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ag-text-3); }
+.ag-sidebar__panel__head a { font-weight: 500; letter-spacing: 0; text-transform: none; }
+.ag-sidebar__panel .ag-progress { margin-top: 2px; }
+.ag-sidebar__panel--accent { background: color-mix(in oklab, var(--ag-accent) 10%, var(--ag-surface)); border-color: color-mix(in oklab, var(--ag-accent) 35%, transparent); }
+.ag-sidebar__panel--accent .ag-sidebar__panel__head { color: var(--ag-accent-text); }
+.ag-sidebar__panel--warn { border-color: color-mix(in oklab, var(--ag-warn) 45%, transparent); }
+.ag-sidebar__panel--warn .ag-sidebar__panel__head { color: var(--ag-warn-text); }
+.ag-sidebar__status { display: flex; gap: var(--ag-space-3); }   /* 패널 안 상태 요약: 점 + 숫자 셋 */
+.ag-sidebar__status > span { display: inline-flex; align-items: center; gap: 5px; font-variant-numeric: tabular-nums; color: var(--ag-text); font-weight: 500; }
+.ag-app--rail .ag-sidebar__panel { display: none; }
 
 /* ---- Main / Page -----------------------------------------------------
    본문 폭: 기본은 --ag-content-max(1600px) 안에서 가운데 정렬 — 읽기용 콘솔(목록·상세·폼)에 맞춘 값.

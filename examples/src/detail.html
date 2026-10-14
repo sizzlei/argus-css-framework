@@ -261,7 +261,8 @@
     <div><h3>파라미터 변경 요청</h3><p class="ag-text-sm ag-text-3">prod-order-mysql80 · 변경은 승인 후 적용됩니다</p></div>
     <button class="ag-btn ag-btn--icon ag-btn--ghost" data-ag-close aria-label="닫기"><svg class="ag-icon"><use href="#i-x"/></svg></button>
   </div>
-  <form class="ag-stack ag-stack--lg" onsubmit="return false">
+  <form onsubmit="return false">
+    <div class="ag-drawer__body">
     <div class="ag-form-grid">
       <div class="ag-field ag-field--full">
         <label class="ag-label" for="p-name">파라미터 <span class="ag-req">*</span></label>
@@ -273,8 +274,8 @@
       </div>
       <div class="ag-field is-invalid">
         <label class="ag-label" for="p-new">변경 값 <span class="ag-req">*</span></label>
-        <input class="ag-input ag-input--mono" id="p-new" value="72G">
-        <span class="ag-hint">인스턴스 메모리(128G)의 75%를 초과합니다. 56G 이하를 권장합니다.</span>
+        <input class="ag-input ag-input--mono" id="p-new" value="72G" aria-invalid="true" aria-describedby="p-new-err">
+        <p class="ag-field__error" id="p-new-err" role="alert"><svg class="ag-icon"><use href="#i-alert"/></svg>인스턴스 메모리(128G)의 75%를 초과합니다. 56G 이하를 권장합니다.</p>
       </div>
       <div class="ag-field ag-field--full">
         <label class="ag-label" for="p-reason">변경 사유 <span class="ag-req">*</span></label>
@@ -296,7 +297,9 @@
         <label class="ag-check"><input type="checkbox" id="p-ack">변경 영향(재부팅 필요 여부)을 확인했고, 서비스 담당자에게 공유했습니다.</label>
       </div>
     </div>
-    <div class="ag-form-actions">
+    </div>
+    <div class="ag-drawer__foot">
+      <span class="ag-text-xs ag-text-3">임시 저장 14:02</span>
       <button type="button" class="ag-btn ag-btn--ghost" data-ag-close>취소</button>
       <button type="button" class="ag-btn ag-btn--outline">임시 저장</button>
       <button type="submit" class="ag-btn ag-btn--primary">승인 요청</button>

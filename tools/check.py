@@ -462,6 +462,31 @@ async def main():
         check("1.5.1: 라이트 엔진 stripe 카드 inset 띠 보임", "inset" in v["stripe"], str(v))
         await pg.close()
 
+        # ── 1.6 사이드바 남은 높이: 패널·푸터가 바닥에, 짧은 창에서는 nav 만 스크롤 ──
+        pg = await page(b, "resources.html")
+        v = await pg.evaluate("""()=>{const sb=document.querySelector('.ag-sidebar');const f=sb.querySelector('.ag-sidebar__footer').getBoundingClientRect();const nav=sb.querySelector('.ag-sidebar__nav');
+          return {gap: Math.round(innerHeight - f.bottom), navOv: getComputedStyle(nav).overflowY, sbOv: getComputedStyle(sb).overflow}}""")
+        check("1.6: 사이드바 푸터가 바닥(여백 ≤ 24px)에 붙음", 0 <= v["gap"] <= 24, str(v))
+        check("1.6: __nav 가 스크롤 영역, 사이드바 자체는 overflow hidden", v["navOv"] == "auto" and v["sbOv"] == "hidden", str(v))
+        await pg.close()
+        pg = await page(b, "resources.html", 1440, 520)
+        v = await pg.evaluate("""()=>{const sb=document.querySelector('.ag-sidebar');const f=sb.querySelector('.ag-sidebar__footer').getBoundingClientRect();const nav=sb.querySelector('.ag-sidebar__nav');
+          return {footerVisible: f.bottom <= innerHeight && f.top >= 0, navScrolls: nav.scrollHeight > nav.clientHeight}}""")
+        check("1.6: 520px 높이에서 푸터는 보이고 nav 만 스크롤", v["footerVisible"] and v["navScrolls"], str(v))
+        await pg.close()
+
+        pg = await page(b, "detail.html", 1440, 520)
+        v = await pg.evaluate("""async()=>{document.querySelector('[data-ag-open="drawer-param"]').click();await new Promise(r=>setTimeout(r,350));
+          const d=document.getElementById('drawer-param');const f=d.querySelector('.ag-drawer__foot').getBoundingClientRect();const body=d.querySelector('.ag-drawer__body');
+          return {gap: Math.round(innerHeight - f.bottom), bodyScrolls: body.scrollHeight > body.clientHeight, dOv: getComputedStyle(d).overflow}}""")
+        check("1.6: 드로어 푸터가 바닥(여백 ≤ 8px)에 고정, 본문만 스크롤", 0 <= v["gap"] <= 8 and v["bodyScrolls"] and v["dOv"] == "hidden", str(v))
+        await pg.close()
+        pg = await page(b, "detail.html")
+        v = await pg.evaluate("""async()=>{document.querySelector('[data-ag-open="drawer-param"]').click();await new Promise(r=>setTimeout(r,350));
+          const d=document.getElementById('drawer-param');const f=d.querySelector('.ag-drawer__foot').getBoundingClientRect();return {gap: Math.round(innerHeight - f.bottom)}}""")
+        check("1.6: 900px 창에서도 드로어 푸터는 바닥", 0 <= v["gap"] <= 8, str(v))
+        await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():

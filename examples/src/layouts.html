@@ -23,27 +23,38 @@
       <a class="ag-topbar__brand" href="index.html"><span class="ag-brand-mark"><svg class="ag-icon"><use href="#i-database"/></svg></span><span class="ag-topbar__brand-text">Argus Console<small>Admin Console</small></span></a>
       <button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm ag-sidebar__toggle" data-ag-sidebar-toggle aria-label="사이드바 접기"><svg class="ag-icon"><use href="#i-chevron-left"/></svg></button>
     </div>
-    <nav class="ag-sidebar__group" aria-label="메뉴">
-      <div class="ag-sidebar__label">리소스</div>
-      <a class="ag-sidebar__item" href="#" data-tip="개요"><svg class="ag-icon"><use href="#i-grid"/></svg><span>개요</span></a>
-      <div class="ag-sidebar__node is-open" data-ag-node="db">
-        <button class="ag-sidebar__item ag-sidebar__item--parent" data-tip="데이터베이스"><svg class="ag-icon"><use href="#i-database"/></svg><span>데이터베이스</span><svg class="ag-icon ag-icon--sm ag-sidebar__caret"><use href="#i-chevron-down"/></svg></button>
-        <div class="ag-sidebar__sub">
-          <a class="ag-sidebar__item is-active" href="#"><span>인스턴스</span><span class="ag-badge ag-badge--count">186</span></a>
-          <a class="ag-sidebar__item" href="#"><span>계정 / 권한</span></a>
-          <a class="ag-sidebar__item" href="#"><span>복구 작업</span></a>
-          <a class="ag-sidebar__item" href="#"><span>태그</span></a>
+    <div class="ag-sidebar__nav">
+      <nav class="ag-sidebar__group" aria-label="메뉴">
+        <div class="ag-sidebar__label">리소스</div>
+        <a class="ag-sidebar__item" href="#" data-tip="개요"><svg class="ag-icon"><use href="#i-grid"/></svg><span>개요</span></a>
+        <div class="ag-sidebar__node is-open" data-ag-node="db">
+          <button class="ag-sidebar__item ag-sidebar__item--parent" data-tip="데이터베이스"><svg class="ag-icon"><use href="#i-database"/></svg><span>데이터베이스</span><svg class="ag-icon ag-icon--sm ag-sidebar__caret"><use href="#i-chevron-down"/></svg></button>
+          <div class="ag-sidebar__sub">
+            <a class="ag-sidebar__item is-active" href="#"><span>인스턴스</span><span class="ag-badge ag-badge--count">186</span></a>
+            <a class="ag-sidebar__item" href="#"><span>계정 / 권한</span></a>
+            <a class="ag-sidebar__item" href="#"><span>복구 작업</span></a>
+            <a class="ag-sidebar__item" href="#"><span>태그</span></a>
+          </div>
         </div>
-      </div>
-      <a class="ag-sidebar__item" href="#" data-tip="EC2"><svg class="ag-icon"><use href="#i-server"/></svg><span>EC2</span></a>
-      <a class="ag-sidebar__item" href="#" data-tip="스토리지"><svg class="ag-icon"><use href="#i-hdd"/></svg><span>스토리지</span></a>
-    </nav>
-    <nav class="ag-sidebar__group" aria-label="운영">
-      <div class="ag-sidebar__label">운영</div>
-      <a class="ag-sidebar__item" href="#" data-tip="알림"><svg class="ag-icon"><use href="#i-bell"/></svg><span>알림</span><span class="ag-badge ag-badge--crit">7</span></a>
-      <a class="ag-sidebar__item" href="#" data-tip="슬로우 쿼리"><svg class="ag-icon"><use href="#i-activity"/></svg><span>슬로우 쿼리</span></a>
-      <a class="ag-sidebar__item" href="#" data-tip="설정"><svg class="ag-icon"><use href="#i-settings"/></svg><span>설정</span></a>
-    </nav>
+        <a class="ag-sidebar__item" href="#" data-tip="EC2"><svg class="ag-icon"><use href="#i-server"/></svg><span>EC2</span></a>
+        <a class="ag-sidebar__item" href="#" data-tip="스토리지"><svg class="ag-icon"><use href="#i-hdd"/></svg><span>스토리지</span></a>
+      </nav>
+      <nav class="ag-sidebar__group" aria-label="운영">
+        <div class="ag-sidebar__label">운영</div>
+        <a class="ag-sidebar__item" href="#" data-tip="알림"><svg class="ag-icon"><use href="#i-bell"/></svg><span>알림</span><span class="ag-badge ag-badge--crit">7</span></a>
+        <a class="ag-sidebar__item" href="#" data-tip="슬로우 쿼리"><svg class="ag-icon"><use href="#i-activity"/></svg><span>슬로우 쿼리</span></a>
+        <a class="ag-sidebar__item" href="#" data-tip="설정"><svg class="ag-icon"><use href="#i-settings"/></svg><span>설정</span></a>
+      </nav>
+    </div>
+    <div class="ag-sidebar__panel">
+      <div class="ag-sidebar__panel__head"><span>환경</span></div>
+      <select class="ag-select ag-select--sm" aria-label="환경 선택"><option>prod · ap-northeast-2</option><option>stg · ap-northeast-2</option><option>dr · ap-northeast-1</option></select>
+      <div class="ag-sidebar__status"><span><span class="ag-dot ag-dot--good"></span>171</span><span><span class="ag-dot ag-dot--warn"></span>11</span><span><span class="ag-dot ag-dot--crit"></span>4</span></div>
+    </div>
+    <div class="ag-sidebar__footer ag-person">
+      <span class="ag-avatar ag-avatar--warn">AN</span>
+      <div class="ag-min-0"><div class="ag-person__name">Andy</div><div class="ag-person__meta">Platform · Admin</div></div>
+    </div>
   </aside>
   <div class="ag-sidebar-backdrop"></div>
 

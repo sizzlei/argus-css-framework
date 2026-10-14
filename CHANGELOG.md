@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.6.0 — 2026-10-14 · 사이드바 남은 높이
+
+사이드바가 `100dvh` 고정인데 메뉴 아래가 비어 있었다(Andy). 구조 셋으로 남은 높이를 쓴다.
+- `.ag-sidebar__nav` — 메뉴 그룹 묶음. 남은 높이를 채우고 길면 **여기만** 스크롤(머리·패널·푸터 고정, `overscroll-behavior: contain`). 없이 그룹을 바로 두면 예전처럼 사이드바 전체 스크롤.
+- `.ag-sidebar__panel` — 바닥 패널(`--accent`/`--warn` 톤): 상태 요약 `.ag-sidebar__status`(점 + 숫자 셋), 용량 미터, 환경 전환 셀렉트, 점검 공지. `__panel__head`(소제목 + 링크). 접힌 사이드바·레일에서는 숨김. 권장 1~2개, 합쳐서 160px 안 — 900px 창에서 메뉴가 스크롤로 밀리지 않게.
+- `.ag-sidebar__footer` 는 그대로(`margin-top: auto`는 nav/panel 이 있으면 0).
+- **드로어도 같은 구조** — `.ag-drawer__body`(남은 높이 채우고 스크롤) + `.ag-drawer__foot`(액션, 바닥 고정, 왼쪽 보조 문구 자리). `.ag-modal__head` 는 고정. `__body` 없이 쓰면 예전처럼 전체 스크롤.
+- 예시: resources(상태 + 스토리지 미터), layouts(환경 셀렉트 + 상태, 푸터 추가). check.py 135항목(사이드바 푸터 바닥 정렬·nav 만 스크롤·520px 창, 드로어 푸터 바닥·본문만 스크롤).
+
 ## 1.5.1 — 2026-10-13 · 라이트 카드 그림자 복구 (argus-server 보고 ⑩)
 
 - 라이트 테마 `--ag-card-edge: none` → `0 0 #0000`. `box-shadow: var(--ag-card-edge), var(--ag-card-shadow)` 목록에 `none` 이 끼면 선언 전체가 무효가 되어 **라이트에서 모든 카드의 1px 그림자와 엔진색 띠(`--engine-stripe/-glow`)가 사라지고 있었다**. 1.2 에서 "라이트 카드 그림자 제거(보더만, 1px 만 남김)" 라고 적어 두고 실제로는 1px 까지 지워진 상태 — 감사 때 "라이트가 창백하다" 던 원인. 규칙을 CLAUDE.md 에: 쉼표 목록에서 쓰는 토큰은 `none` 금지, 빈 값은 `0 0 #0000`. check.py 가 라이트 카드 box-shadow ≠ none 과 stripe inset 을 단언(130항목).

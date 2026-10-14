@@ -164,6 +164,8 @@
 .is-collapsed .ag-topbar__brand > :not(.ag-dot):not(.ag-brand-mark) { display: none; }
 .is-collapsed .ag-sidebar__footer .ag-person > :not(.ag-avatar), .is-collapsed .ag-sidebar__footer.ag-person > :not(.ag-avatar) { display: none; }
 .is-collapsed .ag-sidebar__footer { justify-content: center; }
+.is-collapsed .ag-sidebar__panel { display: none; }   /* 1.6: 접힌 사이드바엔 패널 자리 없음 */
+.is-collapsed .ag-sidebar__nav { margin-inline: -12px; padding-inline: 12px; }
 .is-collapsed .ag-sidebar__item[data-tip]::after { left: calc(100% + 10px); bottom: auto; top: 50%; transform: translate(0, -50%); }
 .is-collapsed .ag-sidebar__group-toggle { height: 1px; margin: 8px 12px; padding: 0; background: var(--ag-border); overflow: hidden; color: transparent; font-size: 0; pointer-events: none; }
 .is-collapsed .ag-sidebar__group.is-closed > :not(.ag-sidebar__group-toggle) { display: flex; }

@@ -69,26 +69,34 @@
       <a class="ag-topbar__brand" href="index.html"><span class="ag-brand-mark"><svg class="ag-icon"><use href="#i-database"/></svg></span><span class="ag-topbar__brand-text">Argus Console<small>Admin Console</small></span></a>
       <button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm ag-sidebar__toggle" data-ag-sidebar-toggle aria-label="사이드바 접기" data-tip="접기 / 펼치기"><svg class="ag-icon"><use href="#i-chevron-left"/></svg></button>
     </div>
-    <nav class="ag-sidebar__group" aria-label="리소스" data-ag-group="res">
-      <button class="ag-sidebar__group-toggle">리소스<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button>
-      <a class="ag-sidebar__item" href="index.html" data-tip="개요"><svg class="ag-icon"><use href="#i-grid"/></svg><span>개요</span></a>
-      <a class="ag-sidebar__item is-active" href="resources.html" data-tip="데이터베이스"><svg class="ag-icon"><use href="#i-database"/></svg><span>데이터베이스</span><span class="ag-badge ag-badge--count">186</span></a>
-      <a class="ag-sidebar__item" href="#" data-tip="EC2"><svg class="ag-icon"><use href="#i-server"/></svg><span>EC2</span></a>
-      <a class="ag-sidebar__item" href="#" data-tip="스토리지"><svg class="ag-icon"><use href="#i-hdd"/></svg><span>스토리지</span></a>
-      <a class="ag-sidebar__item" href="#" data-tip="네트워크"><svg class="ag-icon"><use href="#i-cloud"/></svg><span>네트워크</span></a>
-    </nav>
-    <nav class="ag-sidebar__group" aria-label="운영" data-ag-group="ops">
-      <button class="ag-sidebar__group-toggle">운영<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button>
-      <a class="ag-sidebar__item" href="#" data-tip="알림"><svg class="ag-icon"><use href="#i-bell"/></svg><span>알림</span><span class="ag-badge ag-badge--crit">7</span></a>
-      <a class="ag-sidebar__item" href="#" data-tip="슬로우 쿼리"><svg class="ag-icon"><use href="#i-activity"/></svg><span>슬로우 쿼리</span></a>
-      <a class="ag-sidebar__item" href="#" data-tip="계정 / 권한"><svg class="ag-icon"><use href="#i-shield"/></svg><span>계정 / 권한</span></a>
-      <a class="ag-sidebar__item" href="#" data-tip="점검 일정"><svg class="ag-icon"><use href="#i-calendar"/></svg><span>점검 일정</span></a>
-    </nav>
-    <nav class="ag-sidebar__group" aria-label="기타">
-      <div class="ag-sidebar__label">기타</div>
-      <a class="ag-sidebar__item" href="components.html" data-tip="컴포넌트 가이드"><svg class="ag-icon"><use href="#i-book"/></svg><span>컴포넌트 가이드</span></a>
-      <a class="ag-sidebar__item" href="#" data-tip="설정"><svg class="ag-icon"><use href="#i-settings"/></svg><span>설정</span></a>
-    </nav>
+    <div class="ag-sidebar__nav">
+      <nav class="ag-sidebar__group" aria-label="리소스" data-ag-group="res">
+        <button class="ag-sidebar__group-toggle">리소스<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button>
+        <a class="ag-sidebar__item" href="index.html" data-tip="개요"><svg class="ag-icon"><use href="#i-grid"/></svg><span>개요</span></a>
+        <a class="ag-sidebar__item is-active" href="resources.html" data-tip="데이터베이스"><svg class="ag-icon"><use href="#i-database"/></svg><span>데이터베이스</span><span class="ag-badge ag-badge--count">186</span></a>
+        <a class="ag-sidebar__item" href="#" data-tip="EC2"><svg class="ag-icon"><use href="#i-server"/></svg><span>EC2</span></a>
+        <a class="ag-sidebar__item" href="#" data-tip="스토리지"><svg class="ag-icon"><use href="#i-hdd"/></svg><span>스토리지</span></a>
+        <a class="ag-sidebar__item" href="#" data-tip="네트워크"><svg class="ag-icon"><use href="#i-cloud"/></svg><span>네트워크</span></a>
+      </nav>
+      <nav class="ag-sidebar__group" aria-label="운영" data-ag-group="ops">
+        <button class="ag-sidebar__group-toggle">운영<svg class="ag-icon ag-icon--sm"><use href="#i-chevron-down"/></svg></button>
+        <a class="ag-sidebar__item" href="#" data-tip="알림"><svg class="ag-icon"><use href="#i-bell"/></svg><span>알림</span><span class="ag-badge ag-badge--crit">7</span></a>
+        <a class="ag-sidebar__item" href="#" data-tip="슬로우 쿼리"><svg class="ag-icon"><use href="#i-activity"/></svg><span>슬로우 쿼리</span></a>
+        <a class="ag-sidebar__item" href="#" data-tip="계정 / 권한"><svg class="ag-icon"><use href="#i-shield"/></svg><span>계정 / 권한</span></a>
+        <a class="ag-sidebar__item" href="#" data-tip="점검 일정"><svg class="ag-icon"><use href="#i-calendar"/></svg><span>점검 일정</span></a>
+      </nav>
+      <nav class="ag-sidebar__group" aria-label="기타">
+        <div class="ag-sidebar__label">기타</div>
+        <a class="ag-sidebar__item" href="components.html" data-tip="컴포넌트 가이드"><svg class="ag-icon"><use href="#i-book"/></svg><span>컴포넌트 가이드</span></a>
+        <a class="ag-sidebar__item" href="#" data-tip="설정"><svg class="ag-icon"><use href="#i-settings"/></svg><span>설정</span></a>
+      </nav>
+    </div>
+    <div class="ag-sidebar__panel">
+      <div class="ag-sidebar__panel__head"><span>상태</span><a href="index.html">대시보드</a></div>
+      <div class="ag-sidebar__status"><span><span class="ag-dot ag-dot--good"></span>171</span><span><span class="ag-dot ag-dot--warn"></span>11</span><span><span class="ag-dot ag-dot--crit"></span>4</span></div>
+      <div class="ag-cluster ag-cluster--between ag-text-xs ag-text-3"><span>스토리지</span><strong class="ag-text-warn">91%</strong></div>
+      <div class="ag-progress ag-progress--sm ag-progress--warn"><div class="ag-progress__bar" style="width:91%"></div></div>
+    </div>
     <div class="ag-sidebar__footer ag-person">
       <span class="ag-avatar ag-avatar--warn">AN</span>
       <div class="ag-min-0"><div class="ag-person__name">Andy</div><div class="ag-person__meta">Platform · Admin</div></div>
