@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.8.0 — 2026-10-15 · argus-server 보고 다섯 건 (⑫ ② ⑦ ⑧ ③)
+
+- **⑫ 드로어 배경 막** — `.ag-drawer-backdrop`(드로어 바로 뒤 형제, 드로어가 `is-open` 이면 CSS 로 보임). `data-ag-open` 으로 연 드로어는 막이 없으면 argus.js 가 넣고, 막 클릭 → 닫힘 + 연 버튼으로 포커스 복귀(`data-ag-static` 이면 안 닫음, `data-ag-modeless` 면 막 없음). Alpine/Vue 드로어는 막을 직접 두고 `@click` 으로 닫는다(소유권 원칙 유지).
+- **② 엔진 이름 정규화** — `AG.charts.engineKey(name)`(새로 공개) · `engine(name)` 이 부분 일치로: `aurora-mysql`·`mariadb`→mysql, `aurora-postgresql`·`PostgreSQL 15.4`·`pg`→postgres, `oracle-ee`·`oracle-se2-cdb`→oracle, `sqlserver-se`·`SQL Server 2019`·`MS-SQL`→mssql, `docdb`·`MongoDB`→documentdb, `aurora` 단독→mysql. CSS `[data-engine]` 훅도 부분 일치·대소문자 무시(`*= … i`) — RDS API 의 Engine 값을 그대로 `data-engine` 에 넣으면 된다(서비스 쪽 정규화 우회 삭제 가능).
+- **⑦ 범주 칩** `.ag-chip--cat1~4` — soft 기본, `--solid` 와 `is-active`/`aria-pressed="true"` 는 범주 단색 카드(1.7)와 같은 눌린 배경 + 흰 글자. `button.ag-chip` 은 커서·폰트 상속 정리(필터 칩용).
+- **⑧ 말줄임 셀** `td.ag-td--truncate` — 셀과 셀 안 블록 둘 다 `--ag-td-max`(240px) 상한. 표 셀은 열 너비 분배 때 max-width 를 무시하므로 정확한 상한은 셀 안 `<span title>`/`<a>` 로(점·아이콘 `.ag-row` 는 flex 유지, 마지막 글자만 줄임). `td > .ag-truncate` 도 같은 상한. 셀마다 `style="--ag-td-max: 360px"`.
+- **③ 커서** `.ag-cursor-pointer` 유틸 + `.ag-input--picker`(클릭하면 선택기를 여는 읽기 전용 입력 — 손가락 커서·캐럿 숨김·포커스 링).
+- 예시: resources 표 `data-engine` 을 API 값(aurora-mysql · aurora-postgresql · oracle-ee · docdb · sqlserver-se)으로, detail 드로어 배경 막, layouts 알림 표 말줄임 셀, 카탈로그(팀 필터 칩 · 승인자 picker · "RDS 엔진 문자열 그대로 · 말줄임 셀" 표), 매트릭스 칩에 cat1~4 · solid · active.
+- check.py 145항목(+6: 막 생성·클릭 닫힘·포커스 복귀, engineKey 15종, CSS 부분 일치 훅, 범주 칩, 말줄임 폭, picker 커서).
+
 ## 1.7.0 — 2026-10-14 · 범주색 단색 카드
 
 argus-server 대시보드에서 상태 카드를 시스템 · 연동 툴 · 스케줄러로 나누며 "카드 색을 다르게" 요청 — 단색은 accent(파랑) · accent2(분홍, 장애와 혼동) 둘뿐이고 inverse 는 다크에서 흰 카드라 묶음 구분에 맞지 않았다.

@@ -66,6 +66,7 @@
   --ag-dur-slow: 400ms;     /* 1.4: 데이터 바가 값으로 자라는 피드백 */
   --ag-pulse-loop: 3;       /* 1.4: .ag-dot--pulse 반복 횟수 — 기본 3번 깜빡이고 멈춤. 진행 중 장애 하나에만 infinite 로 옵트인 */
   --ag-query-w: 300px;      /* 1.4: 테이블 쿼리 열(.ag-td--query) 최대 폭 */
+  --ag-td-max: 240px;       /* 1.8 (⑧): 말줄임 셀(.ag-td--truncate) 최대 폭 — 셀마다 style="--ag-td-max: 360px" 로 조정 */
   --ag-bubble-max: 210px;   /* 1.4: .ag-bubbles 에서 가장 큰 버블 지름 (--r = √비율) */
 
   /* ---- Layout ---- */

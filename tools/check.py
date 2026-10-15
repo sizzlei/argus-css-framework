@@ -499,6 +499,30 @@ async def main():
             check(f"1.7: {'라이트' if light else '다크'} cat 카드 안 보조 글자가 흰색 계열(토큰 재정의)", all(x["hint"].startswith("rgb(2") or x["hint"].startswith("rgba(2") or x["hint"] == "rgb(255, 255, 255)" or "255, 255, 255" in x["hint"] for x in v), str(v))
             await pg.close()
 
+        # ── 1.8: ⑫ 드로어 배경 막 · ② 엔진 이름 정규화 · ⑦ 범주 칩 · ⑧ 말줄임 셀 · ③ picker 커서 ──
+        pg = await page(b, "detail.html")
+        v = await pg.evaluate("""async()=>{const btn=document.querySelector('[data-ag-open="drawer-param"]');btn.focus();btn.click();await new Promise(r=>setTimeout(r,300));
+          const d=document.getElementById('drawer-param');const bd=d.nextElementSibling;const shown=bd&&bd.classList.contains('ag-drawer-backdrop')&&getComputedStyle(bd).visibility==='visible';
+          bd.click();await new Promise(r=>setTimeout(r,300));
+          return {shown, closed:!d.classList.contains('is-open'), back:document.activeElement===btn, hidden:getComputedStyle(bd).visibility}}""")
+        check("1.8 ⑫: argus.js 로 연 드로어에 배경 막이 생기고, 막 클릭 → 닫힘 + 포커스 복귀", v["shown"] and v["closed"] and v["back"] and v["hidden"] == "hidden", str(v))
+        await pg.close()
+        pg = await page(b, "components.html")
+        v = await pg.evaluate("""()=>{const k=AG.charts.engineKey;const cases={'aurora-mysql':'mysql','aurora-postgresql':'postgres','oracle-ee':'oracle','oracle-se2-cdb':'oracle','sqlserver-se':'mssql','SQL Server 2019':'mssql','MS-SQL':'mssql','docdb':'documentdb','MongoDB':'documentdb','mariadb':'mysql','aurora':'mysql','PostgreSQL 15.4':'postgres','pg':'postgres','redis':'other','':'other'};
+          const bad=Object.entries(cases).filter(([n,e])=>k(n)!==e).map(([n,e])=>n+'→'+k(n));
+          const css=['aurora-mysql','aurora-postgresql','oracle-ee','sqlserver-se','docdb'].map(n=>{const el=document.querySelector('#engines tr[data-engine="'+n+'"]');return getComputedStyle(el).getPropertyValue('--ag-engine').trim()});
+          const root=getComputedStyle(document.documentElement);const want=['mysql','postgres','oracle','mssql','documentdb'].map(e=>root.getPropertyValue('--ag-engine-'+e).trim());
+          return {bad, cssOk: css.every((c,i)=>c===want[i]), css, want}}""")
+        check("1.8 ②: AG.charts.engineKey — RDS 엔진 문자열·표기 변형 15종 정규화", not v["bad"], str(v["bad"]))
+        check("1.8 ②: [data-engine] CSS 훅 부분 일치(aurora-mysql·aurora-postgresql·oracle-ee·sqlserver-se·docdb)", v["cssOk"], str(v))
+        v = await pg.evaluate("""()=>{const c=[...document.querySelectorAll('.ag-chip--cat1,.ag-chip--cat2,.ag-chip--cat3,.ag-chip--cat4')];const act=document.querySelector('.ag-chip--cat1.is-active');
+          const sp=document.querySelector('td.ag-td--truncate > span');const pk=document.querySelector('.ag-input--picker');
+          return {n:c.length, actBg:getComputedStyle(act).backgroundColor, solid:getComputedStyle(document.documentElement).getPropertyValue('--ag-cat-1-solid').trim(), spW:Math.round(sp.getBoundingClientRect().width), spOv:sp.scrollWidth>sp.clientWidth, cur:getComputedStyle(pk).cursor, caret:getComputedStyle(pk).caretColor, util:(()=>{const d=document.createElement('div');d.className='ag-cursor-pointer';document.body.append(d);const r=getComputedStyle(d).cursor;d.remove();return r})()}}""")
+        check("1.8 ⑦: .ag-chip--cat1~4 있음, is-active = 범주 단색 배경", v["n"] >= 5 and v["actBg"] != "rgba(0, 0, 0, 0)", str(v))
+        check("1.8 ⑧: td.ag-td--truncate 안 글자 폭 ≤ 240px 이고 말줄임", v["spW"] <= 240 and v["spOv"], str(v))
+        check("1.8 ③: .ag-input--picker 손가락 커서·캐럿 숨김, .ag-cursor-pointer 유틸", v["cur"] == "pointer" and v["util"] == "pointer" and "0, 0, 0, 0" in v["caret"], str(v))
+        await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():

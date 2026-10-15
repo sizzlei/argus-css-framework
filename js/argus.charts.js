@@ -74,16 +74,23 @@
     status: function () { var t = tokens(); return { good: t.good, warn: t.warn, crit: t.crit, info: t.info }; },
 
     /* ---- 엔진 고유색 (1.5) ----
-       engine('mysql') → 현재 테마의 #hex. engines(['mysql','postgres']) → Apex colors 배열. 이름 없는 엔진은 --ag-engine-other.
+       engine('mysql') · engine('aurora-mysql') → 현재 테마의 #hex. engineKey(name) → 'mysql'|'postgres'|'oracle'|'documentdb'|'mssql'|'other'. engines(['mysql','postgres']) → Apex colors 배열. 이름 없는 엔진은 --ag-engine-other.
        여러 엔진을 한 차트에 둘 땐 documentdb → mysql → postgres → oracle → mssql 순이 CVD 분리가 가장 좋다 (engines() 가 ORDER 로 정렬하진 않는다 — 데이터 순서가 우선). */
     ENGINE_ORDER: ['documentdb', 'mysql', 'postgres', 'oracle', 'mssql'],
-    engine: function (name) {
-      var n = String(name || '').toLowerCase().replace(/[^a-z]/g, '');
-      var map = { mysql: 'mysql', aurora: 'mysql', mariadb: 'mysql', postgres: 'postgres', postgresql: 'postgres', pg: 'postgres', oracle: 'oracle', ora: 'oracle',
-                  documentdb: 'documentdb', docdb: 'documentdb', mongodb: 'documentdb', mongo: 'documentdb', mssql: 'mssql', sqlserver: 'mssql', mssqlserver: 'mssql' };
-      var key = map[n] || 'other';
-      return resolve(token('--ag-engine-' + key));
+    /* 1.8 (②): 이름 정규화 — RDS/Aurora 엔진 문자열(aurora-mysql · aurora-postgresql · oracle-ee · oracle-se2-cdb · sqlserver-se ·
+       docdb · mariadb …)과 표기 변형(PostgreSQL 15.4, MS-SQL, SQL Server 2019, MongoDB)을 키 다섯 + other 로. 순서가 중요하다
+       (aurora-postgresql 은 postgres, aurora 단독은 MySQL 호환이 기본). CSS 의 [data-engine] 훅도 같은 규칙(부분 일치)이다. */
+    engineKey: function (name) {
+      var n = String(name || '').toLowerCase();
+      if (/sql[ _-]?server|ms[ _-]?sql/.test(n)) return 'mssql';
+      if (/postgre|(^|[^a-z])pg([^a-z]|$)/.test(n)) return 'postgres';
+      if (/mysql|maria/.test(n)) return 'mysql';
+      if (/oracle|(^|[^a-z])ora([^a-z]|$)/.test(n)) return 'oracle';
+      if (/docdb|documentdb|mongo/.test(n)) return 'documentdb';
+      if (/(^|[^a-z])aurora([^a-z]|$)/.test(n)) return 'mysql';
+      return 'other';
     },
+    engine: function (name) { return resolve(token('--ag-engine-' + AG.charts.engineKey(name))); },
     engines: function (names) { return (names || []).map(AG.charts.engine); },
     /* ---- 비율 버블 (.ag-bubbles) ----
        bubbles(root): root 안 .ag-bubble[data-v] 의 값을 합계로 나눠 --r = √(비율) 을 준다 → 면적이 값에 비례. CSS 만으로 쓰려면 --r 을 직접 적는다. */

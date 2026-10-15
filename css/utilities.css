@@ -25,6 +25,7 @@
 .ag-upper { text-transform: uppercase; letter-spacing: .06em; }
 .ag-truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .ag-nowrap { white-space: nowrap; }
+.ag-cursor-pointer { cursor: pointer; }   /* 1.8 (③): 클릭으로 무언가 여는 요소 — 버튼·링크가 아닌데 클릭되는 곳에만 */
 .ag-text-left { text-align: left; }
 .ag-text-center { text-align: center; }
 .ag-text-right { text-align: right; }

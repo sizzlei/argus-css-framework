@@ -124,6 +124,17 @@
 .ag-chip--solid.ag-chip--warn { background: var(--ag-warn-solid); color: var(--ag-text-on-warn); border-color: transparent; }
 .ag-chip--solid.ag-chip--crit { background: var(--ag-crit-solid); color: var(--ag-text-on-crit); border-color: transparent; }
 .ag-chip--solid.ag-chip--info { background: var(--ag-info-solid); color: var(--ag-text-on-info); border-color: transparent; }
+/* 1.8 (⑦): 범주 칩 — 범주색 단색 카드(1.7)·배지와 같은 네 색. soft 기본, --solid / is-active(필터 선택) 는 카드와 같은 눌린 배경 + 흰 글자 */
+.ag-chip--cat1 { background: var(--ag-cat-1-soft); color: var(--ag-cat-1-text); border-color: color-mix(in oklab, var(--ag-cat-1) 40%, transparent); }
+.ag-chip--cat2 { background: var(--ag-cat-2-soft); color: var(--ag-cat-2-text); border-color: color-mix(in oklab, var(--ag-cat-2) 40%, transparent); }
+.ag-chip--cat3 { background: var(--ag-cat-3-soft); color: var(--ag-cat-3-text); border-color: color-mix(in oklab, var(--ag-cat-3) 40%, transparent); }
+.ag-chip--cat4 { background: var(--ag-cat-4-soft); color: var(--ag-cat-4-text); border-color: color-mix(in oklab, var(--ag-cat-4) 40%, transparent); }
+:is(.ag-chip--solid, .is-active, [aria-pressed="true"]).ag-chip--cat1 { background: var(--ag-cat-1-solid); color: var(--ag-text-on-cat-solid); border-color: transparent; }
+:is(.ag-chip--solid, .is-active, [aria-pressed="true"]).ag-chip--cat2 { background: var(--ag-cat-2-solid); color: var(--ag-text-on-cat-solid); border-color: transparent; }
+:is(.ag-chip--solid, .is-active, [aria-pressed="true"]).ag-chip--cat3 { background: var(--ag-cat-3-solid); color: var(--ag-text-on-cat-solid); border-color: transparent; }
+:is(.ag-chip--solid, .is-active, [aria-pressed="true"]).ag-chip--cat4 { background: var(--ag-cat-4-solid); color: var(--ag-text-on-cat-solid); border-color: transparent; }
+button.ag-chip { cursor: pointer; font: inherit; font-size: var(--ag-text-md); font-weight: 500; }
+button.ag-chip.ag-chip--sm { font-size: var(--ag-text-sm); }
 .ag-chip__label { font-size: var(--ag-text-sm); color: var(--ag-text-2); font-weight: 500; }
 
 /* 라벨이 위에 붙는 미터 칩 묶음 */
@@ -504,6 +515,13 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-table--clickable tbody tr:focus-visible, .ag-table tr.is-clickable:focus-visible { outline: none; box-shadow: inset 0 0 0 2px var(--ag-accent); }
 .ag-table--clickable tbody tr .ag-td--actions, .ag-table tr.is-clickable .ag-td--actions { cursor: default; }   /* 액션 셀 안의 버튼은 행 클릭과 분리 — 서비스 JS 는 e.target.closest('.ag-td--actions') 면 무시 */
 .ag-table td.ag-td--wrap { white-space: normal; min-width: 240px; }
+/* 1.8 (⑧): 말줄임 셀 — 셀과 셀 안 블록 둘 다에 상한(--ag-td-max)을 건다. 전체 값은 title 로.
+   <td class="ag-td--truncate" title="긴 값">긴 값</td> · <td class="ag-td--truncate"><a href="…">긴 값</a></td> · <td><span class="ag-truncate">…</span></td>
+   점·아이콘이 앞에 붙는 행(.ag-row)은 flex 를 유지하고 마지막 글자만 줄인다. */
+.ag-table td.ag-td--truncate { max-width: var(--ag-td-max); overflow: hidden; text-overflow: ellipsis; }   /* 글자만 든 셀 */
+.ag-table td.ag-td--truncate > *, .ag-table td > .ag-truncate { display: block; max-width: var(--ag-td-max); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-table td.ag-td--truncate > .ag-row { display: flex; }   /* 점·아이콘 + 글자 행은 flex 유지, 글자만 줄인다 */
+.ag-table td.ag-td--truncate > .ag-row > :last-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
 .ag-table td.ag-td--query > code { display: block; max-width: var(--ag-query-w); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }   /* 1.4: 쿼리·명령 열 — 한 줄 말줄임, 폭은 토큰 */
 .ag-table .ag-td--num, .ag-table .ag-th--num { text-align: right; }
 .ag-table .ag-td--actions { text-align: right; width: 1%; }
@@ -586,6 +604,10 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 }
 .ag-input::placeholder, .ag-textarea::placeholder { color: var(--ag-text-3); }
 .ag-input:hover, .ag-select:hover, .ag-textarea:hover { border-color: var(--ag-border-strong); }
+/* 1.8 (③): 클릭하면 선택기(날짜·사용자·태그 고르기 모달)를 여는 읽기 전용 입력 — 손가락 커서, 깜빡이는 캐럿 숨김.
+   <input class="ag-input ag-input--picker" readonly value="…" data-ag-open="picker-x"> (+ .ag-input-group 의 뒤 아이콘으로 캐럿) */
+.ag-input--picker { cursor: pointer; caret-color: transparent; user-select: none; }
+.ag-input--picker:focus-visible { border-color: var(--ag-accent-text); box-shadow: var(--ag-ring); }
 .ag-input:focus, .ag-select:focus, .ag-textarea:focus { outline: none; border-color: var(--ag-accent-text); box-shadow: var(--ag-ring); background: var(--ag-surface); }
 .ag-input:disabled, .ag-select:disabled, .ag-textarea:disabled { opacity: .5; }
 .ag-input--pill { border-radius: var(--ag-radius-pill); padding-inline: 18px; }
@@ -815,6 +837,12 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   transition: transform var(--ag-dur-move) var(--ag-ease);
 }
 .ag-drawer.is-open { transform: none; }
+/* 1.8 (⑫): 드로어 배경 막 — 드로어 바로 뒤 형제 .ag-drawer-backdrop. 드로어가 is-open 이면 보인다.
+   argus.js 로 연 드로어(data-ag-open)는 막이 없으면 자동으로 넣고, 막을 클릭하면 닫는다(data-ag-static 이면 안 닫음).
+   Alpine/Vue 가 여닫는 드로어는 직접 <div class="ag-drawer-backdrop" @click="open = false"></div> 를 드로어 다음에 둔다.
+   막 없이 쓰려면(옆 화면을 계속 만져야 하는 편집 패널) 드로어에 data-ag-modeless. */
+.ag-drawer-backdrop { position: fixed; inset: 0; z-index: 79; background: var(--ag-overlay); backdrop-filter: blur(2px); opacity: 0; visibility: hidden; transition: opacity var(--ag-dur) var(--ag-ease), visibility 0s linear var(--ag-dur); }
+.ag-drawer.is-open + .ag-drawer-backdrop, .ag-drawer-backdrop.is-open { opacity: 1; visibility: visible; transition: opacity var(--ag-dur) var(--ag-ease); cursor: pointer; }
 /* 1.6: 드로어 남은 높이 — 머리 고정 · 본문(.ag-drawer__body)만 스크롤 · 푸터(.ag-drawer__foot, 액션)는 바닥에 고정.
    <aside class="ag-drawer"><div class="ag-modal__head">…</div><form><div class="ag-drawer__body">…필드…</div><div class="ag-drawer__foot">…버튼…</div></form></aside>
    __body 없이 쓰면 예전처럼 드로어 전체가 스크롤된다. */
@@ -992,16 +1020,16 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-quick-action__icon--4 { background: var(--ag-accent-soft); color: var(--ag-accent-text); }
 
 /* ---- 엔진 고유색 (1.5) — 파일 끝: 카드·목록·배지 기본 규칙 뒤에 와야 톤이 이긴다 --------------------------------------------------------
-   어떤 요소든 data-engine="mysql|postgres|oracle|documentdb|mssql|other" (또는 .ag-engine-<name>) 를 달면 그 안에서
+   어떤 요소든 data-engine="mysql|postgres|oracle|documentdb|mssql|other" (1.8: 부분 일치·대소문자 무시 — aurora-mysql · aurora-postgresql · oracle-ee · sqlserver-se · docdb · mariadb 그대로 넣어도 된다) (또는 .ag-engine-<name>) 를 달면 그 안에서
    --ag-engine / -text / -soft / -solid / --ag-text-on-engine 이 그 엔진 값이 된다. 컴포넌트는 `--engine` 변형 하나로 그 값을 읽는다.
    <div class="ag-card ag-card--engine-stripe" data-engine="postgres">…  <span class="ag-badge ag-badge--engine" data-engine="mysql">MySQL</span>
    엔진을 더할 때: tokens.css 에 다섯 토큰(다크·라이트) + 아래 훅 한 줄. 차트 인접쌍 CVD 검증(tools/check.py) 다시. */
-[data-engine="mysql"],      .ag-engine-mysql      { --ag-engine: var(--ag-engine-mysql);      --ag-engine-text: var(--ag-engine-mysql-text);      --ag-engine-soft: var(--ag-engine-mysql-soft);      --ag-engine-solid: var(--ag-engine-mysql-solid);      --ag-text-on-engine: var(--ag-text-on-engine-mysql); }
-[data-engine="postgres"],   .ag-engine-postgres   { --ag-engine: var(--ag-engine-postgres);   --ag-engine-text: var(--ag-engine-postgres-text);   --ag-engine-soft: var(--ag-engine-postgres-soft);   --ag-engine-solid: var(--ag-engine-postgres-solid);   --ag-text-on-engine: var(--ag-text-on-engine-postgres); }
-[data-engine="oracle"],     .ag-engine-oracle     { --ag-engine: var(--ag-engine-oracle);     --ag-engine-text: var(--ag-engine-oracle-text);     --ag-engine-soft: var(--ag-engine-oracle-soft);     --ag-engine-solid: var(--ag-engine-oracle-solid);     --ag-text-on-engine: var(--ag-text-on-engine-oracle); }
-[data-engine="documentdb"], .ag-engine-documentdb { --ag-engine: var(--ag-engine-documentdb); --ag-engine-text: var(--ag-engine-documentdb-text); --ag-engine-soft: var(--ag-engine-documentdb-soft); --ag-engine-solid: var(--ag-engine-documentdb-solid); --ag-text-on-engine: var(--ag-text-on-engine-documentdb); }
-[data-engine="mssql"],      .ag-engine-mssql      { --ag-engine: var(--ag-engine-mssql);      --ag-engine-text: var(--ag-engine-mssql-text);      --ag-engine-soft: var(--ag-engine-mssql-soft);      --ag-engine-solid: var(--ag-engine-mssql-solid);      --ag-text-on-engine: var(--ag-text-on-engine-mssql); }
-[data-engine="other"],      .ag-engine-other      { --ag-engine: var(--ag-engine-other);      --ag-engine-text: var(--ag-engine-other-text);      --ag-engine-soft: var(--ag-engine-other-soft);      --ag-engine-solid: var(--ag-engine-other-solid);      --ag-text-on-engine: var(--ag-text-on-engine-other); }
+[data-engine*="mysql" i], [data-engine*="maria" i], [data-engine="aurora" i], .ag-engine-mysql { --ag-engine: var(--ag-engine-mysql);      --ag-engine-text: var(--ag-engine-mysql-text);      --ag-engine-soft: var(--ag-engine-mysql-soft);      --ag-engine-solid: var(--ag-engine-mysql-solid);      --ag-text-on-engine: var(--ag-text-on-engine-mysql); }
+[data-engine*="postgre" i], [data-engine="pg" i], .ag-engine-postgres { --ag-engine: var(--ag-engine-postgres);   --ag-engine-text: var(--ag-engine-postgres-text);   --ag-engine-soft: var(--ag-engine-postgres-soft);   --ag-engine-solid: var(--ag-engine-postgres-solid);   --ag-text-on-engine: var(--ag-text-on-engine-postgres); }
+[data-engine*="oracle" i], [data-engine="ora" i], .ag-engine-oracle { --ag-engine: var(--ag-engine-oracle);     --ag-engine-text: var(--ag-engine-oracle-text);     --ag-engine-soft: var(--ag-engine-oracle-soft);     --ag-engine-solid: var(--ag-engine-oracle-solid);     --ag-text-on-engine: var(--ag-text-on-engine-oracle); }
+[data-engine*="docdb" i], [data-engine*="documentdb" i], [data-engine*="mongo" i], .ag-engine-documentdb { --ag-engine: var(--ag-engine-documentdb); --ag-engine-text: var(--ag-engine-documentdb-text); --ag-engine-soft: var(--ag-engine-documentdb-soft); --ag-engine-solid: var(--ag-engine-documentdb-solid); --ag-text-on-engine: var(--ag-text-on-engine-documentdb); }
+[data-engine*="sqlserver" i], [data-engine*="mssql" i], [data-engine*="ms-sql" i], [data-engine*="sql-server" i], .ag-engine-mssql { --ag-engine: var(--ag-engine-mssql);      --ag-engine-text: var(--ag-engine-mssql-text);      --ag-engine-soft: var(--ag-engine-mssql-soft);      --ag-engine-solid: var(--ag-engine-mssql-solid);      --ag-text-on-engine: var(--ag-text-on-engine-mssql); }
+[data-engine="other" i], .ag-engine-other { --ag-engine: var(--ag-engine-other);      --ag-engine-text: var(--ag-engine-other-text);      --ag-engine-soft: var(--ag-engine-other-soft);      --ag-engine-solid: var(--ag-engine-other-solid);      --ag-text-on-engine: var(--ag-text-on-engine-other); }
 
 /* 카드 — 조합 가능한 톤 변형. 배경만이 아니라 제목·테두리·띠·그림자 중 고른다 (한 카드에 둘까지 권장: 예 stripe + title) */
 .ag-card--engine-title  .ag-card__title { color: var(--ag-engine-text); }
