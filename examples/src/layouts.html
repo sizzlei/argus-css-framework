@@ -140,6 +140,34 @@
         <div class="ag-card ag-card--sm ag-col-3 ag-stat-card"><div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--crit"><svg class="ag-icon"><use href="#i-activity"/></svg></span><span class="ag-delta ag-delta--inline ag-delta--down">-38%</span></div><div class="ag-stat ag-stat--sm"><span class="ag-stat__value">24</span><span class="ag-stat__label">슬로우 쿼리 / 시간</span></div></div>
         <div class="ag-card ag-card--sm ag-col-3 ag-stat-card"><div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--warn"><svg class="ag-icon"><use href="#i-bell"/></svg></span></div><div class="ag-stat ag-stat--sm"><span class="ag-stat__value">7</span><span class="ag-stat__label">열린 알림</span></div></div>
         <div class="ag-card ag-card--sm ag-col-3 ag-stat-card"><div class="ag-stat-card__head"><span class="ag-stat-card__icon ag-stat-card__icon--good"><svg class="ag-icon"><use href="#i-check-circle"/></svg></span></div><div class="ag-stat ag-stat--sm"><span class="ag-stat__value">184<small>/186</small></span><span class="ag-stat__label">스냅샷 성공</span></div></div>
+        <!-- 1.7: 묶음 구분 — 액센트(화면당 1) + 범주색 단색 카드. 카탈로그는 violet 이라 3·4 (blue 테마면 1·3) -->
+        <section class="ag-card ag-card--accent ag-col-4">
+          <div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon"><svg class="ag-icon"><use href="#i-shield"/></svg></span><h2 class="ag-card__title">시스템 상태</h2></div><span class="ag-row ag-text-sm"><span class="ag-dot ag-dot--good"></span><strong>모두 정상</strong></span></div>
+          <div class="ag-health">
+            <div class="ag-health__row"><span class="ag-dot ag-dot--good"></span><span class="ag-health__name">메타 DB (MySQL)</span><span class="ag-health__meta">정상 · 4ms</span></div>
+            <div class="ag-health__row"><span class="ag-dot ag-dot--good"></span><span class="ag-health__name">Slack 봇</span><span class="ag-health__meta">정상</span></div>
+            <div class="ag-health__row"><span class="ag-dot ag-dot--good"></span><span class="ag-health__name">인증 (Google)</span><span class="ag-health__meta">정상</span></div>
+          </div>
+          <div class="ag-card__foot"><span class="ag-hint">1분 전 갱신</span><button class="ag-btn ag-btn--outline ag-btn--sm">상세 보기</button></div>
+        </section>
+        <section class="ag-card ag-card--cat3 ag-col-4">
+          <div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon"><svg class="ag-icon"><use href="#i-git"/></svg></span><h2 class="ag-card__title">연동 툴</h2></div><span class="ag-row ag-text-sm"><span class="ag-dot ag-dot--warn"></span><strong>주의 1</strong></span></div>
+          <div class="ag-health">
+            <div class="ag-health__row"><span class="ag-dot ag-dot--good"></span><span class="ag-health__name">Collector</span><span class="ag-health__meta">3분 전</span></div>
+            <div class="ag-health__row"><span class="ag-dot ag-dot--warn"></span><span class="ag-health__name">Jira Syncer</span><span class="ag-health__meta">지연 12분</span></div>
+            <div class="ag-health__row"><span class="ag-dot ag-dot--good"></span><span class="ag-health__name">CloudWatch</span><span class="ag-health__meta">정상</span></div>
+          </div>
+          <div class="ag-card__foot"><span class="ag-hint">3개 연동</span><button class="ag-btn ag-btn--outline ag-btn--sm">연동 설정</button></div>
+        </section>
+        <section class="ag-card ag-card--cat4 ag-col-4">
+          <div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon"><svg class="ag-icon"><use href="#i-clock"/></svg></span><h2 class="ag-card__title">스케줄러</h2></div><span class="ag-row ag-text-sm"><span class="ag-dot ag-dot--good"></span><strong>모두 정상</strong></span></div>
+          <div class="ag-health">
+            <div class="ag-health__row"><span class="ag-dot ag-dot--good"></span><span class="ag-health__name">ISMS 보안 감사</span><span class="ag-health__meta">방금</span></div>
+            <div class="ag-health__row"><span class="ag-dot ag-dot--good"></span><span class="ag-health__name">감사 로그 백업</span><span class="ag-health__meta">03:00</span></div>
+            <div class="ag-health__row"><span class="ag-dot ag-dot--good"></span><span class="ag-health__name">스냅샷 정리</span><span class="ag-health__meta">02:30</span></div>
+          </div>
+          <div class="ag-card__foot"><span class="ag-hint">다음 실행 02:00</span><button class="ag-btn ag-btn--outline ag-btn--sm">일정 보기</button></div>
+        </section>
         <section class="ag-card ag-col-8">
           <div class="ag-card__head"><div class="ag-card__heading"><span class="ag-card__icon"><svg class="ag-icon"><use href="#i-layers"/></svg></span><h2 class="ag-card__title">엔진별 분포</h2></div><div class="ag-segmented ag-segmented--sm"><button class="ag-segmented__item is-active">전체</button><button class="ag-segmented__item">prod</button><button class="ag-segmented__item">stg</button></div></div>
           <div class="ag-bars" style="--ag-bars-label: 110px">

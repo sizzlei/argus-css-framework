@@ -6,6 +6,7 @@ argus-server 대시보드에서 상태 카드를 시스템 · 연동 툴 · 스�
 - `.ag-card--cat1~4` — 범주색 단색 카드. 배경 `--ag-cat-N-solid`(같은 색조를 흰 글자 4.6:1 이상으로 누른 값, 다크 #6551ff · #d61059 · #127a8d · #a06110 / 라이트 #5b4cf0 · #d21f66 · #077995 · #a75c05 — 제목 흰 글자 ≥ 4.99, 메타(`--ag-text-3` = 흰 94%) ≥ 4.61), 글자 `--ag-text-on-cat-solid`(#fff). accent 카드처럼 안쪽 텍스트 · 테두리 · 서브표면 토큰을 재정의하므로 `.ag-health` `.ag-hint` `.ag-card__foot` `.ag-btn--outline` 이 보정 없이 읽힌다. 다크 원색(#8b7cff 등)은 흰 글자 3.1~3.4:1 이라 배경으로 쓰지 않는다.
 - 상태색이 아니다 — 테마 액센트와 색조가 겹치는 범주(violet · indigo 의 1)는 피하고 장애 · 주의와 헷갈리기 쉬운 2 · 4 는 뒤로. principles 에 규칙 한 줄, 카탈로그 "카드" 섹션 예시(시스템 상태 accent + 연동 툴 cat3 + 스케줄러 cat4 — 카탈로그 기본 violet 기준), 매트릭스 카드 변형에 cat1~4.
 - `tools/gen_matrix.py` python 3.9 에서 돌게(f-string 안 역슬래시 제거 — argus-server 보고 ⑤).
+- 예시: layouts(sidebar) 상단에 시스템 상태(accent) · 연동 툴(cat3) · 스케줄러(cat4) 묶음 — 카탈로그 밖의 실제 화면 사용 예.
 - 검토(2026-10-15): check.py 139항목 — 다크·라이트 `--cat1~4` 흰 글자 대비 ≥ 4.5 와 안쪽 보조 글자 토큰 재정의를 매트릭스에서 단언. CLAUDE.md 단색 카드 목록에 cat1~4 추가. 단색 카드(accent·cat·engine-solid) 위 상태 점에 글자색 링 1.5px — 청록 카드 위 good 초록처럼 배경과 색조가 겹쳐도 점이 보인다.
 
 ## 1.6.0 — 2026-10-14 · 사이드바 남은 높이
