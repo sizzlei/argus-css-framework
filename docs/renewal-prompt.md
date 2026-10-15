@@ -144,7 +144,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 드로어 배경 어둡게 + 바깥 클릭 닫기 | `data-ag-open` 으로 열면 `.ag-drawer-backdrop` 자동. Alpine 드로어는 드로어 바로 뒤에 `<div class="ag-drawer-backdrop" @click="open=false"></div>` — 입력 폼 드로어는 막에 `data-ag-static` 을 달고 `@click` 을 두지 않는다(잘못 눌러 입력이 사라지지 않게) |
 | 드로어 안 검색·필터가 목록과 함께 스크롤돼 사라짐 | `.ag-drawer__body` 안에서 목록과 같은 부모에 `.ag-drawer__toolbar`(본문 위 고정) |
 | 두 열 폼·표를 함께 보는 넓은 드로어 (`w-[720px]` 등) | `.ag-drawer--lg` (720px, 좁은 화면 100vw) |
-| 엔진 문자열 정규화 함수(`normalizeEngine()` 등) | 지운다 — `data-engine="{{.Engine}}"`(aurora-mysql·oracle-ee·sqlserver-se·docdb 그대로), JS 는 `AG.charts.engineKey()` |
+| 엔진 문자열 정규화 함수(`normalizeEngine()` 등) | 지운다 — `data-engine="{{.Engine}}"`(aurora-mysql·oracle-ee·sqlserver-se·docdb 그대로, 단독 별칭 pg·ora·doc, 모르는 값 redis·빈 값은 other — 1.9.1), JS 는 `AG.charts.engineKey()` |
 | 팀·종류 필터 칩 하드코딩 색 | `<button class="ag-chip ag-chip--sm ag-chip--cat1" aria-pressed>` (+ `is-active`) |
 | 표 셀 `max-width`+`text-overflow` 인라인, `.truncate` 가 표에서 안 먹던 곳 | `<td class="ag-td--truncate"><span title="전체">…</span></td>` (폭 `--ag-td-max`) |
 | 클릭하면 모달 여는 readonly input 에 `style="cursor:pointer"` | `.ag-input--picker` (그 밖에 클릭되는 요소 `.ag-cursor-pointer`) |

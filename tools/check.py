@@ -508,12 +508,16 @@ async def main():
         check("1.8 ⑫: argus.js 로 연 드로어에 배경 막이 생기고, 막 클릭 → 닫힘 + 포커스 복귀", v["shown"] and v["closed"] and v["back"] and v["hidden"] == "hidden", str(v))
         await pg.close()
         pg = await page(b, "components.html")
-        v = await pg.evaluate("""()=>{const k=AG.charts.engineKey;const cases={'aurora-mysql':'mysql','aurora-postgresql':'postgres','oracle-ee':'oracle','oracle-se2-cdb':'oracle','sqlserver-se':'mssql','SQL Server 2019':'mssql','MS-SQL':'mssql','docdb':'documentdb','MongoDB':'documentdb','mariadb':'mysql','aurora':'mysql','PostgreSQL 15.4':'postgres','pg':'postgres','redis':'other','':'other'};
+        v = await pg.evaluate("""()=>{const k=AG.charts.engineKey;const cases={'aurora-mysql':'mysql','aurora-postgresql':'postgres','oracle-ee':'oracle','oracle-se2-cdb':'oracle','sqlserver-se':'mssql','SQL Server 2019':'mssql','MS-SQL':'mssql','docdb':'documentdb','MongoDB':'documentdb','mariadb':'mysql','aurora':'mysql','PostgreSQL 15.4':'postgres','pg':'postgres','doc':'documentdb','docker':'other','redis':'other','':'other'};
           const bad=Object.entries(cases).filter(([n,e])=>k(n)!==e).map(([n,e])=>n+'→'+k(n));
           const css=['aurora-mysql','aurora-postgresql','oracle-ee','sqlserver-se','docdb'].map(n=>{const el=document.querySelector('#engines tr[data-engine="'+n+'"]');return getComputedStyle(el).getPropertyValue('--ag-engine').trim()});
           const root=getComputedStyle(document.documentElement);const want=['mysql','postgres','oracle','mssql','documentdb'].map(e=>root.getPropertyValue('--ag-engine-'+e).trim());
           return {bad, cssOk: css.every((c,i)=>c===want[i]), css, want}}""")
-        check("1.8 ②: AG.charts.engineKey — RDS 엔진 문자열·표기 변형 15종 정규화", not v["bad"], str(v["bad"]))
+        check("1.8 ②: AG.charts.engineKey — RDS 엔진 문자열·표기 변형 17종 정규화(1.9.1 doc 단독)", not v["bad"], str(v["bad"]))
+        v2 = await pg.evaluate("""()=>{const root=getComputedStyle(document.documentElement);const w=document.createElement('div');w.innerHTML='<i data-engine="doc"></i><i data-engine="redis"></i><i data-engine=""></i><div data-engine="aurora-mysql"><i data-engine="valkey"></i></div>';document.body.appendChild(w);
+          const got=[...w.querySelectorAll('i')].map(x=>getComputedStyle(x).getPropertyValue('--ag-engine').trim());w.remove();
+          return {got, want:['documentdb','other','other','other'].map(e=>root.getPropertyValue('--ag-engine-'+e).trim())}}""")
+        check("1.9.1: [data-engine] — doc 단독 → documentdb, 모르는 값 · 빈 값 → other(부모 엔진도 덮음)", v2["got"] == v2["want"], str(v2))
         check("1.8 ②: [data-engine] CSS 훅 부분 일치(aurora-mysql·aurora-postgresql·oracle-ee·sqlserver-se·docdb)", v["cssOk"], str(v))
         v = await pg.evaluate("""()=>{const c=[...document.querySelectorAll('.ag-chip--cat1,.ag-chip--cat2,.ag-chip--cat3,.ag-chip--cat4')];const act=document.querySelector('.ag-chip--cat1.is-active');
           const sp=document.querySelector('td.ag-td--truncate > span');const pk=document.querySelector('.ag-input--picker');
@@ -545,6 +549,9 @@ async def main():
         check("1.9 ⑰: .ag-bulkbar--sticky — 스크롤 상자 안에서 맨 위에 붙고 배경 불투명", v["scrolled"] > 0 and abs(v["gap"]) <= 1 and v["opaque"], str(v))
         v = await pg.evaluate("""()=>{const m=document.querySelector('.ag-health__meta');const cs=getComputedStyle(m);return {ff:cs.fontFamily, num:cs.fontVariantNumeric}}""")
         check("1.9 ⓖ: .ag-health__meta — 모노 아님 + tabular-nums(한글 메타가 벌어지지 않게)", "Mono" not in v["ff"] and "tabular-nums" in v["num"], str(v))
+        v = await pg.evaluate("""()=>{const w=document.createElement('div');w.innerHTML='<aside class="ag-drawer is-open"></aside><div class="ag-drawer-backdrop" data-ag-static></div><aside class="ag-drawer is-open" data-ag-static></aside><div class="ag-drawer-backdrop"></div><aside class="ag-drawer is-open"></aside><div class="ag-drawer-backdrop"></div>';document.body.appendChild(w);
+          const c=[...w.querySelectorAll('.ag-drawer-backdrop')].map(x=>getComputedStyle(x).cursor);w.remove();return c}""")
+        check("1.9: data-ag-static 막(막 또는 드로어에) — 기본 커서, 일반 막은 손가락", v == ["auto", "auto", "pointer"], str(v))
         await pg.close()
         pg = await page(b, "login.html")
         v = await pg.evaluate("""()=>{const el=document.querySelector('.ag-auth__status b');const cs=getComputedStyle(el);return {ls:cs.letterSpacing, ff:cs.fontFamily}}""")

@@ -36,7 +36,7 @@ index.html                      ← GitHub Pages 진입점 (examples/ 로 리다
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
                                    index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
-tools/                          ← check.py(값 단언 회귀 152항목 + axe 접근성 게이트 + 키보드·모션 상한) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
+tools/                          ← check.py(값 단언 회귀 154항목 + axe 접근성 게이트 + 키보드·모션 상한) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -169,7 +169,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | 상태 | `--ag-good` `--ag-warn` `--ag-crit` `--ag-info` | `*-soft`(배경) `*-text`(단독 글자) `*-solid` + `--ag-text-on-*`(solid 배지·칩) 동반 |
 | 차트 | `--ag-chart-1..4` `--ag-chart-other` `--ag-chart-hatch` `--ag-chart-grid` `--ag-text-on-chart` `--ag-treemap-base` | 범주색 고정 순서. 범주색을 배경으로 쓰는 버블·트리맵 글자는 `--ag-text-on-chart`(solid 배지·칩은 `--ag-text-on-cat-N`). `other` 는 "기타" 조각용 중립 회색 — 상위 4 + 기타 = 5조각이 1번 색을 반복하지 않음 |
 | 순차 램프 | `--ag-seq-1..5` | 히트맵·밀도용 단일 색 5단계 (`--ag-chart-1` → `--ag-surface-2`). `.ag-heat--1..5` 와 `AG.charts.sequential(5)` 가 같은 값 |
-| 엔진 | `--ag-engine-{mysql,postgres,oracle,documentdb,mssql,other}` (`data-engine` 은 부분 일치 — `aurora-mysql` `oracle-ee` `sqlserver-se` `docdb` 그대로; JS `AG.charts.engineKey()`) + `*-text` `*-soft` `*-solid` `--ag-text-on-engine-*` | `data-engine` 훅이 `--ag-engine*` 로 풀어줌. 차트 순서 documentdb → mysql → postgres → oracle → mssql (인접쌍 CVD 검증) |
+| 엔진 | `--ag-engine-{mysql,postgres,oracle,documentdb,mssql,other}` (`data-engine` 은 부분 일치 — `aurora-mysql` `oracle-ee` `sqlserver-se` `docdb` 그대로, 단독 별칭 `pg` `ora` `doc`, 모르는 값은 other; JS `AG.charts.engineKey()`) + `*-text` `*-soft` `*-solid` `--ag-text-on-engine-*` | `data-engine` 훅이 `--ag-engine*` 로 풀어줌. 차트 순서 documentdb → mysql → postgres → oracle → mssql (인접쌍 CVD 검증) |
 | 범주 | `--ag-cat-1..4` `--ag-cat-other` + `*-soft` `*-text` | 배지·태그·점에서 종류 구분. 차트 범주색과 같은 네 가지 + 기타(`.ag-badge--other` `.ag-dot--other` `.ag-avatar--other`), 라이트는 글자색을 한 단계 깊게 |
 | 간격 | `--ag-space-1..12` | 4px 기준 |
 | 본문 폭 | `--ag-content-max`(1600px) `--ag-gutter`(clamp 16–40px) | `.ag-main` 상한과 좌우 여백. 전면은 `.ag-app--fluid` 또는 토큰 `none` |
@@ -239,7 +239,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 152항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
+python3 tools/check.py      # 값 단언 회귀 154항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서

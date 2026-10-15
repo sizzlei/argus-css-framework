@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.1 — 2026-10-15 · 엔진 훅 기본값 · doc 별칭 (argus-server 우회 걷기 중 발견)
+
+- **모르는 엔진 값 → 기타** — `[data-engine]`(값 무관) 기본 규칙을 엔진 훅 맨 앞에 두었다(같은 특이도라 뒤의 엔진 규칙이 이긴다). 1.8 부터 RDS 값을 그대로 넣게 되면서 `redis` · `valkey` · 빈 값처럼 어느 훅에도 안 걸리는 값은 `--ag-engine` 이 비어 `.ag-dot--engine` 점 · 카드 띠가 사라졌다(서비스 정규화가 `other` 로 바꿔 주던 동안은 안 보였음). 부모 엔진 안의 모르는 값도 기타로 덮는다.
+- **`doc` 단독 별칭** — CSS `[data-engine="doc" i]` · `AG.charts.engineKey('doc')` → documentdb. argus Secret Key 의 표준 엔진 값(mysql · postgresql · doc · oracle). `pg` · `ora` 처럼 단독일 때만(`docker` 는 other).
+- check.py +1(doc · redis · 빈 값 · 부모 엔진 안 모르는 값), engineKey 사례 17종.
+- renewal-prompt 대응표 엔진 정규화 행에 단독 별칭 · 기본값 추가.
+
 ## 1.9.0 — 2026-10-15 · argus-server 보고 (ⓐ ⑰ ⑪ ⑬ ⑭ ⓖ ⓘ)
 
 - **ⓐ 드로어 고정 도구줄** `.ag-drawer__toolbar` — `.ag-drawer__body` 안, 긴 목록과 같은 부모에 두면 본문을 내려도 검색 · 필터가 위에 붙는다(sticky top 0, 불투명 배경, 아래 선). 1.6 에서 본문이 통째로 스크롤되며 검색 칸이 같이 올라가던 문제.

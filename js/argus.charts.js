@@ -86,7 +86,7 @@
       if (/postgre|(^|[^a-z])pg([^a-z]|$)/.test(n)) return 'postgres';
       if (/mysql|maria/.test(n)) return 'mysql';
       if (/oracle|(^|[^a-z])ora([^a-z]|$)/.test(n)) return 'oracle';
-      if (/docdb|documentdb|mongo/.test(n)) return 'documentdb';
+      if (/docdb|documentdb|mongo|(^|[^a-z])doc([^a-z]|$)/.test(n)) return 'documentdb';   /* 1.9.1: doc 단독(argus Secret Key 표준 엔진 값) */
       if (/(^|[^a-z])aurora([^a-z]|$)/.test(n)) return 'mysql';
       return 'other';
     },
