@@ -118,7 +118,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 테이블 `min-w-full divide-y` / `.table.table-hover` | `.ag-table-wrap` > `.ag-table` (`--dense`, `--striped`, `--sticky-col`) |
 | 정렬 헤더 (sortable.js) | `th.is-sorted` > `button.ag-sort` |
 | 테이블 하단 "n개 중 1–20" + 페이지 | `.ag-table-foot` + `.ag-pagination` |
-| 선택 행 액션 바 | `.ag-bulkbar` |
+| 선택 행 액션 바 | `.ag-bulkbar` — 긴 목록 위에서 고르는 동안 붙어 있어야 하면 `.ag-bulkbar--sticky`(목록과 같은 부모 안, 위치 `--ag-sticky-top`) |
 | 입력 `px-4 py-2.5 border rounded-lg focus:ring-2` / `.form-control` | `.ag-input` (라벨·힌트는 `.ag-field` > `.ag-label` + `.ag-hint`, 오류는 `.is-invalid`) |
 | `<select>` / `.form-select` | `.ag-select` (`--pill`, `--sm`, `--inline`) |
 | 토글 `relative inline-flex h-6 w-11 rounded-full` / `.form-switch` | `label.ag-switch > input[type=checkbox]` |
@@ -141,7 +141,9 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 | 엔진 표시 — 엔진별 하드코딩 색 `.mysql{color:#00758f}` `.engine-badge--pg` 등 | 요소에 `data-engine="mysql\|postgres\|oracle\|documentdb\|mssql\|other"` + `.ag-badge--engine` / `.ag-dot--engine` / `.ag-card--engine-stripe.ag-card--engine-title` / `td.ag-td--engine`. 차트 시리즈색은 `AG.charts.engines(names)` |
 | 사이드바 아래 빈 공간 / 바닥 위젯 (`.sidebar-footer` `.sidebar-status`) | 메뉴를 `.ag-sidebar__nav` 로 감싸고, 바닥은 `.ag-sidebar__panel`(상태·용량·환경 전환) + `.ag-sidebar__footer`(사용자). 패널 1~2개·160px 안 |
 | 드로어/슬라이드 패널 안 폼 (`.drawer-body` + 하단 고정 버튼) | `.ag-drawer` > `.ag-modal__head` + `form` > `.ag-drawer__body`(스크롤) + `.ag-drawer__foot`(바닥 고정 액션) |
-| 드로어 배경 어둡게 + 바깥 클릭 닫기 | `data-ag-open` 으로 열면 `.ag-drawer-backdrop` 자동. Alpine 드로어는 드로어 바로 뒤에 `<div class="ag-drawer-backdrop" @click="open=false"></div>` |
+| 드로어 배경 어둡게 + 바깥 클릭 닫기 | `data-ag-open` 으로 열면 `.ag-drawer-backdrop` 자동. Alpine 드로어는 드로어 바로 뒤에 `<div class="ag-drawer-backdrop" @click="open=false"></div>` — 입력 폼 드로어는 막에 `data-ag-static` 을 달고 `@click` 을 두지 않는다(잘못 눌러 입력이 사라지지 않게) |
+| 드로어 안 검색·필터가 목록과 함께 스크롤돼 사라짐 | `.ag-drawer__body` 안에서 목록과 같은 부모에 `.ag-drawer__toolbar`(본문 위 고정) |
+| 두 열 폼·표를 함께 보는 넓은 드로어 (`w-[720px]` 등) | `.ag-drawer--lg` (720px, 좁은 화면 100vw) |
 | 엔진 문자열 정규화 함수(`normalizeEngine()` 등) | 지운다 — `data-engine="{{.Engine}}"`(aurora-mysql·oracle-ee·sqlserver-se·docdb 그대로), JS 는 `AG.charts.engineKey()` |
 | 팀·종류 필터 칩 하드코딩 색 | `<button class="ag-chip ag-chip--sm ag-chip--cat1" aria-pressed>` (+ `is-active`) |
 | 표 셀 `max-width`+`text-overflow` 인라인, `.truncate` 가 표에서 안 먹던 곳 | `<td class="ag-td--truncate"><span title="전체">…</span></td>` (폭 `--ag-td-max`) |

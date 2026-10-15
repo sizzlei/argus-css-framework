@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.9.0 — 2026-10-15 · argus-server 보고 (ⓐ ⑰ ⑪ ⑬ ⑭ ⓖ ⓘ)
+
+- **ⓐ 드로어 고정 도구줄** `.ag-drawer__toolbar` — `.ag-drawer__body` 안, 긴 목록과 같은 부모에 두면 본문을 내려도 검색 · 필터가 위에 붙는다(sticky top 0, 불투명 배경, 아래 선). 1.6 에서 본문이 통째로 스크롤되며 검색 칸이 같이 올라가던 문제.
+- **⑰ 고정 선택 바** `.ag-bulkbar--sticky` — 목록 위에 두면 아래 항목을 고르는 동안 붙어 있다. 위치 `--ag-sticky-top`(기본 상단바 아래, `.ag-drawer__body` · `.ag-scroll-y` · `.ag-modal__panel` 안에서는 0). 배경은 불투명.
+- **⑪ 넓은 드로어** `.ag-drawer--lg` — 720px(좁은 화면 100vw). 두 열 폼 · 표를 함께 보는 생성 폼용.
+- **⑬ sticky-end 펼친 행** — 고정을 표의 바로 아래 행(`> thead/tbody/tfoot > tr`)으로 좁히고 `colspan` 셀을 뺐다. 펼친 행(`.ag-tr--expand`)의 큰 셀과 그 안의 표 끝 칸이 고정 · 배경을 받아 색이 갈라지던 버그.
+- **⑭ sticky-end 선택 행** — 고정 칸 배경을 행 변수 `--_stick-bg` 하나로 읽는다(hover · `is-selected` 가 변수만 바꿈). 끝에서 두 번째 칸 규칙의 특이도가 `tr.is-selected td` 보다 높아 선택 강조가 그 칸에서 끊기던 버그.
+- **ⓖ** `.ag-health__meta` 모노 → 본문 글꼴 + `tabular-nums`(+ 줄바꿈 없음). "3분 전 동기화" 같은 한글 메타가 모노의 넓은 공백으로 벌어졌다. **ⓘ** `.ag-auth__status b:lang(ko)` 자간 0 · 본문 글꼴 — "정상" "연결 안 됨" 이 글자마다 벌어졌다.
+- 배경 막 `data-ag-static`(드로어 또는 막 자체) — 눌러도 닫히지 않는 막은 손가락 커서 대신 기본 커서. Alpine 드로어는 막에 `data-ag-static` 을 달고 `@click` 을 두지 않는다(입력 폼 드로어에서 바깥을 잘못 눌러 입력이 사라지지 않게).
+- 예시: 카탈로그 "넓은 드로어 · 고정 도구줄"(권한 추가, DB 18개), 고정 선택 바(스크롤 상자 안 계정 12개), resources 표 펼친 행(최근 이벤트 안쪽 표). check.py +7(⑬ 고정 범위 · ⑭ 선택 행 색 · ⑪ 폭 · ⓐ 도구줄 붙음 · ⑰ 붙음 + 불투명 · ⓖ · ⓘ).
+
 ## 1.8.0 — 2026-10-15 · argus-server 보고 다섯 건 (⑫ ② ⑦ ⑧ ③)
 
 - **⑫ 드로어 배경 막** — `.ag-drawer-backdrop`(드로어 바로 뒤 형제, 드로어가 `is-open` 이면 CSS 로 보임). `data-ag-open` 으로 연 드로어는 막이 없으면 argus.js 가 넣고, 막 클릭 → 닫힘 + 연 버튼으로 포커스 복귀(`data-ag-static` 이면 안 닫음, `data-ag-modeless` 면 막 없음). Alpine/Vue 드로어는 막을 직접 두고 `@click` 으로 닫는다(소유권 원칙 유지).

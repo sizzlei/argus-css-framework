@@ -194,7 +194,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr data-engine="aurora-mysql">
+            <tr class="is-expanded" data-engine="aurora-mysql">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">order-db-writer</a><div class="ag-text-xs ag-text-3 ag-mono">prod-order-cluster</div></td>
               <td><span class="ag-badge ag-badge--plain ag-badge--engine"><span class="ag-dot ag-dot--engine"></span>MySQL 8.0.36</span></td>
@@ -207,6 +207,12 @@
               <td><span class="ag-badge ag-badge--crit"><span class="ag-dot ag-dot--crit"></span>장애</span></td>
               <td class="ag-td--actions"><button class="ag-btn ag-btn--icon ag-btn--ghost ag-btn--sm" aria-label="더보기"><svg class="ag-icon"><use href="#i-more"/></svg></button></td>
             </tr>
+            <tr class="ag-tr--expand"><td colspan="11">
+              <div class="ag-stack ag-stack--sm"><span class="ag-eyebrow">최근 이벤트 — 펼친 행(colspan)과 안쪽 표는 끝 열 고정을 받지 않는다</span>
+                <div class="ag-table-wrap"><table class="ag-table ag-table--dense"><thead><tr><th>시각</th><th>이벤트</th><th>원인</th></tr></thead>
+                <tbody><tr><td class="ag-mono">10-15 09:42</td><td>CPU 92% 초과</td><td>배치 정산 쿼리 3건 동시 실행</td></tr><tr><td class="ag-mono">10-15 09:10</td><td>커넥션 1,800 초과</td><td>주문 API 재시도 폭주</td></tr></tbody></table></div>
+              </div>
+            </td></tr>
             <tr data-engine="aurora-mysql">
               <td><label class="ag-check"><input type="checkbox" aria-label="행 선택"></label></td>
               <td><a href="detail.html" class="ag-fw-500 ag-text-1">order-db-reader-1</a><div class="ag-text-xs ag-text-3 ag-mono">prod-order-cluster</div></td>

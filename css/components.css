@@ -471,15 +471,22 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   background: linear-gradient(90deg, var(--ag-surface-2) 25%, var(--ag-surface-3) 50%, var(--ag-surface-2) 75%); background-size: 200% 100%; animation: ag-shimmer 1.4s linear infinite; }
 .ag-table--loading tbody td.ag-td--num::after { left: 40%; right: var(--ag-cell-x); }
 .ag-table--loading tbody td.ag-td--actions::after { display: none; }
+/* 1.9 (⑬⑭): 고정은 이 표의 바로 아래 행만(> thead/tbody/tfoot > tr) — 펼친 행(.ag-tr--expand)의 colspan 셀과 그 안의 표는 고정하지 않는다.
+   고정 칸 배경은 행 변수 --_stick-bg 하나로 읽는다 — hover · 선택(is-selected) 행에서 고정 칸만 다른 색으로 끊기던 것(특이도 싸움)을 없앴다 */
 .ag-table--sticky-end { --ag-actions-w: 56px; }
-.ag-table--sticky-end th:last-child, .ag-table--sticky-end td:last-child { position: sticky; right: 0; z-index: 2; background: var(--ag-surface); }
-.ag-table--sticky-end tr:has(> .ag-td--actions:last-child) > :nth-last-child(2),
-.ag-table--sticky-end tr:has(> .ag-th--actions:last-child) > :nth-last-child(2) { position: sticky; right: var(--ag-actions-w); z-index: 2; background: var(--ag-surface); }
-.ag-table--sticky-end tr:has(> .ag-td--actions:last-child) > :nth-last-child(2), .ag-table--sticky-end tr:not(:has(> .ag-td--actions:last-child)) > :last-child { box-shadow: -10px 0 12px -12px var(--ag-shadow-scroll); }
-.ag-table--sticky-end .ag-td--actions:last-child, .ag-table--sticky-end .ag-th--actions:last-child { width: var(--ag-actions-w); min-width: var(--ag-actions-w); box-sizing: border-box; }
-.ag-table--sticky-end thead th { z-index: 3; }
-.ag-table--sticky-end tbody tr:hover td { background-color: var(--ag-surface-hover); }
-.ag-table--sticky-end tr.is-selected td { background-color: color-mix(in oklab, var(--ag-accent) 14%, var(--ag-surface)); }
+.ag-table--sticky-end > * > tr { --_stick-bg: var(--ag-surface); }
+.ag-table--sticky-end > tbody > tr:not(.ag-tr--expand):hover { --_stick-bg: var(--ag-surface-hover); }
+.ag-table--sticky-end > tbody > tr.is-selected { --_stick-bg: color-mix(in oklab, var(--ag-accent) 14%, var(--ag-surface)); }
+.ag-table--sticky-end > * > tr > :last-child:not([colspan]),
+.ag-table--sticky-end > * > tr:has(> .ag-td--actions:last-child) > :nth-last-child(2),
+.ag-table--sticky-end > * > tr:has(> .ag-th--actions:last-child) > :nth-last-child(2) { position: sticky; z-index: 2; background: var(--_stick-bg); }
+.ag-table--sticky-end > * > tr > :last-child:not([colspan]) { right: 0; }
+.ag-table--sticky-end > * > tr:has(> .ag-td--actions:last-child) > :nth-last-child(2),
+.ag-table--sticky-end > * > tr:has(> .ag-th--actions:last-child) > :nth-last-child(2) { right: var(--ag-actions-w); }
+.ag-table--sticky-end > * > tr:has(> .ag-td--actions:last-child) > :nth-last-child(2), .ag-table--sticky-end > * > tr:not(:has(> .ag-td--actions:last-child)) > :last-child:not([colspan]) { box-shadow: -10px 0 12px -12px var(--ag-shadow-scroll); }
+.ag-table--sticky-end > * > tr > .ag-td--actions:last-child, .ag-table--sticky-end > * > tr > .ag-th--actions:last-child { width: var(--ag-actions-w); min-width: var(--ag-actions-w); box-sizing: border-box; }
+.ag-table--sticky-end > thead > tr > th { z-index: 3; }
+.ag-table--sticky-end > tbody > tr:not(.ag-tr--expand):is(:hover, .is-selected) > td { background-color: var(--_stick-bg); }   /* 고정 안 된 칸도 같은 색 — 행이 한 덩어리로 보이게 */
 .ag-card--flush .ag-table-wrap { border: 0; border-radius: 0; }
 .ag-table {
   width: 100%;
@@ -837,12 +844,15 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   transition: transform var(--ag-dur-move) var(--ag-ease);
 }
 .ag-drawer.is-open { transform: none; }
+/* 1.9 (⑪): 넓은 드로어 — 폼이 두 열이거나 표 · 목록(보안 그룹, 파라미터)을 함께 보는 생성 폼. 좁은 화면에서는 100vw */
+.ag-drawer--lg { width: min(720px, 100vw); }
 /* 1.8 (⑫): 드로어 배경 막 — 드로어 바로 뒤 형제 .ag-drawer-backdrop. 드로어가 is-open 이면 보인다.
    argus.js 로 연 드로어(data-ag-open)는 막이 없으면 자동으로 넣고, 막을 클릭하면 닫는다(data-ag-static 이면 안 닫음).
    Alpine/Vue 가 여닫는 드로어는 직접 <div class="ag-drawer-backdrop" @click="open = false"></div> 를 드로어 다음에 둔다.
    막 없이 쓰려면(옆 화면을 계속 만져야 하는 편집 패널) 드로어에 data-ag-modeless. */
 .ag-drawer-backdrop { position: fixed; inset: 0; z-index: 79; background: var(--ag-overlay); backdrop-filter: blur(2px); opacity: 0; visibility: hidden; transition: opacity var(--ag-dur) var(--ag-ease), visibility 0s linear var(--ag-dur); }
 .ag-drawer.is-open + .ag-drawer-backdrop, .ag-drawer-backdrop.is-open { opacity: 1; visibility: visible; transition: opacity var(--ag-dur) var(--ag-ease); cursor: pointer; }
+.ag-drawer[data-ag-static] + .ag-drawer-backdrop, .ag-drawer + .ag-drawer-backdrop[data-ag-static], .ag-drawer-backdrop[data-ag-static] { cursor: auto; }   /* 1.9: 눌러도 안 닫히는 막(입력 폼 드로어)은 손가락 커서를 쓰지 않는다 */
 /* 1.6: 드로어 남은 높이 — 머리 고정 · 본문(.ag-drawer__body)만 스크롤 · 푸터(.ag-drawer__foot, 액션)는 바닥에 고정.
    <aside class="ag-drawer"><div class="ag-modal__head">…</div><form><div class="ag-drawer__body">…필드…</div><div class="ag-drawer__foot">…버튼…</div></form></aside>
    __body 없이 쓰면 예전처럼 드로어 전체가 스크롤된다. */
@@ -853,6 +863,10 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-drawer__body > :last-child { padding-bottom: var(--ag-space-2); }
 .ag-drawer__foot { flex: none; margin-top: auto; display: flex; align-items: center; justify-content: flex-end; gap: var(--ag-space-2); padding: var(--ag-space-4) 0 var(--ag-space-6); border-top: 1px solid var(--ag-border); background: var(--ag-bg-elevated); }
 .ag-drawer__foot > .ag-text-3, .ag-drawer__foot > .ag-hint { margin-right: auto; }   /* 왼쪽 보조 문구(저장 시각·단축키) */
+/* 1.9 (ⓐ): 본문 위 고정 도구줄 — 검색 · 필터를 긴 목록과 같은 부모 안, 목록 바로 위에 둔다. 본문(.ag-drawer__body)을 내려도 위에 붙어 있다.
+   <div class="ag-drawer__body"><div class="ag-stack"><div class="ag-drawer__toolbar"><input class="ag-input" type="search">…</div><div class="ag-list">…</div></div></div>
+   sticky 는 부모 상자 안에서만 붙으므로 목록과 형제여야 한다. 단계(위저드)마다 다른 도구줄이면 단계 묶음마다 하나씩 */
+.ag-drawer__toolbar { position: sticky; top: 0; z-index: 3; display: flex; flex-direction: column; gap: var(--ag-space-2); margin-inline: calc(-1 * var(--ag-space-6)); padding: var(--ag-space-3) var(--ag-space-6); background: var(--ag-bg-elevated); border-bottom: 1px solid var(--ag-border); }
 
 /* ---- Tooltip (CSS only) --------------------------------------------- */
 [data-tip] { position: relative; }

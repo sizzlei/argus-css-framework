@@ -82,6 +82,7 @@
 .ag-auth__version { font-size: var(--ag-text-xs); font-weight: 700; letter-spacing: .06em; padding: 1px 8px; border-radius: var(--ag-radius-pill); background: var(--ag-surface-3); color: var(--ag-text-2); border: 1px solid var(--ag-border); }
 .ag-auth__status { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-family: var(--ag-font-mono); font-size: var(--ag-text-xs); color: var(--ag-text-3); }
 .ag-auth__status b { font-weight: 700; font-size: var(--ag-text-xs); letter-spacing: .08em; text-transform: uppercase; }
+.ag-auth__status b:lang(ko) { font-family: var(--ag-font-sans); letter-spacing: 0; }   /* 1.9 (ⓘ): 한글 문서에서는 자간 · 모노를 뺀다 — "정상" "연결 안 됨" 이 글자마다 벌어졌다 */
 .ag-auth__status i { font-style: normal; opacity: .45; }
 .ag-auth__status-dot { width: 7px; height: 7px; border-radius: 50%; background: rgb(255 255 255 / .5); flex: none; }
 .ag-auth__status-dot.is-up { background: var(--ag-good); }   /* 1.4: 정적 — 늘 보이는 상태 점은 움직이지 않는다 */
@@ -446,6 +447,10 @@
 .ag-bulkbar { display: flex; align-items: center; gap: var(--ag-space-3); padding: 10px 16px; border-radius: var(--ag-radius-md); background: var(--ag-accent-soft); border: 1px solid color-mix(in oklab, var(--ag-accent) 30%, transparent); font-size: var(--ag-text-sm); }
 .ag-bulkbar strong { color: var(--ag-accent-text); }
 .ag-bulkbar .ag-cluster { margin-left: auto; }
+/* 1.9 (⑰): 고정 선택 바 — 긴 목록 위에 두면 아래 항목을 고르는 동안 화면 위(상단바 아래)에 붙어 있다. 목록과 같은 부모 안에 둔다(sticky 범위).
+   배경은 불투명(아래 내용이 비치지 않게). 붙는 위치 --ag-sticky-top: 기본 상단바 아래, 드로어 본문 · .ag-scroll-y 안에서는 0 */
+.ag-bulkbar--sticky { position: sticky; top: var(--ag-sticky-top, calc(var(--ag-topbar-h) + var(--ag-space-2))); z-index: 30; background: color-mix(in oklab, var(--ag-accent) 14%, var(--ag-bg-elevated)); box-shadow: var(--ag-shadow-md); }
+:is(.ag-drawer__body, .ag-scroll-y, .ag-modal__panel) { --ag-sticky-top: 0px; }
 .ag-table tr.ag-tr--expand > td { background: var(--ag-surface-2); padding: var(--ag-space-4) var(--ag-space-6); white-space: normal; }
 .ag-table tr.is-expanded td { border-bottom-color: transparent; }
 .ag-table__expander { transition: transform var(--ag-dur) var(--ag-ease); color: var(--ag-text-3); }
@@ -605,7 +610,7 @@
 .ag-health__row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--ag-border); font-size: var(--ag-text-sm); }
 .ag-health__row:last-child { border-bottom: 0; }
 .ag-health__name { font-weight: 500; color: var(--ag-text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ag-health__meta { color: var(--ag-text-3); font-size: var(--ag-text-xs); margin-left: auto; font-family: var(--ag-font-mono); }
+.ag-health__meta { color: var(--ag-text-3); font-size: var(--ag-text-xs); margin-left: auto; flex: none; white-space: nowrap; font-variant-numeric: tabular-nums; }   /* 1.9 (ⓖ): 모노 → 본문 글꼴 + 숫자 폭 고정. "3분 전 동기화" 같은 한글 메타가 모노의 넓은 공백으로 벌어졌다 */
 
 /* ---- 날짜/시간 네이티브 입력 다크 보정 -------------------------------------- */
 .ag-input[type="date"], .ag-input[type="datetime-local"], .ag-input[type="time"], .ag-input[type="month"] { font-family: var(--ag-font-sans); }

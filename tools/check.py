@@ -385,7 +385,7 @@ async def main():
         # ── 1.4 디자인 감사: 무한 모션 상한, 지속시간 토큰, 예시 인라인 스타일 0, 버블 면적, 오류 요소 ──
         for name in ["index", "resources", "detail", "layouts", "login"]:
             pg = await page(b, name + ".html")
-            v = await pg.evaluate("""()=>{let inf=0;for(const el of document.querySelectorAll('*')){const a=getComputedStyle(el).animationIterationCount;if(a&&a.split(',').some(x=>x.trim()==='infinite')&&el.offsetParent!==null&&!el.closest('.ag-skeleton,.ag-skeleton-rows,.ag-table--loading,.ag-spinner,.is-loading,.ag-log__cursor')&&!el.classList.contains('ag-spinner')&&!el.classList.contains('ag-skeleton'))inf++;}
+            v = await pg.evaluate(r"""()=>{let inf=0;for(const el of document.querySelectorAll('*')){const a=getComputedStyle(el).animationIterationCount;if(a&&a.split(',').some(x=>x.trim()==='infinite')&&el.offsetParent!==null&&!el.closest('.ag-skeleton,.ag-skeleton-rows,.ag-table--loading,.ag-spinner,.is-loading,.ag-log__cursor')&&!el.classList.contains('ag-spinner')&&!el.classList.contains('ag-skeleton'))inf++;}
               const inl=[...document.querySelectorAll('[style]')].filter(e=>/padding|max-width|opacity|position:\s*absolute|border-color/.test(e.getAttribute('style'))&&!e.closest('svg')).length;
               return {inf, inl}}""")
             check(f"1.4: {name} 보이는 무한 애니메이션 ≤ 1 (스켈레톤·스피너 제외)", v["inf"] <= 1, str(v))
@@ -521,6 +521,34 @@ async def main():
         check("1.8 ⑦: .ag-chip--cat1~4 있음, is-active = 범주 단색 배경", v["n"] >= 5 and v["actBg"] != "rgba(0, 0, 0, 0)", str(v))
         check("1.8 ⑧: td.ag-td--truncate 안 글자 폭 ≤ 240px 이고 말줄임", v["spW"] <= 240 and v["spOv"], str(v))
         check("1.8 ③: .ag-input--picker 손가락 커서·캐럿 숨김, .ag-cursor-pointer 유틸", v["cur"] == "pointer" and v["util"] == "pointer" and "0, 0, 0, 0" in v["caret"], str(v))
+        await pg.close()
+
+        # ── 1.9: ⑬⑭ sticky-end 버그 · ⑪ 넓은 드로어 · ⓐ 드로어 고정 도구줄 · ⑰ 고정 선택 바 · ⓖⓘ 한글 메타 ──
+        pg = await page(b, "resources.html", width=1100)
+        v = await pg.evaluate("""()=>{const t=document.querySelector('.ag-table--sticky-end');const pos=el=>getComputedStyle(el).position;
+          const ex=t.querySelector(':scope > tbody > tr.ag-tr--expand > td[colspan]');const inner=ex.querySelector('table tbody tr td:last-child');
+          const row=t.querySelector(':scope > tbody > tr:not(.ag-tr--expand):not(.is-selected) > td:last-child');
+          const sel=t.querySelector(':scope > tbody > tr.is-selected');const c=sel.children;const st=c[c.length-2], plain=c[2];
+          return {ex:pos(ex), inner:pos(inner), row:pos(row), stBg:getComputedStyle(st).backgroundColor, plainBg:getComputedStyle(plain).backgroundColor, surf:getComputedStyle(row).backgroundColor}}""")
+        check("1.9 ⑬: sticky-end — 펼친 행 colspan 셀 · 안쪽 표 셀은 고정 안 함, 일반 행 끝 칸은 고정", v["ex"] != "sticky" and v["inner"] != "sticky" and v["row"] == "sticky", str(v))
+        check("1.9 ⑭: sticky-end — 선택 행의 고정 칸 배경 = 같은 행 일반 칸 배경(강조가 끊기지 않음)", v["stBg"] == v["plainBg"] and v["stBg"] != v["surf"], str(v))
+        await pg.close()
+        pg = await page(b, "components.html")
+        v = await pg.evaluate("""async()=>{document.querySelector('[data-ag-open="demo-drawer-lg"]').click();await new Promise(r=>setTimeout(r,400));
+          const d=document.getElementById('demo-drawer-lg');const body=d.querySelector('.ag-drawer__body');const tb=d.querySelector('.ag-drawer__toolbar');
+          body.scrollTop=400;await new Promise(r=>setTimeout(r,50));
+          return {w:Math.round(d.getBoundingClientRect().width), scrolled:body.scrollTop, gap:Math.round(tb.getBoundingClientRect().top-body.getBoundingClientRect().top)}}""")
+        check("1.9 ⑪: .ag-drawer--lg 폭 720px(1440 창)", v["w"] == 720, str(v))
+        check("1.9 ⓐ: .ag-drawer__toolbar — 본문을 내려도 본문 맨 위에 붙어 있음", v["scrolled"] > 0 and abs(v["gap"]) <= 1, str(v))
+        v = await pg.evaluate(r"""async()=>{const bar=document.querySelector('.ag-scroll-y > .ag-bulkbar--sticky');const box=bar.parentElement;box.scrollTop=200;await new Promise(r=>setTimeout(r,50));
+          const bg=getComputedStyle(bar).backgroundColor;return {scrolled:box.scrollTop, gap:Math.round(bar.getBoundingClientRect().top-box.getBoundingClientRect().top), opaque:!/rgba\(.*,\s*0?\.\d+\)$|transparent/.test(bg)&&!/ \/ 0?\.\d+\)$/.test(bg), bg}}""")
+        check("1.9 ⑰: .ag-bulkbar--sticky — 스크롤 상자 안에서 맨 위에 붙고 배경 불투명", v["scrolled"] > 0 and abs(v["gap"]) <= 1 and v["opaque"], str(v))
+        v = await pg.evaluate("""()=>{const m=document.querySelector('.ag-health__meta');const cs=getComputedStyle(m);return {ff:cs.fontFamily, num:cs.fontVariantNumeric}}""")
+        check("1.9 ⓖ: .ag-health__meta — 모노 아님 + tabular-nums(한글 메타가 벌어지지 않게)", "Mono" not in v["ff"] and "tabular-nums" in v["num"], str(v))
+        await pg.close()
+        pg = await page(b, "login.html")
+        v = await pg.evaluate("""()=>{const el=document.querySelector('.ag-auth__status b');const cs=getComputedStyle(el);return {ls:cs.letterSpacing, ff:cs.fontFamily}}""")
+        check("1.9 ⓘ: lang=ko 문서의 .ag-auth__status b — 자간 0 · 모노 아님", v["ls"] in ("0px", "normal") and "Mono" not in v["ff"], str(v))
         await pg.close()
 
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
