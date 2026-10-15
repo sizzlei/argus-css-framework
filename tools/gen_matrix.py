@@ -9,7 +9,9 @@ TONES = ["", "good", "warn", "crit", "info", "accent", "accent2", "cat1", "cat2"
 ICON = lambda n, cls="ag-icon": f'<svg class="{cls}"><use href="#i-{n}"/></svg>'
 
 def h(title, sub="", id_=""):
-    return f'<section class="ag-section" id="{id_}"><div class="ag-section__head"><h2>{title}</h2>{f"<span class=\"ag-text-sm ag-text-3\">{sub}</span>" if sub else ""}</div>\n'
+    # f-string 안에 역슬래시를 두면 python 3.11 이하에서 문법 오류 — 부제 조각을 먼저 만든다
+    sub_html = f'<span class="ag-text-sm ag-text-3">{sub}</span>' if sub else ""
+    return f'<section class="ag-section" id="{id_}"><div class="ag-section__head"><h2>{title}</h2>{sub_html}</div>\n'
 
 def card(title, body, cols=12, extra=""):
     return f'<div class="ag-card ag-col-{cols} ag-stack {extra}"><h3 class="ag-card__title">{title}</h3>{body}</div>\n'
@@ -74,7 +76,7 @@ out.append('<div class="ag-grid">' + card("ag-btn", table(BV, rows)) +
 </div><div class="demo">''' + ''.join(f'<span class="ag-chip ag-chip--sm ag-chip--{t}">{t}</span>' for t in ["good","warn","crit","info"]) + ''.join(f'<span class="ag-chip ag-chip--sm ag-chip--solid ag-chip--{t}">solid {t}</span>' for t in ["good","warn","crit","info"]) + ''.join(f'<span class="ag-chip ag-chip--outline ag-chip--sm ag-chip--{t}">outline+{t}</span>' for t in ["warn","crit"]) + '''</div>''') + '</div></section>\n')
 
 # ---------- 카드 · 타일 ----------
-CV = ["", "accent", "accent2", "inverse", "elevated", "interactive", "sm"]
+CV = ["", "accent", "accent2", "inverse", "cat1", "cat2", "cat3", "cat4", "elevated", "interactive", "sm"]
 def cardv(v):
     cls = "ag-card" + (f" ag-card--{v}" if v else "")
     return f'<div class="{cls}"><div class="ag-card__head"><h3 class="ag-card__title">{v or "기본"}</h3><span class="ag-badge ag-badge--sm">탭</span></div><div class="ag-card__body"><p class="ag-text-sm">본문 두 줄. 카드 안 간격은 gap 이 책임진다.</p><div class="ag-stat ag-stat--sm"><span class="ag-stat__label">값</span><span class="ag-stat__value">42</span></div></div></div>'

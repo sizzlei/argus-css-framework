@@ -487,6 +487,18 @@ async def main():
         check("1.6: 900px 창에서도 드로어 푸터는 바닥", 0 <= v["gap"] <= 8, str(v))
         await pg.close()
 
+        # ── 1.7 범주색 단색 카드: 흰 글자·메타(흰 94%) 모두 4.5:1, 안쪽 토큰 재정의 ──
+        for light in (False, True):
+            pg = await page(b, "matrix.html", light=light)
+            v = await pg.evaluate("""()=>{const out=[];for(const n of [1,2,3,4]){const c=document.querySelector('.ag-card--cat'+n);const cs=getComputedStyle(c);
+              const lum=h=>{const m=h.match(/\\d+/g).map(Number);const f=x=>{x/=255;return x<=.03928?x/12.92:((x+.055)/1.055)**2.4};return .2126*f(m[0])+.7152*f(m[1])+.0722*f(m[2])};
+              const bg=lum(cs.backgroundColor);const ratio=(1.05)/(bg+.05);
+              const hint=c.querySelector('.ag-hint, .ag-stat__label, .ag-text-sm');const hc=hint?getComputedStyle(hint).color:'';
+              out.push({n, ratio: Math.round(ratio*100)/100, hint: hc})}return out}""")
+            check(f"1.7: {'라이트' if light else '다크'} .ag-card--cat1~4 흰 글자 대비 ≥ 4.5", all(x["ratio"] >= 4.5 for x in v), str(v))
+            check(f"1.7: {'라이트' if light else '다크'} cat 카드 안 보조 글자가 흰색 계열(토큰 재정의)", all(x["hint"].startswith("rgb(2") or x["hint"].startswith("rgba(2") or x["hint"] == "rgb(255, 255, 255)" or "255, 255, 255" in x["hint"] for x in v), str(v))
+            await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():
