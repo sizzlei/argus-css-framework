@@ -258,6 +258,10 @@ button.ag-chip.ag-chip--sm { font-size: var(--ag-text-sm); }
   --ag-surface-2: color-mix(in oklab, var(--_on) 12%, transparent);
   --ag-surface-3: color-mix(in oklab, var(--_on) 20%, transparent);
   --ag-surface-hover: color-mix(in oklab, var(--_on) 16%, transparent);
+  /* 1.9.2: 입력 포커스 — 바탕은 쉴 때 그대로(서브표면), 표시는 글자색 테두리 + 링. 액센트 링은 액센트 카드 위에서 보이지 않는다 */
+  --ag-field-focus-bg: var(--ag-surface-2);
+  --ag-field-focus-border: var(--_on);
+  --ag-field-ring: 0 0 0 3px color-mix(in oklab, var(--_on) 30%, transparent);
 }
 /* 두 번째 강조용 — 액센트 틴트 + 액센트 보더. 글자색은 그대로라 어느 테마에서나 안전 */
 .ag-card--accent-soft { background: color-mix(in oklab, var(--ag-accent) 12%, var(--ag-surface)); border-color: color-mix(in oklab, var(--ag-accent) 40%, transparent); }
@@ -614,8 +618,10 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 /* 1.8 (③): 클릭하면 선택기(날짜·사용자·태그 고르기 모달)를 여는 읽기 전용 입력 — 손가락 커서, 깜빡이는 캐럿 숨김.
    <input class="ag-input ag-input--picker" readonly value="…" data-ag-open="picker-x"> (+ .ag-input-group 의 뒤 아이콘으로 캐럿) */
 .ag-input--picker { cursor: pointer; caret-color: transparent; user-select: none; }
-.ag-input--picker:focus-visible { border-color: var(--ag-accent-text); box-shadow: var(--ag-ring); }
-.ag-input:focus, .ag-select:focus, .ag-textarea:focus { outline: none; border-color: var(--ag-accent-text); box-shadow: var(--ag-ring); background: var(--ag-surface); }
+/* 포커스 배경 · 테두리 · 링은 --ag-field-focus-* 로 읽는다(없으면 표면 · 액센트 · 기본 링). 단색 카드는 안쪽에서 이 셋을 다시 정의한다 —
+   1.9.2 전에는 표면색을 바로 써서, 단색 카드(글자 = --_on) 안 입력칸이 포커스 순간 라이트 흰 바탕 · 다크 검정 바탕으로 바뀌며 글자가 사라졌다 */
+.ag-input--picker:focus-visible { border-color: var(--ag-field-focus-border, var(--ag-accent-text)); box-shadow: var(--ag-field-ring, var(--ag-ring)); }
+.ag-input:focus, .ag-select:focus, .ag-textarea:focus { outline: none; border-color: var(--ag-field-focus-border, var(--ag-accent-text)); box-shadow: var(--ag-field-ring, var(--ag-ring)); background: var(--ag-field-focus-bg, var(--ag-surface)); }
 .ag-input:disabled, .ag-select:disabled, .ag-textarea:disabled { opacity: .5; }
 .ag-input--pill { border-radius: var(--ag-radius-pill); padding-inline: 18px; }
 .ag-input--sm, .ag-select--sm { height: var(--ag-control-h-sm); font-size: var(--ag-text-sm); padding-inline: 10px; }
@@ -1061,6 +1067,8 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   --ag-text: var(--_on); --ag-text-2: color-mix(in oklab, var(--_on) 97%, transparent); --ag-text-3: color-mix(in oklab, var(--_on) 94%, transparent);
   --ag-border: color-mix(in oklab, var(--_on) 22%, transparent); --ag-border-strong: color-mix(in oklab, var(--_on) 45%, transparent);
   --ag-surface-2: color-mix(in oklab, var(--_on) 12%, transparent); --ag-surface-3: color-mix(in oklab, var(--_on) 20%, transparent); --ag-surface-hover: color-mix(in oklab, var(--_on) 16%, transparent);
+  /* 1.9.2: 입력 포커스 — 단색 카드(accent · cat)와 같다 */
+  --ag-field-focus-bg: var(--ag-surface-2); --ag-field-focus-border: var(--_on); --ag-field-ring: 0 0 0 3px color-mix(in oklab, var(--_on) 30%, transparent);
 }
 .ag-card--engine-solid .ag-card__icon { background: color-mix(in oklab, var(--_on) 16%, transparent); color: var(--_on); }
 .ag-card__icon--engine { background: var(--ag-engine-soft); color: var(--ag-engine-text); }

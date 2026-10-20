@@ -622,6 +622,14 @@ k2m9xQ1zR8fT4yU6wE2nH5sL0dP9vB3cX7aM1oK4jG8hF6eD2tS9uY
           <p class="ag-text-xs ag-text-3"><code>data-ag-reveal</code>(argus.js)이 같은 필드의 <code>is-masked</code> 를 토글. 가림 상태는 글자를 투명하게 하고 번진 그림자만 남겨 블러 해제로 복원되지 않고, 선택·복사도 막힌다. 서비스 JS 로 하려면 <code>is-masked</code> 만 떼면 된다.</p>
         </div>
 
+        <div class="ag-card ag-card--engine-solid ag-col-4 ag-stack" data-engine="mysql">
+          <div class="ag-card__heading"><span class="ag-card__icon"><svg class="ag-icon"><use href="#i-shield"/></svg></span><h3 class="ag-card__title">단색 카드 안 입력 · 포커스</h3></div>
+          <div class="ag-field"><span class="ag-label">사용자명</span><strong class="ag-text-xl ag-mono">admin</strong><span class="ag-hint">기본 DB · orderdb</span></div>
+          <div class="ag-field"><label class="ag-label" for="sf3">비밀번호</label>
+            <div class="ag-secret-field"><input class="ag-input is-masked" id="sf3" value="argus_master_9c2e5b1d" readonly><button class="ag-btn ag-btn--icon ag-btn--outline" type="button" aria-label="값 표시" aria-pressed="false" data-ag-reveal><svg class="ag-icon"><use href="#i-eye"/></svg></button><button class="ag-btn ag-btn--icon ag-btn--outline" type="button" aria-label="복사"><svg class="ag-icon"><use href="#i-copy"/></svg></button></div></div>
+          <p class="ag-text-xs">칸을 눌러 포커스해 보세요. 단색 카드(<code>--engine-solid</code> · <code>--accent</code> · <code>--inverse</code> · <code>--cat1~4</code>)는 <code>--ag-field-focus-bg/-border</code> · <code>--ag-field-ring</code> 을 다시 정의해, 포커스 때 바탕은 그대로 두고 글자색 테두리 + 링만 더한다(1.9.2 전에는 표면색이 드러나 글자가 사라졌다).</p>
+        </div>
+
         <div class="ag-card ag-col-4">
           <h3 class="ag-card__title">3단계 로그인 조각 · <code>.ag-auth__glass</code> 안</h3>
           <p class="ag-text-xs ag-text-3">이메일 → OTP → 등록 흐름(templates/go-html-template/login.html)에서 쓰는 보조 요소. <code>.ag-otp-input</code> 은 한 칸짜리 6자리(login.html 의 <code>.ag-otp__cell</code> 분리 방식과 택일)</p>

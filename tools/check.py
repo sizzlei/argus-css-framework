@@ -284,6 +284,24 @@ async def main():
         check("secret inline: data-ag-reveal toggles input.is-masked", r3["masked"] is False and r3["pressed"] == "true", str(r3))
         await pg.close()
 
+        # ── 9l-2. 단색 카드 안 입력 포커스(1.9.2, argus-server 마스터 계정 비밀번호 칸): 바탕이 쉴 때 그대로이고 표면색이 드러나지 않으며,
+        #          테두리는 카드 글자색. 액센트 카드도 같고, 보통 카드의 입력은 예전처럼 표면색 ──
+        for light in (False, True):
+            pg = await page(b, "components.html", light=light)
+            r = await pg.evaluate("""async()=>{const wait=ms=>new Promise(r=>setTimeout(r,ms));
+              const probe=document.createElement('div');probe.style.background='var(--ag-surface)';document.body.appendChild(probe);const surface=getComputedStyle(probe).backgroundColor;probe.remove();
+              const d=document.createElement('div');d.className='ag-card ag-card--accent';d.innerHTML='<input class="ag-input" id="fa" value="accent">';document.body.appendChild(d);
+              const out={surface};
+              for(const id of ['sf3','fa','sf1']){const el=document.getElementById(id);el.blur();await wait(300);const rest=getComputedStyle(el).backgroundColor;el.focus();await wait(300);const s=getComputedStyle(el);
+                out[id]={rest,focus:s.backgroundColor,border:s.borderColor,color:s.color,ring:s.boxShadow};el.blur();}
+              return out}""")
+            th = "light" if light else "dark"
+            sf3, fa, sf1 = r["sf3"], r["fa"], r["sf1"]
+            check(f"field focus in solid card ({th}): bg stays resting, not page surface, border = card text", sf3["focus"] == sf3["rest"] and sf3["focus"] != r["surface"] and sf3["border"] == sf3["color"], str(sf3))
+            check(f"field focus in accent card ({th}): same as engine-solid", fa["focus"] == fa["rest"] and fa["focus"] != r["surface"] and fa["border"] == fa["color"], str(fa))
+            check(f"field focus in plain card ({th}): unchanged — page surface", sf1["focus"] == r["surface"], str({"sf1": sf1, "surface": r["surface"]}))
+            await pg.close()
+
         # ── 9m. ag-tag 상태 변형: 키·값·테두리가 상태색, 범주 변형은 값은 기본색 (다크·라이트 값 글자 대비 4.5:1) ──
         for light in (False, True):
             pg = await page(b, "components.html", light=light)

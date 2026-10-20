@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.9.2 — 2026-10-20 · 단색 카드 안 입력 포커스 (argus-server DB 상세 마스터 계정 비밀번호 칸)
+
+- **단색 카드 안 입력칸이 포커스 순간 사라지던 버그** — `.ag-input/.ag-select/.ag-textarea:focus` 가 바탕을 `--ag-surface` 로 바꾸는데, 단색 카드(`--engine-solid` · `--accent` · `--accent2` · `--inverse` · `--cat1~4`)는 `--ag-surface` 를 다시 정의하지 않아 페이지 표면이 드러났다. 글자는 카드 글자색(`--_on`)이라 라이트는 흰 바탕에 흰 글자, 다크는 검정 바탕에 짙은 글자가 되어 가림 점까지 안 보였다. 테두리 · 링도 액센트라 액센트 카드 위에서는 보이지 않았다.
+- 포커스 규칙이 `--ag-field-focus-bg` · `--ag-field-focus-border` · `--ag-field-ring` 을 먼저 읽는다(없으면 예전 값 — 보통 카드는 그대로). 단색 카드는 셋을 재정의한다: 바탕은 쉴 때 그대로(서브표면), 테두리 = 카드 글자색, 링 = 글자색 30%. 같은 규칙을 쓰는 `.ag-input--picker:focus-visible` · `.ag-otp__cell:focus` · `.ag-tag-input:focus-within` · `.ag-combobox__control` 도 같이.
+- 예시: 카탈로그 "단색 카드 안 입력 · 포커스"(엔진 단색 카드 + 가림 필드). check.py +6(다크 · 라이트 × 엔진 단색 · 액센트 카드는 바탕 유지 · 표면 아님 · 테두리 = 글자색, 보통 카드는 표면 그대로).
+
 ## 1.9.1 — 2026-10-15 · 엔진 훅 기본값 · doc 별칭 (argus-server 우회 걷기 중 발견)
 
 - **모르는 엔진 값 → 기타** — `[data-engine]`(값 무관) 기본 규칙을 엔진 훅 맨 앞에 두었다(같은 특이도라 뒤의 엔진 규칙이 이긴다). 1.8 부터 RDS 값을 그대로 넣게 되면서 `redis` · `valkey` · 빈 값처럼 어느 훅에도 안 걸리는 값은 `--ag-engine` 이 비어 `.ag-dot--engine` 점 · 카드 띠가 사라졌다(서비스 정규화가 `other` 로 바꿔 주던 동안은 안 보였음). 부모 엔진 안의 모르는 값도 기타로 덮는다.
