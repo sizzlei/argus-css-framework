@@ -78,8 +78,8 @@
   color: #fff; font-size: 24px;
 }
 .ag-auth__logo-box :is(.ag-icon, [class*="ph-"]) { width: 26px; height: 26px; font-size: 26px; }
-.ag-auth__name { display: flex; align-items: baseline; gap: 8px; font-size: var(--ag-text-lg); font-weight: 800; letter-spacing: -0.02em; margin-bottom: var(--ag-space-4); }
-.ag-auth__version { font-size: var(--ag-text-xs); font-weight: 700; letter-spacing: .06em; padding: 1px 8px; border-radius: var(--ag-radius-pill); background: var(--ag-surface-3); color: var(--ag-text-2); border: 1px solid var(--ag-border); }
+.ag-auth__name { display: flex; align-items: baseline; gap: 8px; font-family: var(--ag-font-brand); font-size: var(--ag-text-lg); font-weight: 800; letter-spacing: var(--ag-font-brand-tracking); margin-bottom: var(--ag-space-4); }
+.ag-auth__version { font-family: var(--ag-font-sans); font-size: var(--ag-text-xs); font-weight: 700; letter-spacing: .06em; padding: 1px 8px; border-radius: var(--ag-radius-pill); background: var(--ag-surface-3); color: var(--ag-text-2); border: 1px solid var(--ag-border); }
 .ag-auth__status { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; font-family: var(--ag-font-mono); font-size: var(--ag-text-xs); color: var(--ag-text-3); }
 .ag-auth__status b { font-weight: 700; font-size: var(--ag-text-xs); letter-spacing: .08em; text-transform: uppercase; }
 .ag-auth__status b:lang(ko) { font-family: var(--ag-font-sans); letter-spacing: 0; }   /* 1.9 (ⓘ): 한글 문서에서는 자간 · 모노를 뺀다 — "정상" "연결 안 됨" 이 글자마다 벌어졌다 */
@@ -96,7 +96,7 @@
 .ag-auth__mobile-head { display: none; text-align: center; }
 .ag-auth__mobile-head .ag-brand-mark { width: 56px; height: 56px; border-radius: 16px; margin: 0 auto var(--ag-space-3); }
 .ag-auth__mobile-head .ag-brand-mark :is(.ag-icon, [class*="ph-"]) { width: 26px; height: 26px; font-size: 26px; }
-.ag-auth__mobile-head h2 { font-size: var(--ag-text-2xl); font-weight: 700; }
+.ag-auth__mobile-head h2 { font-family: var(--ag-font-brand); font-size: var(--ag-text-2xl); font-weight: 700; }
 .ag-auth__mobile-head p { color: var(--ag-text-3); font-size: var(--ag-text-xs); margin-top: 4px; }
 .ag-auth__mobile-foot { display: none; text-align: center; font-family: var(--ag-font-mono); font-size: var(--ag-text-xs); color: var(--ag-text-3); }
 @media (max-width: 960px) { .ag-auth__mobile-head, .ag-auth__mobile-foot { display: block; } }
@@ -228,8 +228,8 @@
   box-shadow: 0 8px 20px -8px color-mix(in oklab, var(--ag-brand-from, var(--ag-accent)) 70%, transparent);
 }
 .ag-brand-mark :is(.ag-icon, [class*="ph-"]) { width: 16px; height: 16px; font-size: 16px; }
-.ag-topbar__brand-text { display: flex; flex-direction: column; line-height: 1.1; }
-.ag-topbar__brand-text small { font-size: var(--ag-text-xs); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--ag-text-3); margin-top: 3px; }
+.ag-topbar__brand-text { display: flex; flex-direction: column; line-height: 1.1; font-family: var(--ag-font-brand); }   /* 1.10: .ag-topbar__brand 밖(온보딩 머리 등)에 따로 써도 로고 글꼴 */
+.ag-topbar__brand-text small { font-family: var(--ag-font-sans); font-size: var(--ag-text-xs); font-weight: 500; letter-spacing: .06em; text-transform: uppercase; color: var(--ag-text-3); margin-top: 3px; }
 
 /* ---- 세션 타이머 칩 + 만료 경고 ------------------------------------------ */
 .ag-session { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: var(--ag-radius-pill); border: 1px solid var(--ag-border); background: var(--ag-surface); font-size: var(--ag-text-xs); color: var(--ag-text-3); font-family: var(--ag-font-mono); }

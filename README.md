@@ -176,7 +176,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | 레이아웃 간격 | `--ag-gap-grid`(24) `--ag-gap-main`(32) `--ag-gap-section`(20) | 카드 사이 · 본문 블록 사이 · 섹션 헤드↔본문. 서비스가 `:root` 에서 한 번에 조정 |
 | 라운드 | `--ag-radius-sm/md/lg/xl/btn/pill` | 6 / 10 / 12 / 16 / 10(버튼) / 999 — 알약은 칩·배지·세그먼트·네비만 |
 | 컨트롤 높이 | `--ag-control-h/-sm/-lg` | 36 / 30 / 44 (터치 44/36/48, compact 32/26). 버튼·입력·셀렉트·사용자 메뉴가 참조 |
-| 타이포 | `--ag-text-xs..4xl`(11/13/14/17/20/28/38/40) `--ag-text-hero`(52) `--ag-font-sans` `--ag-font-mono` | 본문 14px · h1 28/600 · 카드 스탯 40 · 히어로 52 |
+| 타이포 | `--ag-text-xs..4xl`(11/13/14/17/20/28/38/40) `--ag-text-hero`(52) `--ag-font-sans` `--ag-font-mono` `--ag-font-brand` `--ag-font-brand-tracking` | 본문 14px · h1 28/600 · 카드 스탯 40 · 히어로 52 · 로고 글자(상단 바 브랜드 · `.ag-auth__name` · 모바일 머리)는 기본 본문 글꼴 / -0.02em, 서비스가 `:root` 에서 자기 글꼴로 덮는다 |
 | 밀도 | `--ag-cell-y`(11) `--ag-cell-x`(16) | 테이블 셀 패딩 → 행 ≈44px. `--dense` 8/12, `data-density=compact` 7/12 |
 
 ## 컴포넌트 목록

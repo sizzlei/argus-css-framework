@@ -576,6 +576,25 @@ async def main():
         check("1.9 ⓘ: lang=ko 문서의 .ag-auth__status b — 자간 0 · 모노 아님", v["ls"] in ("0px", "normal") and "Mono" not in v["ff"], str(v))
         await pg.close()
 
+        # ── 1.10: 로고 글꼴 토큰 --ag-font-brand / --ag-font-brand-tracking (argus-server 로고) ──
+        brand_js = """(sel)=>{const ff=s=>{const e=document.querySelector(s);return e?getComputedStyle(e).fontFamily:null};const body=getComputedStyle(document.body).fontFamily;
+          const before=Object.fromEntries(sel.map(s=>[s,ff(s)]));const r=document.documentElement.style;r.setProperty('--ag-font-brand','"Chakra Petch", serif');r.setProperty('--ag-font-brand-tracking','0.01em');
+          const after=Object.fromEntries(sel.map(s=>[s,ff(s)]));const b=document.querySelector('.ag-topbar__brand, .ag-auth__name');const ls=getComputedStyle(b).letterSpacing, fs=parseFloat(getComputedStyle(b).fontSize);
+          r.removeProperty('--ag-font-brand');r.removeProperty('--ag-font-brand-tracking');return {body, before, after, ls, fs}}"""
+        pg = await page(b, "resources.html")
+        v = await pg.evaluate(brand_js, [".ag-topbar__brand", ".ag-topbar__brand-text", ".ag-topbar__brand-text small"])
+        check("1.10: 로고 글꼴 기본값 = 본문 글꼴(다른 서비스는 그대로)", all(x == v["body"] for x in v["before"].values()), str(v["before"]))
+        check("1.10: --ag-font-brand 를 덮으면 상단 바 브랜드 · brand-text 만 바뀌고 small 은 본문 글꼴, 자간도 토큰",
+              v["after"][".ag-topbar__brand"].startswith('"Chakra Petch"') and v["after"][".ag-topbar__brand-text"].startswith('"Chakra Petch"')
+              and v["after"][".ag-topbar__brand-text small"] == v["body"] and abs(float(v["ls"].rstrip("px")) - 0.01 * v["fs"]) < 0.01, str(v))
+        await pg.close()
+        pg = await page(b, "login.html")
+        v = await pg.evaluate(brand_js, [".ag-auth__name", ".ag-auth__version", ".ag-auth__mobile-head h2"])
+        check("1.10: 인증 화면 — __name · __mobile-head h2 는 로고 글꼴, __version 은 본문 글꼴",
+              all(x == v["body"] for x in v["before"].values()) and v["after"][".ag-auth__name"].startswith('"Chakra Petch"')
+              and v["after"][".ag-auth__mobile-head h2"].startswith('"Chakra Petch"') and v["after"][".ag-auth__version"] == v["body"], str(v))
+        await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():

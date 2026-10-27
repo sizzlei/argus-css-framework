@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.10.0 — 2026-10-27 · 로고 글꼴 토큰 (argus-server 로고)
+
+- **`--ag-font-brand` · `--ag-font-brand-tracking`** — 로고 글자 전용 글꼴 · 자간. 지금까지 로고 "Argus" 가 본문 · 메뉴와 같은 Manrope 라 밋밋했다. 기본값은 본문 글꼴 · -0.02em(예전과 같음)이라 토큰을 덮지 않은 서비스는 그대로다.
+- 쓰는 곳: `.ag-topbar__brand`(상단 바 · 사이드바 머리, 자간 포함) · `.ag-topbar__brand-text`(브랜드 밖 온보딩 머리 등) · `.ag-auth__name`(자간 포함) · `.ag-auth__mobile-head h2`. 그 안의 보조 글자 `.ag-topbar__brand-text small` · `.ag-auth__version` 은 본문 글꼴로 되돌린다.
+- 서비스 적용: 글꼴 파일은 서비스가 self-host(`fonts/README.md`), `argus.min.css` 뒤 CSS 에서 `:root` 토큰만 덮는다. README 토큰 표에 추가. check.py +3(기본값 = 본문 글꼴 · 덮으면 브랜드만 바뀌고 small · version 은 본문 · 자간 토큰).
+
 ## 1.9.2 — 2026-10-20 · 단색 카드 안 입력 포커스 (argus-server DB 상세 마스터 계정 비밀번호 칸)
 
 - **단색 카드 안 입력칸이 포커스 순간 사라지던 버그** — `.ag-input/.ag-select/.ag-textarea:focus` 가 바탕을 `--ag-surface` 로 바꾸는데, 단색 카드(`--engine-solid` · `--accent` · `--accent2` · `--inverse` · `--cat1~4`)는 `--ag-surface` 를 다시 정의하지 않아 페이지 표면이 드러났다. 글자는 카드 글자색(`--_on`)이라 라이트는 흰 바탕에 흰 글자, 다크는 검정 바탕에 짙은 글자가 되어 가림 점까지 안 보였다. 테두리 · 링도 액센트라 액센트 카드 위에서는 보이지 않았다.

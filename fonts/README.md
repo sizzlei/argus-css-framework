@@ -13,4 +13,6 @@
 
 폰트 자체를 바꾸고 싶으면 `tokens.css` 의 `--ag-font-sans` / `--ag-font-mono` 만 바꾼다. 한글은 Pretendard 도 좋은 선택이지만 Google Fonts 에 없어 별도 배포가 필요하다.
 
+로고 글자만 다른 글꼴로 하려면(1.10) 서비스가 그 글꼴의 라틴 woff2 하나와 `@font-face` 를 따로 두고, `argus.min.css` **뒤에** 로드하는 CSS 에서 `:root { --ag-font-brand: "글꼴", var(--ag-font-sans); --ag-font-brand-tracking: … }` 로 덮는다. 이 폴더의 `fonts.css` 는 `fetch-fonts.sh` 가 다시 만들기 때문에 여기에 섞지 않는다. 한글이 든 이름은 뒤의 본문 글꼴로 이어진다.
+
 파싱만 확인하려면 받아둔 Google CSS 로 `GOOGLE_CSS=saved.css sh fonts/fetch-fonts.sh` (woff2 는 받지 않음). 생성된 `fonts.css` 는 원본 `@font-face` 블록(font-family / weight / display / unicode-range)을 그대로 두고 `src` 만 `./NotoSansKR-400-12.woff2` 꼴 로컬 파일로 바꾼 것이다.
