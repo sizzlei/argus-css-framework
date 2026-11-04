@@ -980,6 +980,60 @@
 :root[data-density="compact"] .ag-main { gap: var(--ag-space-4); padding-block: var(--ag-space-5) var(--ag-space-8); }
 :root[data-density="compact"] { --ag-control-h: 32px; --ag-control-h-sm: 26px; }
 
+/* ---- 인쇄 문서 (1.11) — 제출용 리포트를 A4 종이로 보여 주고 그대로 인쇄 · PDF 저장 ------------------------
+   화면: 책상(.ag-paper-desk) 위 A4 폭(210mm) 종이 한 장 + 위 도구줄(.ag-paper-bar — 돌아가기 · PDF 로 저장).
+   종이 안쪽 여백 16mm 는 @page 여백과 같아 화면 미리 보기의 줄바꿈이 인쇄와 같다. 종이는 라이트 테마로 쓴다(<html data-theme="light">).
+   인쇄: 책상 · 도구줄 · 종이 테두리를 걷고 내용만. 종이 안은 배경색(차트 · 배지 · 진행 막대)을 그대로 찍는다 — 일반 인쇄 규칙의 흑백 배지를 쓰지 않는다.
+   종이 안 격자는 .ag-paper__grid(2열) · --3 · --4 — 폭에 따라 접히지 않는다(.ag-grid · .ag-col-N 은 인쇄 폭 673px 에서 한 줄로 접힌다).
+   <body class="ag-paper-desk">
+     <div class="ag-paper-bar">
+       <a class="ag-btn ag-btn--ghost" href="/reports">← 운영 리포트</a>
+       <button class="ag-btn ag-btn--primary" onclick="print()">PDF 로 저장</button>
+     </div>
+     <article class="ag-paper">
+       <header class="ag-paper__cover">
+         <p class="ag-eyebrow">운영 리포트 · DB[BCR]-P001 §8</p>
+         <h1 class="ag-paper__title">DB 백업 리포트</h1>
+         <p class="ag-paper__subtitle">2026년 10월 · kurly-prod</p>
+         <dl class="ag-kv">…</dl>
+       </header>
+       <section class="ag-paper__section ag-print-break">
+         <h2 class="ag-paper__heading"><span class="ag-paper__num">1</span>요약</h2>
+         <div class="ag-paper__grid ag-paper__grid--4">…KPI 카드…</div>
+       </section>
+       <section class="ag-paper__section ag-print-flow">…쪽에 걸쳐 이어지는 긴 부록 표…</section>
+       <footer class="ag-paper__foot"><span>출력 2026-11-04 10:12 · 박상재</span><span>Argus</span></footer>
+     </article>
+   </body>
+   쪽 나눔(종이 밖에서도 쓴다): .ag-print-break — 이 앞에서 새 쪽(종이 안 화면에서는 점선으로 쪽 경계를 보여 준다).
+   .ag-print-flow — 긴 카드 · 표를 쪽에 걸쳐 잇는다(머리행 반복, 행은 자르지 않음). 기본 인쇄 규칙은 카드 · 표를 통째로 다음 쪽으로 민다. */
+.ag-paper-desk { padding: var(--ag-space-4) var(--ag-space-4) var(--ag-space-12); }
+.ag-paper-bar { position: sticky; top: 0; z-index: 10; width: 210mm; max-width: 100%; margin: 0 auto var(--ag-space-4); padding-block: var(--ag-space-3);
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--ag-space-3); background: var(--ag-bg); }
+.ag-paper { --ag-paper-pad: 16mm; width: 210mm; max-width: 100%; min-height: 297mm; margin-inline: auto; padding: var(--ag-paper-pad);
+  display: flex; flex-direction: column; gap: var(--ag-space-8); background: var(--ag-surface); color: var(--ag-text);
+  border: 1px solid var(--ag-border); border-radius: var(--ag-radius-sm); box-shadow: var(--ag-shadow-md); }
+.ag-paper__cover { display: flex; flex-direction: column; gap: var(--ag-space-4); padding-bottom: var(--ag-space-6); border-bottom: 2px solid var(--ag-text); }
+.ag-paper__title { font-size: var(--ag-text-3xl); line-height: 1.15; letter-spacing: -.02em; }
+.ag-paper__subtitle { margin: 0; font-size: var(--ag-text-xl); color: var(--ag-text-2); }
+.ag-paper__section { display: flex; flex-direction: column; gap: var(--ag-space-4); }
+.ag-paper__heading { display: flex; align-items: baseline; gap: var(--ag-space-3); padding-bottom: var(--ag-space-2); border-bottom: 1px solid var(--ag-border-strong); font-size: var(--ag-text-xl); }
+.ag-paper__num { color: var(--ag-accent-text); font-variant-numeric: tabular-nums; }
+.ag-paper__grid { --_cols: 2; display: grid; grid-template-columns: repeat(var(--_cols), minmax(0, 1fr)); gap: var(--ag-space-4); }
+.ag-paper__grid--3 { --_cols: 3; }
+.ag-paper__grid--4 { --_cols: 4; }
+.ag-paper .ag-table :is(th, td) { white-space: normal; word-break: keep-all; overflow-wrap: anywhere; }   /* 화면 미리 보기도 인쇄처럼 줄바꿈(한글은 낱말 단위) — 종이 폭(178mm) 안에 표를 맞춘다. 날짜처럼 끊지 않을 값은 칸 안 <span class="ag-nowrap"> */
+.ag-paper__foot { margin-top: auto; padding-top: var(--ag-space-3); border-top: 1px solid var(--ag-border); display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--ag-space-3);
+  font-size: var(--ag-text-xs); color: var(--ag-text-3); }
+@media screen {
+  .ag-paper .ag-print-break { padding-top: var(--ag-space-8); border-top: 1px dashed var(--ag-border-strong); }   /* 쪽 경계 */
+}
+@media screen and (max-width: 720px) {
+  .ag-paper { --ag-paper-pad: var(--ag-space-4); min-height: 0; }
+  .ag-paper__grid { --_cols: 1; }
+  .ag-paper .ag-table :is(th, td) { white-space: nowrap; overflow-wrap: normal; }   /* 좁은 화면은 종이 폭에 맞추지 않고 표 상자 안에서 가로 스크롤 */
+}
+
 /* ---- 인쇄 (B11) — 감사 리포트·결과 내보내기 -------------------------------- */
 @media print {
   :root { color-scheme: light; }
@@ -990,19 +1044,29 @@
   .ag-main { max-width: none !important; padding: 0 !important; gap: 16pt !important; }
   .ag-card, .ag-tile, .ag-list__item, .ag-table-wrap, .ag-alert, .ag-approval { background: #fff !important; color: #111 !important; border: 1px solid #bbb !important; box-shadow: none !important; border-radius: 6pt !important; break-inside: avoid; }
   .ag-card--accent, .ag-card--inverse, .ag-card--accent2, .ag-card--cat1, .ag-card--cat2, .ag-card--cat3, .ag-card--cat4 { background: #f3f3f3 !important; color: #111 !important; }
-  .ag-text, .ag-text-2, .ag-card__title, .ag-stat__value, .ag-kv dd, .ag-table td { color: #111 !important; }
-  .ag-text-3, .ag-card__subtitle, .ag-kv dt, .ag-table th { color: #555 !important; }
+  :is(.ag-text, .ag-text-2, .ag-card__title, .ag-stat__value, .ag-kv dd, .ag-table td):not(.ag-paper *) { color: #111 !important; }   /* 1.11: 종이 안은 상태 글자색 그대로 */
+  :is(.ag-text-3, .ag-card__subtitle, .ag-kv dt, .ag-table th):not(.ag-paper *) { color: #555 !important; }
   .ag-table th { background: #f3f3f3 !important; position: static !important; }
   .ag-table td, .ag-table th { border-bottom: 1px solid #ddd !important; white-space: normal !important; }
   .ag-table-wrap { overflow: visible !important; }
-  .ag-badge { border: 1px solid #999 !important; background: #fff !important; color: #111 !important; }
-  .ag-progress { background: #eee !important; } .ag-progress__bar { background: #555 !important; }
+  .ag-badge:not(.ag-paper *) { border: 1px solid #999 !important; background: #fff !important; color: #111 !important; }   /* 1.11: 종이 안은 색 그대로 */
+  .ag-progress:not(.ag-paper *) { background: #eee !important; } .ag-progress__bar:not(.ag-paper *) { background: #555 !important; }
   .ag-grid { display: block !important; } .ag-grid > * { margin-bottom: 12pt; }
   a { color: #111 !important; text-decoration: none !important; }
   a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 9pt; color: #555; }
   .ag-chart svg text { fill: #333 !important; }
   .ag-print-only { display: block !important; }
   .ag-print-header { display: flex !important; justify-content: space-between; font-size: 9pt; color: #555; border-bottom: 1px solid #bbb; padding-bottom: 6pt; margin-bottom: 12pt; }
+  /* 쪽 나눔 · 인쇄 문서(1.11) */
+  .ag-print-break { break-before: page; }
+  .ag-print-flow, .ag-print-flow .ag-table-wrap { break-inside: auto; }
+  .ag-print-flow tr { break-inside: avoid; }
+  .ag-paper-desk { padding: 0; }
+  .ag-paper-bar { display: none; }
+  .ag-paper { width: auto; max-width: none; min-height: 0; padding: 0; gap: 14pt; border: 0; border-radius: 0; box-shadow: none;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ag-paper__heading { break-after: avoid; }
+  .ag-paper__foot { margin-top: 0; }
 }
 .ag-print-only, .ag-print-header { display: none; }
 @page { margin: 16mm; }

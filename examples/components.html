@@ -918,6 +918,20 @@ k2m9xQ1zR8fT4yU6wE2nH5sL0dP9vB3cX7aM1oK4jG8hF6eD2tS9uY
           <div class="ag-print-header"><span>Argus Console — 보안 감사 결과</span><span>2026-10-02 · Andy</span></div>
           <button class="ag-btn ag-btn--outline" onclick="window.print()"><svg class="ag-icon"><use href="#i-download"/></svg>인쇄 미리보기</button>
         </div>
+        <div class="ag-card ag-col-12 ag-stack">
+          <div class="ag-cluster ag-cluster--between">
+            <h3 class="ag-card__title">인쇄 문서 <code>.ag-paper</code> · 쪽 나눔 <code>.ag-print-break</code> <code>.ag-print-flow</code> <span class="ag-badge ag-badge--accent">1.11</span></h3>
+            <a class="ag-btn ag-btn--sm ag-btn--outline" href="report.html">예시: DB 백업 리포트<svg class="ag-icon ag-icon--sm"><use href="#i-arrow-up-right"/></svg></a>
+          </div>
+          <p class="ag-text-sm ag-text-2">제출용 리포트를 A4 종이(210mm · 여백 16mm = <code>@page</code>)로 미리 보여 주고 그대로 인쇄 · PDF 저장합니다. 책상 <code>.ag-paper-desk</code> · 도구줄 <code>.ag-paper-bar</code>(인쇄 때 숨김) · 표지 <code>__cover</code> <code>__title</code> <code>__subtitle</code> · 절 <code>__section</code> <code>__heading</code> <code>__num</code> · 바닥 <code>__foot</code>. 종이 안은 배경색(차트 · 배지 · 진행 막대)을 그대로 찍고, 표는 화면에서도 줄바꿈합니다.</p>
+          <div class="ag-paper__heading"><span class="ag-paper__num">1</span>요약 — <code>.ag-paper__heading</code></div>
+          <div class="ag-paper__grid ag-paper__grid--3">
+            <div class="ag-card ag-card--sm"><div class="ag-stat ag-stat--sm"><span class="ag-stat__value">6</span><span class="ag-stat__label">점검 항목(§8 · §9.1)</span></div></div>
+            <div class="ag-card ag-card--sm"><div class="ag-stat ag-stat--sm"><span class="ag-stat__value ag-text-good">1</span><span class="ag-stat__label">적합</span></div></div>
+            <div class="ag-card ag-card--sm"><div class="ag-stat ag-stat--sm"><span class="ag-stat__value ag-text-crit">5</span><span class="ag-stat__label">부적합</span></div></div>
+          </div>
+          <p class="ag-text-xs ag-text-3"><code>.ag-paper__grid</code>(2열) · <code>--3</code> · <code>--4</code> — 인쇄 폭(673px)에서도 열이 접히지 않습니다(<code>.ag-grid</code> · <code>.ag-col-N</code> 은 한 줄로 접힘). <code>.ag-print-break</code> 이 앞에서 새 쪽, <code>.ag-print-flow</code> 긴 카드 · 표를 쪽에 걸쳐 잇고 머리행을 반복합니다.</p>
+        </div>
       </div>
     </section>
 
@@ -1276,6 +1290,7 @@ innodb_buffer_pool_size = 56G</pre></div>
     <a href="index.html" data-page="index">대시보드</a>
     <a href="resources.html" data-page="resources">리소스</a>
     <a href="detail.html" data-page="detail">인스턴스</a>
+    <a href="report.html" data-page="report">리포트</a>
     <a href="login.html" data-page="login">로그인</a>
     <a href="layouts.html" data-page="layouts">레이아웃</a>
     <a href="components.html" data-page="components" class="is-here" aria-current="page">컴포넌트</a>

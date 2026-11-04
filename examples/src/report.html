@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ko" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DB 백업 리포트 — 2026년 10월 · kurly-prod</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../dist/argus.min.css">
+</head>
+<!-- 인쇄 문서(1.11) 예시 — 제출용 월간 리포트. 화면은 A4 종이 미리 보기, [PDF 로 저장] = 브라우저 인쇄.
+     종이는 라이트 테마 고정(html data-theme="light"). 격자는 .ag-paper__grid(인쇄 폭에서도 접히지 않음), 쪽 나눔은 .ag-print-break · .ag-print-flow -->
+<body class="ag-paper-desk">
+<!--@icons-->
+
+<div class="ag-paper-bar">
+  <a class="ag-btn ag-btn--ghost ag-btn--sm" href="index.html"><svg class="ag-icon"><use href="#i-chevron-left"/></svg> 운영 리포트</a>
+  <div class="ag-cluster">
+    <span class="ag-text-sm ag-text-3 ag-hide-md">인쇄 창에서 대상을 "PDF 로 저장"으로 고르세요</span>
+    <button type="button" class="ag-btn ag-btn--primary" onclick="window.print()"><svg class="ag-icon"><use href="#i-download"/></svg> PDF 로 저장</button>
+  </div>
+</div>
+
+<main class="ag-paper">
+  <header class="ag-paper__cover">
+    <p class="ag-eyebrow">운영 리포트 · DB[BCR]-P001 §8 · §9.1</p>
+    <h1 class="ag-paper__title">DB 백업 리포트</h1>
+    <p class="ag-paper__subtitle">2026년 10월 · kurly-prod <span class="ag-badge ag-badge--good">확정본</span></p>
+    <dl class="ag-kv">
+      <dt>대상 계정</dt><dd>kurly-prod · 123456789012</dd>
+      <dt>백업 기준</dt><dd>운영 — 자동 백업 보존 7일</dd>
+      <dt>기준 시각</dt><dd>2026-10-31 23:05 (스냅샷 수집 마지막 성공)</dd>
+      <dt>확정</dt><dd>2026-11-01 00:05 — 확정 뒤 바뀌지 않음</dd>
+      <dt>판정 기준</dt><dd>최근 자동 백업 26시간 안 정상 · 48시간 안 지연</dd>
+      <dt>출력</dt><dd>2026-11-04 10:12 · DBA 김하늘</dd>
+    </dl>
+    <div class="ag-paper__grid ag-paper__grid--3">
+      <div class="ag-card ag-card--sm"><div class="ag-stat ag-stat--sm"><span class="ag-stat__value">6</span><span class="ag-stat__label">점검 항목(§8 · §9.1)</span></div></div>
+      <div class="ag-card ag-card--sm"><div class="ag-stat ag-stat--sm"><span class="ag-stat__value ag-text-good">1</span><span class="ag-stat__label">적합</span></div></div>
+      <div class="ag-card ag-card--sm"><div class="ag-stat ag-stat--sm"><span class="ag-stat__value ag-text-crit">5</span><span class="ag-stat__label">부적합</span></div></div>
+    </div>
+  </header>
+
+  <section class="ag-paper__section ag-print-break">
+    <h2 class="ag-paper__heading"><span class="ag-paper__num">1</span>요약</h2>
+    <div class="ag-paper__grid ag-paper__grid--4">
+      <div class="ag-card ag-card--sm ag-stat-card">
+        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">25<small> / 28</small></span><span class="ag-stat__label">자동 백업 정상</span></div>
+        <div class="ag-progress ag-progress--sm ag-progress--good"><div class="ag-progress__bar" style="width:89%"></div></div>
+        <div class="ag-stat-card__foot"><span>지연 1 · 누락 1 · 꺼짐 1</span></div>
+      </div>
+      <div class="ag-card ag-card--sm ag-stat-card">
+        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">3</span><span class="ag-stat__label">보존 기간 상이</span></div>
+        <div class="ag-stat-card__foot"><span>기준 7일(운영)</span></div>
+      </div>
+      <div class="ag-card ag-card--sm ag-stat-card">
+        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">2</span><span class="ag-stat__label">미암호화 백업본</span></div>
+        <div class="ag-stat-card__foot"><span>스냅샷 412개 중</span></div>
+      </div>
+      <div class="ag-card ag-card--sm ag-stat-card">
+        <div class="ag-stat ag-stat--sm"><span class="ag-stat__value">4</span><span class="ag-stat__label">명명 규칙 위반</span></div>
+        <div class="ag-stat-card__foot"><span>수동 스냅샷 42개 중</span></div>
+      </div>
+    </div>
+    <div class="ag-stack ag-stack--sm">
+      <div class="ag-insight"><span class="ag-insight__icon"><svg class="ag-icon"><use href="#i-alert"/></svg></span><p>자동 백업이 꺼진 DB 1개: <strong>batch-meta</strong></p></div>
+      <div class="ag-insight"><span class="ag-insight__icon"><svg class="ag-icon"><use href="#i-alert"/></svg></span><p>48시간 넘게 자동 백업이 없는 DB 1개: <strong>event-log</strong></p></div>
+      <div class="ag-insight"><span class="ag-insight__icon"><svg class="ag-icon"><use href="#i-info"/></svg></span><p>원본 DB 가 없는 스냅샷 4개(2.4 TiB)가 남아 있습니다. Fadeout 보관 66개(archive 39 · AWS Backup 27)는 뺀 수입니다.</p></div>
+    </div>
+    <div class="ag-card ag-card--flush">
+      <div class="ag-table-wrap">
+        <table class="ag-table ag-table--dense">
+          <thead><tr><th>조항</th><th>점검 항목</th><th>결과</th><th class="ag-text-right">건수</th><th>메모</th></tr></thead>
+          <tbody>
+            <tr><td>§8</td><td>자동 백업이 보존 주기대로 생성됨</td><td><span class="ag-badge ag-badge--crit">부적합</span></td><td class="ag-text-right">2</td><td>지연 1 · 누락 1</td></tr>
+            <tr><td>§9.1</td><td>자동 백업 미활성화 DB</td><td><span class="ag-badge ag-badge--crit">부적합</span></td><td class="ag-text-right">1</td><td>보존 0일</td></tr>
+            <tr><td>§9.1</td><td>보존 기간이 기준과 다른 DB</td><td><span class="ag-badge ag-badge--crit">부적합</span></td><td class="ag-text-right">3</td><td>짧음 1 · 김 1 · 꺼짐 1</td></tr>
+            <tr><td>§9.1</td><td>미암호화 백업본</td><td><span class="ag-badge ag-badge--crit">부적합</span></td><td class="ag-text-right">2</td><td>자동 · 수동 · AWS Backup</td></tr>
+            <tr><td>§9.1</td><td>명명 규칙을 따르지 않은 수동 스냅샷</td><td><span class="ag-badge ag-badge--crit">부적합</span></td><td class="ag-text-right">4</td><td>보관 정책에 없는 접두사</td></tr>
+            <tr><td>§9.1</td><td>고가용성 미구성 운영 DB</td><td><span class="ag-badge ag-badge--good">적합</span></td><td class="ag-text-right">0</td><td>멤버 2대 · AZ 2곳 / Multi-AZ</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="ag-paper__section">
+    <h2 class="ag-paper__heading"><span class="ag-paper__num">2</span>현황 · 추세</h2>
+    <div class="ag-paper__grid">
+      <div class="ag-card">
+        <h3 class="ag-card__title">자동 백업 상태</h3>
+        <div class="ag-row ag-gap-4 ag-wrap">
+          <div class="ag-donut-wrap">
+            <div class="ag-donut" style="--ag-donut: var(--ag-good) 0 89%, var(--ag-warn) 89% 92.9%, var(--ag-crit) 92.9% 100%"></div>
+            <div class="ag-donut__center"><strong>89%</strong><span>정상</span></div>
+          </div>
+          <div class="ag-donut-legend ag-flex-1">
+            <div class="ag-donut-legend__item"><span class="ag-dot ag-dot--good"></span>정상 <strong>25</strong></div>
+            <div class="ag-donut-legend__item"><span class="ag-dot ag-dot--warn"></span>지연 <strong>1</strong></div>
+            <div class="ag-donut-legend__item"><span class="ag-dot ag-dot--crit"></span>누락 · 꺼짐 <strong>2</strong></div>
+          </div>
+        </div>
+      </div>
+      <div class="ag-card">
+        <h3 class="ag-card__title">스냅샷 용량</h3>
+        <div class="ag-bars" style="--ag-bars-label: 84px">
+          <div class="ag-bars__row"><span class="ag-bars__label">자동</span><div class="ag-bars__track"><div class="ag-bars__seg ag-bars__seg--1" style="width:100%"></div></div><span class="ag-bars__value">31.2 TiB</span></div>
+          <div class="ag-bars__row"><span class="ag-bars__label">수동</span><div class="ag-bars__track"><div class="ag-bars__seg ag-bars__seg--2" style="width:28%"></div></div><span class="ag-bars__value">8.7 TiB</span></div>
+          <div class="ag-bars__row"><span class="ag-bars__label">AWS Backup</span><div class="ag-bars__track"><div class="ag-bars__seg ag-bars__seg--3" style="width:20%"></div></div><span class="ag-bars__value">6.3 TiB</span></div>
+          <div class="ag-bars__row"><span class="ag-bars__label">원본 없음</span><div class="ag-bars__track"><div class="ag-bars__seg ag-bars__seg--hatch" style="width:8%"></div></div><span class="ag-bars__value">2.4 TiB</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="ag-card">
+      <div class="ag-cluster ag-cluster--between"><h3 class="ag-card__title">자동 백업 정상률 — 10월 일별</h3><span class="ag-text-xs ag-text-3">평균 97.0% · 최저 89.3%</span></div>
+      <div class="ag-cols" style="--ag-cols-max: 100; --ag-cols-h: 120px">
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">1</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 96.4"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">5</span></div>
+            <div class="ag-cols__col" style="--v: 96.4"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 92.9"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">10</span></div>
+            <div class="ag-cols__col" style="--v: 96.4"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 96.4"><span class="ag-cols__bar"></span><span class="ag-cols__label">15</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 92.9"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 96.4"><span class="ag-cols__bar"></span><span class="ag-cols__label">20</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 96.4"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 100"><span class="ag-cols__bar"></span><span class="ag-cols__label">25</span></div>
+            <div class="ag-cols__col" style="--v: 92.9"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 96.4"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 89.3"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 89.3"><span class="ag-cols__bar"></span><span class="ag-cols__label">&nbsp;</span></div>
+            <div class="ag-cols__col" style="--v: 89.3"><span class="ag-cols__bar"></span><span class="ag-cols__label">30</span></div>
+            <div class="ag-cols__col" style="--v: 89.3"><span class="ag-cols__bar"></span><span class="ag-cols__label">31</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ag-paper__section ag-print-break ag-print-flow">
+    <h2 class="ag-paper__heading"><span class="ag-paper__num">부록 A</span>DB 별 자동 백업 · 보존 기간 · 고가용성</h2>
+    <div class="ag-card ag-card--flush ag-print-flow">
+      <div class="ag-table-wrap">
+        <table class="ag-table ag-table--dense">
+          <thead><tr><th>DB</th><th>엔진</th><th>보존(수집 / 기준)</th><th>최근 자동 백업</th><th>실효 보존</th><th>고가용성</th><th>자동 백업</th></tr></thead>
+          <tbody>
+          <tr><td><span class="ag-text-1">order</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>6시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">order-history</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>7시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">member</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>2시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">member-auth</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>6시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">payment</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-postgresql"><span class="ag-dot ag-dot--engine"></span>aurora-postgresql</span></td><td>7일 / 7일</td><td>9시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">settlement</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-postgresql"><span class="ag-dot ag-dot--engine"></span>aurora-postgresql</span></td><td>7일 / 7일</td><td>1시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">settlement-batch</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-postgresql"><span class="ag-dot ag-dot--engine"></span>aurora-postgresql</span></td><td><span class="ag-text-warn">3일 / 7일</span></td><td>2시간 전</td><td>8일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">product</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>7시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">product-search</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>4시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">cart</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>9시간 전</td><td>8일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">coupon</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>1시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">point</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>4시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">delivery</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>7시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">delivery-tracking</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>4시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">wms-inbound</span></td><td><span class="ag-badge ag-badge--plain" data-engine="oracle-ee"><span class="ag-dot ag-dot--engine"></span>oracle-ee</span></td><td>7일 / 7일</td><td>9시간 전</td><td>7일</td><td><span>구성됨 · Multi-AZ</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">wms-outbound</span></td><td><span class="ag-badge ag-badge--plain" data-engine="oracle-ee"><span class="ag-dot ag-dot--engine"></span>oracle-ee</span></td><td>7일 / 7일</td><td>5시간 전</td><td>8일</td><td><span>구성됨 · Multi-AZ</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">wms-stock</span></td><td><span class="ag-badge ag-badge--plain" data-engine="oracle-ee"><span class="ag-dot ag-dot--engine"></span>oracle-ee</span></td><td>7일 / 7일</td><td>3시간 전</td><td>7일</td><td><span>구성됨 · Multi-AZ</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">review</span></td><td><span class="ag-badge ag-badge--plain" data-engine="mysql"><span class="ag-dot ag-dot--engine"></span>mysql</span></td><td>7일 / 7일</td><td>5시간 전</td><td>7일</td><td><span>구성됨 · Multi-AZ</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">notice</span></td><td><span class="ag-badge ag-badge--plain" data-engine="mysql"><span class="ag-dot ag-dot--engine"></span>mysql</span></td><td>7일 / 7일</td><td>5시간 전</td><td>7일</td><td><span class="ag-text-warn">미구성 · Single-AZ</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">cs-ticket</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>3시간 전</td><td>7일</td><td><span class="ag-text-warn">미구성 · 멤버 2 · AZ 1</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">partner</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-postgresql"><span class="ag-dot ag-dot--engine"></span>aurora-postgresql</span></td><td>7일 / 7일</td><td>6시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">partner-settle</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-postgresql"><span class="ag-dot ag-dot--engine"></span>aurora-postgresql</span></td><td>7일 / 7일</td><td>9시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">ads</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>1시간 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">ads-report</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>31시간 전</td><td>8일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--warn">지연</span></td></tr>
+          <tr><td><span class="ag-text-1">event</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>9시간 전</td><td>8일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          <tr><td><span class="ag-text-1">event-log</span></td><td><span class="ag-badge ag-badge--plain" data-engine="aurora-mysql"><span class="ag-dot ag-dot--engine"></span>aurora-mysql</span></td><td>7일 / 7일</td><td>3일 전</td><td>7일</td><td><span>구성됨 · 멤버 2 · AZ 2</span></td><td><span class="ag-badge ag-badge--crit">누락</span></td></tr>
+          <tr><td><span class="ag-text-1">batch-meta</span></td><td><span class="ag-badge ag-badge--plain" data-engine="mysql"><span class="ag-dot ag-dot--engine"></span>mysql</span></td><td><span class="ag-text-crit">0일 / 7일</span></td><td>-</td><td>-</td><td><span class="ag-text-warn">미구성 · Single-AZ</span></td><td><span class="ag-badge ag-badge--crit">꺼짐</span></td></tr>
+          <tr><td><span class="ag-text-1">report-pg</span></td><td><span class="ag-badge ag-badge--plain" data-engine="postgres"><span class="ag-dot ag-dot--engine"></span>postgres</span></td><td><span class="ag-text-warn">14일 / 7일</span></td><td>4시간 전</td><td>8일</td><td><span class="ag-text-warn">미구성 · Single-AZ</span></td><td><span class="ag-badge ag-badge--good">정상</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer class="ag-paper__foot"><span>DB 백업 리포트 · 2026년 10월 · kurly-prod — 확정본</span><span>출력 2026-11-04 10:12 · DBA 김하늘</span></footer>
+</main>
+</body>
+</html>

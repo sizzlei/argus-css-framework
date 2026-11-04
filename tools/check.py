@@ -62,7 +62,7 @@ async def main():
         b = await p.chromium.launch()
 
         # ── 1. 모든 페이지: JS 에러 0, 400px 가로 스크롤 0 ─────────────────────────
-        for name in ["index", "resources", "detail", "login", "layouts", "components", "matrix"]:
+        for name in ["index", "resources", "detail", "login", "layouts", "components", "matrix", "report"]:
             pg = await page(b, name + ".html")
             check(f"{name}: page errors", not pg._errs, "; ".join(pg._errs[:2]))
             await pg.close()
@@ -595,12 +595,39 @@ async def main():
               and v["after"][".ag-auth__mobile-head h2"].startswith('"Chakra Petch"') and v["after"][".ag-auth__version"] == v["body"], str(v))
         await pg.close()
 
+        # ── 1.11 인쇄 문서: A4 종이 · 인쇄에서 도구줄 숨김 · 좁은 인쇄 폭에서도 고정 열 · 쪽 나눔 · 종이 안 색 그대로 ──
+        pg = await page(b, "report.html")
+        r = await pg.evaluate("""()=>{const p=document.querySelector('.ag-paper'),c=getComputedStyle(p);return {w:p.getBoundingClientRect().width,pad:parseFloat(c.paddingLeft)}}""")
+        check("1.11: paper — A4 폭 210mm · 안쪽 여백 16mm(@page 와 같음)", abs(r["w"] - 793.7) < 1.5 and abs(r["pad"] - 60.5) < 1, str(r))
+        await pg.set_viewport_size({"width": 680, "height": 900})   # 인쇄 폭(A4 − 여백 ≈ 673px) 근처
+        await pg.emulate_media(media="print")
+        r = await pg.evaluate("""()=>{const cs=s=>getComputedStyle(document.querySelector(s));const pp=cs('.ag-paper');
+          return {bar:cs('.ag-paper-bar').display, shadow:pp.boxShadow, pad:pp.paddingLeft, adjust:pp.printColorAdjust||pp.webkitPrintColorAdjust,
+            cols4:cs('.ag-paper__grid--4').gridTemplateColumns.split(' ').length, cols3:cs('.ag-paper__grid--3').gridTemplateColumns.split(' ').length,
+            brk:cs('.ag-print-break').breakBefore, brkLine:cs('.ag-paper .ag-print-break').borderTopStyle,
+            flow:cs('.ag-card.ag-print-flow').breakInside, flowWrap:cs('.ag-print-flow .ag-table-wrap').breakInside,
+            badge:cs('.ag-paper .ag-badge--crit').backgroundColor, bar2:cs('.ag-paper .ag-progress__bar').backgroundColor,
+            critText:cs('.ag-paper .ag-stat__value.ag-text-crit').color}}""")
+        check("1.11: paper print — 도구줄 숨김 · 그림자 · 여백 없음 · 배경색 그대로(print-color-adjust)",
+              r["bar"] == "none" and r["shadow"] == "none" and r["pad"] == "0px" and r["adjust"] == "exact", str(r))
+        check("1.11: paper print — 680px 인쇄 폭에서도 __grid--4 는 4열 · --3 은 3열(.ag-col-N 처럼 접히지 않음)", r["cols4"] == 4 and r["cols3"] == 3, str(r))
+        check("1.11: print — .ag-print-break 는 새 쪽(화면 점선은 인쇄에서 없음) · .ag-print-flow 카드 · 표는 쪽에 걸쳐 이음",
+              r["brk"] == "page" and r["brkLine"] == "none" and r["flow"] == "auto" and r["flowWrap"] == "auto", str(r))
+        check("1.11: paper print — 종이 안 배지 · 진행 막대 · 상태 글자는 톤 그대로(흑백 인쇄 규칙 제외)",
+              r["badge"] not in ("rgb(255, 255, 255)", "rgba(0, 0, 0, 0)") and r["bar2"] != "rgb(85, 85, 85)" and r["critText"] != "rgb(17, 17, 17)", str(r))
+        await pg.close()
+        pg = await page(b, "components.html")
+        await pg.emulate_media(media="print")
+        bg = await pg.evaluate("getComputedStyle(document.querySelector('.ag-badge--crit:not(.ag-paper *)')).backgroundColor")
+        check("1.11: print — 종이 밖 배지는 예전처럼 흑백(흰 바탕)", bg == "rgb(255, 255, 255)", bg)
+        await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():
             axe_src = axe_path.read_text(encoding="utf-8")
             worst = []
-            for name in ["index", "resources", "detail", "login", "layouts", "components"]:
+            for name in ["index", "resources", "detail", "login", "layouts", "components", "report"]:
                 for light in (False, True):
                     pg = await page(b, name + ".html", light=light)
                     await pg.add_script_tag(content=axe_src)
