@@ -643,18 +643,19 @@
 .ag-topo__root:not(:last-child)::after { content: ""; position: absolute; bottom: 0; left: calc(50% - var(--_lw) / 2); height: var(--_gap-y); border-left: var(--_lw) solid var(--_line); }
 .ag-topo__branches { display: flex; align-items: flex-start; gap: var(--_gap-x); min-width: 0; }
 .ag-topo__branch { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; padding-top: var(--_gap-y); }
-/* 가로 버스 — 가지마다 자기 폭 + 양옆 간격 절반을 그어 이어진다. 첫 가지는 가운데부터, 끝 가지는 가운데까지 */
+/* 가로 버스 — 가지마다 자기 폭 + 양옆 간격 절반을 그어 이어진다. 첫 가지는 가운데부터, 끝 가지는 가운데까지.
+   첫 · 끝은 -of-type 으로 고른다 — Alpine x-for 의 <template> 가 형제로 끼어도 맞도록(가지 · 잎은 같은 태그로) */
 .ag-topo__branch::before { content: ""; position: absolute; top: 0; left: calc(var(--_gap-x) / -2); right: calc(var(--_gap-x) / -2); border-top: var(--_lw) solid var(--_line); }
-.ag-topo__branch:first-child::before { left: calc(50% - var(--_lw) / 2); }
-.ag-topo__branch:last-child::before { right: calc(50% - var(--_lw) / 2); }
-.ag-topo__branch:only-child::before { display: none; }
+.ag-topo__branch:first-of-type::before { left: calc(50% - var(--_lw) / 2); }
+.ag-topo__branch:last-of-type::before { right: calc(50% - var(--_lw) / 2); }
+.ag-topo__branch:only-of-type::before { display: none; }
 /* 가지 줄기 — 버스 → 묶음 노드 */
 .ag-topo__branch::after { content: ""; position: absolute; top: 0; left: calc(50% - var(--_lw) / 2); height: var(--_gap-y); border-left: var(--_lw) solid var(--_line); }
 .ag-topo__leaves { list-style: none; margin: var(--_step) 0 0; padding: 0 0 0 var(--_indent); display: flex; flex-direction: column; gap: var(--_step); min-width: 0; }
 .ag-topo__leaves > li { position: relative; min-width: 0; }
 /* 레일 — 위 노드 아래에서 다음 잎까지, 끝 잎은 제 가운데까지. 꺾은 선 — 레일 → 잎 */
 .ag-topo__leaves > li::before { content: ""; position: absolute; top: calc(var(--_step) * -1); bottom: 0; left: calc(var(--_rail) - var(--_indent) - var(--_lw) / 2); border-left: var(--_lw) solid var(--_line); }
-.ag-topo__leaves > li:last-child::before { bottom: auto; height: calc(50% + var(--_step)); }
+.ag-topo__leaves > li:last-of-type::before { bottom: auto; height: calc(50% + var(--_step)); }
 .ag-topo__leaves > li::after { content: ""; position: absolute; top: calc(50% - var(--_lw) / 2); left: calc(var(--_rail) - var(--_indent)); width: calc(var(--_indent) - var(--_rail)); border-top: var(--_lw) solid var(--_line); }
 
 .ag-topo__node {
@@ -695,7 +696,7 @@
   .ag-topo__branch { padding-top: 0; }
   /* 가지도 잎처럼 — 레일(뿌리 → 다음 가지, 끝 가지는 묶음 노드 가운데까지) + 꺾은 선. 넓은 화면의 첫 · 끝 · 하나 규칙을 같은 특이도로 덮는다 */
   .ag-topo__branches > .ag-topo__branch::before { display: block; top: calc(var(--_step) * -1); bottom: 0; left: calc(var(--_rail) - var(--_indent) - var(--_lw) / 2); right: auto; border-top: 0; border-left: var(--_lw) solid var(--_line); }
-  .ag-topo__branches > .ag-topo__branch:last-child::before { bottom: auto; height: calc(var(--_head-h) / 2 + var(--_step)); }
+  .ag-topo__branches > .ag-topo__branch:last-of-type::before { bottom: auto; height: calc(var(--_head-h) / 2 + var(--_step)); }
   .ag-topo__branch::after { top: calc(var(--_head-h) / 2 - var(--_lw) / 2); left: calc(var(--_rail) - var(--_indent)); width: calc(var(--_indent) - var(--_rail)); height: 0; border-left: 0; border-top: var(--_lw) solid var(--_line); }
 }
 

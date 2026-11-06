@@ -636,6 +636,10 @@ async def main():
         check("1.12: ag-topo — 1440 에서 가지 3개 한 줄 · 잎은 묶음 노드 아래 세로로 32px 들여쓰기 · 연결선 2px",
               r["n"] == 3 and r["row"] and r["below"] and r["indent"] == 32 and r["stacked"] and r["root"] == r["bus"] == r["rail"] == "2px", str(r))
         check("1.12: ag-topo — is-selected 는 왼쪽 띠(주의) + 액센트 링 두 겹", "inset" in r["sel"] and "0px 0px 0px 3px" in r["sel"], r["sel"])
+        r = await pg.evaluate("""()=>{const t=document.querySelector('.ag-topo').cloneNode(true);document.body.appendChild(t);const bs=t.querySelector('.ag-topo__branches');
+          bs.insertBefore(document.createElement('template'),bs.firstChild);const b=bs.querySelector('.ag-topo__branch');
+          const v={left:parseFloat(getComputedStyle(b,'::before').left), half:b.getBoundingClientRect().width/2};t.remove();return v}""")
+        check("1.12: ag-topo — 가지 앞에 <template>(Alpine x-for)가 끼어도 첫 가지 버스는 가운데부터", abs(r["left"] - (r["half"] - 1)) < 1.5, str(r))
         await pg.set_viewport_size({"width": 400, "height": 900})
         await pg.wait_for_timeout(100)
         r = await pg.evaluate(topo_js)
