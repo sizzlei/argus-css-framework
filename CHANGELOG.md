@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.13.1 — 2026-11-06 · `ag-drawer__head` 기본 모양 · 예시 없던 클래스 18개 · README 컴포넌트 목록 재작성
+
+- **`.ag-drawer__head`** 가 `.ag-modal__head` 와 같은 머리(flex · 양끝 정렬)를 받는다. 전에는 1.6 남은 높이 규칙(`:is(.ag-modal__head, .ag-drawer__head)`)에만 들어 있어서 `__head` 로 쓰면 닫기 버튼이 제목 아래로 떨어졌다. detail 파라미터 드로어 · 카탈로그 데모 드로어가 `__head` 를 쓴다.
+- **예시 없던 클래스 18개를 예시에** — 카탈로그: `ag-btn--pill`, `ag-badge--other` · `ag-avatar--other`("기타" 배지를 기본 배지 대신), `ag-bars__seg--other` + 범례, `ag-spark--1/--3/--4/--info` 메트릭 타일, 엔진 `ag-cols__bar--engine` · `ag-stat-card__icon--engine`(엔진별 KPI 4장), `ag-h-display`, `ag-page--tight`. 매트릭스: badge · avatar `other` 열, btn `--pill` 행, bars `seg--other`, 스파크 톤 전부, `ag-chart__marker--1/--2`. 데모: index 복제 지연 KPI 스파크 `--info`(아이콘 톤과 맞춤), resources 스토리지 91% 패널 `ag-sidebar__panel--warn`, layouts 환경 패널 `--accent`.
+- **check.py +2** — 클래스 커버리지(css/ 의 모든 클래스가 examples/src · templates · js 중 한 곳에, 허용: layouts 가 JS 로 붙이는 `ag-app--rail/--focus`, extras `ag-auth__glass--card`), `ag-drawer__head` 모양. 180항목.
+- **README 컴포넌트 목록 재작성** — 번들별 표(core 레이아웃 / core 컴포넌트 / charts / patterns / extras / 유틸 / 상태). 없는 클래스 `ag-msg` 삭제, 중복(`ag-accordion` `ag-stat` …) 정리, 빠진 블록(`ag-avatar-group` `ag-form-actions` `ag-toast-stack` `ag-table-toolbar` `ag-provider-list/-row` `ag-skeleton-card` `ag-print-only` `ag-icon` `ag-h-display` 엔진 훅 …) 추가. 골라 쓰기에서 헷갈리던 위치를 바로잡음: `ag-spark` · `ag-chart` · `ag-bubble` 은 core, `ag-tag` · `ag-stepper` · `ag-brand-mark` · `ag-user` · `ag-spinner` 는 patterns. 번들 크기 · check 항목 수 · 예시 페이지 표(리포트) 갱신.
+- 카탈로그 h2 표기 26px/500 → 실제 20px/600. 공개 저장소 규칙: 예시 · 주석 · renewal-prompt 의 사내 계정명 · 서비스명 · 한국 인명을 일반 표기로.
+
 ## 1.13.0 — 2026-11-06 · 상태 신호등 `ag-notif-btn--good/--warn/--crit` (argus-server 시스템 상태)
 
 - **`.ag-notif-btn--good/--warn/--crit`** — 알림 버튼을 상태 신호등으로. 아이콘 글자색은 상태 글자 토큰, 테두리는 상태색을 섞은 값이고 hover 에서도 유지한다. 늘 보이는 상단 바 요소라 움직이지 않는다. argus-server 는 대시보드 상태 카드를 지우고 상단 바 테마 버튼 옆에 이 버튼을 둔다(누르면 손볼 항목 `.ag-notif` 드롭다운).

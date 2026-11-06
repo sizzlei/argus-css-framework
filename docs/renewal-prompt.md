@@ -256,7 +256,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 
 ## 4. 컬러 테마
 
-앱마다 메인 색을 가질 수 있다. 기본 7종(red orange yellow green blue indigo violet)은 `dist/themes/<color>.min.css` 를 복사해 로드하고, 새 색이 필요하면 프레임워크 저장소 `css/themes/_template.css` 를 복사해 만든다. 반드시 다크·라이트 둘 다 정의. 아래는 `harpoon.css` 의 실제 내용.
+앱마다 메인 색을 가질 수 있다. 기본 7종(red orange yellow green blue indigo violet)은 `dist/themes/<color>.min.css` 를 복사해 로드하고, 새 색이 필요하면 프레임워크 저장소 `css/themes/_template.css` 를 복사해 만든다. 반드시 다크·라이트 둘 다 정의. 아래는 실제 서비스 테마 파일의 예.
 
 ```css
 /* red.css — 기본 제공 테마 중 하나 */
@@ -270,7 +270,7 @@ Tailwind CDN 이나 Bootstrap 으로 제각각 만들어진 Go + html/template �
 }
 ```
 
-`--ag-accent-2`(핑크 보조)와 차트 범주색은 바꾸지 않는다 — 서비스마다 차트 색이 달라지면 팀 전체 대시보드 가독성이 떨어진다. 메인 색은 서비스마다 다른 것이 **기본 방침**이며, 네 서비스의 테마 파일은 `css/themes/` 에 이미 있다 (argus blue · harpoon red · plotter emerald · harbinger purple).
+`--ag-accent-2`(핑크 보조)와 차트 범주색은 바꾸지 않는다 — 서비스마다 차트 색이 달라지면 팀 전체 대시보드 가독성이 떨어진다. 메인 색은 서비스마다 다른 것이 **기본 방침**이며, 기본 7종 테마 파일은 `css/themes/` 에 있다.
 
 ---
 

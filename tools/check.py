@@ -28,6 +28,21 @@ async def page(b, path, width=1440, height=900, light=False):
     return pg
 
 
+# ── 1.13.1 클래스 커버리지: css/ 에 정의된 클래스는 전부 예시(examples/src — matrix 포함)·templates·js 중 한 곳에 나와야 한다.
+#    예시가 곧 문서이자 회귀 테스트라서, 예시 없는 클래스는 아무도 못 보고 깨진다 (1.13 까지 18개가 그랬다). ──
+def _class_coverage():
+    import re
+    css = "".join(f.read_text(encoding="utf-8") for f in sorted((ROOT / "css").rglob("*.css")) if "themes" not in f.parts)
+    css = re.sub(r"/\*.*?\*/", "", css, flags=re.S)          # 주석 속 예시 마크업은 정의가 아니다
+    defined = set(re.findall(r"\.(ag-[a-z0-9_-]*[a-z0-9])", css))
+    files = list((ROOT / "examples/src").glob("*.html")) + list((ROOT / "js").rglob("*.js")) + list((ROOT / "templates").rglob("*.html"))
+    used = set(re.findall(r"ag-[a-z0-9_-]*[a-z0-9]", "".join(f.read_text(encoding="utf-8") for f in files)))
+    allow = {
+        "ag-app--rail", "ag-app--focus",   # layouts.html 이 'ag-app--' + mode 로 붙인다
+        "ag-auth__glass--card",            # extras/auth-landing 별도 번들 — templates/README 에서 안내
+    }
+    return sorted(defined - used - allow)
+
 # ── 1.5 엔진 팔레트: 인접쌍(documentdb→mysql→postgres→oracle→mssql) 색각이상 ΔE 검증 (OKLab, Viénot 행렬) ──
 def _engine_palette_check():
     import re, math
@@ -60,6 +75,15 @@ def _engine_palette_check():
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch()
+
+        orphan = _class_coverage()
+        check(f"coverage: every css class appears in examples/templates/js", not orphan, ", ".join(orphan[:12]) + (f" … +{len(orphan) - 12}" if len(orphan) > 12 else ""))
+
+        # 1.13.1: .ag-drawer__head 는 .ag-modal__head 와 같은 머리 (전에는 남은 높이 규칙만 받아 정렬이 빠졌다)
+        pg = await page(b, "detail.html")
+        r = await pg.evaluate("""()=>{const h=document.querySelector('#drawer-param > .ag-drawer__head');if(!h)return null;const cs=getComputedStyle(h);return cs.display+' '+cs.justifyContent}""")
+        check("drawer__head: flex + space-between like modal__head", r == "flex space-between", str(r))
+        await pg.close()
 
         # ── 1. 모든 페이지: JS 에러 0, 400px 가로 스크롤 0 ─────────────────────────
         for name in ["index", "resources", "detail", "login", "layouts", "components", "matrix", "report"]:

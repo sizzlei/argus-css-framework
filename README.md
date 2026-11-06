@@ -15,28 +15,29 @@ A pure-CSS design system for admin pages — dark-first with a light theme, 7 co
 | [로그인](https://sizzlei.github.io/argus-css-framework/examples/login.html) | 2단 인증 레이아웃·OTP·외부 로그인·컬러 테마 전환 |
 | [레이아웃 모드](https://sizzlei.github.io/argus-css-framework/examples/layouts.html) | 6개 모드를 같은 콘텐츠로 전환 |
 | [컴포넌트 카탈로그](https://sizzlei.github.io/argus-css-framework/examples/components.html) | 전체 컴포넌트·패턴·토큰 |
+| [리포트](https://sizzlei.github.io/argus-css-framework/examples/report.html) | A4 제출 문서 미리 보기·인쇄(`ag-paper`) |
 | [조합 매트릭스](https://sizzlei.github.io/argus-css-framework/examples/matrix.html) | 모든 변형 × 조합 (회귀 확인용 — 어긋난 셀을 찾는 페이지) |
 
 로컬에서는 저장소를 받아 `examples/index.html` 을 그냥 열면 된다 (빌드 불필요). 페이지 하단 왼쪽 네비로 이동, 우상단 버튼으로 다크/라이트 전환.
 
 ```
-dist/argus.min.css              ← 가장 단순한 선택: 이것 하나만 <link> (134KB, gzip 23KB)
+dist/argus.min.css              ← 가장 단순한 선택: 이것 하나만 <link> (178KB, gzip 30KB)
   — 또는 골라 쓰기 —
-dist/argus.core.min.css         ← 토큰·베이스·레이아웃·컴포넌트·유틸 (62KB, gzip 12KB). 최소 세트
-dist/argus.patterns.min.css     ← 인증·사이드바·로그·Slack·배너·알림·승인·⌘K·트리… (61KB, gzip 11KB)
-dist/argus.charts.min.css       ← CSS 차트(도넛·바·히트맵·게이지…) + Apex/Chart.js 보정 (11KB, gzip 3KB). 차트 있는 페이지만
+dist/argus.core.min.css         ← 토큰·베이스·레이아웃·컴포넌트·유틸 (93KB, gzip 16KB). 최소 세트
+dist/argus.patterns.min.css     ← 인증·로그·Slack·배너·알림·승인·⌘K·트리·태그·스테퍼·인쇄… (73KB, gzip 13KB) — 아래 컴포넌트 목록의 patterns 표
+dist/argus.charts.min.css       ← CSS 차트(도넛·바·히트맵·게이지…) + Apex/Chart.js 보정 (12KB, gzip 3KB). 차트 있는 페이지만 — 스파크·인라인 svg 차트·버블은 core
 dist/argus.auth-landing.min.css ← 랜딩형 인증 변형 (선택, 2KB)
 dist/themes/<color>.min.css     ← 컬러 테마 red / orange / yellow / green / blue / indigo / violet. css 다음에 한 줄 더 <link>
-dist/argus.js                   ← 선택. 테마 토글·탭·사이드바·드롭다운·모달(소유권)·토스트·키보드·콤보박스·차트 호버 (11KB, gzip 3KB)
-dist/argus.charts.js            ← 선택. ApexCharts / Chart.js 에 토큰 주입 (AG.charts.apex / chartjsDefaults / sequential / heatRanges, 8KB)
+dist/argus.js                   ← 선택. 테마 토글·탭·사이드바·드롭다운·모달(소유권)·토스트·키보드·콤보박스·차트 호버 (13KB, gzip 4KB)
+dist/argus.charts.js            ← 선택. ApexCharts / Chart.js 에 토큰 주입 (AG.charts.apex / chartjsDefaults / sequential / heatRanges / engine / bubbles, 9KB)
 dist/VERSION
 css/ js/                        ← 소스. 읽을 땐 여기. js/modules/ 가 argus.js 로 합쳐진다 (사람이 읽는 합본이 필요하면 `sh build.sh --readable`)
 fonts/                          ← 폰트 self-host 키트 (fetch-fonts.sh → woff2 + fonts.css)
 index.html                      ← GitHub Pages 진입점 (examples/ 로 리다이렉트)
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
-                                   index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
+                                   index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / report(A4 인쇄 문서) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
-tools/                          ← check.py(값 단언 회귀 160항목 + axe 접근성 게이트 + 키보드·모션 상한) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
+tools/                          ← check.py(값 단언 회귀 180항목 + axe 접근성 게이트 + 키보드·모션 상한 + 클래스 커버리지) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -149,11 +150,11 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 실제 서비스를 이 프레임워크로 갈아입히다 보면 "변형이 없다", "스크립트가 깨진다" 같은 건이 계속 나옵니다. 처리 원칙:
 
 1. **서비스 저장소에서 즉흥 CSS 를 만들지 않는다.** 없는 것은 그대로 두고(읽는 데 지장 없는 수준이면 기본 스타일로), 프레임워크에 "무엇이 어디서 몇 곳에 필요한지" 를 보고한다.
-2. 프레임워크에서 고친다 — CSS(`css/`) + **카탈로그 예시**(`examples/src/components.html`) + **README 컴포넌트 목록** + `CHANGELOG.md` 네 군데를 한 커밋에. 변형을 추가했으면 `tools/gen_matrix.py` 목록에도, 서비스에서 들어온 버그면 `tools/check.py` 에 단언 하나. 예시 없이 CSS 만 추가하지 않는다 (예시가 곧 회귀 테스트이자 문서).
+2. 프레임워크에서 고친다 — CSS(`css/`) + **카탈로그 예시**(`examples/src/components.html`) + **README 컴포넌트 목록**(그 CSS 파일이 들어가는 번들의 표) + `CHANGELOG.md` 네 군데를 한 커밋에. 변형을 추가했으면 `tools/gen_matrix.py` 목록에도, 서비스에서 들어온 버그면 `tools/check.py` 에 단언 하나. 예시 없이 CSS 만 추가하지 않는다 (예시가 곧 회귀 테스트이자 문서).
 3. `sh build.sh && python3 tools/gen_matrix.py && python3 build_examples.py && python3 tools/check.py` 통과 후 1440/400px 다크·라이트 확인, 커밋.
 4. 서비스는 `dist/` 를 다시 복사한다 (위 "앱에 배포하기").
 
-지금까지 이 루프로 들어온 것 (전부 `CHANGELOG.md` 에 있음):
+지금까지 이 루프로 들어온 것 — 1.0~1.1 의 예(1.2 이후 argus-server 보고 ⑫②⑦⑧③ · ⓐ⑰⑪⑬⑭ · 엔진색 · 인쇄 문서 · 구성도 · 상태 신호등까지 전부 `CHANGELOG.md`):
 
 - 1.0.0: `.ag-toast--warn/--info`, `.ag-provider__label`, `fonts/fetch-fonts.sh` 블록 파싱 두 건, 모바일 상단 바 넘침, `.ag-qr` 예시 누락
 - 1.1.0: `.ag-badge--count` 가 톤을 덮던 것, `.ag-toast-stack--static` z-index, `a/button.ag-card` 의 display·`align-items`, `.ag-tile--stack`, `.ag-form-grid--2/--3/--4` + `--span2/--span3`, `.ag-input-group--end` 패딩, `.ag-text-left` `.ag-scroll-y`, 범주 아바타, 레이아웃 간격 토큰과 `.ag-page`, `--tabs` 초광폭, `.ag-glow` 복원, argus.js 오버레이 소유권·`<head>` 로드·Phosphor 아이콘, 히트맵 순차 램프 `--ag-seq-1..5` / `AG.charts.sequential`, `.ag-list__item.is-active`
@@ -181,15 +182,117 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 
 ## 컴포넌트 목록
 
-레이아웃 `ag-app` `ag-app--sidebar` (+ `ag-app--fluid` 전면 폭) `ag-topbar` `ag-nav` `ag-sidebar` (`__head` · `__nav` 남은 높이 채우고 스크롤 · `__panel`(`--accent/--warn`, `__panel__head`, `ag-sidebar__status`) 바닥 패널 · `__footer`) `ag-main` `ag-page` (x-data 같은 본문 래퍼에 — 블록 간격 이어받음, `--tight`) `ag-page-header` `ag-section` `ag-grid` + `ag-col-N` `ag-stack` `ag-cluster` `ag-row` `ag-breadcrumb`
+어느 **번들**에 들어 있는지로 나눴습니다. `argus.min.css` 하나를 걸면 전부 들어 있고, 골라 쓸 때(`core` + `patterns` + `charts`)는 이 구분이 곧 "어떤 파일을 걸어야 하는가" 입니다 — 예를 들어 `ag-tag` · `ag-stepper` · `ag-spinner` 는 patterns 에만 있고, `ag-spark` · `ag-chart` · `ag-bubble` 은 차트처럼 보여도 core 에 있습니다. 표기는 `__x` 요소 · `--x` 변형 · `is-x` 상태. 모양은 `examples/components.html`(카탈로그), 모든 변형 × 조합은 `examples/matrix.html` 에서 확인하세요. `tools/check.py` 가 css/ 의 모든 클래스가 예시 어딘가에 나오는지 확인합니다.
 
-차트 (CSS 전용) `ag-donut` `ag-donut-legend` `ag-bars` (`__seg--1~4/--other/--accent/--muted/--hatch`) `ag-cols` (`__bar--1~4/--other/--muted`) `ag-heatmap` (`--crit`) / `ag-heat` (`--l` 연속 또는 `--1…--5` = `--ag-seq-1..5`, `--empty`) `ag-heat-scale` `ag-gauge` `ag-ring` `ag-spark` (`--good/--warn/--crit/--info/--1..4` · `__ref` 기준선 · 셀 안 96px) `ag-stat-card` `ag-treemap` + ApexCharts 보정 (`.ag-chart .apexcharts-*`)
+### core — 셸 · 레이아웃 (`css/layout.css`)
 
-패턴 `ag-daterange` `ag-banner` `ag-notif` (`ag-notif-btn` `__count` `__dot` · 1.13 상태 신호등 `--good/--warn/--crit` · `__count--warn`) `ag-meter-row--compact` `ag-approval` `ag-cmdk` `ag-wizard` `ag-combobox` `ag-tree` `ag-td--editable` `ag-skeleton-rows` · `data-density="compact"` · `@media print` (`.ag-print-header` · 쪽 나눔 `.ag-print-break` · 긴 표 잇기 `.ag-print-flow`) `ag-paper` (1.11 인쇄 문서 — A4 종이 미리 보기 · 그대로 인쇄/PDF: `ag-paper-desk` `ag-paper-bar` · `__cover` `__title` `__subtitle` `__section` `__heading` `__num` `__grid`(`--3/--4`, 인쇄에서도 안 접힘) `__foot` · 예시 `examples/report.html`) `ag-auth` (표준 인증: 어두운 표면 패널 + 점 격자 · `__logo-box` `__name` `__version` `__status` `__mobile-head` `__mobile-foot` · 폼 쪽 `__glass` `__email-chip` `__qr` `__qr-icon` `__foot`; `--landing` 은 그라데이션 패널 변형. 3단계 로그인 전체는 `templates/go-html-template/login.html`) `ag-accordion` (details / `__toggle`+`is-open` / `--plain` / `--cards`) `ag-sidebar__node` (2단계 메뉴) `ag-modal-overlay` `ag-slack` (Block Kit 미리보기 전체) `ag-provider` `ag-account` `ag-user` `ag-pane` / `ag-pane-item` `ag-otp` (칸 분리 `__cell`) / `ag-otp-input` (한 칸 6자리) `ag-qr` (흰 패딩 박스 180px, QR 자체는 img/svg/canvas 로 · 생성 전 `__pending` 플레이스홀더) `ag-secret` `ag-secret-field` (한 줄 `input.is-masked` / 여러 줄 `--block` + `textarea.is-masked` 블러 + `__reveal` 클릭-드러내기 · `data-ag-reveal`) `ag-status-screen` `ag-brand-mark` `ag-session` `ag-stepper` `ag-log` `ag-code` `ag-code-block` `ag-tok-*` `ag-editor` `ag-diff` `ag-compare` `ag-tag` (범주 `--cat1~4/--other` 는 키만 · 상태 `--good/--warn/--crit/--info` 는 태그 전체 — 제거 예약·값 여러 종류 같은 되돌리기 전 상태) `ag-tags` `ag-tag-input` `ag-dropzone` `ag-file` `ag-popover` `ag-accordion` `ag-bulkbar` (`--sticky` 목록 위 고정, 위치 `--ag-sticky-top`) `ag-tr--expand` `ag-table--sticky-col` `ag-spinner` `ag-loading-overlay` `ag-msg` `ag-health` `ag-topo` (1.12 구성도 — 뿌리 `__root` → 가지 `__branches`/`__branch`(가로) → 잎 `__leaves`(세로), 노드 `__node` + `__name` `__meta` `__sub` · 톤 `--good/--warn/--crit/--off`(점선) · 묶음 `--group` · `is-selected`, 720px 아래 세로 레일) `ag-glow` (`.ag-app` 배경 글로우, 선택) `ag-scrollbar-hide` · 사이드바 `is-collapsed` / `is-open` / `ag-sidebar-backdrop` / `ag-sidebar__group-toggle`
+| 블록 | 요소 · 변형 | 메모 |
+|---|---|---|
+| `ag-app` | `--sidebar` `--rail` `--tabs` `--focus` (`--focus-wide`) `--dual` (`--dual-nosidebar`) · `--fluid` | 레이아웃 모드(위 표). `--fluid` 는 본문 1600px 상한 해제 |
+| `ag-topbar` | `__brand` `__brand-text` `__center` `__search` `__actions` `__back` · `__row` (`--main` `--nav` `--underline`) | `__row` 두 줄은 `--tabs` 모드 |
+| `ag-nav` | `__item` (`aria-current="page"`) · `--compact` | 상단 바 캡슐 네비 |
+| `ag-sidebar` | `__head` `__toggle` `__hamburger` · `__nav` · `__group` (`--sub`) `__group-toggle` `__label` `__item` (`--parent`) `__caret` `__node` `__sub` · `__panel` (`--accent` `--warn`) `__panel__head` `__status` · `__footer` · `--bottom-tabs` | `__nav` 는 남은 높이를 채우고 여기만 스크롤, `__panel` 은 바닥 패널(상태·용량·환경·공지, 1~2개), `__node`/`__sub` 는 2단계 메뉴. `is-collapsed` 접힘 · `is-open` 모바일. 배경 막 `ag-sidebar-backdrop` 은 patterns |
+| `ag-main` `ag-page` | `ag-page--tight` | `ag-page` 는 `x-data` 같은 본문 래퍼 — 블록 간격(`--ag-gap-main`)을 이어받음, 클래스 없는 div 는 자동. `--tight` 는 카드 간격(`--ag-gap-grid`) |
+| `ag-page-header` | `__title` `__actions` | |
+| `ag-section` | `__head` | |
+| `ag-grid` + `ag-col-2…9` `ag-col-12` | `--tight`(12px) `--auto` | 12열, 1200 · 720px 에서 접힘 |
+| `ag-stack` `ag-cluster` `ag-row` `ag-spacer` | `ag-stack--sm/--lg` · `ag-cluster--between` | 세로 쌓기 · 가로 묶음 |
+| `ag-breadcrumb` | `__sep` | |
+| `ag-pane` · `ag-pane-item` | `__head` `__body` `__foot` · `__top` `__title` `__snippet` `__tags` | dual 모드의 목록 패널. 항목 `is-active` |
+| `ag-mode-switch` | | 예시 데모의 모드 전환 크롬 (서비스에서는 쓰지 않음) |
 
-컴포넌트 (버튼은 10px 둥근 사각 — 예전 알약은 `ag-btn--pill` · `ag-segmented` 는 3~4개 선택지용 — 항목이 많으면 안에서 스크롤되긴 하지만 `ag-nav` 나 `ag-tabs` 가 맞다) `ag-btn` (`--primary/--outline/--ghost/--inverse/--danger/--accent2` · `--sm/--lg/--icon/--block` · 조합 `--ghost.--danger` 는 평소 중립 → hover 시 crit, `--outline.--danger` 는 crit 테두리 — 테이블 행의 삭제 버튼용, `--outline.--primary` 는 액센트 테두리 — 채움 primary 의 outline 짝) `ag-btn-group` `ag-segmented` `ag-chip` (`--sm` · `--accent/--accent2/--inverse/--outline/--hatch` · 상태 `--good/--warn/--crit/--info` + `--solid` · 범주 `--cat1~4` + `--solid`/`is-active` · `button.ag-chip` 필터) `ag-meter-chips` `ag-badge` (`--good/--warn/--crit/--info` 상태 · `--cat1~4` 범주 · `--solid` · `--count` — count 는 모양만이라 어떤 톤과도 조합 · `--plain` 점+글자, 종류 표시용 — 한 행에 알약은 상태 하나만) `ag-dot` (`--cat1~4` 포함) `ag-delta` `ag-card` (엔진 톤 `--engine-title/-border/-stripe/-top/-tint/-glow/-solid` + `data-engine` · `__heading` > `__icon` (`--accent/--good/--warn/--crit/--info/--1~4`, 1.3) + 제목 묶음 · `--accent/--accent2/--inverse/--cat1~4` 단색 카드는 안쪽 텍스트·테두리·서브표면 · 입력 포커스 토큰을 재정의해 `.ag-label` `.ag-hint` `.ag-stat__label` `.ag-kv dt` `.ag-card__foot` `.ag-btn--outline` · 포커스한 `.ag-input` 이 보정 없이 읽힘 · `--accent-soft` · `--interactive` · `a.ag-card` / `button.ag-card` 는 정렬·밑줄·폰트·안쪽 행 전체 폭 자동 처리, `is-selected`) `ag-tile` (가로 라벨↔값 · `--stack` 세로 · `--inverse`) `ag-stat` (`__value` 40px · `--sm` 28 · `--hero` 52 한 화면 한 곳 · `ag-stat-row` KPI 묶음 — 모바일 3열) `ag-list` (`a/button.ag-list__item` + `is-active` 선택 목록 · `disabled` 흐림 · `--divided` · `__item--meter`) `ag-stat` `ag-avatar` (`--good/--warn/--crit/--info/--accent2/--cat1~4/--neutral` · `--xs/--sm/--lg` · `--ring`) `ag-person` `ag-table` (`--dense` `--striped` `--sticky-col` `--clickable` 행 전체 링크 · `--sticky-end` 끝 열(상태 + ⋯) 고정(바로 아래 행만 — 펼친 행 · 안쪽 표 제외, 선택 · hover 색 이어짐), `.ag-table-wrap` 은 가로 스크롤 가장자리 그림자 / `tr.is-clickable` `is-selected` `is-muted` `is-crit/is-warn` · `ag-td--num` `ag-td--actions` · `ag-td--truncate` 말줄임 셀(상한 `--ag-td-max` 240px, `title` 동반)) `ag-table-foot` `ag-pagination` `ag-field` `ag-input` (`[type=range]` 슬라이더 포함 · `--picker` 클릭하면 선택기를 여는 읽기 전용 입력) `ag-select` (`--sm/--pill/--inline` · `--list` 열린 리스트 박스 `size=N`) `ag-textarea` `ag-check` `ag-switch` `ag-input-group` (앞 아이콘 · `--end` 뒤 버튼 · 둘 다 조합 가능) `ag-form-grid` (auto-fit 기본 · `--2/--3/--4` 열 고정 — `--full` 섞을 때는 고정 · 필드 `--span2/--span3/--full`) `ag-tabs` `ag-progress` `ag-meter-row` `ag-alert` `ag-insight` `ag-toast` (`--good` `--warn` `--crit` `--info`, 왼쪽 톤 바) `ag-dropdown` / `ag-menu` `ag-modal` `ag-drawer` (+ `ag-drawer-backdrop` 배경 막 — argus.js 로 열면 자동, 클릭으로 닫힘, `data-ag-modeless` 로 끔 · `__body` / `__foot` · `__toolbar` 본문 위 고정 도구줄 · `--lg` 720px) `[data-tip]` `ag-empty` (`--error` 불러오기 실패 · `--sm` · `__actions`) `ag-skeleton` / `ag-table--loading` (헤더 유지, 행만 shimmer) `ag-kv` `ag-timeline` (`__head` 제목+시각 · `__meta` · `--compact`) `ag-bubbles`(`--r`=√비율, `AG.charts.bubbles()`) `ag-chart` `ag-legend` `ag-bubble` `ag-quick-actions` / `ag-quick-action` (`__icon--1~4` · 2줄 라벨 `__body` > `__title` + `__meta` · `__end`)
+### core — 컴포넌트 (`css/components.css`, 타이포 기본은 `base.css`)
 
-전체 모양과 조합 예시는 `examples/components.html` 에서 확인하세요.
+| 블록 | 요소 · 변형 | 메모 |
+|---|---|---|
+| `ag-btn` | `--primary` `--outline` `--ghost` `--inverse` `--danger` `--accent2` · `--sm` `--lg` `--icon` `--square` `--block` `--pill` · 조합 `--ghost.--danger` `--outline.--danger` `--outline.--primary` | 10px 둥근 사각. `--pill` 은 예전 알약(랜딩·인증만). ghost × danger 는 평소 중립 → hover crit (행 삭제 버튼) |
+| `ag-btn-group` | | |
+| `ag-segmented` | `__item` · `--sm` | 3~4개 선택지용, `role="radiogroup"`. 많으면 `ag-tabs` · `ag-nav` |
+| `ag-tabs` | `__item` | `data-ag-tabs` 로 패널 전환 |
+| `ag-chip` | `__label` · `--sm` · `--accent` `--accent2` `--inverse` `--outline` `--hatch` · `--good` `--warn` `--crit` `--info` · `--cat1~4` · `--engine` · `--solid` | `button.ag-chip` 필터: `is-active` / `aria-pressed` 가 범주 단색 배경 |
+| `ag-badge` | `--sm` `--lg` `--count` `--plain` · `--good` `--warn` `--crit` `--info` `--accent` `--accent2` `--inverse` · `--cat1~4` `--other` · `--engine` · `--solid` | 모양 변형(`--count` `--plain`)은 어떤 톤과도 조합. 종류 표시는 `--plain`(점 + 글자) — 한 행에 알약은 상태 하나 |
+| `ag-dot` | `--good` `--warn` `--crit` `--info` `--accent` `--accent2` · `--cat1~4` (= `--c1~4`) `--other` `--engine` · `--pulse` | `--pulse` 는 3번 깜빡이고 멈춤, 무한은 `.is-live` 하나(화면당 1) |
+| `ag-avatar` | `--xs` `--sm` `--lg` `--ring` · `--good` `--warn` `--crit` `--info` `--accent2` `--cat1~4` `--other` `--neutral` `--engine` | 묶음 `ag-avatar-group` |
+| `ag-person` | `__name` `__meta` | 아바타 + 이름 |
+| `ag-delta` | `--up` `--down` `--flat` · `--inline` | 증감 표시 |
+| `ag-icon` | `--sm` `--lg` | svg 스프라이트. Phosphor `<i class="ph-…">` 도 같은 대우(아래 JS 헬퍼 참고) |
+| `ag-card` | `__head` `__heading` `__icon` `__title` `__subtitle` `__body` `__foot` · `--sm` `--flush` `--elevated` `--interactive` · `--accent` `--accent-soft` `--accent2` `--inverse` `--cat1~4` · `--engine-title` `-border` `-stripe` `-top` `-tint` `-glow` `-solid` | `__icon` 톤 `--accent` `--good` `--warn` `--crit` `--info` `--1~4` `--engine`(상태색은 화면당 2개 이하). 단색 카드(`--accent` `--accent2` `--inverse` `--cat1~4` `--engine-solid`)는 안쪽 글자·테두리·서브표면·입력 포커스 토큰을 재정의. `a.ag-card` / `button.ag-card` 정렬 자동, `is-selected`. 엔진 톤은 `data-engine` 과 함께, 권장 stripe + title |
+| `ag-tile` | `__label` · `--stack` `--inverse` | 카드 안 라벨↔값 타일, `--stack` 세로(메트릭 타일) |
+| `ag-stat` | `__value` `__label` `__top` · `--sm`(28) `--hero`(52, 화면 한 곳) | 기본 40px. KPI 묶음 `ag-stat-row`(모바일 3열) |
+| `ag-list` | `__item` (`--engine` `--meter`) `__label` `__trend` · `--divided` | `a/button.ag-list__item` + `is-active`(선택) · `is-current`(지금 보는 항목) · `disabled` |
+| `ag-quick-actions` · `ag-quick-action` | `__icon` (`--1~4`) `__body` `__title` `__meta` `__end` | 빠른 작업 타일 |
+| `ag-kv` | `--stack` | `<dl>` 키·값 |
+| `ag-timeline` | `__item` `__time` `__title` `__head` `__meta` · `--compact` | |
+| `ag-legend` | `__item` | 차트 범례(점 + 이름) |
+| `ag-meter-row` · `ag-meter-chips` | `__head` `__keep` · `--compact` | 라벨 + 미터. `--compact` 는 한 줄(표 셀 기본) |
+| `ag-progress` | `__bar` (`--engine`) · `--sm` `--lg` `--stacked` · `--good` `--warn` `--crit` `--accent2` | |
+| `ag-table-wrap` · `ag-table` | `--dense` `--striped` `--clickable` `--sticky-col` `--sticky-end` `--loading` · `__expander` | wrap 은 가로 스크롤 가장자리 그림자. `--clickable` 행 전체 링크, `--sticky-end` 끝 열 고정(바로 아래 행만), `--loading` 헤더 유지 + 행 shimmer. 행 `is-clickable` `is-selected` `is-muted` `is-crit` `is-warn` |
+| 표 셀 | `ag-th--num` `ag-th--actions` · `ag-td--num` `--actions` `--engine` `--truncate` `--query` `--wrap` · `ag-tr--expand` · `ag-sort` | `--truncate` 상한 `--ag-td-max`(240px, 셀 안 `<span title>`), `--query` 블록 코드(`--ag-query-w`), `ag-tr--expand` 는 `data-ag-expand` 로 펼침 |
+| `ag-table-foot` · `ag-pagination` | `__item` | `aria-current="page"` |
+| `ag-field` | `__error` · `--span2` `--span3` `--full` | `is-invalid` + `__error`(아이콘 + 문구, 색 단독 금지) |
+| `ag-label` `ag-req` `ag-hint` | | 라벨 · 필수 표시 · 도움말 |
+| `ag-input` | `--sm` `--lg` `--pill` `--mono` `--picker` | `[type=range]` 포함. `--picker` 는 클릭하면 선택기를 여는 읽기 전용 입력 |
+| `ag-select` | `--sm` `--pill` `--inline` `--list` | `--list` 는 열린 리스트 박스(`size=N`) |
+| `ag-textarea` `ag-check` `ag-switch` | | |
+| `ag-input-group` | `__end` · `--end` | 앞 아이콘 · 뒤 버튼, 둘 다 조합 가능 |
+| `ag-form-grid` · `ag-form-actions` | `--2` `--3` `--4` | 기본 auto-fit, `--full` 섞을 땐 열 고정 |
+| `ag-alert` | `__title` · `--good` `--warn` `--crit` `--info` | |
+| `ag-insight` | `__icon` | 한 줄 해석 |
+| `ag-toast` · `ag-toast-stack` | `--good` `--warn` `--crit` `--info` · `--static` | `AG.toast()` |
+| `ag-empty` | `__icon` `__title` `__actions` · `--error` `--sm` | 빈 상태 · 불러오기 실패 |
+| `ag-skeleton` | | 로딩 자리. 표는 `ag-table--loading`, 행 묶음은 patterns 의 `ag-skeleton-rows` |
+| `ag-dropdown` · `ag-menu` | `__item` `__label` `__sep` `__user` · `--left` `--wide` | `data-ag-dropdown` |
+| `ag-modal` | `__panel` `__head` `__foot` | `<dialog>` |
+| `ag-modal-overlay` | `--top` `--lg` `--xl` | `x-show` 형 모달 |
+| `ag-drawer` · `ag-drawer-backdrop` | `__head` `__body` `__foot` `__toolbar` · `--lg`(720px) | 머리는 `__head` 또는 `ag-modal__head`(같은 모양). `__body` 만 스크롤 · `__foot` 바닥 고정 · `__toolbar` 본문 위 고정 도구줄. 배경 막은 argus.js 로 열면 자동(`data-ag-modeless` 로 끔), Alpine 은 직접 두고 입력 폼이면 `data-ag-static` |
+| `[data-tip]` | | CSS 툴팁 |
+| `ag-spark` | `__line` `__area` `__ref` · `--sm` `--lg` · `--1~4` `--good` `--warn` `--crit` `--info` `--engine` | 스파크라인. `__ref` 기준선, 표 셀 안 96px(`--ag-spark-w`) |
+| `ag-chart` | `--h-sm` `--h-md` `--h-lg` · `__line` `__area` `__bar` (`--1~4` `--engine`) `__marker` (`--1` `--2` `--engine`) `__grid` `__axis` `__cursor` `__tooltip` `__empty` | 인라인 svg 차트 틀. `data-ag-chart` 로 호버 툴팁 |
+| `ag-bubbles` · `ag-bubble` | `--1~3` `--hatch` `--engine` | 지름 `--r = √비율` → 면적이 값에 비례(`AG.charts.bubbles()`), 상한 `--ag-bubble-max` |
+| 엔진 훅 | `data-engine="…"` 또는 `ag-engine-{mysql,postgres,oracle,documentdb,mssql,other}` | 안의 `--engine` 변형이 엔진색으로. RDS Engine 값 그대로(부분 일치·대소문자 무시), 모르는 값은 other. 글자는 `ag-text-engine` |
+| 글자 | `ag-h-display` `ag-mono` `ag-num` `ag-truncate` | `ag-h-display` 는 랜딩·상태 화면 제목(38/500)만. h4~h6 은 쓰지 않음 |
+
+### charts — CSS 전용 차트 (`css/charts.css`, `argus.charts.min.css`)
+
+| 블록 | 요소 · 변형 | 메모 |
+|---|---|---|
+| `ag-donut` · `ag-donut-wrap` · `ag-donut-legend` | `__center` · `--sm` `--lg` `--thin` · 범례 `__item` | `--ag-donut` 에 conic 구간 |
+| `ag-bars` | `__row` `__label` `__track` `__seg` `__value` · `--thin` `--thick` | 조각 `__seg--1~4` `--other`(기타) `--accent` `--muted` `--hatch` `--engine`, 쌓으면 stacked |
+| `ag-cols` | `__col` `__group` `__bar` `__label` | 막대 `__bar--1~4` `--other` `--muted` `--engine`, 높이는 `--v` / `--ag-cols-max` |
+| `ag-heatmap` · `ag-heat` · `ag-heat-scale` | `ag-heatmap--crit` · `ag-heat--1…5` `--empty` | 연속은 `--l`, 단계는 `--1…5` = `--ag-seq-1..5` = `AG.charts.sequential(5)` |
+| `ag-gauge` | `--sm` · `--good` `--warn` `--crit` | `--p` |
+| `ag-ring` | `--good` `--warn` `--crit` | 작은 진행 고리 |
+| `ag-stat-card` | `__head` `__icon` `__foot` | 아이콘 톤 `--good` `--warn` `--crit` `--info` `--accent2` `--engine`. 스파크는 core 의 `ag-spark` |
+| `ag-treemap` | `__cell` (`--2~4`) | |
+| 라이브러리 보정 | `.ag-chart .apexcharts-*` · Chart.js | 색·폰트 주입은 `argus.charts.js` |
+
+### patterns — 반복되는 화면 조각 (`css/patterns.css`, `argus.patterns.min.css`)
+
+| 분류 | 블록 (요소 · 변형) |
+|---|---|
+| 셸 부속 | `ag-user` (`__text` `__name` `__meta`, `--compact`) 상단 바 사용자 메뉴 · `ag-brand-mark` · `ag-sidebar-backdrop` · `ag-glow` (`.ag-app` 배경 글로우, 선택) · `ag-banner` (`__text` `__close`, `--good` `--warn` `--crit` `--info` `--accent` `--readonly` `--sticky`) · `ag-notif-btn` (`__count` `__count--warn` `__dot`, 상태 신호등 `--good` `--warn` `--crit`) · `ag-notif` (`__head` `__group` `__list` `__item` `__icon--good/--warn/--crit/--info` `__body` `__title` `__meta` `__foot` `__empty`, 항목 `is-unread`) · `ag-cmdk` (`__input` `__list` `__group` `__item` `__label` `__hint` `__foot` `__empty`) ⌘K |
+| 인증 | `ag-auth` (`__panel` `__brand` `__logo-box` `__name` `__version` `__headline` `__desc` `__features` `__feature` `__facts` `__fact` `__tiles` `__tile` `__status` `__status-dot` `__card` `__glass` `__title` `__sub` `__divider` `__email-chip` `__qr` `__qr-icon` `__foot` `__copyright` `__mobile-head` `__mobile-foot`) · `ag-provider` (`__logo` `__label` `__hint`, `--google` `--slack` `--sso` `--compact`) + `ag-provider-list` `ag-provider-row` · `ag-account` (`__logo` `__body` `__name` `__meta`) + `ag-account-list` · `ag-otp` (`__cell`, `--sm`) · `ag-otp-input` · `ag-qr` (`__pending`) · `ag-domain-hint` · `ag-session` (`is-warning`) · `ag-status-screen` (`__icon` `__code`, `--inline`) · `ag-stepper` (`__step` `__dot` `__label` `__desc` `__body`, `--sm` `--vertical`, 단계 `is-done` `is-active`) — 3단계 로그인 전체는 `templates/go-html-template/login.html` |
+| 비밀 값 | `ag-secret` · `ag-secret-field` (`__reveal`, `--block`; `.ag-input/.ag-textarea.is-masked` 블러, `data-ag-reveal`) |
+| 입력 · 선택 | `ag-daterange` (`__inputs` `__sep` `__presets` `__summary`, `--stack`) · `ag-combobox` (`__control` `__list` `__group` `__option` `__empty`, `--static`) · `ag-tag` (`__key` `__val` `__remove`; 범주 `--cat1~4` `--other` `--engine` 는 키만, `--accent` 와 상태 `--good` `--warn` `--crit` `--info` 는 태그 전체) + `ag-tags` `ag-tag-input` · `ag-dropzone` · `ag-file` (`__icon` `__name` `__meta`) · `ag-td--editable` (`ag-td__value` `ag-td__input`, `is-editing`) |
+| 목록 · 표 보조 | `ag-table-toolbar` · `ag-bulkbar` (`--sticky`, 위치 `--ag-sticky-top`) · `ag-skeleton-rows` · `ag-skeleton-card` · `ag-spinner` (`--sm` `--lg`) · `ag-loading-overlay` · `ag-scroll-y` (`--sm` `--md` `--lg`) · `ag-scrollbar-hide` |
+| 펼침 · 겹침 | `ag-accordion` (`__item` `__toggle` `__body` `__meta`, `--plain` `--cards`; `<details>` 또는 `__toggle` + `is-open`) · `ag-popover` (`__title`) |
+| 운영 화면 | `ag-approval` (`__head` `__who` `__kind` `__what` `__reason` `__meta` `__actions` `__result`, `is-pending` `is-approved` `is-rejected`) + `ag-approval-list` · `ag-wizard` (`__progress` `__body` `__summary` `__bar`) · `ag-health` (`__row` `__name` `__meta`) · `ag-topo` (`__root` `__branches` `__branch` `__leaves` `__node` `__name` `__meta` `__sub`, 노드 `--good` `--warn` `--crit` `--off` `--group`, `is-selected`) 구성도 · `ag-tree` (`__key` `__val--str/--num/--bool/--null` `__count` `__count--arr`, `--card`) JSON 뷰어 |
+| 코드 · 로그 | `ag-log` (`__head` `__body` `__body--nowrap` `__line` `__ts` `__lvl` `__cursor`, `--live` `--fill`) · `ag-code` (`--readonly`) · `ag-code-block` (`__lang` `__copy`, `--lang`) · `ag-tok-kw` `-str` `-num` `-fn` `-com` · `ag-editor` · `ag-diff` (`__hunk` `__line`, `is-add` `is-del`) · `ag-compare` (`__col` `__label`) |
+| Slack 미리보기 | `ag-slack` — Block Kit 전체(`__message` `__header` `__section` `__fields` `__context` `__actions` `__btn--primary/--danger` `__image-block` `__divider` …, `--static`) |
+| 인쇄 | `@media print` · `ag-print-header` · `ag-print-only` · `ag-print-break`(쪽 나눔) · `ag-print-flow`(긴 표 잇기) · `ag-paper` (`__cover` `__title` `__subtitle` `__section` `__heading` `__num` `__grid` `--3` `--4` `__foot`) + `ag-paper-desk` `ag-paper-bar` A4 제출 문서(예시 `examples/report.html`) |
+| 밀도 | `data-density="compact"` — 루트 속성 하나로 표·목록 패딩 축소 |
+
+### 선택 번들 — `argus.auth-landing.min.css` (`css/extras/`)
+
+`ag-auth--landing`(그라데이션 브랜드 패널) · `ag-auth__glass--card`(유리 카드만 따로). 표준 `ag-auth` 대신 쓸 때만 core·patterns 다음에 한 줄 더.
+
+### core — 유틸리티 (`css/utilities.css`)
+
+컴포넌트 클래스로 못 푸는 예외에만. 레이아웃 `ag-flex` `ag-inline-flex` `ag-col` `ag-wrap` `ag-nowrap` `ag-flex-1` `ag-items-*` `ag-justify-*` `ag-gap-1…8` `ag-min-0` `ag-w-full` `ag-h-full` `ag-relative` · 간격 `ag-m-0` `ag-mt-1…6` `ag-mt-auto` `ag-mb-2/4` `ag-ml-auto` `ag-p-0/4/6` · 글자 `ag-text-xs…2xl` `ag-text-1/2/3` `ag-text-accent` `ag-text-accent2` `ag-text-good/warn/crit/info` `ag-text-left/center/right` `ag-fw-400…700` `ag-upper` `ag-eyebrow` `ag-truncate` · 표면 `ag-bg-surface(-2/-3)` `ag-border(-t/-b)` `ag-radius-md/lg/xl/pill` `ag-shadow-md` · 스크롤 `ag-overflow-auto` `ag-overflow-x` `ag-scroll-y(--sm/--md/--lg)` · 보이기 `ag-hidden` `ag-sr-only` `ag-hide-sm/md/lg` `ag-show-sm` `ag-only-dark` `ag-only-light` · `ag-cursor-pointer`
+
+### 상태 클래스
+
+`is-active`(선택) `is-current`(지금 보는 항목) `is-selected` `is-open` `is-collapsed` `is-invalid` `is-loading` `is-masked` `is-unread` `is-done` `is-editing` `is-live` · 행 `is-clickable` `is-muted` `is-crit` `is-warn` · 비활성은 `disabled` 속성(opacity 가 아니라 색 토큰으로 흐림).
 
 ## JS 헬퍼 (선택)
 
@@ -239,7 +342,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 160항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
+python3 tools/check.py      # 값 단언 회귀 180항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서

@@ -819,7 +819,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
   box-shadow: var(--ag-shadow-lg);
   color: var(--ag-text);
 }
-.ag-modal__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--ag-space-3); }
+.ag-modal__head, .ag-drawer__head { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--ag-space-3); }   /* 드로어는 __head 이름도 같은 모양 (1.13.1 — 전에는 1.6 남은 높이 규칙만 받아 머리 정렬이 빠졌다) */
 .ag-modal__foot { display: flex; justify-content: flex-end; gap: var(--ag-space-2); }
 
 /* <dialog> 를 쓰지 않는 오버레이형 모달 (Alpine x-show 등으로 열고 닫을 때) */
@@ -860,7 +860,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-drawer.is-open + .ag-drawer-backdrop, .ag-drawer-backdrop.is-open { opacity: 1; visibility: visible; transition: opacity var(--ag-dur) var(--ag-ease); cursor: pointer; }
 .ag-drawer[data-ag-static] + .ag-drawer-backdrop, .ag-drawer + .ag-drawer-backdrop[data-ag-static], .ag-drawer-backdrop[data-ag-static] { cursor: auto; }   /* 1.9: 눌러도 안 닫히는 막(입력 폼 드로어)은 손가락 커서를 쓰지 않는다 */
 /* 1.6: 드로어 남은 높이 — 머리 고정 · 본문(.ag-drawer__body)만 스크롤 · 푸터(.ag-drawer__foot, 액션)는 바닥에 고정.
-   <aside class="ag-drawer"><div class="ag-modal__head">…</div><form><div class="ag-drawer__body">…필드…</div><div class="ag-drawer__foot">…버튼…</div></form></aside>
+   <aside class="ag-drawer"><div class="ag-drawer__head">…</div><form><div class="ag-drawer__body">…필드…</div><div class="ag-drawer__foot">…버튼…</div></form></aside>
    __body 없이 쓰면 예전처럼 드로어 전체가 스크롤된다. */
 .ag-drawer:has(.ag-drawer__body) { overflow: hidden; padding-block: 0; }
 .ag-drawer:has(.ag-drawer__body) > :is(.ag-modal__head, .ag-drawer__head) { flex: none; padding-top: var(--ag-space-6); }

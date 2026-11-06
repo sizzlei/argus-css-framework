@@ -5,7 +5,7 @@
 import pathlib
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 
-TONES = ["", "good", "warn", "crit", "info", "accent", "accent2", "cat1", "cat2", "cat3", "cat4", "inverse"]
+TONES = ["", "good", "warn", "crit", "info", "accent", "accent2", "cat1", "cat2", "cat3", "cat4", "other", "inverse"]
 ICON = lambda n, cls="ag-icon": f'<svg class="{cls}"><use href="#i-{n}"/></svg>'
 
 def h(title, sub="", id_=""):
@@ -43,7 +43,7 @@ rows = [
 ]
 out.append(h("배지 × 톤 × 모양", "12톤 × 9모양. 셀 하나라도 회색/기본으로 떨어지면 소스 순서 버그", "badges"))
 tags = ''.join(f'<span class="ag-tag ag-tag--cat{i}"><span class="ag-tag__key">cat{i}</span><span class="ag-tag__val">값</span></span>' for i in range(1,5)) + '<span class="ag-tag ag-tag--other"><span class="ag-tag__key">other</span><span class="ag-tag__val">기타</span></span>' + ''.join(f'<span class="ag-tag ag-tag--{t}"><span class="ag-tag__key">{t}</span><span class="ag-tag__val">{l}</span><button class="ag-tag__remove" aria-label="제거">×</button></span>' for t,l in [("good","동기화됨"),("warn","값 3종"),("crit","제거 예약"),("info","신규")]) + '<span class="ag-tag"><span class="ag-tag__key">기본</span><span class="ag-tag__val">값</span><button class="ag-tag__remove" aria-label="제거">×</button></span>'
-AV = ["", "good", "warn", "crit", "info", "accent2", "cat1", "cat2", "cat3", "cat4", "neutral"]
+AV = ["", "good", "warn", "crit", "info", "accent2", "cat1", "cat2", "cat3", "cat4", "other", "neutral"]
 av_rows = [row(sz or "기본", [f'<span class="ag-avatar{(" ag-avatar--"+t) if t else ""}{(" "+sz) if sz else ""}">AN</span>' for t in AV]) for sz in ["ag-avatar--sm", "", "ag-avatar--lg", "ag-avatar--ring"]]
 out.append('<div class="ag-grid">' + card("ag-badge", table(TONES, rows)) + card("ag-tag × 범주 · other · 상태(good/warn/crit/info)", f'<div class="demo">{tags}</div>', 4) + card("ag-avatar × 톤 × 크기", table(AV, av_rows), 8) + '</div></section>\n')
 
@@ -63,6 +63,8 @@ rows = [
     row("아이콘 + 텍스트", [btn(v, "", ICON("plus", "ag-icon ag-icon--sm") + "추가") for v in BV]),
     row("disabled", [btn(v, dis=True) for v in BV]),
     row("--block", [btn(v, "ag-btn--block") for v in BV]),
+
+    row("--pill (예전 알약 — 랜딩·인증만)", [btn(v, "ag-btn--pill") for v in BV]),
     row("× --danger (ghost/outline 은 평소 중립, hover 시 crit)", [btn(v, "ag-btn--danger") if v in ("ghost", "outline") else "<span class='ag-text-xs ag-text-3'>—</span>" for v in BV]),
     row("× --primary (outline 은 액센트 테두리, hover 시 accent-soft)", [btn(v, "ag-btn--primary") if v == "outline" else "<span class='ag-text-xs ag-text-3'>—</span>" for v in BV]),
 ]
@@ -176,19 +178,19 @@ heat = lambda cls="": f'<div class="ag-heatmap {cls}" style="--ag-heat-cols: 10"
 heat_steps = lambda cls="": f'<div class="ag-heatmap {cls}" style="--ag-heat-cols: 6">' + ''.join(f'<i class="ag-heat ag-heat--{k}" title="--ag-seq-{k}"></i>' for k in range(1, 6)) + '<i class="ag-heat ag-heat--empty" title="empty"></i></div>'
 gauges = ''.join(f'<div class="ag-gauge{(" ag-gauge--"+t) if t else ""}" style="--p: {p}"><strong>{p}%</strong><span>{t or "기본"}</span></div>' for t, p in [("", 45), ("good", 32), ("warn", 71), ("crit", 92)])
 cols = '<div class="ag-cols" style="--ag-cols-max: 100; --ag-cols-h: 120px">' + ''.join(f'<div class="ag-cols__col" style="--v: {v}"><span class="ag-cols__bar ag-cols__bar--{i%4+1}"></span><span class="ag-cols__label">s{i%4+1}</span></div>' for i, v in enumerate([40, 70, 55, 90, 30, 65, 80, 50])) + '<div class="ag-cols__col" style="--v: 25"><span class="ag-cols__bar ag-cols__bar--other"></span><span class="ag-cols__label">기타</span></div></div>'
-bars = lambda cls="": f'<div class="ag-bars {cls}" style="--ag-bars-label: 70px">' + ''.join(f'<div class="ag-bars__row"><span class="ag-bars__label">{l}</span><div class="ag-bars__track"><div class="ag-bars__seg ag-bars__seg--{s}" style="width:{w}%"></div><div class="ag-bars__seg ag-bars__seg--muted" style="width:{100-w-5}%"></div></div><span class="ag-bars__value">{w}</span></div>' for l, s, w in [("seg--1", "1", 62), ("seg--2", "2", 45), ("seg--3", "3", 30), ("seg--4", "4", 78), ("seg--accent", "accent", 50)]) + '</div>'
-svgchart = lambda hcls: f'<div class="ag-chart {hcls}"><svg viewBox="0 0 300 100" preserveAspectRatio="none" style="width:100%;height:100%">' + ''.join(f'<rect class="ag-chart__bar ag-chart__bar--{i+1}" x="{10+i*40}" y="{60-i*10}" width="24" height="{40+i*10}"/>' for i in range(4)) + '<path class="ag-chart__area ag-chart__area--1" d="M170,80 L200,50 L230,60 L260,30 L290,45 L290,100 L170,100Z"/><path class="ag-chart__area ag-chart__area--2" d="M170,90 L200,70 L230,75 L260,55 L290,65 L290,100 L170,100Z"/>' + ''.join(f'<path class="ag-chart__line ag-chart__line--{i+1}" d="M170,{80-i*12} L200,{50-i*8} L230,{60-i*10} L260,{30-i*5} L290,{45-i*9}"/>' for i in range(4)) + '</svg></div>'
+bars = lambda cls="": f'<div class="ag-bars {cls}" style="--ag-bars-label: 70px">' + ''.join(f'<div class="ag-bars__row"><span class="ag-bars__label">{l}</span><div class="ag-bars__track"><div class="ag-bars__seg ag-bars__seg--{s}" style="width:{w}%"></div><div class="ag-bars__seg ag-bars__seg--muted" style="width:{100-w-5}%"></div></div><span class="ag-bars__value">{w}</span></div>' for l, s, w in [("seg--1", "1", 62), ("seg--2", "2", 45), ("seg--3", "3", 30), ("seg--4", "4", 78), ("seg--accent", "accent", 50), ("seg--other", "other", 22)]) + '</div>'
+svgchart = lambda hcls: f'<div class="ag-chart {hcls}"><svg viewBox="0 0 300 100" preserveAspectRatio="none" style="width:100%;height:100%">' + ''.join(f'<rect class="ag-chart__bar ag-chart__bar--{i+1}" x="{10+i*40}" y="{60-i*10}" width="24" height="{40+i*10}"/>' for i in range(4)) + '<path class="ag-chart__area ag-chart__area--1" d="M170,80 L200,50 L230,60 L260,30 L290,45 L290,100 L170,100Z"/><path class="ag-chart__area ag-chart__area--2" d="M170,90 L200,70 L230,75 L260,55 L290,65 L290,100 L170,100Z"/>' + ''.join(f'<path class="ag-chart__line ag-chart__line--{i+1}" d="M170,{80-i*12} L200,{50-i*8} L230,{60-i*10} L260,{30-i*5} L290,{45-i*9}"/>' for i in range(4)) + ''.join(f'<circle class="ag-chart__marker ag-chart__marker--{i+1}" r="4" cx="260" cy="{30-i*5}"/>' for i in range(2)) + '</svg></div>'
 stat_icons = ''.join(f'<div class="ag-card ag-card--sm ag-stat-card"><div class="ag-stat-card__head"><span class="ag-stat-card__icon{(" ag-stat-card__icon--"+t) if t else ""}">{ICON("activity")}</span><span class="ag-delta ag-delta--inline ag-delta--up">+1%</span></div><div class="ag-stat ag-stat--sm"><span class="ag-stat__value">24</span><span class="ag-stat__label">icon--{t or "기본(accent)"}</span></div><div class="ag-stat-card__foot"><span>최근 24h</span></div></div>' for t in ["", "good", "warn", "crit", "info", "accent2"])
 bubbles = ''.join(f'<div class="ag-bubble ag-bubble--{i}" style="width:{w}px;font-size:{w//4}px"><strong>{p}%</strong><span>b{i}</span></div>' for i, w, p in [(1, 110, 58), (2, 90, 33), (3, 70, 9), ("hatch", 60, 4)])
 out.append(h("차트 × 시리즈 × 크기 × 톤", "CSS 전용 차트의 모든 시리즈 번호·톤·크기 변형", "charts"))
 out.append('<div class="ag-grid">' +
-    card("ag-chart 높이 --h-sm / --h-md / --h-lg · bar/line/area 1~4", f'<div class="ag-grid"><div class="ag-col-4">{svgchart("ag-chart--h-sm")}<span class="ag-text-xs ag-text-3">--h-sm 180px</span></div><div class="ag-col-4">{svgchart("ag-chart--h-md")}<span class="ag-text-xs ag-text-3">--h-md</span></div><div class="ag-col-4">{svgchart("ag-chart--h-lg")}<span class="ag-text-xs ag-text-3">--h-lg</span></div></div>') +
+    card("ag-chart 높이 --h-sm / --h-md / --h-lg · bar/line/area 1~4 · marker 1~2", f'<div class="ag-grid"><div class="ag-col-4">{svgchart("ag-chart--h-sm")}<span class="ag-text-xs ag-text-3">--h-sm 180px</span></div><div class="ag-col-4">{svgchart("ag-chart--h-md")}<span class="ag-text-xs ag-text-3">--h-md</span></div><div class="ag-col-4">{svgchart("ag-chart--h-lg")}<span class="ag-text-xs ag-text-3">--h-lg</span></div></div>') +
     card("ag-donut · --sm / 기본 / --lg", '<div class="demo ag-items-end">' + ''.join(f'<div class="ag-donut {c}" style="--ag-donut: var(--ag-chart-1) 0 57%, transparent 57% 58%, var(--ag-chart-2) 58% 90%, transparent 90% 91%, var(--ag-chart-3) 91% 100%"><div class="ag-donut__center"><strong>186</strong><span>{c or "기본"}</span></div></div>' for c in ["ag-donut--sm", "", "ag-donut--lg"]) + '</div>', 6) +
     card("ag-gauge 톤", f'<div class="demo ag-items-end">{gauges}</div>', 6) +
-    card("ag-cols (bar 1~4)", cols, 4) + card("ag-bars (seg 1~4 · accent · muted) + --thin", bars() + '<div class="ag-mt-3">' + bars("ag-bars--thin") + '</div>', 4) +
+    card("ag-cols (bar 1~4)", cols, 4) + card("ag-bars (seg 1~4 · accent · other · muted) + --thin", bars() + '<div class="ag-mt-3">' + bars("ag-bars--thin") + '</div>', 4) +
     card("ag-heatmap 기본 / --crit / heat--empty", heat() + '<div class="ag-mt-3">' + heat("ag-heatmap--crit") + '</div>', 4) +
     card("ag-heat--1…5 (--ag-seq 램프) · --crit 안에서", heat_steps() + '<div class="ag-mt-3">' + heat_steps("ag-heatmap--crit") + '</div>', 4) +
-    card("ag-spark 크기 × 톤 (--sm / 기본 / --lg · --2 / --good / --crit)", '<div class="ag-grid">' + ''.join(f'<div class="ag-col-2">{spark(c)}<span class="ag-text-xs ag-text-3">{c or "기본"}</span></div>' for c in ["ag-spark--sm", "", "ag-spark--lg", "ag-spark--2", "ag-spark--good", "ag-spark--crit"]) + '</div>') +
+    card("ag-spark 크기 × 톤 (--sm / 기본 / --lg · --1~4 · --good / --warn / --crit / --info)", '<div class="ag-grid">' + ''.join(f'<div class="ag-col-2">{spark(c)}<span class="ag-text-xs ag-text-3">{c or "기본"}</span></div>' for c in ["ag-spark--sm", "", "ag-spark--lg", "ag-spark--1", "ag-spark--2", "ag-spark--3", "ag-spark--4", "ag-spark--good", "ag-spark--warn", "ag-spark--crit", "ag-spark--info"]) + '</div>') +
     card("ag-stat-card 아이콘 톤", f'<div class="ag-grid ag-grid--auto">{stat_icons}</div>') +
     card("ag-bubble 1~3 · hatch", f'<div class="demo ag-items-end">{bubbles}</div>') + '</div></section>\n')
 
