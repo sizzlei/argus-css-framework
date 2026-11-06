@@ -622,6 +622,26 @@ async def main():
         check("1.11: print — 종이 밖 배지는 예전처럼 흑백(흰 바탕)", bg == "rgb(255, 255, 255)", bg)
         await pg.close()
 
+        # ── 1.12 구성도 ag-topo: 넓은 화면 가지 한 줄 · 잎 세로 들여쓰기 · 연결선 / 400px 가지 세로 · 넘침 없음 / 선택 링 ──
+        topo_js = """()=>{const t=document.querySelector('.ag-topo');const br=[...t.querySelectorAll(':scope > .ag-topo__branches > .ag-topo__branch')];
+          const R=e=>e.getBoundingClientRect(), ps=(e,p)=>getComputedStyle(e,p);const g=R(br[1].querySelector('.ag-topo__node--group'));
+          const lis=[...br[1].querySelectorAll('.ag-topo__leaves > li')].map(R);
+          return {n:br.length, row:new Set(br.map(x=>Math.round(R(x).top))).size===1, col:R(br[1]).top>=R(br[0]).bottom,
+            below:lis[0].top>g.bottom, indent:Math.round(lis[0].left-g.left), stacked:lis[1].top>=lis[0].bottom,
+            root:ps(t.querySelector('.ag-topo__root'),'::after').borderLeftWidth, bus:ps(br[1],'::before').borderTopWidth,
+            elbow:ps(br[1],'::after').borderTopWidth, rail:ps(t.querySelector('.ag-topo__leaves > li'),'::before').borderLeftWidth,
+            over:t.scrollWidth-t.clientWidth, sel:ps(t.querySelector('.ag-topo__node.is-selected')).boxShadow}}"""
+        pg = await page(b, "components.html")
+        r = await pg.evaluate(topo_js)
+        check("1.12: ag-topo — 1440 에서 가지 3개 한 줄 · 잎은 묶음 노드 아래 세로로 32px 들여쓰기 · 연결선 2px",
+              r["n"] == 3 and r["row"] and r["below"] and r["indent"] == 32 and r["stacked"] and r["root"] == r["bus"] == r["rail"] == "2px", str(r))
+        check("1.12: ag-topo — is-selected 는 왼쪽 띠(주의) + 액센트 링 두 겹", "inset" in r["sel"] and "0px 0px 0px 3px" in r["sel"], r["sel"])
+        await pg.set_viewport_size({"width": 400, "height": 900})
+        await pg.wait_for_timeout(100)
+        r = await pg.evaluate(topo_js)
+        check("1.12: ag-topo — 400px 에서 가지 세로로 쌓고 꺾은 선으로 잇기 · 가로 넘침 없음", r["col"] and r["elbow"] == "2px" and r["over"] <= 0, str(r))
+        await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():

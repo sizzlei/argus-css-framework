@@ -612,6 +612,93 @@
 .ag-health__name { font-weight: 500; color: var(--ag-text); min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ag-health__meta { color: var(--ag-text-3); font-size: var(--ag-text-xs); margin-left: auto; flex: none; white-space: nowrap; font-variant-numeric: tabular-nums; }   /* 1.9 (ⓖ): 모노 → 본문 글꼴 + 숫자 폭 고정. "3분 전 동기화" 같은 한글 메타가 모노의 넓은 공백으로 벌어졌다 */
 
+/* ---- 구성도 (1.12) — 뿌리 → 가지(가로) → 잎(세로) 노드를 선으로 잇는다. 서비스 · 의존 대상 상태 지도 ----------
+   <div class="ag-topo">
+     <div class="ag-topo__root"><button class="ag-topo__node ag-topo__node--warn is-selected"><span class="ag-topo__name">Argus 서버</span><span class="ag-topo__meta">주의 1</span></button></div>
+     <div class="ag-topo__branches">
+       <div class="ag-topo__branch">
+         <div class="ag-topo__node ag-topo__node--group"><span class="ag-topo__name">애드온</span><span class="ag-topo__meta">6개 · 주의 1</span></div>
+         <ul class="ag-topo__leaves">
+           <li><button class="ag-topo__node ag-topo__node--warn"><span class="ag-topo__name">Jira 대상 DB 드롭다운 동기화</span><span class="ag-topo__meta">주의</span><span class="ag-topo__sub">argus-jira-syncer</span></button></li>
+         </ul>
+       </div>
+     </div>
+   </div>
+   노드는 button(누르면 상세) 또는 div. 톤 --good/--warn/--crit · --off(꺼짐 — 점선, 판정에서 빠진 것) · 묶음 --group · 선택 is-selected.
+   잎은 가지 아래 세로로 쌓는다 — 잎이 많아도 가로 폭이 늘지 않는다. 720px 아래는 가지도 세로로 쌓고 왼쪽 레일 하나로 잇는다. */
+.ag-topo {
+  --_line: var(--ag-border-strong);
+  --_lw: 2px;
+  --_gap-y: var(--ag-space-6);   /* 뿌리 ↔ 가지(세로 선 길이) */
+  --_gap-x: var(--ag-space-5);   /* 가지 사이 */
+  --_step: var(--ag-space-2);    /* 잎 사이 · 묶음 노드 ↔ 첫 잎 */
+  --_rail: var(--ag-space-4);    /* 레일 x(가지 왼쪽에서) */
+  --_indent: var(--ag-space-8);  /* 잎 들여쓰기 = 레일 + 꺾은 선 */
+  --_head-h: 2.75rem;            /* 묶음 노드 최소 높이 — 좁은 화면에서 꺾은 선이 이 가운데에 붙는다 */
+  display: flex; flex-direction: column; min-width: 0;
+}
+.ag-topo__root { position: relative; display: flex; justify-content: center; padding-bottom: var(--_gap-y); }
+.ag-topo__root:last-child { padding-bottom: 0; }
+.ag-topo__root > .ag-topo__node { width: min(100%, 18rem); }
+.ag-topo__root:not(:last-child)::after { content: ""; position: absolute; bottom: 0; left: calc(50% - var(--_lw) / 2); height: var(--_gap-y); border-left: var(--_lw) solid var(--_line); }
+.ag-topo__branches { display: flex; align-items: flex-start; gap: var(--_gap-x); min-width: 0; }
+.ag-topo__branch { position: relative; flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; padding-top: var(--_gap-y); }
+/* 가로 버스 — 가지마다 자기 폭 + 양옆 간격 절반을 그어 이어진다. 첫 가지는 가운데부터, 끝 가지는 가운데까지 */
+.ag-topo__branch::before { content: ""; position: absolute; top: 0; left: calc(var(--_gap-x) / -2); right: calc(var(--_gap-x) / -2); border-top: var(--_lw) solid var(--_line); }
+.ag-topo__branch:first-child::before { left: calc(50% - var(--_lw) / 2); }
+.ag-topo__branch:last-child::before { right: calc(50% - var(--_lw) / 2); }
+.ag-topo__branch:only-child::before { display: none; }
+/* 가지 줄기 — 버스 → 묶음 노드 */
+.ag-topo__branch::after { content: ""; position: absolute; top: 0; left: calc(50% - var(--_lw) / 2); height: var(--_gap-y); border-left: var(--_lw) solid var(--_line); }
+.ag-topo__leaves { list-style: none; margin: var(--_step) 0 0; padding: 0 0 0 var(--_indent); display: flex; flex-direction: column; gap: var(--_step); min-width: 0; }
+.ag-topo__leaves > li { position: relative; min-width: 0; }
+/* 레일 — 위 노드 아래에서 다음 잎까지, 끝 잎은 제 가운데까지. 꺾은 선 — 레일 → 잎 */
+.ag-topo__leaves > li::before { content: ""; position: absolute; top: calc(var(--_step) * -1); bottom: 0; left: calc(var(--_rail) - var(--_indent) - var(--_lw) / 2); border-left: var(--_lw) solid var(--_line); }
+.ag-topo__leaves > li:last-child::before { bottom: auto; height: calc(50% + var(--_step)); }
+.ag-topo__leaves > li::after { content: ""; position: absolute; top: calc(50% - var(--_lw) / 2); left: calc(var(--_rail) - var(--_indent)); width: calc(var(--_indent) - var(--_rail)); border-top: var(--_lw) solid var(--_line); }
+
+.ag-topo__node {
+  --_tone: var(--ag-text-3);
+  --_stripe: 0 0 transparent;
+  position: relative;
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-areas: "dot name meta" ". sub sub";
+  align-items: center; align-content: center; column-gap: var(--ag-space-2); row-gap: 2px;
+  width: 100%; min-width: 0; margin: 0;
+  padding: var(--ag-space-2) var(--ag-space-3);
+  border: 1px solid var(--ag-border); border-radius: var(--ag-radius-lg);
+  background: var(--ag-surface); box-shadow: var(--_stripe);
+  color: var(--ag-text); font: inherit; font-size: var(--ag-text-sm); line-height: 1.4; text-align: left; text-decoration: none;
+}
+.ag-topo__node::before { content: ""; grid-area: dot; width: 8px; height: 8px; border-radius: 50%; background: var(--_tone); }
+.ag-topo__name { grid-area: name; min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ag-topo__meta { grid-area: meta; color: var(--ag-text-3); font-size: var(--ag-text-xs); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ag-topo__sub { grid-area: sub; min-width: 0; color: var(--ag-text-3); font-family: var(--ag-font-mono); font-size: var(--ag-text-xs); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+:is(button, a).ag-topo__node { cursor: pointer; transition: background-color var(--ag-dur), border-color var(--ag-dur); }
+:is(button, a).ag-topo__node:hover { background: var(--ag-surface-hover); border-color: var(--ag-border-strong); }
+/* 모양 */
+.ag-topo__root > .ag-topo__node { padding: var(--ag-space-3) var(--ag-space-4); }
+.ag-topo__root .ag-topo__name { font-size: var(--ag-text-md); }
+.ag-topo__node--group { min-height: var(--_head-h); background: var(--ag-surface-2); }
+/* 톤 — 점은 모든 톤, 왼쪽 띠는 손볼 것(주의 · 장애)만 */
+.ag-topo__node--good { --_tone: var(--ag-good); }
+.ag-topo__node--warn { --_tone: var(--ag-warn); --_stripe: inset 3px 0 0 var(--ag-warn); }
+.ag-topo__node--crit { --_tone: var(--ag-crit); --_stripe: inset 3px 0 0 var(--ag-crit); }
+.ag-topo__node--off { border-style: dashed; background: transparent; color: var(--ag-text-3); }
+.ag-topo__node--off::before { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ag-text-3); }
+/* 선택 */
+.ag-topo__node.is-selected { border-color: var(--ag-accent); background: color-mix(in oklab, var(--ag-accent) 8%, var(--ag-surface)); box-shadow: var(--_stripe), var(--ag-ring); }
+@media (max-width: 720px) {
+  .ag-topo__root { justify-content: flex-start; }
+  .ag-topo__root > .ag-topo__node { width: 100%; }
+  .ag-topo__root:not(:last-child)::after { left: calc(var(--_rail) - var(--_lw) / 2); }
+  .ag-topo__branches { flex-direction: column; align-items: stretch; gap: var(--_step); padding-left: var(--_indent); }
+  .ag-topo__branch { padding-top: 0; }
+  /* 가지도 잎처럼 — 레일(뿌리 → 다음 가지, 끝 가지는 묶음 노드 가운데까지) + 꺾은 선. 넓은 화면의 첫 · 끝 · 하나 규칙을 같은 특이도로 덮는다 */
+  .ag-topo__branches > .ag-topo__branch::before { display: block; top: calc(var(--_step) * -1); bottom: 0; left: calc(var(--_rail) - var(--_indent) - var(--_lw) / 2); right: auto; border-top: 0; border-left: var(--_lw) solid var(--_line); }
+  .ag-topo__branches > .ag-topo__branch:last-child::before { bottom: auto; height: calc(var(--_head-h) / 2 + var(--_step)); }
+  .ag-topo__branch::after { top: calc(var(--_head-h) / 2 - var(--_lw) / 2); left: calc(var(--_rail) - var(--_indent)); width: calc(var(--_indent) - var(--_rail)); height: 0; border-left: 0; border-top: var(--_lw) solid var(--_line); }
+}
+
 /* ---- 날짜/시간 네이티브 입력 다크 보정 -------------------------------------- */
 .ag-input[type="date"], .ag-input[type="datetime-local"], .ag-input[type="time"], .ag-input[type="month"] { font-family: var(--ag-font-sans); }
 :root:not([data-theme="light"]) .ag-input::-webkit-calendar-picker-indicator { filter: invert(.75); opacity: .7; cursor: pointer; }

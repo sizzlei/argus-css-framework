@@ -510,6 +510,43 @@ new Chart(ctx, { type: 'bar', data: { labels, datasets: [{ data, backgroundColor
           </div>
         </div>
 
+        <div class="ag-card ag-col-12 ag-stack">
+          <h3 class="ag-card__title">.ag-topo (구성도 — 뿌리 → 가지 → 잎, 노드를 누르면 서비스가 아래에 상세 · 로그를 연다)</h3>
+          <div class="ag-topo">
+            <div class="ag-topo__root"><button type="button" class="ag-topo__node ag-topo__node--warn"><span class="ag-topo__name">Argus 서버</span><span class="ag-topo__meta">주의 1</span><span class="ag-topo__sub">argus-server · 가동 6일</span></button></div>
+            <div class="ag-topo__branches">
+              <div class="ag-topo__branch">
+                <div class="ag-topo__node ag-topo__node--group ag-topo__node--good"><span class="ag-topo__name">시스템</span><span class="ag-topo__meta">3개 · 모두 정상</span></div>
+                <ul class="ag-topo__leaves">
+                  <li><button type="button" class="ag-topo__node ag-topo__node--good"><span class="ag-topo__name">메타 DB (MySQL)</span><span class="ag-topo__meta">2ms</span><span class="ag-topo__sub">MySQL</span></button></li>
+                  <li><button type="button" class="ag-topo__node ag-topo__node--good"><span class="ag-topo__name">Slack 봇</span><span class="ag-topo__meta">정상</span><span class="ag-topo__sub">Slack</span></button></li>
+                  <li><button type="button" class="ag-topo__node ag-topo__node--good"><span class="ag-topo__name">AWS 수집 계정</span><span class="ag-topo__meta">활성 4개</span><span class="ag-topo__sub">AWS Accounts</span></button></li>
+                </ul>
+              </div>
+              <div class="ag-topo__branch">
+                <div class="ag-topo__node ag-topo__node--group ag-topo__node--warn"><span class="ag-topo__name">애드온</span><span class="ag-topo__meta">6개 · 주의 1 · 꺼짐 1</span></div>
+                <ul class="ag-topo__leaves">
+                  <li><button type="button" class="ag-topo__node ag-topo__node--good"><span class="ag-topo__name">AWS RDS 인벤토리 수집</span><span class="ag-topo__meta">3분 전</span><span class="ag-topo__sub">argus-collector</span></button></li>
+                  <li><button type="button" class="ag-topo__node ag-topo__node--warn is-selected"><span class="ag-topo__name">Jira 대상 DB 드롭다운 동기화</span><span class="ag-topo__meta">주의</span><span class="ag-topo__sub">argus-jira-syncer</span></button></li>
+                  <li><button type="button" class="ag-topo__node ag-topo__node--good"><span class="ag-topo__name">기간제 DB 만료 안내 · 삭제</span><span class="ag-topo__meta">4분 전</span><span class="ag-topo__sub">argus-tag-regulator</span></button></li>
+                  <li><button type="button" class="ag-topo__node ag-topo__node--good"><span class="ag-topo__name">스키마 메타 수집</span><span class="ag-topo__meta">12분 전</span><span class="ag-topo__sub">argus-meta-collector</span></button></li>
+                  <li><button type="button" class="ag-topo__node ag-topo__node--good"><span class="ag-topo__name">CloudWatch 로그 그룹 정리</span><span class="ag-topo__meta">1시간 전</span><span class="ag-topo__sub">argus-cwl-regulator</span></button></li>
+                  <li><button type="button" class="ag-topo__node ag-topo__node--off"><span class="ag-topo__name">RDS 수동 스냅샷 정리</span><span class="ag-topo__meta">꺼짐</span><span class="ag-topo__sub">argus-snap-regulator</span></button></li>
+                </ul>
+              </div>
+              <div class="ag-topo__branch">
+                <div class="ag-topo__node ag-topo__node--group ag-topo__node--good"><span class="ag-topo__name">스케줄러</span><span class="ag-topo__meta">3개 · 모두 정상</span></div>
+                <ul class="ag-topo__leaves">
+                  <li><button type="button" class="ag-topo__node ag-topo__node--good"><span class="ag-topo__name">ISMS 보안 감사</span><span class="ag-topo__meta">방금</span><span class="ag-topo__sub">ISMS Scheduler</span></button></li>
+                  <li><button type="button" class="ag-topo__node ag-topo__node--good"><span class="ag-topo__name">감사 로그 백업</span><span class="ag-topo__meta">방금</span><span class="ag-topo__sub">LogBackup Scheduler</span></button></li>
+                  <li><button type="button" class="ag-topo__node ag-topo__node--good"><span class="ag-topo__name">KMS 다시 감싸기</span><span class="ag-topo__meta">방금</span><span class="ag-topo__sub">KMSRewrap Scheduler</span></button></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="ag-text-xs ag-text-3">점은 모든 톤, 왼쪽 띠는 손볼 것(주의 · 장애)만. 꺼짐 <code>--off</code> 은 점선 — 판정에서 빠진 노드. 잎이 늘어도 가로 폭은 그대로(가지 아래 세로로 쌓임), 720px 아래는 가지도 세로로 쌓고 왼쪽 레일 하나로 잇는다.</p>
+        </div>
+
         <div class="ag-card ag-col-6">
           <h3 class="ag-card__title">.ag-diff · .ag-code</h3>
           <div class="ag-diff">
