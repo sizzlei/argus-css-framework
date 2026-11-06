@@ -646,6 +646,22 @@ async def main():
         check("1.12: ag-topo — 400px 에서 가지 세로로 쌓고 꺾은 선으로 잇기 · 가로 넘침 없음", r["col"] and r["elbow"] == "2px" and r["over"] <= 0, str(r))
         await pg.close()
 
+        # ── 1.13 상태 신호등 ag-notif-btn--good/--warn/--crit · __count--warn ──
+        pg = await page(b, "components.html")
+        r = await pg.evaluate("""()=>{const probe=css=>{const s=document.createElement('span');Object.assign(s.style,css);document.body.appendChild(s);const c=getComputedStyle(s);const v={fg:c.color,bg:c.backgroundColor};s.remove();return v};
+          const fg=t=>getComputedStyle(document.querySelector('.ag-notif-btn--'+t)).color;const w=getComputedStyle(document.querySelector('.ag-notif-btn__count--warn'));
+          return {tones:['good','warn','crit'].map(t=>[fg(t), probe({color:`var(--ag-${t}-text)`}).fg]), warn:{fg:w.color,bg:w.backgroundColor},
+            exp:probe({color:'var(--ag-text-on-warn)',background:'var(--ag-warn-solid)'}), crit:getComputedStyle(document.querySelector('.ag-notif-btn--crit .ag-notif-btn__count')).backgroundColor}}""")
+        check("1.13: ag-notif-btn--good/--warn/--crit — 아이콘 색 = 상태 글자 토큰", all(a == e for a, e in r["tones"]), str(r["tones"]))
+        check("1.13: __count--warn = warn-solid 배경 + text-on-warn 글자, 기본 __count 는 빨강 그대로",
+              r["warn"] == r["exp"] and r["crit"] != r["warn"]["bg"], str(r))
+        b0 = await pg.evaluate("getComputedStyle(document.querySelector('.ag-notif-btn--warn')).borderTopColor")
+        await pg.hover(".ag-notif-btn--warn")
+        await pg.wait_for_timeout(300)
+        b1 = await pg.evaluate("getComputedStyle(document.querySelector('.ag-notif-btn--warn')).borderTopColor")
+        check("1.13: 신호등 — hover 에서도 상태 테두리 유지", b0 == b1, f"{b0} → {b1}")
+        await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():

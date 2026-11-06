@@ -749,6 +749,13 @@ k2m9xQ1zR8fT4yU6wE2nH5sL0dP9vB3cX7aM1oK4jG8hF6eD2tS9uY
             </div>
             <div class="ag-stack ag-stack--sm ag-text-sm ag-text-2"><p>종 버튼의 <code>__count</code>/<code>__dot</code>, 읽지 않음 <code>is-unread</code>(왼쪽 액센트 바), 날짜 그룹 헤더. 알림함 전체는 <a href="layouts.html#dual">dual 레이아웃</a>.</p><p>단독 상태 텍스트는 <code>.ag-text-warn</code> 처럼 <code>--ag-*-text</code> 토큰을 써서 라이트에서도 4.5:1 을 지킵니다.</p></div>
           </div>
+          <h3 class="ag-card__title ag-mt-4">.ag-notif-btn--good/--warn/--crit (상태 신호등) · __count--warn</h3>
+          <div class="ag-cluster">
+            <button class="ag-btn ag-btn--icon ag-btn--outline ag-notif-btn ag-notif-btn--good" aria-label="시스템 상태: 모두 정상"><svg class="ag-icon"><use href="#i-activity"/></svg></button>
+            <button class="ag-btn ag-btn--icon ag-btn--outline ag-notif-btn ag-notif-btn--warn" aria-label="시스템 상태: 주의 2"><svg class="ag-icon"><use href="#i-activity"/></svg><span class="ag-notif-btn__count ag-notif-btn__count--warn">2</span></button>
+            <button class="ag-btn ag-btn--icon ag-btn--outline ag-notif-btn ag-notif-btn--crit" aria-label="시스템 상태: 손볼 항목 2(장애 1 · 주의 1)"><svg class="ag-icon"><use href="#i-activity"/></svg><span class="ag-notif-btn__count">2</span></button>
+            <span class="ag-text-sm ag-text-2">argus-server 상단 바 시스템 상태 — 정상은 배지 없음, 주의만이면 노랑 숫자(주의 수), 장애가 있으면 빨강(장애 + 주의 수). 누르면 손볼 항목 드롭다운(.ag-notif).</span>
+          </div>
         </div>
       </div>
     </section>

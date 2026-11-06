@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.13.0 — 2026-11-06 · 상태 신호등 `ag-notif-btn--good/--warn/--crit` (argus-server 시스템 상태)
+
+- **`.ag-notif-btn--good/--warn/--crit`** — 알림 버튼을 상태 신호등으로. 아이콘 글자색은 상태 글자 토큰, 테두리는 상태색을 섞은 값이고 hover 에서도 유지한다. 늘 보이는 상단 바 요소라 움직이지 않는다. argus-server 는 대시보드 상태 카드를 지우고 상단 바 테마 버튼 옆에 이 버튼을 둔다(누르면 손볼 항목 `.ag-notif` 드롭다운).
+- **`.ag-notif-btn__count--warn`** — 주의만 있을 때 노랑 숫자 배지(`--ag-warn-solid` + `--ag-text-on-warn`, solid 배지와 같은 토큰). 기본 `__count` 는 빨강 그대로.
+- 버튼 `aria-label` 에는 보이는 숫자를 넣는다("시스템 상태: 손볼 항목 2(장애 1 · 주의 1)") — 색만으로 말하지 않기 · axe label-content-name-mismatch.
+- 예시: 카탈로그 알림 섹션 "상태 신호등"(정상 · 주의 2 · 장애 1), 매트릭스 알림 버튼 카드에 톤 × 배지. check.py +3(톤 3종 아이콘 색, `--warn` 배지 토큰 · 기본 빨강 유지, hover 테두리 유지).
+
 ## 1.12.1 — 2026-11-06 · `ag-topo` 첫 · 끝 고르기를 `-of-type` 으로 (argus-server 시스템 상태 페이지 적용 중 발견)
 
 - 첫 · 끝 가지(가로 버스 시작 · 끝, 좁은 화면 레일 끝)와 끝 잎(레일 끝)을 `:first-of-type` · `:last-of-type` · `:only-of-type` 으로 고른다. Alpine `x-for` 로 가지를 그리면 `<template>` 가 `.ag-topo__branches` 의 첫 자식이 되어 `:first-child` 가 빗나가고, 첫 가지 버스가 가운데가 아니라 왼쪽 간격 절반까지 삐져나왔다. 가지 · 잎은 같은 태그로 쓴다(`div` · `li`).
