@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.14.0 — 2026-11-07 · 사이드바 셸 상단 배너 자리 `ag-banners` (argus-server 알림 센터)
+
+- **`.ag-banners`** — 배너 묶음. 사이드바 셸(`.ag-app--sidebar`)은 격자 영역이 side · top · main 뿐이라 상단 바 아래 공지 배너를 둘 칸이 없었고, 배너를 셸 직계로 넣으면 격자가 깨졌다. 묶음을 셸 직계(상단 바 다음)에 두면 `:has()` 로 격자가 top · banners(auto) · main 세 줄이 된다(960px 아래도). 비면 높이 0 이라 레이아웃에 늘 두고 배너만 채운다. top 셸에서는 그냥 세로로 쌓인다. argus-server 는 알림 센터의 긴급 상태형 알림(유지관리 예정 등)을 이 자리에 `ag-banner--crit` 으로 띄운다.
+- 예시: resources(사이드바 셸) 상단 바 아래 crit 배너, 카탈로그 배너 카드를 `.ag-banners` 묶음으로. check.py +2(1440 배너 위치 = 상단 바 아래 · 본문 위 · 사이드바 전체 높이, 비운 묶음 높이 0 · 400px 넘침 없음).
+
 ## 1.13.1 — 2026-11-06 · `ag-drawer__head` 기본 모양 · 예시 없던 클래스 18개 · README 컴포넌트 목록 재작성
 
 - **`.ag-drawer__head`** 가 `.ag-modal__head` 와 같은 머리(flex · 양끝 정렬)를 받는다. 전에는 1.6 남은 높이 규칙(`:is(.ag-modal__head, .ag-drawer__head)`)에만 들어 있어서 `__head` 로 쓰면 닫기 버튼이 제목 아래로 떨어졌다. detail 파라미터 드로어 · 카탈로그 데모 드로어가 `__head` 를 쓴다.

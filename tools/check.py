@@ -686,6 +686,23 @@ async def main():
         check("1.13: 신호등 — hover 에서도 상태 테두리 유지", b0 == b1, f"{b0} → {b1}")
         await pg.close()
 
+        # ── 1.14 사이드바 셸 상단 배너 자리 ag-banners: 상단 바 아래 · 본문 위 · 사이드바는 그대로 / 비면 높이 0 · 400px 넘침 없음 ──
+        pg = await page(b, "resources.html")
+        ban_js = """()=>{const R=s=>document.querySelector(s).getBoundingClientRect();const t=R('.ag-topbar'),bn=R('.ag-banners'),m=R('.ag-main'),sd=R('.ag-sidebar');
+          return {t:t.bottom, tLeft:t.left, bTop:bn.top, bBot:bn.bottom, bH:bn.height, bLeft:bn.left, mTop:m.top, sTop:sd.top, sBot:sd.bottom,
+            over:document.documentElement.scrollWidth-document.documentElement.clientWidth}}"""
+        r = await pg.evaluate(ban_js)
+        check("1.14: ag-banners — 1440 사이드바 셸에서 상단 바 바로 아래 · 본문 바로 위 · 상단 바와 같은 왼쪽 · 사이드바는 위에서부터 본문까지",
+              abs(r["bTop"] - r["t"]) < 1 and abs(r["mTop"] - r["bBot"]) < 1 and r["bH"] > 0 and abs(r["bLeft"] - r["tLeft"]) < 1
+              and r["sTop"] == 0 and r["sBot"] > r["mTop"], str(r))
+        await pg.evaluate("document.querySelector('.ag-banners').replaceChildren()")
+        await pg.set_viewport_size({"width": 400, "height": 900})
+        await pg.wait_for_timeout(100)
+        r = await pg.evaluate(ban_js)
+        check("1.14: ag-banners — 비우면 높이 0(본문이 상단 바 바로 아래) · 400px 가로 넘침 없음",
+              r["bH"] == 0 and abs(r["mTop"] - r["t"]) < 1 and r["over"] <= 0, str(r))
+        await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():

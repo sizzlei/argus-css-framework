@@ -198,6 +198,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | `ag-grid` + `ag-col-2…9` `ag-col-12` | `--tight`(12px) `--auto` | 12열, 1200 · 720px 에서 접힘 |
 | `ag-stack` `ag-cluster` `ag-row` `ag-spacer` | `ag-stack--sm/--lg` · `ag-cluster--between` | 세로 쌓기 · 가로 묶음 |
 | `ag-breadcrumb` | `__sep` | |
+| `ag-banners` | | 배너(`ag-banner`, patterns) 묶음. 사이드바 셸의 직계(상단 바 다음)에 두면 상단 바와 본문 사이에 한 줄이 생기고, 비면 높이 0 (1.14) |
 | `ag-pane` · `ag-pane-item` | `__head` `__body` `__foot` · `__top` `__title` `__snippet` `__tags` | dual 모드의 목록 패널. 항목 `is-active` |
 | `ag-mode-switch` | | 예시 데모의 모드 전환 크롬 (서비스에서는 쓰지 않음) |
 

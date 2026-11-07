@@ -31,6 +31,26 @@
   .ag-app--sidebar .ag-sidebar { display: none; }
 }
 
+/* ---- 상단 배너 자리 (1.14) -------------------------------------------
+   <header class="ag-topbar">…</header>
+   <div class="ag-banners"><div class="ag-banner ag-banner--crit" role="region" aria-label="알림">…</div></div>
+   <main class="ag-main">…</main>
+   사이드바 셸은 격자 영역이 side · top · main 뿐이라 상단 바 아래 공지 배너를 둘 칸이 없었다(직계로 넣으면 격자가 깨짐).
+   배너 묶음 .ag-banners 를 셸의 직계로 두면 상단 바와 본문 사이에 한 줄이 생긴다. 비면 높이 0 — 레이아웃에 늘 두고 배너만 채운다.
+   top 셸(flex)에서는 그냥 세로로 쌓인다. 배너끼리는 각자의 아래 테두리로 나뉜다. */
+.ag-banners { display: flex; flex-direction: column; min-width: 0; }
+.ag-app--sidebar:has(> .ag-banners) {
+  grid-template-rows: var(--ag-topbar-h) auto minmax(0, 1fr);
+  grid-template-areas:
+    "side top"
+    "side banners"
+    "side main";
+}
+.ag-app--sidebar > .ag-banners { grid-area: banners; }
+@media (max-width: 960px) {
+  .ag-app--sidebar:has(> .ag-banners) { grid-template-areas: "top" "banners" "main"; }
+}
+
 /* ---- Topbar ---------------------------------------------------------- */
 .ag-topbar {
   position: sticky;
