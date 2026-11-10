@@ -730,26 +730,27 @@ async def main():
         glass_js = r"""()=>{const q=s=>document.querySelector(s),cs=e=>getComputedStyle(e);
           const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});
           const alpha=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return ctx.getImageData(0,0,1,1).data[3]};
-          const t=q('.ag-topbar'),s=q('.ag-sidebar'),be=getComputedStyle(document.body,'::before');
+          const t=q('.ag-topbar'),s=q('.ag-sidebar'),be=getComputedStyle(document.body,'::before'),tb=getComputedStyle(t,'::before');
           const pr=document.createElement('div');pr.style.backgroundColor='var(--ag-bg-elevated)';document.body.appendChild(pr);const elev=cs(pr).backgroundColor;pr.remove();
-          return {tBf:cs(t).backdropFilter,tA:alpha(cs(t).backgroundColor),tSh:cs(t).boxShadow,sBf:cs(s).backdropFilter,sA:alpha(cs(s).backgroundColor),sBg:cs(s).backgroundColor,elev,sSh:cs(s).boxShadow,
+          return {tBf:cs(t).backdropFilter,tA:alpha(cs(t).backgroundColor),tSh:cs(t).boxShadow,tpC:tb.content,tpBf:tb.backdropFilter,tpA:alpha(tb.backgroundColor),sBf:cs(s).backdropFilter,sA:alpha(cs(s).backgroundColor),sBg:cs(s).backgroundColor,elev,sSh:cs(s).boxShadow,
             bA:alpha(cs(q('.ag-sidebar .ag-badge--count')).backgroundColor),before:be.content,beforeImg:be.backgroundImage,beforePos:be.position,appImg:cs(q('.ag-app')).backgroundImage}}"""
         for light in (False, True):
             th = "라이트" if light else "다크"
             pg = await page(b, "layouts.html", light=light)
             r = await pg.evaluate(glass_js)
             check(f"1.15 유리 끔({th}): 사이드바 불투명 · 크롬 하이라이트 없음 · 메시 층 없음 · 상단 글로우 유지",
-                  r["sA"] == 255 and r["sBg"] == r["elev"] and r["tSh"] == "none" and r["sSh"] == "none" and r["before"] == "none" and "radial-gradient" in r["appImg"], str(r))
+                  r["sA"] == 255 and r["sBg"] == r["elev"] and r["tSh"] == "none" and r["sSh"] == "none" and r["tpC"] == "none" and r["before"] == "none" and "radial-gradient" in r["appImg"], str(r))
             await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(100)
             r = await pg.evaluate(glass_js)
             # 배지(--ag-surface-3)는 크롬 안에서도 불투명 — 레일에서 배지가 글자 위에 얹혀 아래 글자가 비치던 것(1.15 작업 중 발견)
-            check(f"1.15 유리 켬({th}): 상단 바 · 사이드바 blur(24px)+saturate · 반투명(상단 바가 더 두꺼움) · inset 하이라이트, 메시 고정 층 · 상단 글로우 없음, 사이드바 배지 불투명",
-                  all("blur(24px)" in r[k] and "saturate" in r[k] for k in ("tBf", "sBf")) and 0 < r["sA"] < r["tA"] < 255 and r["bA"] == 255
+            # 1.16: 상단 바 유리는 ::before 에 — 요소 자신은 블러 없음(backdrop root 가 되면 안쪽 메뉴의 블러가 바 밖을 못 본다)
+            check(f"1.15 유리 켬({th}): 상단 바(::before) · 사이드바 blur(24px)+saturate · 반투명(상단 바가 더 두꺼움) · inset 하이라이트, 상단 바 요소는 블러 없음, 메시 고정 층 · 상단 글로우 없음, 사이드바 배지 불투명",
+                  all("blur(24px)" in r[k] and "saturate" in r[k] for k in ("tpBf", "sBf")) and r["tBf"] == "none" and r["tA"] == 0 and 0 < r["sA"] < r["tpA"] < 255 and r["bA"] == 255
                   and "inset" in r["tSh"] and "inset" in r["sSh"] and r["before"] == '""' and r["beforePos"] == "fixed"
                   and "radial-gradient" in r["beforeImg"] and r["appImg"] == "none", str(r))
             await pg.click('[data-mode="focus"]'); await pg.wait_for_timeout(150)
             r = await pg.evaluate(glass_js)
-            check(f"1.15 유리 켬({th}) 집중 모드: 상단 바는 투명 · 블러 없음 · 하이라이트 선 없음 그대로", r["tA"] == 0 and r["tBf"] == "none" and r["tSh"] == "none", str(r))
+            check(f"1.15 유리 켬({th}) 집중 모드: 상단 바는 투명 · 블러 없음 · 하이라이트 선 · 유리 층 없음 그대로", r["tA"] == 0 and r["tBf"] == "none" and r["tSh"] == "none" and r["tpC"] == "none", str(r))
             await pg.close()
         # 투명도 줄이기(OS 설정): 유리 스킨이어도 불투명 · 블러 없음 · 메시 없음
         pg = await page(b, "layouts.html", skin=True)
@@ -758,17 +759,20 @@ async def main():
         await pg.wait_for_timeout(100)
         r = await pg.evaluate(glass_js)
         check("1.15 유리 켬 + prefers-reduced-transparency: 상단 바 · 사이드바 불투명 · 블러 없음 · 메시 없음",
-              r["tA"] == 255 and r["sA"] == 255 and r["tBf"] == "none" and r["sBf"] == "none" and "radial-gradient" not in r["beforeImg"], str(r))
+              r["tpA"] == 255 and r["sA"] == 255 and r["tpBf"] == "none" and r["sBf"] == "none" and "radial-gradient" not in r["beforeImg"], str(r))
         await pg.close()
         # 대비 — 7색 × 다크 · 라이트. 메시 세 색을 다 겹친 가장 진한 지점 위 bg, 그 위 fill(hover), 액센트 카드가 밑을 지날 때 bg-thick
-        contrast_js = r"""()=>{const res=t=>{const d=document.createElement('div');d.style.backgroundColor=`var(${t})`;document.body.appendChild(d);const c=getComputedStyle(d).backgroundColor;d.remove();return c};
+        # 1.16: 막(--ag-overlay) 위 bg-thick(모달 · 드로어), bg · bg-thick + field 위 placeholder(text-3)
+        contrast_js = r"""()=>{const res=t=>{const d=document.createElement('div');d.style.backgroundColor=t.startsWith('--')?`var(${t})`:t;document.body.appendChild(d);const c=getComputedStyle(d).backgroundColor;d.remove();return c};
           const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});
           const stack=(...ts)=>{ctx.clearRect(0,0,1,1);for(const t of ts){ctx.fillStyle=res(t);ctx.fillRect(0,0,1,1)}return [...ctx.getImageData(0,0,1,1).data]};
           const lum=p=>{const f=v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4};return .2126*f(p[0])+.7152*f(p[1])+.0722*f(p[2])};
           const cr=(fg,bg)=>{const a=lum(stack(fg)),b=lum(bg);return +((Math.max(a,b)+.05)/(Math.min(a,b)+.05)).toFixed(2)};
           const mesh=['--ag-bg','--ag-glass-tint-3','--ag-glass-tint-2','--ag-glass-tint-1'];
           const reg=stack(...mesh,'--ag-glass-bg'),fill=stack(...mesh,'--ag-glass-bg','--ag-glass-fill'),thick=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick');
-          return {reg3:cr('--ag-text-3',reg),regAccent:cr('--ag-accent-text',reg),fill2:cr('--ag-text-2',fill),thick2:cr('--ag-text-2',thick),thick3:cr('--ag-text-3',thick)}}"""
+          const scrim=stack('--ag-bg','--ag-accent','--ag-overlay','--ag-glass-bg-thick'),field=stack(...mesh,'--ag-glass-bg','--ag-glass-field'),thickField=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-field');
+          return {reg3:cr('--ag-text-3',reg),regAccent:cr('--ag-accent-text',reg),fill2:cr('--ag-text-2',fill),thick2:cr('--ag-text-2',thick),thick3:cr('--ag-text-3',thick),
+            scrim2:cr('--ag-text-2',scrim),scrim3:cr('--ag-text-3',scrim),field3:cr('--ag-text-3',field),thickField3:cr('--ag-text-3',thickField)}}"""
         lows = []
         for theme in ("", "red", "orange", "yellow", "green", "blue", "indigo"):
             for light in (False, True):
@@ -779,12 +783,50 @@ async def main():
                 bad = {k: v for k, v in r.items() if v < 4.5}
                 if bad: lows.append(f"{theme or 'violet'}/{'light' if light else 'dark'} {bad}")
                 await pg.close()
-        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3 ≥ 4.5", not lows, " | ".join(lows[:6]))
+        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3, 1.16 막 위 bg-thick · field 위 text-3 ≥ 4.5", not lows, " | ".join(lows[:6]))
         for name in ("index", "layouts"):
             pg = await page(b, name + ".html", width=400, skin=True)
             r = await pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
             check(f"1.15 유리 켬 {name} 400px: 가로 넘침 없음", r <= 0, str(r))
             await pg.close()
+
+        # ── 1.16 유리 스킨 2단계 — 오버레이(메뉴 · 콤보 목록 · 팝오버 · ⌘K · 모달 패널 · 드로어 · 토스트 · 위저드 바). 고정 선택 바는 불투명 유지 ──
+        overlay_js = r"""()=>{const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});
+          const alpha=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return ctx.getImageData(0,0,1,1).data[3]};
+          const d=document.createElement('div');d.innerHTML='<div class="ag-menu" style="display:block;position:static"><input class="ag-input" id="ovIn"></div><div class="ag-combobox__list" style="display:block;position:static"></div><div class="ag-popover" style="position:static"></div><div class="ag-cmdk"></div><div class="ag-modal__panel"></div><aside class="ag-drawer is-open"><div class="ag-drawer__toolbar"></div><div class="ag-drawer__foot"></div></aside><div class="ag-toast ag-toast--crit"></div><div class="ag-wizard__bar"></div><div class="ag-bulkbar ag-bulkbar--sticky"></div>';document.body.appendChild(d);
+          const pr=document.createElement('div');pr.style.backgroundColor='var(--ag-glass-field)';document.body.appendChild(pr);
+          const hosts={};for(const sel of ['.ag-menu','.ag-combobox__list','.ag-popover','.ag-cmdk','.ag-modal__panel','.ag-drawer','.ag-toast','.ag-wizard__bar']){const cs=getComputedStyle(d.querySelector(sel));hosts[sel]={bf:cs.backdropFilter,a:alpha(cs.backgroundColor),sh:cs.boxShadow}}
+          const ov=getComputedStyle(document.querySelector('.ag-modal-overlay')),ovb=getComputedStyle(document.querySelector('.ag-modal-overlay'),'::before');
+          const bk=getComputedStyle(d.querySelector('.ag-bulkbar--sticky'));const r={hosts,bulkA:alpha(bk.backgroundColor),bulkBf:bk.backdropFilter,toast:hosts['.ag-toast'].sh,foot:getComputedStyle(d.querySelector('.ag-drawer__foot')).backgroundColor,tool:getComputedStyle(d.querySelector('.ag-drawer__toolbar')).backdropFilter,
+            input:getComputedStyle(d.querySelector('#ovIn')).backgroundColor,field:getComputedStyle(pr).backgroundColor,ovBf:ov.backdropFilter,ovBg:ov.backgroundColor,ovpC:ovb.content,ovpBf:ovb.backdropFilter,ovpA:alpha(ovb.backgroundColor)};d.remove();pr.remove();return r}"""
+        for light in (False, True):
+            th = "라이트" if light else "다크"
+            pg = await page(b, "components.html", light=light)
+            r = await pg.evaluate(overlay_js)
+            check(f"1.16 유리 끔({th}): 오버레이 불투명 · 블러 없음(위저드 바 12px 제외) · 오버레이형 모달 막은 요소에 blur(4px)",
+                  all(v["a"] == 255 for k, v in r["hosts"].items() if k != ".ag-wizard__bar") and all(v["bf"] == "none" for k, v in r["hosts"].items() if k != ".ag-wizard__bar")
+                  and r["ovBf"] == "blur(4px)" and r["ovpC"] == "none", str({k: r[k] for k in ("ovBf", "ovpC")}))
+            await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(100)
+            r = await pg.evaluate(overlay_js)
+            bad = {k: v for k, v in r["hosts"].items() if not ("blur(24px)" in v["bf"] and 0 < v["a"] < 255 and "inset" in v["sh"])}
+            check(f"1.16 유리 켬({th}): 오버레이 8종 blur(24px) · 반투명 · inset 하이라이트, 고정 선택 바는 불투명 · 블러 없음(1.9 원칙 · 액센트 글자 대비)",
+                  not bad and r["bulkA"] == 255 and r["bulkBf"] == "none", str(bad) + f" bulk={r['bulkA']},{r['bulkBf']}")
+            check(f"1.16 유리 켬({th}): 토스트 톤 띠(inset 3px)와 하이라이트 둘 다 · 드로어 푸터 투명 · 도구줄 블러 · 호스트 안 입력칸 = --ag-glass-field",
+                  "3px 0px 0px 0px inset" in r["toast"] and r["toast"].count("inset") >= 3 and r["foot"] == "rgba(0, 0, 0, 0)" and "blur(24px)" in r["tool"] and r["input"] == r["field"], str({k: r[k] for k in ("toast", "foot", "tool", "input", "field")}))
+            check(f"1.16 유리 켬({th}): 오버레이형 모달 막은 ::before 에 막 색 + blur(4px), 요소는 투명 · 블러 없음(안쪽 패널이 backdrop root 에 갇히지 않게)",
+                  r["ovBf"] == "none" and r["ovBg"] == "rgba(0, 0, 0, 0)" and r["ovpC"] == '""' and r["ovpBf"] == "blur(4px)" and 0 < r["ovpA"] < 255, str({k: r[k] for k in ("ovBf", "ovBg", "ovpC", "ovpBf", "ovpA")}))
+            await pg.close()
+        # 블러 호스트(요소 자신에 backdrop-filter) 안에 position: fixed 자손이 없어야 한다 — 블러 요소가 fixed 의 기준 상자가 되어 모달 · 드로어가 그 안에 갇힌다
+        fixed_js = r"""()=>{const out=[];for(const h of document.querySelectorAll('body *')){if(getComputedStyle(h).backdropFilter==='none')continue;
+          for(const e of h.querySelectorAll('*'))if(getComputedStyle(e).position==='fixed')out.push((h.className.baseVal??h.className).split(' ')[0]+' > '+(e.className.baseVal??e.className).split(' ')[0])}return out}"""
+        trapped = []
+        for name in ("index", "resources", "detail", "login", "layouts", "components"):
+            for skin in (False, True):
+                pg = await page(b, name + ".html", skin=skin)
+                v = await pg.evaluate(fixed_js)
+                if v: trapped.append(f"{name}{'-glass' if skin else ''}: " + ", ".join(v[:3]))
+                await pg.close()
+        check("1.16: 블러 호스트 안에 position: fixed 자손 없음(예시 6쪽 × 유리 끔 · 켬)", not trapped, " | ".join(trapped[:4]))
 
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"

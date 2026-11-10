@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.16.0 — 2026-11-10 · 유리 스킨 2단계 — 오버레이(메뉴 · 모달 · 드로어 · 토스트 · 위저드 바)
+
+- **오버레이 유리** — `data-skin="glass"` 에서 `.ag-menu`(`.ag-notif` · `--wide`) · `.ag-combobox__list` · `.ag-popover` · `.ag-cmdk` · `.ag-modal__panel` · `.ag-drawer` · `.ag-toast` · `.ag-wizard__bar` 가 두꺼운 유리(`--ag-glass-bg-thick` + 블러 · 광택 · 하이라이트 선 + 기존 그림자)가 된다. 토스트 톤 띠는 하이라이트 선과 함께 유지, 드로어 푸터 · ⌘K 푸터는 투명(호스트 유리), 드로어 도구줄은 유리. 고정 선택 바(`.ag-bulkbar--sticky`)는 1.9 원칙대로 불투명 — 고른 행이 밑을 지날 때 유리면 라이트 orange · yellow · green · red 의 액센트 글자가 3.9~4.3:1 로 모자란다.
+- **블러 안의 블러** — 블러가 걸린 요소는 backdrop root 가 되어 안쪽 블러가 그 밖을 못 본다(Chromium 실측: 부모 블러 안 메뉴 밑 줄무늬가 그대로). 그래서 유리 스킨의 **상단 바 블러를 `::before` 로** 옮겼다 — 알림 · 사용자 메뉴가 상단 바 아래 본문을 제대로 흐린다. **오버레이형 모달 막(`.ag-modal-overlay`)도** 막 색 · blur(4px) 를 `::before` 로 — 안쪽 패널 · ⌘K 가 뒤 화면을 24px 로 흐린다. 사이드바는 자체 스크롤 상자라 요소 블러 그대로(안쪽 메뉴는 사이드바 밖을 못 흐림 — README).
+- **블러 호스트 안 fixed 금지** — 블러가 걸린 요소는 안쪽 `position: fixed` 의 기준 상자가 된다(실측: `inset: 0` 이 부모 300×80 으로 갇힘). develop 서비스 템플릿 182개에는 해당 사례가 없고, 규칙(README · CLAUDE.md)과 단언으로 막는다.
+- **`--ag-glass-field`**(다크 `rgb(0 0 0/.18)` · 라이트 `rgb(255 255 255/.55)`) — 유리 안 입력칸 · 서브표면(`--ag-surface-2` · 입력 포커스 바탕). 1.15 는 흰 채움(fill)이라 다크에서 바탕을 밝혀, 액센트 카드가 상단 바 밑을 지날 때 검색 칸 placeholder 가 4.0:1(라이트 4.2)이었다 — 대비가 오르는 쪽으로 바꿨다. hover 는 `--ag-glass-fill` 그대로.
+- **라이트 `--ag-glass-bg-thick` 86 → 88%** — 막(`--ag-overlay`) 위 패널에서 text-3 가 4.44 였다(88% 에서 4.61). 다크는 86% 그대로(막 위 5.9).
+- check.py +9(오버레이 재질 · 토스트 띠 · 드로어 푸터 · 입력칸 field · 모달 막 위치 — 다크 · 라이트, 유리 끔 회귀, 블러 호스트 안 fixed 자손 0 — 예시 6쪽 × 유리 끔 · 켬), 1.15 단언은 상단 바를 `::before` 에서 읽고 요소 자신은 블러 없음을 확인, 유리 대비에 막 위 bg-thick · field 위 text-3 추가. 204항목. 유리 끈 화면은 1.15.1 과 픽셀 차이 없음.
+
 ## 1.15.1 — 2026-11-10 · Chrome · Firefox 에서 꺼져 있던 backdrop-filter 3곳 복구 (1.15 작업 중 발견)
 
 - **`.ag-topbar`** 의 `blur(14px) saturate(1.4)` 가 Chrome · Edge · Firefox 에서 걸리지 않았다(계산값 `none`). 소스에 `backdrop-filter` 와 `-webkit-backdrop-filter` 를 둘 다 써서 lightningcss 가 둘을 합치며 뒤의 `-webkit-` 만 남겼고, Chrome · Firefox 는 접두 붙은 쪽을 모른다. Safari 만 블러가 됐다. 이제 상단 바 밑으로 지나가는 본문이 설계대로 흐려진다(바탕 82% · 테두리는 그대로) — 전에는 액센트 카드 글자가 사용자 메뉴 뒤로 또렷하게 비쳤다.

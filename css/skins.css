@@ -6,12 +6,16 @@
    집중 모드 상단 바 · 레일 하단 탭처럼 더 구체적인 기존 규칙이 그대로 이긴다.
    ========================================================================== */
 
-/* ---- 스킨: Liquid Glass (1.15) --------------------------------------------
+/* ---- 스킨: Liquid Glass (1.15 · 1.16) ----------------------------------------
    <html data-skin="glass">   — 서비스가 기본값으로 고정. 사용자 토글은 <button data-ag-skin-toggle aria-pressed="false">(argus.js, localStorage 'ag-skin')
    뒤에 액센트 · 브랜드 색 메시(--ag-glass-backdrop)를 깔고, 그 위 떠 있는 층을 반투명 유리로 바꾼다.
-   단계: 1.15 크롬(상단 바 · 사이드바 · 레일) → 오버레이 → 카드 · 패널 → 알약 컨트롤 순서로 넓힌다.
+   단계: 1.15 크롬(상단 바 · 사이드바 · 레일) → 1.16 오버레이(메뉴 · 모달 · 드로어 · 토스트 · 위저드 바) → 카드 · 패널 → 알약 컨트롤.
    유리 바탕 알파는 대비 단언(check.py)을 통과한 토큰 값으로만 바꾼다 — 컴포넌트에서 따로 낮추지 않는다.
-   OS 의 "투명도 줄이기"(prefers-reduced-transparency)면 토큰이 불투명 · 블러 없음 · 메시 없음으로 바뀐다. */
+   OS 의 "투명도 줄이기"(prefers-reduced-transparency)면 토큰이 불투명 · 블러 없음 · 메시 없음으로 바뀐다.
+   블러(backdrop-filter)가 걸린 요소는 두 가지를 바꾼다(1.16, Chromium 실측):
+   ① 안쪽 position: fixed 의 기준 상자가 된다 — 블러 호스트 안에 모달 · 드로어 · 토스트를 두지 말고 body 직계나 <dialog> 로.
+   ② backdrop root 가 된다 — 안쪽 요소의 블러가 호스트 밖을 못 본다. 그래서 오버레이를 품는 호스트(상단 바 · 모달 막)는 블러를 ::before 에 둔다.
+      사이드바는 자체 스크롤 상자라 ::before 를 쓰면 스크롤할 때 유리가 따라 올라가므로 요소 블러 — 사이드바 안 메뉴는 사이드바 밖을 흐리지 못한다. */
 
 /* 배경 메시 — 스크롤과 무관한 고정 층. body 배경(--ag-bg)은 캔버스로 올라가므로 z-index:-1 이 그 위 · 본문 아래에 놓인다.
    인쇄 문서 책상(.ag-paper-desk)은 배경이 없어 종이 뒤로 비치므로 뺀다 */
@@ -26,24 +30,82 @@
 }
 :where(:root[data-skin="glass"]) .ag-app { background-image: none; }   /* 메시가 상단 글로우(--ag-bg-glow · .ag-glow)를 대신한다 */
 
+/* 유리 안 서브표면 — 단색 카드처럼 호스트가 토큰을 다시 정의해서 검색 칸 · 입력 · 사이드바 항목 · 메뉴 hover 가 따라온다.
+   --ag-surface-2 · 입력 포커스 바탕은 field(대비가 오르는 쪽: 다크는 어둡게 · 라이트는 희게 — placeholder 4.5:1), hover 는 fill.
+   --ag-surface-3(배지 · 진행 막대 · 스위치 · 네비 활성)은 불투명 그대로 — 레일처럼 배지가 글자 위에 얹히는 곳에서 아래 글자가 비친다 */
+:where(:root[data-skin="glass"]) :is(.ag-topbar, .ag-sidebar, .ag-menu, .ag-combobox__list, .ag-popover, .ag-cmdk, .ag-modal__panel, .ag-drawer, .ag-toast, .ag-wizard__bar) {
+  --ag-surface-2: var(--ag-glass-field);
+  --ag-surface-hover: var(--ag-glass-fill);
+  --ag-field-focus-bg: var(--ag-glass-field);
+}
+
 /* 크롬 — 늘 떠 있는 틀. 사이드바 규칙은 레일 · 듀얼 · 모바일 고정 사이드바가 같이 받는다 */
-:where(:root[data-skin="glass"]) :is(.ag-topbar, .ag-sidebar) {
+:where(:root[data-skin="glass"]) .ag-sidebar {
   background-color: var(--ag-glass-bg);
   background-image: var(--ag-glass-sheen);
   backdrop-filter: var(--ag-glass-filter);   /* -webkit- 은 lightningcss 가 붙인다. 소스에 둘 다 쓰면 접두 없는 쪽이 지워져 Chrome 에서 블러가 꺼진다 */
   border-color: var(--ag-glass-border);
   box-shadow: var(--ag-glass-edge);
-  /* 유리 안 서브표면 · hover 는 불투명 회색 대신 옅은 채움 — 단색 카드처럼 토큰을 다시 정의해서 검색 칸 · 사이드바 항목 · 네비 hover 가 따라온다.
-     --ag-surface-3(배지 · 진행 막대 · 스위치 · 네비 활성)은 불투명 그대로 — 레일처럼 배지가 글자 위에 얹히는 곳에서 아래 글자가 비친다 */
-  --ag-surface-2: var(--ag-glass-fill);
-  --ag-surface-hover: var(--ag-glass-fill);
 }
-:where(:root[data-skin="glass"]) .ag-topbar { background-color: var(--ag-glass-bg-thick); }   /* 본문이 밑으로 지나가는 바는 두꺼운 유리 */
-/* 집중 모드 상단 바는 투명 그대로 — 기존 규칙이 background · backdrop-filter 를 끄고, 여기서 하이라이트 선을 끈다 */
+/* 상단 바는 알림 · 사용자 메뉴를 품는다 → 블러를 ::before 로(위 ②). 본문이 밑으로 지나가므로 두꺼운 유리.
+   상단 바는 sticky + z-index 라 쌓임 맥락이 있어 -1 층이 바 안에 머문다. 아래 1px 는 테두리 밑까지 유리를 깐다 */
+:where(:root[data-skin="glass"]) .ag-topbar { background: none; backdrop-filter: none; border-color: var(--ag-glass-border); box-shadow: var(--ag-glass-edge); }
+:where(:root[data-skin="glass"]) .ag-topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 -1px;
+  z-index: -1;
+  pointer-events: none;
+  background-color: var(--ag-glass-bg-thick);
+  background-image: var(--ag-glass-sheen);
+  backdrop-filter: var(--ag-glass-filter);
+}
+/* 집중 모드 상단 바는 투명 그대로 — 기존 규칙이 background · backdrop-filter 를 끄고, 여기서 하이라이트 선 · 유리 층을 끈다 */
 :where(:root[data-skin="glass"]) .ag-app--focus .ag-topbar { box-shadow: none; }
+:where(:root[data-skin="glass"]) .ag-app--focus .ag-topbar::before { content: none; }
 @media (max-width: 960px) {
   :where(:root[data-skin="glass"]) .ag-app--rail .ag-sidebar.ag-sidebar--bottom-tabs { background-color: var(--ag-glass-bg-thick); backdrop-filter: var(--ag-glass-filter); }
 }
+
+/* 오버레이(1.16) — 잠깐 떠오르는 층. 밑으로 본문이 지나가거나 막 위에 뜨므로 두꺼운 유리. 자체 스크롤 상자가 많아 요소 블러 */
+:where(:root[data-skin="glass"]) :is(.ag-menu, .ag-combobox__list, .ag-popover, .ag-cmdk, .ag-modal__panel, .ag-drawer, .ag-toast) {
+  background-color: var(--ag-glass-bg-thick);
+  background-image: var(--ag-glass-sheen);
+  backdrop-filter: var(--ag-glass-filter);
+  border-color: var(--ag-glass-border);
+  box-shadow: var(--ag-glass-edge), var(--ag-shadow-lg);
+}
+/* 토스트 톤 — 위 규칙이 같은 특이도로 뒤에 와서 톤 띠를 덮으므로 띠를 목록 맨 앞에 다시 넣는다 */
+:where(:root[data-skin="glass"]) .ag-toast--good { box-shadow: inset 3px 0 0 var(--ag-good), var(--ag-glass-edge), var(--ag-shadow-lg); }
+:where(:root[data-skin="glass"]) .ag-toast--warn { box-shadow: inset 3px 0 0 var(--ag-warn), var(--ag-glass-edge), var(--ag-shadow-lg); }
+:where(:root[data-skin="glass"]) .ag-toast--crit { box-shadow: inset 3px 0 0 var(--ag-crit), var(--ag-glass-edge), var(--ag-shadow-lg); }
+:where(:root[data-skin="glass"]) .ag-toast--info { box-shadow: inset 3px 0 0 var(--ag-info), var(--ag-glass-edge), var(--ag-shadow-lg); }
+/* 고정 바 — 위저드 바는 유리. 고정 선택 바(.ag-bulkbar--sticky)는 1.9 원칙대로 불투명 그대로 둔다:
+   고른 행(액센트 틴트)이 밑을 지날 때 유리면 액센트 글자 대비가 라이트 orange · yellow · green · red 에서 3.9~4.3 으로 모자란다 */
+:where(:root[data-skin="glass"]) .ag-wizard__bar {
+  background-color: var(--ag-glass-bg-thick);
+  background-image: var(--ag-glass-sheen);
+  backdrop-filter: var(--ag-glass-filter);
+  border-color: var(--ag-glass-border);
+  box-shadow: var(--ag-glass-edge), var(--ag-shadow-md);
+}
+/* 안쪽 띠 — 드로어 푸터 · ⌘K 푸터는 내용과 겹치지 않으므로 호스트 유리를 그대로 보이고(위 테두리가 구분),
+   드로어 도구줄은 본문이 밑으로 스크롤되므로 두꺼운 유리 */
+:where(:root[data-skin="glass"]) :is(.ag-drawer__foot, .ag-cmdk__foot) { background: transparent; }
+:where(:root[data-skin="glass"]) .ag-drawer__toolbar { background-color: var(--ag-glass-bg-thick); backdrop-filter: var(--ag-glass-filter); }
+/* 오버레이형 모달 막 — 막 색과 블러를 ::before 로(위 ②). 그래야 안쪽 패널 · ⌘K 가 뒤 화면을 제대로 흐린다.
+   <dialog> 의 ::backdrop 과 드로어 막(형제)은 부모가 아니라 그대로 둔다 */
+:where(:root[data-skin="glass"]) .ag-modal-overlay { background: transparent; backdrop-filter: none; }
+:where(:root[data-skin="glass"]) .ag-modal-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--ag-overlay);
+  backdrop-filter: blur(4px);
+}
+
 @media print {
   :where(:root[data-skin="glass"]) body::before { display: none; }
 }
