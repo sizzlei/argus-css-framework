@@ -66,6 +66,7 @@
   --ag-dur: 160ms;          /* 상태 전환(hover·focus·열림) */
   --ag-dur-move: 260ms;     /* 1.4: 패널·스위치가 자리를 옮기는 동작 */
   --ag-dur-slow: 400ms;     /* 1.4: 데이터 바가 값으로 자라는 피드백 */
+  --ag-ease-spring: cubic-bezier(.34, 1.56, .64, 1);   /* 1.18: 1.0 을 넘는 오버슈트 — 유리 스킨 선택 알약 미끄러짐 · 누름 전용 */
   --ag-pulse-loop: 3;       /* 1.4: .ag-dot--pulse 반복 횟수 — 기본 3번 깜빡이고 멈춤. 진행 중 장애 하나에만 infinite 로 옵트인 */
   --ag-query-w: 300px;      /* 1.4: 테이블 쿼리 열(.ag-td--query) 최대 폭 */
   --ag-td-max: 240px;       /* 1.8 (⑧): 말줄임 셀(.ag-td--truncate) 최대 폭 — 셀마다 style="--ag-td-max: 360px" 로 조정 */
@@ -113,6 +114,8 @@
   --ag-glass-edge: inset 0 1px 0 rgb(255 255 255 / .12), inset 0 -1px 0 rgb(0 0 0 / .24);
   --ag-glass-fill: rgb(255 255 255 / .06);
   --ag-glass-field: rgb(0 0 0 / .18);
+  --ag-glass-pill: rgb(255 255 255 / .14);   /* 1.18: 선택 알약(네비 · 세그먼트) — 트랙(fill)보다 밝게 떠오른 유리 */
+  --ag-glass-pill-shadow: inset 0 1px 0 rgb(255 255 255 / .2), 0 1px 3px rgb(0 0 0 / .4);
   --ag-glass-tint-1: color-mix(in oklab, var(--ag-brand-from, var(--ag-accent)) 26%, transparent);
   --ag-glass-tint-2: color-mix(in oklab, var(--ag-brand-to, var(--ag-accent-2)) 18%, transparent);
   --ag-glass-tint-3: color-mix(in oklab, var(--ag-accent) 14%, transparent);
@@ -236,6 +239,8 @@
   --ag-glass-edge: inset 0 1px 0 rgb(255 255 255 / .85), inset 0 -1px 0 rgb(16 18 32 / .05);
   --ag-glass-fill: rgb(16 18 32 / .05);
   --ag-glass-field: rgb(255 255 255 / .55);
+  --ag-glass-pill: rgb(255 255 255 / .9);   /* 회색 트랙(fill) 위 흰 알약 + 얕은 그림자 */
+  --ag-glass-pill-shadow: inset 0 1px 0 rgb(255 255 255), 0 1px 3px rgb(16 18 32 / .14);
   --ag-glass-tint-1: color-mix(in oklab, var(--ag-brand-from, var(--ag-accent)) 20%, transparent);
   --ag-glass-tint-2: color-mix(in oklab, var(--ag-brand-to, var(--ag-accent-2)) 14%, transparent);
   --ag-glass-tint-3: color-mix(in oklab, var(--ag-accent) 10%, transparent);

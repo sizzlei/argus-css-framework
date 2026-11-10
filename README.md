@@ -28,7 +28,7 @@ dist/argus.patterns.min.css     ← 인증·로그·Slack·배너·알림·승�
 dist/argus.charts.min.css       ← CSS 차트(도넛·바·히트맵·게이지…) + Apex/Chart.js 보정 (12KB, gzip 3KB). 차트 있는 페이지만 — 스파크·인라인 svg 차트·버블은 core
 dist/argus.auth-landing.min.css ← 랜딩형 인증 변형 (선택, 2KB)
 dist/themes/<color>.min.css     ← 컬러 테마 red / orange / yellow / green / blue / indigo / violet. css 다음에 한 줄 더 <link>
-dist/argus.js                   ← 선택. 테마 · 스킨 토글·탭·사이드바·드롭다운·모달(소유권)·토스트·키보드·콤보박스·차트 호버 (13KB, gzip 4KB)
+dist/argus.js                   ← 선택. 테마 · 스킨 토글·탭·사이드바·드롭다운·모달(소유권)·토스트·키보드·콤보박스·차트 호버·선택 알약 미끄러짐 (15KB, gzip 5KB)
 dist/argus.charts.js            ← 선택. ApexCharts / Chart.js 에 토큰 주입 (AG.charts.apex / chartjsDefaults / sequential / heatRanges / engine / bubbles, 9KB)
 dist/VERSION
 css/ js/                        ← 소스. 읽을 땐 여기. js/modules/ 가 argus.js 로 합쳐진다 (사람이 읽는 합본이 필요하면 `sh build.sh --readable`)
@@ -37,7 +37,7 @@ index.html                      ← GitHub Pages 진입점 (examples/ 로 리다
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
                                    index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / report(A4 인쇄 문서) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
-tools/                          ← check.py(값 단언 회귀 216항목 + axe 접근성 게이트 + 키보드·모션 상한 + 클래스 커버리지) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
+tools/                          ← check.py(값 단언 회귀 232항목 + axe 접근성 게이트 + 키보드·모션 상한 + 클래스 커버리지) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -152,13 +152,14 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | 값 | 재질 | 적용 범위 |
 |---|---|---|
 | (없음) | 불투명 표면 (기본) | — |
-| `glass` | Liquid Glass — 반투명 바탕 + `blur(24px) saturate(180%)` + 위쪽 밝은 광택 + 하이라이트 테두리, 뒤에 액센트 · 브랜드 색 메시 | 1.15 크롬(상단 바 · 사이드바 · 레일 · 탭 모드 2단 바 · 레일 하단 탭) · 1.16 오버레이(`ag-menu` · `ag-notif` · `ag-combobox__list` · `ag-popover` · `ag-cmdk` · `ag-modal__panel` · `ag-drawer` · `ag-toast` · `ag-wizard__bar`). 1.17 카드 · 패널(`ag-card` 기본 · `--elevated` · `--interactive` · 엔진 변형, `ag-pane`, `ag-sidebar__panel`). 알약 컨트롤은 다음 단계. 불투명 그대로: 고정 선택 바(`ag-bulkbar--sticky`), 단색 톤 카드(`--accent` `--accent2` `--inverse` `--cat1~4` `--engine-solid`), `ag-card--accent-soft`, `ag-sidebar__panel--accent` |
+| `glass` | Liquid Glass — 반투명 바탕 + `blur(24px) saturate(180%)` + 위쪽 밝은 광택 + 하이라이트 테두리, 뒤에 액센트 · 브랜드 색 메시 | 1.15 크롬(상단 바 · 사이드바 · 레일 · 탭 모드 2단 바 · 레일 하단 탭) · 1.16 오버레이(`ag-menu` · `ag-notif` · `ag-combobox__list` · `ag-popover` · `ag-cmdk` · `ag-modal__panel` · `ag-drawer` · `ag-toast` · `ag-wizard__bar`). 1.17 카드 · 패널(`ag-card` 기본 · `--elevated` · `--interactive` · 엔진 변형, `ag-pane`, `ag-sidebar__panel`) · 1.18 알약 컨트롤(`ag-nav` · `ag-segmented` 트랙과 유리 선택 알약, `ag-tabs` 활성 판, `ag-user` hover). 불투명 그대로: 고정 선택 바(`ag-bulkbar--sticky`), 단색 톤 카드(`--accent` `--accent2` `--inverse` `--cat1~4` `--engine-solid`), `ag-card--accent-soft`, `ag-sidebar__panel--accent` |
 
 - **켜고 끄기:** 서비스가 `data-skin` 으로 기본값을 정하고, 사용자에게 고르게 하려면 `<button data-ag-skin-toggle aria-pressed="false">` 를 둡니다(argus.js, `localStorage('ag-skin')` 에 기억, 저장값이 없으면 서비스 기본값). 첫 페인트 깜빡임 방지 스크립트는 아래 JS 헬퍼 절.
 - **배경 바꾸기:** 메시는 `--ag-glass-backdrop` 한 토큰입니다. 서비스 이미지로 바꾸려면 `:root { --ag-glass-backdrop: url(/static/bg.jpg) center / cover; }`.
 - **대비:** 유리 바탕 두께는 둘 — 고정 배경 위(`--ag-glass-bg`, 사이드바)와 본문이 밑으로 지나가거나 막 위에 뜨는 곳(`--ag-glass-bg-thick`, 상단 바 · 오버레이). 유리 안 입력칸은 `--ag-glass-field`(다크는 어둡게 · 라이트는 희게 — placeholder 대비가 오르는 쪽). 7색 × 다크 · 라이트에서 메타 글자(`--ag-text-3`)까지 4.5:1 을 check.py 가 단언합니다. 알파를 낮추고 싶으면 컴포넌트가 아니라 토큰에서, 단언을 통과하는 범위로.
 - **블러 호스트 안에 fixed 오버레이를 두지 않습니다.** `backdrop-filter` 가 걸린 요소(사이드바 · 메뉴 · 모달 패널 · 드로어 · 토스트)는 안쪽 `position: fixed` 의 기준 상자가 되어, 그 안에 둔 모달 · 드로어 · 토스트가 호스트 크기로 갇힙니다. 오버레이는 body 직계나 `<dialog>` 로 둡니다(check.py 가 예시에서 단언).
 - **카드는 블러 없이 반투명입니다.** 블러를 걸면 카드마다 쌓임 맥락이 생겨 카드 안 드롭다운이 다음 카드 밑에 가려집니다(실측). 카드는 고정된 부드러운 메시 위에만 놓여 블러가 보이지도 않습니다. 그래서 `--ag-glass-backdrop` 을 사진으로 바꿀 때는 카드 뒤가 흐려지지 않으니 미리 흐린 이미지를 씁니다. 카드는 두꺼운 유리라 안쪽 표 머리 · 고정 열 · 입력칸은 지금처럼 불투명이어도 이음새가 거의 안 보입니다.
+- **선택 알약이 미끄러집니다(1.18).** 네비 · 세그먼트 · 탭의 선택이 바뀌면 유리 알약(탭은 판 + 밑줄)이 새 항목으로 스프링 곡선(`--ag-ease-spring`, 1.0 을 넘는 오버슈트)을 타고 미끄러지고, 누르면 항목이(활성이면 알약도) 살짝 눌렸다 튀어 돌아옵니다. 위치 계산은 argus.js(`15-glide`)가 자동으로 합니다 — 클릭 · 방향키 · Alpine 의 class 변경 모두 따라오고, 따로 붙일 속성은 없습니다. argus.js 가 없으면 선택한 항목이 제자리에서 알약을 받습니다. OS 의 동작 줄이기 설정이면 기존 전역 규칙(base.css)대로 즉시 바뀝니다. 탭 모드 2단 바 네비는 원래 모양(액센트 소프트 · 밑줄 변형) 그대로입니다.
 - **사이드바 안 메뉴는 사이드바 밖을 흐리지 못합니다.** 블러가 걸린 요소 안쪽의 블러는 그 요소 밖을 못 봅니다(backdrop root). 그래서 메뉴를 품는 상단 바 · 오버레이형 모달 막은 블러를 `::before` 에 두었고, 사이드바는 자체 스크롤 상자라 요소 블러 그대로입니다.
 - **투명도 줄이기:** OS 설정(`prefers-reduced-transparency: reduce`)이면 유리 스킨이어도 불투명 · 블러 없음 · 메시 없음으로 떨어집니다.
 - 인쇄 문서(`.ag-paper-desk`)와 인쇄 때는 메시를 깔지 않습니다.
@@ -186,7 +187,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | 그룹 | 변수 | 비고 |
 |---|---|---|
 | 표면 | `--ag-bg` `--ag-surface` `--ag-surface-2` `--ag-surface-3` `--ag-inverse` | 바닥 → 카드 → 카드 안 타일 → 강조. `--ag-shadow-scroll` 은 가로 스크롤 가장자리. `--ag-surface-sheen`(다크 카드 광택, 라이트 none) · `--ag-bg-glow`(페이지 상단 액센트 글로우, `none` 으로 끔) |
-| 유리 (1.15 · 1.16 · 1.17) | `--ag-glass-bg` `--ag-glass-bg-thick` `--ag-glass-filter` `--ag-glass-sheen` `--ag-glass-border` `--ag-glass-edge` `--ag-glass-fill` `--ag-glass-field` `--ag-glass-tint-1..3` `--ag-glass-backdrop` | `data-skin="glass"` 일 때만 쓰임. 바탕(고정 배경 위 / 본문 · 막 위 두꺼운) · 블러+채도 · 위쪽 광택 · 테두리 · 하이라이트 선 · 유리 안 hover · 유리 안 입력칸(1.16) · 메시 색 3 · 메시. 투명도 줄이기면 불투명 |
+| 유리 (1.15 ~ 1.18) | `--ag-glass-bg` `--ag-glass-bg-thick` `--ag-glass-filter` `--ag-glass-sheen` `--ag-glass-border` `--ag-glass-edge` `--ag-glass-fill` `--ag-glass-field` `--ag-glass-pill` `--ag-glass-pill-shadow` `--ag-glass-tint-1..3` `--ag-glass-backdrop` · `--ag-ease-spring` | `data-skin="glass"` 일 때만 쓰임. 바탕(고정 배경 위 / 본문 · 막 위 두꺼운) · 블러+채도 · 위쪽 광택 · 테두리 · 하이라이트 선 · 유리 안 hover(알약 트랙) · 유리 안 입력칸(1.16) · 선택 알약 + 그림자(1.18) · 메시 색 3 · 메시. 스프링 곡선은 알약 미끄러짐 · 누름 전용. 투명도 줄이기면 불투명 |
 | 포커스 | `--ag-ring`(입력, 글로우) `--ag-ring-focus`(키보드, 2px 틈 + 실선) · 입력 포커스는 `--ag-field-focus-bg` · `--ag-field-focus-border` · `--ag-field-ring` 을 먼저 읽음(없으면 표면 · 액센트 글자 · `--ag-ring`, 1.9.2) | 어떤 배경 위에서도 같은 두께. 단색 카드는 입력 포커스 셋을 재정의(바탕 그대로 + 글자색 테두리 · 링) |
 | 잉크 | `--ag-text` `--ag-text-2` `--ag-text-3` | 본문 / 보조 / 메타 |
 | 액센트 | `--ag-accent`(채움) `--ag-accent-text`(글자) — 테마가 공급 · `--ag-accent-2` `--ag-accent-2-text` | 채움 위 글자는 `--ag-text-on-accent`. 글자를 액센트로 칠할 땐 항상 `-text`(다크에서 채움색은 표면 위 대비가 모자람). `*-soft` 는 투명 배경용. accent-2 는 브랜드 그라데이션·범주 2번용 — 버튼·칩·배지 같은 UI 요소에는 쓰지 않는다 (주요 동작이 둘이면 둘 다 아니다) |
@@ -330,6 +331,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 |---|---|
 | `data-ag-theme-toggle` | 클릭 시 다크 ↔ 라이트, `localStorage('ag-theme')` 에 저장. 버튼 안의 해·달 아이콘은 `.ag-only-dark` / `.ag-only-light` 로 하나만 보이게 (svg 든 Phosphor `<i>` 든) |
 | `data-ag-skin-toggle` | 클릭 시 유리 스킨 켬 ↔ 끔(`data-skin="glass"`), `localStorage('ag-skin')` 에 `glass` / `flat` 저장, `aria-pressed` 갱신. 저장값이 없으면 서비스가 `<html>` 에 정한 기본값 그대로 (1.15) |
+| (자동) `.ag-nav` · `.ag-segmented` · `.ag-tabs` | 1.18: 활성 항목 위치를 호스트 변수(`--_glide-x/-y/-w/-h`)와 `data-ag-glide` 로 알린다 — 유리 스킨이 그 자리에 미끄러지는 알약을 그린다. 크기 변화 · 글꼴 로드 · 추가된 노드까지 따라감, 서비스가 할 일 없음 |
 | `.ag-segmented__item` `.ag-tabs__item` | 형제 중 하나만 `is-active` |
 | `data-ag-tabs` + `data-ag-tab="x"` + `data-ag-panel="x"` | 탭 패널 전환 |
 | `data-ag-dropdown` | 부모 `.ag-dropdown` 에 `is-open` 토글, 바깥 클릭 시 닫힘 |
@@ -371,7 +373,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 216항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 유리 스킨 · 400 · 3400 tabs)
+python3 tools/check.py      # 값 단언 회귀 232항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 유리 스킨 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서

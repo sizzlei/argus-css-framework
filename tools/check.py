@@ -773,7 +773,8 @@ async def main():
           const scrim=stack('--ag-bg','--ag-accent','--ag-overlay','--ag-glass-bg-thick'),field=stack(...mesh,'--ag-glass-bg','--ag-glass-field'),thickField=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-field');
           const card=stack(...mesh,'--ag-glass-bg-thick');
           const engTint=Math.min(...['mysql','postgres','oracle','documentdb','mssql'].map(e=>cr(`--ag-engine-${e}-text`,stack(...mesh,`color-mix(in oklab, var(--ag-engine-${e}) 9%, var(--ag-glass-bg-thick))`))));
-          return {card3:cr('--ag-text-3',card),engTint,reg3:cr('--ag-text-3',reg),regAccent:cr('--ag-accent-text',reg),fill2:cr('--ag-text-2',fill),thick2:cr('--ag-text-2',thick),thick3:cr('--ag-text-3',thick),
+          const navTrack=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-fill'),pill=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-fill','--ag-glass-pill'),segCard=stack(...mesh,'--ag-glass-bg-thick','--ag-glass-fill');
+          return {navTrack2:cr('--ag-text-2',navTrack),pillText:cr('--ag-text',pill),segCard2:cr('--ag-text-2',segCard),card3:cr('--ag-text-3',card),engTint,reg3:cr('--ag-text-3',reg),regAccent:cr('--ag-accent-text',reg),fill2:cr('--ag-text-2',fill),thick2:cr('--ag-text-2',thick),thick3:cr('--ag-text-3',thick),
             scrim2:cr('--ag-text-2',scrim),scrim3:cr('--ag-text-3',scrim),field3:cr('--ag-text-3',field),thickField3:cr('--ag-text-3',thickField)}}"""
         lows = []
         for theme in ("", "red", "orange", "yellow", "green", "blue", "indigo"):
@@ -785,7 +786,7 @@ async def main():
                 bad = {k: v for k, v in r.items() if v < 4.5}
                 if bad: lows.append(f"{theme or 'violet'}/{'light' if light else 'dark'} {bad}")
                 await pg.close()
-        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3, 1.16 막 위 bg-thick · field 위 text-3, 1.17 메시 위 카드 text-3 · 엔진 틴트 카드 엔진 글자 ≥ 4.5", not lows, " | ".join(lows[:6]))
+        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3, 1.16 막 위 bg-thick · field 위 text-3, 1.17 메시 위 카드 text-3 · 엔진 틴트 카드 엔진 글자, 1.18 상단 바 · 카드 트랙 위 text-2 · 알약 위 text ≥ 4.5", not lows, " | ".join(lows[:6]))
         for name in ("index", "layouts"):
             pg = await page(b, name + ".html", width=400, skin=True)
             r = await pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
@@ -871,6 +872,67 @@ async def main():
               const cs=getComputedStyle(document.querySelector('.ag-pane'));return {paneA:alpha(cs.backgroundColor),paneBf:cs.backdropFilter,paneSh:cs.boxShadow}}"""))
             check(f"1.17 유리 켬({th}): 듀얼 목록 판 반투명 · 블러 없음 · 하이라이트, 사이드바 패널 = field, 액센트 패널 불투명",
                   0 < r["paneA"] < 255 and r["paneBf"] == "none" and "inset" in r["paneSh"] and r["panel"] == r["field"] and r["accentA"] == 255, str(r))
+            await pg.close()
+
+        # ── 1.18 유리 스킨 4단계 — 알약 컨트롤(트랙 · 유리 알약 · 미끄러짐 · 누름 · 탭 판) ──
+        glide_js = r"""(sel)=>{const h=document.querySelector(sel),b=getComputedStyle(h,'::before');
+          const a=[...h.children].find(c=>c.matches('.is-active,[aria-current="page"],[aria-pressed="true"],[aria-checked="true"],[aria-selected="true"]'));
+          const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});const alpha=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return ctx.getImageData(0,0,1,1).data[3]};
+          const tok=t=>{const d=document.createElement('div');d.style.color=`var(${t})`;document.body.appendChild(d);const c=getComputedStyle(d).color;d.remove();return c};
+          const hr=h.getBoundingClientRect(),r=a.getBoundingClientRect(),m=new DOMMatrix(b.transform==='none'?undefined:b.transform),ia=getComputedStyle(a);
+          return {glide:h.hasAttribute('data-ag-glide'),content:b.content,w:parseFloat(b.width)||0,x:m.m41,ex:r.left-hr.left-h.clientLeft+h.scrollLeft,ew:a.offsetWidth,
+            track:getComputedStyle(h).backgroundColor,trackA:alpha(getComputedStyle(h).backgroundColor),itemBg:ia.backgroundColor,itemA:alpha(ia.backgroundColor),itemSh:ia.boxShadow,itemBb:ia.borderBottomColor,
+            bBb:b.borderBottomColor,tf:b.transitionTimingFunction,fill:tok('--ag-glass-fill'),pill:tok('--ag-glass-pill'),acc:tok('--ag-accent-text'),soft:tok('--ag-accent-soft')}}"""
+        near = lambda r: abs(r["x"] - r["ex"]) <= 1 and abs(r["w"] - r["ew"]) <= 1
+        SPRING = "cubic-bezier(0.34, 1.56, 0.64, 1)"
+        for light in (False, True):
+            th = "라이트" if light else "다크"
+            pg = await page(b, "index.html", light=light)
+            n, sg = await pg.evaluate(glide_js, ".ag-topbar .ag-nav"), await pg.evaluate(glide_js, ".ag-segmented")
+            check(f"1.18 유리 끔({th}): 네비 · 세그먼트 미끄러짐 층 없음 · 트랙 · 활성 불투명 그대로", n["content"] == "none" and sg["content"] == "none" and n["trackA"] == 255 and n["itemA"] == 255 and sg["itemA"] == 255, str({k: (n[k], sg[k]) for k in ("content", "trackA", "itemA")}))
+            await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(350)   # 항목 배경 전환(--ag-dur)이 끝난 뒤
+            n, sg = await pg.evaluate(glide_js, ".ag-topbar .ag-nav"), await pg.evaluate(glide_js, ".ag-segmented")
+            check(f"1.18 유리 켬({th}): 미끄러지는 알약 — 네비 · 세그먼트 ::before 가 활성 항목 자리 · 폭(±1px), 활성 항목 자신은 투명, 트랙 = fill, 스프링 곡선",
+                  all(r["glide"] and r["content"] == '""' and near(r) and r["itemA"] == 0 and r["track"] == r["fill"] and SPRING in r["tf"] for r in (n, sg)), str({k: (round(n[k], 1) if isinstance(n[k], float) else n[k], round(sg[k], 1) if isinstance(sg[k], float) else sg[k]) for k in ("glide", "x", "ex", "w", "ew", "itemA", "track", "fill")}))
+            items = await pg.query_selector_all(".ag-segmented .ag-segmented__item")
+            await items[2].click(); await pg.wait_for_timeout(450)
+            moved = await pg.evaluate(glide_js, ".ag-segmented")
+            await pg.evaluate("""()=>{const its=[...document.querySelectorAll('.ag-segmented .ag-segmented__item')];its.forEach(i=>{i.classList.remove('is-active');if(i.hasAttribute('aria-checked'))i.setAttribute('aria-checked','false')});its[0].classList.add('is-active');if(its[0].hasAttribute('aria-checked'))its[0].setAttribute('aria-checked','true')}""")
+            await pg.wait_for_timeout(450)
+            alp = await pg.evaluate(glide_js, ".ag-segmented")
+            check(f"1.18 유리 켬({th}): 클릭 · 직접 class 변경(Alpine 식) 뒤 알약이 새 활성 항목으로 간다", near(moved) and near(alp) and moved["x"] != alp["x"], str({k: (round(moved[k], 1), round(alp[k], 1)) for k in ("x", "ex")}))
+            # 누름 — 활성 아닌 항목은 자신이, 활성 항목은 알약도 .96
+            box = await items[1].bounding_box(); await pg.mouse.move(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2); await pg.mouse.down(); await pg.wait_for_timeout(450)
+            pressed_item = await pg.evaluate("getComputedStyle(document.querySelectorAll('.ag-segmented .ag-segmented__item')[1]).scale"); await pg.mouse.up(); await pg.wait_for_timeout(450)
+            box = await items[1].bounding_box(); await pg.mouse.move(box["x"] + box["width"] / 2, box["y"] + box["height"] / 2); await pg.mouse.down(); await pg.wait_for_timeout(450)
+            pressed_pill = await pg.evaluate("getComputedStyle(document.querySelector('.ag-segmented'),'::before').scale"); await pg.mouse.up(); await pg.wait_for_timeout(450)
+            released = await pg.evaluate("getComputedStyle(document.querySelector('.ag-segmented'),'::before').scale")
+            check(f"1.18 유리 켬({th}): 누름 — 항목 scale .96, 활성 항목을 누르면 알약도 .96, 놓으면 원래대로", pressed_item == "0.96" and pressed_pill == "0.96" and released == "none", f"{pressed_item} {pressed_pill} {released}")
+            # 정적 알약(JS 없음) — data-ag-glide 를 지우면 활성 항목이 알약을 받는다
+            await pg.evaluate("document.querySelectorAll('[data-ag-glide]').forEach(h=>h.removeAttribute('data-ag-glide'))"); await pg.wait_for_timeout(350)
+            n = await pg.evaluate(glide_js, ".ag-topbar .ag-nav")
+            check(f"1.18 유리 켬({th}) 정적: 활성 네비 = 유리 알약(pill) + inset 하이라이트, 미끄러짐 층 없음", n["content"] == "none" and n["itemBg"] == n["pill"] and "inset" in n["itemSh"], str({k: n[k] for k in ("content", "itemBg", "pill", "itemSh")}))
+            await pg.hover(".ag-user"); await pg.wait_for_timeout(250)
+            r = await pg.evaluate("(()=>{const d=document.createElement('div');d.style.color='var(--ag-glass-fill)';document.body.appendChild(d);const f=getComputedStyle(d).color;d.remove();return {bg:getComputedStyle(document.querySelector('.ag-user')).backgroundColor,fill:f}})()")
+            check(f"1.18 유리 켬({th}): 사용자 메뉴 hover 바탕 = fill", r["bg"] == r["fill"], str(r))
+            await pg.close()
+            # 밑줄 탭 — 미끄러지는 판 + 밑줄, 정적이면 활성 탭 판 + 기존 밑줄
+            pg = await page(b, "detail.html", light=light, skin=True)
+            await pg.wait_for_timeout(300)
+            t = await pg.evaluate(glide_js, ".ag-tabs")
+            await pg.evaluate("document.querySelectorAll('.ag-tabs[data-ag-glide]').forEach(h=>h.removeAttribute('data-ag-glide'))"); await pg.wait_for_timeout(350)
+            ts = await pg.evaluate(glide_js, ".ag-tabs")
+            check(f"1.18 유리 켬({th}): 탭 — 미끄러지는 판의 밑줄 = 액센트 글자색 · 활성 탭 밑줄 투명, 정적이면 활성 탭 판(fill) + 밑줄",
+                  t["glide"] and near(t) and t["bBb"] == t["acc"] and t["itemBb"] == "rgba(0, 0, 0, 0)" and ts["itemBg"] == ts["fill"] and ts["itemBb"] == ts["acc"], str({k: (t[k], ts[k]) for k in ("bBb", "itemBb", "itemBg", "acc")}))
+            await pg.close()
+            # 탭 모드 2단 바 네비(예시는 밑줄 변형) — 미끄러짐에서 빠지고 활성 모양은 유리 끈 화면 그대로
+            pg = await page(b, "layouts.html", light=light)
+            await pg.click('[data-mode="tabs"]'); await pg.wait_for_timeout(200)
+            off = await pg.evaluate(glide_js, ".ag-topbar__row--nav .ag-nav")
+            await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(350)
+            r = await pg.evaluate(glide_js, ".ag-topbar__row--nav .ag-nav")
+            check(f"1.18 유리 켬({th}): 탭 모드 2단 바 네비는 미끄러짐 층 없음 · 활성 바탕 · 밑줄 · 그림자가 유리 끔과 같음",
+                  r["content"] == "none" and all(r[k] == off[k] for k in ("itemBg", "itemBb", "itemSh")), str({k: (off[k], r[k]) for k in ("itemBg", "itemBb", "itemSh")}))
             await pg.close()
 
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──

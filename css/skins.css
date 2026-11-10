@@ -6,10 +6,10 @@
    집중 모드 상단 바 · 레일 하단 탭처럼 더 구체적인 기존 규칙이 그대로 이긴다.
    ========================================================================== */
 
-/* ---- 스킨: Liquid Glass (1.15 · 1.16 · 1.17) ---------------------------------
+/* ---- 스킨: Liquid Glass (1.15 ~ 1.18) ----------------------------------------
    <html data-skin="glass">   — 서비스가 기본값으로 고정. 사용자 토글은 <button data-ag-skin-toggle aria-pressed="false">(argus.js, localStorage 'ag-skin')
    뒤에 액센트 · 브랜드 색 메시(--ag-glass-backdrop)를 깔고, 그 위 떠 있는 층을 반투명 유리로 바꾼다.
-   단계: 1.15 크롬(상단 바 · 사이드바 · 레일) → 1.16 오버레이(메뉴 · 모달 · 드로어 · 토스트 · 위저드 바) → 1.17 카드 · 패널 → 알약 컨트롤.
+   단계: 1.15 크롬(상단 바 · 사이드바 · 레일) → 1.16 오버레이(메뉴 · 모달 · 드로어 · 토스트 · 위저드 바) → 1.17 카드 · 패널 → 1.18 알약 컨트롤(네비 · 세그먼트 · 탭 · 사용자 메뉴).
    유리 바탕 알파는 대비 단언(check.py)을 통과한 토큰 값으로만 바꾼다 — 컴포넌트에서 따로 낮추지 않는다.
    OS 의 "투명도 줄이기"(prefers-reduced-transparency)면 토큰이 불투명 · 블러 없음 · 메시 없음으로 바뀐다.
    블러(backdrop-filter)가 걸린 요소는 두 가지를 바꾼다(1.16, Chromium 실측):
@@ -128,6 +128,55 @@
 }
 /* 사이드바 패널 — 유리 사이드바 안 오목한 칸. --accent 는 불투명 그대로(라이트 orange 액센트 글자 4.43) */
 :where(:root[data-skin="glass"]) .ag-sidebar__panel:where(:not(.ag-sidebar__panel--accent)) { background-color: var(--ag-glass-field); }
+
+/* 알약 컨트롤(1.18) — 트랙은 옅은 채움, 선택은 떠오른 유리 알약(광택 · 위 하이라이트 · 얕은 그림자).
+   argus.js(15-glide)가 호스트에 data-ag-glide 와 --_glide-x/-y/-w/-h 를 주면 알약을 호스트 ::before 하나로 그려
+   선택이 바뀔 때 --ag-ease-spring 으로 미끄러진다. JS 가 없으면 활성 항목이 제자리에서 알약을 받는다.
+   누르면 항목이(활성이면 알약도) scale .96 으로 눌렸다 튀어 돌아온다. 탭 모드 2단 바 네비(액센트 소프트 활성)는 그대로 둔다 */
+:where(:root[data-skin="glass"]) :is(.ag-nav, .ag-segmented) { background-color: var(--ag-glass-fill); border-color: var(--ag-glass-border); }
+:where(:root[data-skin="glass"]) :is(.ag-nav__item.is-active, .ag-nav__item[aria-current="page"], .ag-segmented__item.is-active, .ag-segmented__item[aria-pressed="true"], .ag-segmented__item[aria-checked="true"]) {
+  background-color: var(--ag-glass-pill);
+  background-image: var(--ag-glass-sheen);
+  box-shadow: var(--ag-glass-pill-shadow);
+}
+:where(:root[data-skin="glass"]) .ag-topbar__row--nav :is(.ag-nav__item.is-active, .ag-nav__item[aria-current="page"]) { background-image: none; box-shadow: none; }
+/* 밑줄 탭 — 밑줄은 그대로, 활성 탭 뒤에 위 모서리만 둥근 옅은 판 */
+:where(:root[data-skin="glass"]) :is(.ag-tabs__item.is-active, .ag-tabs__item[aria-selected="true"]) { background-color: var(--ag-glass-fill); border-radius: var(--ag-radius-sm) var(--ag-radius-sm) 0 0; }
+/* 미끄러지는 알약 — 호스트 ::before 하나. 스크롤되는 트랙 안 absolute 라 트랙을 스크롤하면 같이 움직인다. 처음 붙을 때는 새로 생기는 층이라 날아오지 않는다 */
+:where(:root[data-skin="glass"]) :is(.ag-nav, .ag-segmented, .ag-tabs)[data-ag-glide]:not(.ag-topbar__row--nav *) { position: relative; isolation: isolate; }
+:where(:root[data-skin="glass"]) :is(.ag-nav, .ag-segmented, .ag-tabs)[data-ag-glide]:not(.ag-topbar__row--nav *)::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  top: var(--_glide-y, 0px);
+  width: var(--_glide-w, 0px);
+  height: var(--_glide-h, 0px);
+  transform: translateX(var(--_glide-x, 0px));
+  pointer-events: none;
+  transition: transform var(--ag-dur-move) var(--ag-ease-spring), width var(--ag-dur-move) var(--ag-ease-spring), scale var(--ag-dur-move) var(--ag-ease-spring);
+}
+:where(:root[data-skin="glass"]) :is(.ag-nav, .ag-segmented)[data-ag-glide]:not(.ag-topbar__row--nav *)::before {
+  border-radius: var(--ag-radius-pill);
+  background-color: var(--ag-glass-pill);
+  background-image: var(--ag-glass-sheen);
+  box-shadow: var(--ag-glass-pill-shadow);
+}
+:where(:root[data-skin="glass"]) .ag-tabs[data-ag-glide]::before {
+  box-sizing: border-box;
+  border-radius: var(--ag-radius-sm) var(--ag-radius-sm) 0 0;
+  background-color: var(--ag-glass-fill);
+  border-bottom: 2px solid var(--ag-accent-text);
+}
+/* 알약을 호스트가 그리는 동안 활성 항목 자신의 알약 · 판 · 밑줄은 끈다 */
+:where(:root[data-skin="glass"]) :is(.ag-nav, .ag-segmented)[data-ag-glide]:not(.ag-topbar__row--nav *) > :is(.ag-nav__item.is-active, .ag-nav__item[aria-current="page"], .ag-segmented__item.is-active, .ag-segmented__item[aria-pressed="true"], .ag-segmented__item[aria-checked="true"]) { background: transparent; box-shadow: none; }
+:where(:root[data-skin="glass"]) .ag-tabs[data-ag-glide] > :is(.ag-tabs__item.is-active, .ag-tabs__item[aria-selected="true"]) { background-color: transparent; border-bottom-color: transparent; }
+/* 누름 — 개별 scale 속성이라 transform(미끄러짐)과 겹치지 않는다. 기존 배경 · 색 전환은 같은 목록에 이어 쓴다 */
+:where(:root[data-skin="glass"]) :is(.ag-nav__item, .ag-segmented__item, .ag-tabs__item) { transition: background var(--ag-dur) var(--ag-ease), color var(--ag-dur) var(--ag-ease), scale var(--ag-dur-move) var(--ag-ease-spring); }
+:where(:root[data-skin="glass"]) :is(.ag-nav__item, .ag-segmented__item, .ag-tabs__item):active { scale: .96; }
+:where(:root[data-skin="glass"]) :is(.ag-nav, .ag-segmented, .ag-tabs)[data-ag-glide]:not(.ag-topbar__row--nav *):has(> :is(.is-active, [aria-current="page"], [aria-pressed="true"], [aria-checked="true"], [aria-selected="true"]):active)::before { scale: .96; }
+/* 사용자 메뉴 — hover · 열림 바탕을 불투명 표면 대신 유리 채움으로 */
+:where(:root[data-skin="glass"]) :is(.ag-user:hover, .ag-dropdown.is-open > .ag-user) { background-color: var(--ag-glass-fill); border-color: var(--ag-glass-border); }
 
 @media print {
   :where(:root[data-skin="glass"]) body::before { display: none; }
