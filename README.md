@@ -152,22 +152,21 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 | 값 | 재질 | 적용 범위 |
 |---|---|---|
 | (없음) | 불투명 표면 (기본) | — |
-| `glass` | Liquid Glass — 반투명 바탕 + `blur(24px) saturate(180%)` + 위쪽 밝은 광택 + 하이라이트 테두리, 뒤에 명도를 고정한 테마색 메시 + 격자선 | **크롬** 상단 바(떠 있는 바) · 사이드바 · 레일 · 탭 모드 2단 바 · 모바일 레일 하단 탭(떠 있는 바) / **오버레이** `ag-menu` · `ag-notif` · `ag-combobox__list` · `ag-popover` · `ag-cmdk` · `ag-modal__panel` · `ag-drawer` · `ag-toast` · `ag-wizard__bar` / **카드 · 패널** `ag-card` 기본 · `--elevated` · `--interactive` · 엔진 변형(카드 안 상태 행 · 타일 · 버튼 · 입력칸 포함), `ag-pane`, `ag-sidebar__panel` / **알약 컨트롤** `ag-nav` · `ag-segmented` 유리 선택 알약, `ag-tabs` 활성 판, `ag-user` hover. 불투명 그대로: 고정 선택 바(`ag-bulkbar--sticky`), 단색 톤 카드(`--accent` `--accent2` `--inverse` `--cat1~4` `--engine-solid`), `ag-card--accent-soft`, `ag-sidebar__panel--accent`, 카드 안 표(`ag-table-wrap`) · 배지 · 진행 막대 |
+| `glass` | Liquid Glass — 반투명 바탕 + `blur(24px) saturate(180%)` + 위쪽 밝은 광택 + 하이라이트 테두리, 뒤에 명도를 고정한 테마색 메시 + 격자선 | **크롬** 상단 바(떠 있는 바) · 사이드바 · 레일 · 탭 모드 2단 바 · 모바일 레일 하단 탭(떠 있는 바) / **오버레이** `ag-menu` · `ag-notif` · `ag-combobox__list` · `ag-popover` · `ag-cmdk` · `ag-modal__panel` · `ag-drawer` · `ag-toast` · `ag-wizard__bar` / **카드 · 목록 판** `ag-card` 기본 · `--elevated` · `--interactive` · 엔진 변형, `ag-pane` — 바탕은 불투명(유리 끈 카드와 같은 색), 테두리 빛 · 광택 · 하이라이트만 / **사이드바 패널** `ag-sidebar__panel` / **알약 컨트롤** `ag-nav` · `ag-segmented` 유리 선택 알약, `ag-tabs` 활성 판, `ag-user` hover. 불투명 그대로: 고정 선택 바(`ag-bulkbar--sticky`), 단색 톤 카드(`--accent` `--accent2` `--inverse` `--cat1~4` `--engine-solid`), `ag-card--accent-soft`, `ag-sidebar__panel--accent` |
 
 **켜고 끄기** — 서비스가 `data-skin` 으로 기본값을 정하고, 사용자에게 고르게 하려면 `<button data-ag-skin-toggle aria-pressed="false">` 를 둡니다(argus.js, `localStorage('ag-skin')` 에 기억, 저장값이 없으면 서비스 기본값). 첫 페인트 깜빡임 방지 스크립트는 아래 JS 헬퍼 절.
 
 **바탕**
 - **메시:** 바닥(`--ag-glass-wash` — 다크는 짙은 테마색, 라이트는 없음) 위에 세 색 덩어리(`--ag-glass-tint-1..3`). 색은 명도를 고정한 상대 색(`oklch(from var(--ag-brand-from) .26 min(c, .13) h)` — 다크는 명도 상한, 라이트는 하한)이라 테마는 색상만 바꾸고, 메시 위에 바로 놓인 글자(페이지 제목 · 브레드크럼 · 갱신 시각) 대비는 어느 테마에서도 그대로입니다.
 - **격자선:** 메시 맨 위 32px 격자(`--ag-glass-grid`). 유리가 뒤를 흐리면 그 안에서만 선이 사라져 유리로 읽힙니다 — 매끈한 메시는 흐려도 같아 보입니다. 선은 글자와 반대 방향(다크는 어두운 선, 라이트는 흰 선)이라 메시 위 글자 대비는 오르기만 합니다. 끄려면 `:root { --ag-glass-grid: transparent; }`.
-- **배경 바꾸기:** 메시는 `--ag-glass-backdrop` 한 토큰(`background` 단축형 값)입니다. 서비스 이미지로 바꾸려면 `:root { --ag-glass-backdrop: url(/static/bg.jpg) center / cover; }` — 이때 위에 바로 놓인 글자 대비는 서비스가 책임집니다. 카드 뒤는 흐려지지만 사진이 너무 복잡하면 미리 흐린 이미지를 씁니다.
+- **배경 바꾸기:** 메시는 `--ag-glass-backdrop` 한 토큰(`background` 단축형 값)입니다. 서비스 이미지로 바꾸려면 `:root { --ag-glass-backdrop: url(/static/bg.jpg) center / cover; }` — 이때 위에 바로 놓인 글자 대비는 서비스가 책임집니다. 사진은 상단 바 · 사이드바 뒤에서만 흐려지니 너무 복잡하면 미리 흐린 이미지를 씁니다.
 
 **부위별**
 - **상단 바는 떠 있습니다.** 유리 층(`::before`)만 위아래 8px · 좌우 거터의 절반만큼 들여 둥글게 하고, 바 요소는 투명이라 스크롤하면 본문이 바 둘레로 지나갑니다. 바 크기 · 격자 행(`--ag-topbar-h`) · sticky 오프셋은 그대로라 레이아웃은 움직이지 않습니다 — tabs 모드만 두 행을 바 안에 넣으려고 8px 높아집니다. 바 안 네비는 캡슐 트랙 없이 선택 알약만(바가 곧 트랙). 집중 모드 상단 바는 원래대로 투명입니다.
 - **모바일 레일 하단 탭(≤960)도 떠 있습니다.** 바닥에서 8px + 안전 영역, 좌우 거터의 절반만큼 떨어진 둥근 유리 바. fixed 요소라 본문 레이아웃은 그대로입니다.
 - **사이드바 · 오버레이**는 자체 스크롤 상자라 요소에 블러를 겁니다(`::before` 는 스크롤을 따라감). 오버레이 · 상단 바는 본문이 밑으로 지나가거나 막 위에 떠서 두꺼운 유리(`--ag-glass-bg-thick`).
-- **카드 뒤 흐림은 카드의 `::before` 에 겁니다.** 카드 자신에 블러를 걸면 쌓임 맥락이 생겨 카드 안 드롭다운이 다음 카드 밑에 가려집니다(실측). 가상 요소(z-index -1)에 걸면 카드는 쌓임 맥락이 되지 않고 메뉴는 다음 카드 위로 그대로 뜹니다(check.py 단언). 불투명 바탕을 칠한 조상 안에 놓인 카드는 흐림만 빠집니다.
-- **카드 바탕**(`--ag-glass-bg-card`)은 다크가 어두운 유리 60%(테마색이 은은하게 비침), 라이트가 흰 유리 72%. 다크 카드 안 메타 글자는 `--ag-glass-text-3` 로 한 단계 밝습니다. 테두리는 위-왼쪽이 밝은 테두리 빛(`--ag-glass-rim`, `::after` 마스크 고리)이 대신합니다(다크는 원래 테두리를 지움 — `--ag-glass-card-border`). `--interactive` 카드는 hover 때 떠오른 유리(`--ag-glass-pill`).
-- **유리 안 서브표면** — 유리 호스트(크롬 · 오버레이 · 카드)는 `--ag-surface-2` · 입력 포커스 바탕을 `--ag-glass-field`(다크는 어둡게 · 라이트는 희게 — 대비가 오르는 쪽), `--ag-surface-hover` 를 `--ag-glass-fill` 로 다시 정의해서 안쪽 상태 행 · 타일 · 버튼 · 입력칸 · 메뉴 hover 가 유리를 따라옵니다. `--ag-surface-3`(배지 · 진행 막대)과 표 판은 불투명 그대로 — 배지가 글자 위에 얹히는 곳에서 아래 글자가 비치지 않게.
+- **카드 · 듀얼 목록 판은 불투명입니다(2.0.2).** 바탕 `--ag-glass-bg-card` = `--ag-surface` 라 유리를 끈 카드와 같은 색이고, 안쪽 표 · 상태 행 · 입력칸과 색이 끊기지 않습니다. 메시 · 격자선은 카드 사이와 바깥에만 보입니다. 유리 스킨에서 카드가 받는 것은 위-왼쪽이 밝은 테두리 빛(`--ag-glass-rim`, `::after` 마스크 고리 — 다크는 원래 테두리를 지움, `--ag-glass-card-border`) · 위 광택 · 하이라이트 선입니다. 반투명 카드(1.20 ~ 2.0.1)는 화면 전체가 테마색으로 덮이고 카드 머리와 불투명 표가 갈라져 되돌렸습니다 — 서비스가 원하면 `--ag-glass-bg-card` 만 바꿉니다(카드 자신에 블러는 걸지 않습니다, 아래).
+- **유리 안 서브표면** — 유리 호스트(크롬 · 오버레이)는 `--ag-surface-2` · 입력 포커스 바탕을 `--ag-glass-field`(다크는 어둡게 · 라이트는 희게 — 대비가 오르는 쪽), `--ag-surface-hover` 를 `--ag-glass-fill` 로 다시 정의해서 안쪽 상태 행 · 타일 · 버튼 · 입력칸 · 메뉴 hover 가 유리를 따라옵니다. `--ag-surface-3`(배지 · 진행 막대)과 표 판은 불투명 그대로 — 배지가 글자 위에 얹히는 곳에서 아래 글자가 비치지 않게.
 - **선택 알약이 미끄러집니다.** 네비 · 세그먼트 · 탭의 선택이 바뀌면 유리 알약(탭은 판 + 밑줄)이 새 항목으로 스프링 곡선(`--ag-ease-spring`, 1.0 을 넘는 오버슈트)을 타고 미끄러지고, 누르면 항목이(활성이면 알약도) 살짝 눌렸다 튀어 돌아옵니다. 위치 계산은 argus.js(`15-glide`)가 자동으로 합니다 — 클릭 · 방향키 · Alpine 의 class 변경 모두 따라오고, 따로 붙일 속성은 없습니다. argus.js 가 없으면 선택한 항목이 제자리에서 알약을 받습니다. 탭 모드 2단 바 네비는 원래 모양(액센트 소프트 · 밑줄 변형) 그대로입니다.
 
 **대비** — 유리 바탕 두께는 셋: 고정 배경 위(`--ag-glass-bg`, 사이드바), 본문 · 막 위(`--ag-glass-bg-thick`, 상단 바 · 오버레이), 카드(`--ag-glass-bg-card`). 7색 × 다크 · 라이트에서 메타 글자(`--ag-text-3`)까지 4.5:1 을 check.py 가 단언합니다 — 메시 위 맨 글자는 실제 화면 픽셀로도. 알파를 낮추고 싶으면 컴포넌트가 아니라 토큰에서, 단언을 통과하는 범위로.
@@ -175,7 +174,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 **블러를 쓸 때 지킬 것** — `backdrop-filter` 가 걸린 요소는 세 가지를 바꿉니다(Chromium 실측).
 - **안쪽 `position: fixed` 의 기준 상자가 됩니다.** 블러 호스트(사이드바 · 메뉴 · 모달 패널 · 드로어 · 토스트) 안에 둔 모달 · 드로어 · 토스트가 호스트 크기로 갇힙니다. 오버레이는 body 직계나 `<dialog>` 로 둡니다(check.py 가 예시에서 단언).
 - **backdrop root 가 됩니다** — 안쪽의 블러가 그 요소 밖을 못 봅니다. 그래서 메뉴를 품는 상단 바 · 오버레이형 모달 막은 블러를 `::before` 에 두었고, 사이드바 안 메뉴는 사이드바 밖을 흐리지 못합니다.
-- **쌓임 맥락이 됩니다** — 그래서 카드처럼 나란히 놓이는 블록은 자신이 아니라 `::before` 에 겁니다(위 카드).
+- **쌓임 맥락이 됩니다** — 카드 안 드롭다운이 다음 카드 밑에 가려집니다(실측). 그래서 카드처럼 나란히 놓이는 블록 자신에는 블러를 걸지 않습니다. 뒤를 흐려야 하면 `::before`(position absolute · z-index -1)에 겁니다 — 블록은 쌓임 맥락이 되지 않습니다.
 
 **환경**
 - **투명도 줄이기:** OS 설정(`prefers-reduced-transparency: reduce`)이면 불투명 · 블러 없음 · 메시 · 격자 없음으로 떨어집니다(토큰에서).

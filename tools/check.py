@@ -789,7 +789,6 @@ async def main():
           const engTint=Math.min(...['mysql','postgres','oracle','documentdb','mssql'].map(e=>lo(`--ag-engine-${e}-text`,`color-mix(in oklab, var(--ag-engine-${e}) 9%, var(--ag-glass-bg-card))`)));
           const navTrack=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-fill'),pill=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-fill','--ag-glass-pill');
           return {mesh3:lo('--ag-text-3'),mesh2:lo('--ag-text-2'),meshAccent:lo('--ag-accent-text'),navTrack2:cr('--ag-text-2',navTrack),pillText:cr('--ag-text',pill),segCard2:lo('--ag-text-2','--ag-glass-bg-card','--ag-glass-fill'),card3:lo('--ag-glass-text-3','--ag-glass-bg-card'),engTint,
-            cardField3:lo('--ag-glass-text-3','--ag-glass-bg-card','--ag-glass-field'),
             cardText:Math.min(...['--ag-text','--ag-text-2','--ag-accent-text','--ag-accent-2-text','--ag-good-text','--ag-warn-text','--ag-crit-text','--ag-info-text'].map(t=>lo(t,'--ag-glass-bg-card'))),
             reg3:lo('--ag-text-3','--ag-glass-bg'),regAccent:lo('--ag-accent-text','--ag-glass-bg'),fill2:lo('--ag-text-2','--ag-glass-bg','--ag-glass-fill'),thick2:cr('--ag-text-2',thick),thick3:cr('--ag-text-3',thick),
             scrim2:cr('--ag-text-2',scrim),scrim3:cr('--ag-text-3',scrim),field3:lo('--ag-text-3','--ag-glass-bg','--ag-glass-field'),thickField3:cr('--ag-text-3',thickField)}}"""
@@ -803,7 +802,7 @@ async def main():
                 bad = {k: v for k, v in r.items() if v < 4.5}
                 if bad: lows.append(f"{theme or 'violet'}/{'light' if light else 'dark'} {bad}")
                 await pg.close()
-        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3, 1.16 막 위 bg-thick · field 위 text-3, 1.17 메시 위 카드 text-3 · 엔진 틴트 카드 엔진 글자, 1.18 상단 바 · 카드 트랙 위 text-2 · 알약 위 text, 1.19 메시 위 맨 글자 text-3 · text-2 · accent-text, 1.20 카드 안 글자(text · text-2 · glass-text-3 · 액센트 · 상태), 1.22 카드 안 field(상태 행 · 입력칸) 위 glass-text-3 ≥ 4.5", not lows, " | ".join(lows[:6]))
+        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3, 1.16 막 위 bg-thick · field 위 text-3, 1.17 메시 위 카드 text-3 · 엔진 틴트 카드 엔진 글자, 1.18 상단 바 · 카드 트랙 위 text-2 · 알약 위 text, 1.19 메시 위 맨 글자 text-3 · text-2 · accent-text, 1.20 카드 안 글자(text · text-2 · glass-text-3 · 액센트 · 상태) ≥ 4.5", not lows, " | ".join(lows[:6]))
         # 1.19 메시 위 맨 글자 — 실제 화면 픽셀로. 조상 바탕이 모두 투명한 글자 요소의 자리를, 글자색을 지운 스크린샷에서 읽어 대비를 잰다.
         # 1.15 ~ 1.18 은 토큰 쌓기가 유리 표면 위만 재서 라이트 메시 위 브레드크럼 4.01 을 놓쳤다(색 × 투명도 메시) — 그 자리를 남긴다
         bare_find_js = r"""()=>{const out=[],seen=new Set(),tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
@@ -891,11 +890,11 @@ async def main():
             check(f"1.17 유리 끔({th}): 카드 10종 불투명", all(v["a"] == 255 for k, v in off.items() if k != "cardA"), str({k: v["a"] for k, v in off.items() if k != "cardA"}))
             await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(100)
             on = await pg.evaluate(card_js)
-            glassy = all(on[k]["a"] == on["cardA"] < 255 and "linear-gradient" in on[k]["img"] and "inset" in on[k]["sh"] and on[k]["bf"] == "none" for k in ("base", "elevated"))
-            check(f"1.17 유리 켬({th}): 기본 · elevated 카드 = 유리 바탕(bg-card) + 광택 + inset 하이라이트 · 블러 없음, elevated 그림자 유지",
+            glassy = all(on[k]["a"] == on["cardA"] == 255 and "linear-gradient" in on[k]["img"] and "inset" in on[k]["sh"] and on[k]["bf"] == "none" for k in ("base", "elevated"))
+            check(f"1.17 유리 켬({th}): 기본 · elevated 카드 = 불투명 바탕(2.0.2 bg-card = surface) + 광택 + inset 하이라이트 · 블러 없음, elevated 그림자 유지",
                   glassy and "8px 24px -8px" in on["elevated"]["sh"], str({k: on[k] for k in ("base", "elevated")}))
-            check(f"1.17 유리 켬({th}): 엔진 틴트 반투명 · 기본과 다른 색, 엔진 띠는 inset 3px + 하이라이트",
-                  0 < on["engine-tint"]["a"] < 255 and on["engine-tint"]["bg"] != on["base"]["bg"] and "3px 0px 0px 0px inset" in on["engine-stripe"]["sh"] and on["engine-stripe"]["sh"].count("inset") >= 3,
+            check(f"1.17 유리 켬({th}): 엔진 틴트 = 유리 끔과 같은 색(2.0.2 불투명) · 기본과 다른 색, 엔진 띠는 inset 3px + 하이라이트",
+                  on["engine-tint"]["bg"] == off["engine-tint"]["bg"] and on["engine-tint"]["bg"] != on["base"]["bg"] and "3px 0px 0px 0px inset" in on["engine-stripe"]["sh"] and on["engine-stripe"]["sh"].count("inset") >= 3,
                   str({k: on[k] for k in ("engine-tint", "engine-stripe")}))
             solid = ("accent", "accent2", "inverse", "cat1", "engine-solid", "accent-soft")
             check(f"1.17 유리 켬({th}): 단색 톤 카드 · 액센트 소프트는 불투명 · 바탕색 그대로", all(on[k]["a"] == 255 and on[k]["bg"] == off[k]["bg"] for k in solid),
@@ -915,11 +914,12 @@ async def main():
             await pg.click('[data-mode="dual"]'); await pg.wait_for_timeout(150)
             r.update(await pg.evaluate("""()=>{const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});const alpha=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return ctx.getImageData(0,0,1,1).data[3]};
               const cs=getComputedStyle(document.querySelector('.ag-pane'));return {paneA:alpha(cs.backgroundColor),paneBf:cs.backdropFilter,paneSh:cs.boxShadow}}"""))
-            check(f"1.17 유리 켬({th}): 듀얼 목록 판 반투명 · 블러 없음 · 하이라이트, 사이드바 패널 = field, 액센트 패널 불투명",
-                  0 < r["paneA"] < 255 and r["paneBf"] == "none" and "inset" in r["paneSh"] and r["panel"] == r["field"] and r["accentA"] == 255, str(r))
+            check(f"1.17 유리 켬({th}): 듀얼 목록 판 불투명(2.0.2) · 블러 없음 · 하이라이트, 사이드바 패널 = field, 액센트 패널 불투명",
+                  r["paneA"] == 255 and r["paneBf"] == "none" and "inset" in r["paneSh"] and r["panel"] == r["field"] and r["accentA"] == 255, str(r))
             await pg.close()
 
-        # ── 1.20 유리 카드 질감 — 카드 뒤 흐림(::before) · 테두리 빛(::after) · 바탕 격자선. 카드 자신은 블러 없음(위 1.17 메뉴 단언이 같이 지킨다) ──
+        # ── 1.20 유리 카드 질감 — 테두리 빛(::after) · 바탕 격자선. 카드 자신은 블러 없음(위 1.17 메뉴 단언이 같이 지킨다).
+        #    2.0.2: 카드가 불투명이라 뒤 흐림 층(::before)은 없앴다 — 보이지도 않으면서 카드마다 블러 비용만 들었다 ──
         pseudo_js = r"""()=>{const solid=/ag-card--(accent|accent2|inverse|cat[1-4]|engine-solid|accent-soft)\b/,c=[...document.querySelectorAll('.ag-card')].find(e=>!solid.test(e.className));
           const b=getComputedStyle(c,'::before'),a=getComputedStyle(c,'::after'),m=getComputedStyle(document.body,'::before');
           return {cardBf:getComputedStyle(c).backdropFilter,bC:b.content,bBf:b.backdropFilter,bZ:b.zIndex,aC:a.content,aMask:a.maskComposite,aImg:a.backgroundImage,meshSize:m.backgroundSize}}"""
@@ -929,8 +929,8 @@ async def main():
             off = await pg.evaluate(pseudo_js)
             await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(100)
             on = await pg.evaluate(pseudo_js)
-            check(f"1.20 유리 켬({th}): 카드 뒤 흐림 = ::before(blur · z-index -1) · 카드 자신은 블러 없음, 테두리 빛 = ::after(gradient · mask exclude), 메시에 32px 격자선 / 유리 끔은 가상 요소 없음",
-                  off["bC"] == "none" and off["aC"] == "none" and on["cardBf"] == "none" and on["bC"] == '""' and "blur(" in on["bBf"] and on["bZ"] == "-1"
+            check(f"1.20 유리 켬({th}): 카드 자신 · ::before 블러 없음(2.0.2 불투명 카드), 테두리 빛 = ::after(gradient · mask exclude), 메시에 32px 격자선 / 유리 끔은 가상 요소 없음",
+                  off["bC"] == "none" and off["aC"] == "none" and on["cardBf"] == "none" and on["bC"] == "none"
                   and on["aC"] == '""' and "gradient" in on["aImg"] and "exclude" in on["aMask"] and "32px 32px" in on["meshSize"], str({"off": off, "on": on}))
             await pg.close()
 
@@ -974,16 +974,15 @@ async def main():
             check(f"1.22 유리 켬({th}) 400px 레일: 하단 탭바가 떠 있는 바 — 바닥 · 좌우에서 떨어짐 · 둥글게 · 사방 테두리 / 유리 끔은 바닥에 붙음",
                   off["disp"] == "flex" and off["b"] == 0 and off["l"] == 0 and on["b"] > 0 and on["l"] > 0 and on["r"] > 0 and on["rad"] > 0 and on["bw"], str({"off": off, "on": on}))
             await pg.close()
+            # 2.0.2: 카드가 불투명(유리 끈 카드와 같은 바탕)이라 안쪽 서브표면 · interactive hover 도 유리 끈 화면과 같다(1.22 의 glass-field 재정의는 걷음)
             pg = await page(b, "index.html", light=light)
-            off = await pg.evaluate(sub_js)
-            await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(350)
-            on = await pg.evaluate(sub_js)
-            # --interactive:hover 는 카드 자신의 --ag-surface-hover 를 읽는다 — 유리 카드는 떠오른 알약 바탕(라이트 카드가 어두운 막으로 바뀌지 않게)
             await pg.evaluate("""()=>{const a=document.createElement('a');a.className='ag-card ag-card--interactive';a.id='ic';a.href='#';a.textContent='인스턴스 186';document.querySelector('.ag-main').prepend(a)}""")
-            await pg.hover("#ic"); await pg.wait_for_timeout(350)
-            hov = await pg.evaluate("getComputedStyle(document.getElementById('ic')).backgroundColor")
-            check(f"1.22 유리 켬({th}): 카드 안 상태 행 바탕 = glass-field(반투명) · 배지는 불투명 그대로, interactive 카드 hover = glass-pill / 유리 끔은 상태 행 불투명",
-                  off["liA"] == 255 and on["li"] == on["field"] and 0 < on["liA"] < 255 and on["badgeA"] == 255 and hov == on["pill"], str({"off": off, "on": on, "hover": hov}))
+            hov_js = "getComputedStyle(document.getElementById('ic')).backgroundColor"
+            off = await pg.evaluate(sub_js); await pg.hover("#ic"); await pg.wait_for_timeout(350); off_h = await pg.evaluate(hov_js)
+            await pg.mouse.move(0, 0); await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(350)
+            on = await pg.evaluate(sub_js); await pg.hover("#ic"); await pg.wait_for_timeout(350); on_h = await pg.evaluate(hov_js)
+            check(f"1.22 유리 켬({th}): 카드 안 상태 행 바탕 · 배지 · interactive 카드 hover = 유리 끔과 같음(불투명 카드, 2.0.2)",
+                  off["liA"] == 255 and on["li"] == off["li"] and on["badgeA"] == 255 and on_h == off_h, str({"off": off, "on": on, "hover": (off_h, on_h)}))
             await pg.close()
 
         # ── 1.18 유리 스킨 4단계 — 알약 컨트롤(트랙 · 유리 알약 · 미끄러짐 · 누름 · 탭 판) ──
