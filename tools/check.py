@@ -45,6 +45,18 @@ def _class_coverage():
     }
     return sorted(defined - used - allow)
 
+# ── 1.15.1 backdrop-filter 접두: dist 의 -webkit-backdrop-filter 블록마다 접두 없는 선언이 같이 있어야 한다.
+#    소스에 둘 다 쓰면 lightningcss 가 접두 없는 쪽을 지워 Chrome · Firefox 에서 블러가 꺼졌다(상단 바 · 랜딩 인증 2곳, 1.15.0 까지).
+#    소스 패턴이 아니라 결과물을 봐서 minifier 가 바뀌어도 같은 회귀를 잡는다 ──
+def _backdrop_prefix_pairs():
+    import re
+    bad = []
+    for f in sorted((ROOT / "dist").rglob("*.min.css")):
+        for sel, body in re.findall(r"([^{}]*)\{([^{}]*)\}", f.read_text(encoding="utf-8")):
+            if "-webkit-backdrop-filter:" in body and not re.search(r"(?<![-\w])backdrop-filter:", body):
+                bad.append(f"{f.name}: {sel.strip()[:60]}")
+    return bad
+
 # ── 1.5 엔진 팔레트: 인접쌍(documentdb→mysql→postgres→oracle→mssql) 색각이상 ΔE 검증 (OKLab, Viénot 행렬) ──
 def _engine_palette_check():
     import re, math
@@ -80,6 +92,8 @@ async def main():
 
         orphan = _class_coverage()
         check(f"coverage: every css class appears in examples/templates/js", not orphan, ", ".join(orphan[:12]) + (f" … +{len(orphan) - 12}" if len(orphan) > 12 else ""))
+        bp = _backdrop_prefix_pairs()
+        check("1.15.1: dist 의 -webkit-backdrop-filter 마다 접두 없는 backdrop-filter 가 같은 블록에 있다", not bp, " | ".join(bp[:6]))
 
         # 1.13.1: .ag-drawer__head 는 .ag-modal__head 와 같은 머리 (전에는 남은 높이 규칙만 받아 정렬이 빠졌다)
         pg = await page(b, "detail.html")
@@ -704,6 +718,13 @@ async def main():
         check("1.14: ag-banners — 비우면 높이 0(본문이 상단 바 바로 아래) · 400px 가로 넘침 없음",
               r["bH"] == 0 and abs(r["mTop"] - r["t"]) < 1 and r["over"] <= 0, str(r))
         await pg.close()
+
+        # ── 1.15.1 상단 바 블러(스킨 끔) — Chrome 에서 계산값이 none 이었다(소스의 -webkit- 중복 선언을 lightningcss 가 합치며 접두 없는 쪽을 지움) ──
+        for light in (False, True):
+            pg = await page(b, "index.html", light=light)
+            r = await pg.evaluate("getComputedStyle(document.querySelector('.ag-topbar')).backdropFilter")
+            check(f"1.15.1: 상단 바 backdrop-filter = blur(14px) saturate(1.4) — Chromium, 스킨 끔({'라이트' if light else '다크'})", r == "blur(14px) saturate(1.4)", r)
+            await pg.close()
 
         # ── 1.15 유리 스킨(data-skin="glass") — 크롬(상단 바 · 사이드바 · 레일). 끄면 1.14 그대로, 켜면 유리 4겹, 대비는 토큰이 책임진다 ──
         glass_js = r"""()=>{const q=s=>document.querySelector(s),cs=e=>getComputedStyle(e);

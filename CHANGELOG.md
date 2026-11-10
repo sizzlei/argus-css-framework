@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.15.1 — 2026-11-10 · Chrome · Firefox 에서 꺼져 있던 backdrop-filter 3곳 복구 (1.15 작업 중 발견)
+
+- **`.ag-topbar`** 의 `blur(14px) saturate(1.4)` 가 Chrome · Edge · Firefox 에서 걸리지 않았다(계산값 `none`). 소스에 `backdrop-filter` 와 `-webkit-backdrop-filter` 를 둘 다 써서 lightningcss 가 둘을 합치며 뒤의 `-webkit-` 만 남겼고, Chrome · Firefox 는 접두 붙은 쪽을 모른다. Safari 만 블러가 됐다. 이제 상단 바 밑으로 지나가는 본문이 설계대로 흐려진다(바탕 82% · 테두리는 그대로) — 전에는 액센트 카드 글자가 사용자 메뉴 뒤로 또렷하게 비쳤다.
+- 같은 모양 2곳: 랜딩 인증 **`.ag-auth--landing .ag-auth__logo-box`**(`blur(10px)`) · **`.ag-auth__glass`/`.ag-auth__glass--card`**(`blur(20px)`).
+- 고친 방법: 소스에서 `-webkit-` 줄을 지우고 접두 없이 한 번만 — 접두는 lightningcss 가 붙인다(다른 블러 선언과 같은 방식). 유리 스킨 화면은 skins.css 가 이미 이 방식이라 바뀌지 않는다.
+- check.py +3 — dist 정적 검사(모든 `*.min.css` 의 `-webkit-backdrop-filter` 블록마다 접두 없는 선언이 같이 있다, 고치기 전 4곳 실패 확인), Chromium 상단 바 계산값 `blur(14px) saturate(1.4)`(다크 · 라이트). 195항목.
+
 ## 1.15.0 — 2026-11-10 · 스킨 축 `data-skin="glass"` 1단계 — 유리 재질 토큰 · 메시 배경 · 크롬 (Liquid Glass)
 
 - **스킨 축 `data-skin`** — 색 테마 · 레이아웃 모드와 따로 움직이는 세 번째 축. `<html data-skin="glass">` 한 줄로 Liquid Glass 재질을 입힌다(마크업 그대로). 규칙은 새 파일 **`css/skins.css`**(core · 전체 번들 둘 다, utilities 앞)에 `:where(:root[data-skin="glass"])` 로 특이도 0 — 집중 모드 상단 바 · 레일 하단 탭처럼 더 구체적인 기존 규칙이 그대로 이긴다. 끈 화면은 1.14 와 같다(스크린샷 픽셀 비교, 예시 데모 네비 제외).

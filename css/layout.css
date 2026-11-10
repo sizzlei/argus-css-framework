@@ -62,8 +62,7 @@
   gap: var(--ag-space-6);
   padding-inline: var(--ag-gutter);
   background: color-mix(in oklab, var(--ag-bg) 82%, transparent);
-  backdrop-filter: blur(14px) saturate(1.4);
-  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);   /* -webkit- 은 lightningcss 가 붙인다 — 같이 쓰면 접두 없는 쪽이 지워져 Chrome 에서 꺼졌다(1.15.1) */
   border-bottom: 1px solid var(--ag-border);
 }
 .ag-topbar__brand {

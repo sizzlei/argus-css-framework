@@ -30,7 +30,7 @@
 .ag-auth--landing .ag-auth__sub { color: rgb(255 255 255 / .82); }
 .ag-auth--landing .ag-auth__feature { color: rgb(255 255 255 / .85); }
 .ag-auth--landing .ag-auth__feature .ag-icon, .ag-auth--landing .ag-auth__feature [class*="ph-"] { color: #fff; }
-.ag-auth--landing .ag-auth__logo-box { background: rgb(255 255 255 / .15); border: 1px solid rgb(255 255 255 / .22); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); box-shadow: 0 20px 40px -16px rgb(0 0 0 / .45); }
+.ag-auth--landing .ag-auth__logo-box { background: rgb(255 255 255 / .15); border: 1px solid rgb(255 255 255 / .22); backdrop-filter: blur(10px); box-shadow: 0 20px 40px -16px rgb(0 0 0 / .45); }
 .ag-auth--landing .ag-auth__version { background: rgb(255 255 255 / .2); color: #fff; border-color: rgb(255 255 255 / .12); backdrop-filter: blur(6px); }
 .ag-auth--landing .ag-auth__status { color: rgb(255 255 255 / .75); }
 .ag-auth--landing .ag-auth__status-dot.is-up { background: #6ee7b7; color: #6ee7b7; }
@@ -44,6 +44,6 @@
   border-radius: var(--ag-radius-xl);
   background: color-mix(in oklab, var(--ag-surface) 70%, transparent);
   border: 1px solid var(--ag-border-strong);
-  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
   box-shadow: var(--ag-shadow-lg);
 }
