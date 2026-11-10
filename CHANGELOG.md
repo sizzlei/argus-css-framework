@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.22.0 — 2026-11-11 · 유리 스킨 마무리 — 떠 있는 하단 탭 · 카드 안 서브표면 · 전체 점검 · README 스킨 절 정리
+
+- **모바일 레일 하단 탭(≤960)도 떠 있는 바** — 바닥에서 `--ag-space-2` 8px + 안전 영역, 좌우 거터의 절반만큼 떨어뜨리고 `--ag-radius-xl` · 사방 `--ag-glass-border` · `--ag-glass-edge` + `--ag-shadow-lg`. fixed 요소라 본문 레이아웃(아래 여백 64px + 32px)은 그대로, 안전 영역은 inset 이 맡아 안쪽 아래 여백은 6px.
+- **카드 안 서브표면도 유리 호스트처럼** — 유리 카드가 `--ag-surface-2` · `--ag-field-focus-bg` = `--ag-glass-field`, `--ag-surface-hover` = `--ag-glass-fill` 로 다시 정의(크롬 · 오버레이와 같은 셋). 1.20 의 투명한 카드 위에서 상태 행 · 타일 · 버튼 · 입력칸이 불투명 남색으로 떠 보이던 것. `--ag-surface-3`(배지 · 진행 막대)과 표 판(`.ag-table-wrap` 바탕 `--ag-surface`)은 불투명 그대로. `--interactive` 카드 hover 는 카드 자신의 `--ag-surface-hover` 를 읽어 라이트 카드가 어두운 막으로 바뀌므로 유리 카드는 `--ag-glass-pill`(떠오른 유리).
+- **전체 점검** — layouts 6 모드 × 7색 × 다크 · 라이트 84장 + index · detail · resources · components 를 훑어봄.
+  - 고친 것: 예시 데모 네비가 레일 하단 탭바를 덮던 것 — 오프셋 규칙 `.ag-app--rail .demo-nav` 가 데모 네비(body 직계, `.ag-app` 밖)에 걸리지 않아 죽어 있었다 → `body:has(.ag-app--rail .ag-sidebar--bottom-tabs) .demo-nav`(유리 끔에도 해당).
+  - 남긴 것(유리와 무관한 기존): components 가이드 상단 바 네비가 항목이 많아 가로 스크롤로 잘림, 색상 토큰 견본 `--ag-surface-2` 가 유리 카드 안에서 카드가 다시 정의한 값으로 보임(실제 쓰이는 값).
+- **README 스킨 절 정리** — 버전마다 덧붙인 글머리 11개를 주제로 다시 묶음: 켜고 끄기 → 바탕(메시 · 격자선 · 배경 바꾸기) → 부위별(상단 바 · 하단 탭 · 사이드바 · 오버레이 · 카드 · 서브표면 · 알약) → 대비 → 블러를 쓸 때 지킬 것(fixed 갇힘 · backdrop root · 쌓임 맥락) → 환경(투명도 · 동작 줄이기 · 구형 브라우저 · 인쇄). 적용 범위 표는 버전 순이 아니라 부위 순으로.
+- check.py +4(1.22 다크 · 라이트: 400px 레일 하단 탭이 바닥 · 좌우에서 떨어진 둥근 바 / 유리 끔은 바닥에 붙음, 카드 안 상태 행 = glass-field · 배지 불투명 · interactive hover = glass-pill / 유리 끔은 불투명), 유리 대비에 카드 + field 위 glass-text-3. 242항목. 유리 끈 화면은 1.21.0 과 픽셀 차이 없음.
+
 ## 1.21.0 — 2026-11-10 · 유리 스킨 — 떠 있는 상단 바(바가 곧 트랙)
 
 "재질 강조 + 떠 있는 상단 바" 중 남은 상단 바(카드 테두리 빛은 1.20).

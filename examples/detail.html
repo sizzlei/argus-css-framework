@@ -400,7 +400,8 @@
     .demo-nav__list a { border-radius: var(--ag-radius-sm); }
     .demo-nav__sep { width: auto; height: 1px; margin: 4px 8px; }
     .demo-nav__color { padding: 4px 12px 8px; }
-    .ag-app--rail .demo-nav { bottom: calc(72px + env(safe-area-inset-bottom, 0px)); }
+    /* 레일 하단 탭바 위로 — 데모 네비는 body 직계(.ag-app 밖)라 :has 로 잡는다. 탭바 64px + 유리 스킨에서 뜨는 8px + 틈 16px */
+    body:has(.ag-app--rail .ag-sidebar--bottom-tabs) .demo-nav { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
     .ag-mode-switch { left: auto; right: var(--ag-space-4); transform: none; }
   }
 </style>

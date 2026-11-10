@@ -777,6 +777,7 @@ async def main():
           const engTint=Math.min(...['mysql','postgres','oracle','documentdb','mssql'].map(e=>lo(`--ag-engine-${e}-text`,`color-mix(in oklab, var(--ag-engine-${e}) 9%, var(--ag-glass-bg-card))`)));
           const navTrack=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-fill'),pill=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-fill','--ag-glass-pill');
           return {mesh3:lo('--ag-text-3'),mesh2:lo('--ag-text-2'),meshAccent:lo('--ag-accent-text'),navTrack2:cr('--ag-text-2',navTrack),pillText:cr('--ag-text',pill),segCard2:lo('--ag-text-2','--ag-glass-bg-card','--ag-glass-fill'),card3:lo('--ag-glass-text-3','--ag-glass-bg-card'),engTint,
+            cardField3:lo('--ag-glass-text-3','--ag-glass-bg-card','--ag-glass-field'),
             cardText:Math.min(...['--ag-text','--ag-text-2','--ag-accent-text','--ag-accent-2-text','--ag-good-text','--ag-warn-text','--ag-crit-text','--ag-info-text'].map(t=>lo(t,'--ag-glass-bg-card'))),
             reg3:lo('--ag-text-3','--ag-glass-bg'),regAccent:lo('--ag-accent-text','--ag-glass-bg'),fill2:lo('--ag-text-2','--ag-glass-bg','--ag-glass-fill'),thick2:cr('--ag-text-2',thick),thick3:cr('--ag-text-3',thick),
             scrim2:cr('--ag-text-2',scrim),scrim3:cr('--ag-text-3',scrim),field3:lo('--ag-text-3','--ag-glass-bg','--ag-glass-field'),thickField3:cr('--ag-text-3',thickField)}}"""
@@ -790,7 +791,7 @@ async def main():
                 bad = {k: v for k, v in r.items() if v < 4.5}
                 if bad: lows.append(f"{theme or 'violet'}/{'light' if light else 'dark'} {bad}")
                 await pg.close()
-        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3, 1.16 막 위 bg-thick · field 위 text-3, 1.17 메시 위 카드 text-3 · 엔진 틴트 카드 엔진 글자, 1.18 상단 바 · 카드 트랙 위 text-2 · 알약 위 text, 1.19 메시 위 맨 글자 text-3 · text-2 · accent-text, 1.20 카드 안 글자(text · text-2 · glass-text-3 · 액센트 · 상태) ≥ 4.5", not lows, " | ".join(lows[:6]))
+        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3, 1.16 막 위 bg-thick · field 위 text-3, 1.17 메시 위 카드 text-3 · 엔진 틴트 카드 엔진 글자, 1.18 상단 바 · 카드 트랙 위 text-2 · 알약 위 text, 1.19 메시 위 맨 글자 text-3 · text-2 · accent-text, 1.20 카드 안 글자(text · text-2 · glass-text-3 · 액센트 · 상태), 1.22 카드 안 field(상태 행 · 입력칸) 위 glass-text-3 ≥ 4.5", not lows, " | ".join(lows[:6]))
         # 1.19 메시 위 맨 글자 — 실제 화면 픽셀로. 조상 바탕이 모두 투명한 글자 요소의 자리를, 글자색을 지운 스크린샷에서 읽어 대비를 잰다.
         # 1.15 ~ 1.18 은 토큰 쌓기가 유리 표면 위만 재서 라이트 메시 위 브레드크럼 4.01 을 놓쳤다(색 × 투명도 메시) — 그 자리를 남긴다
         bare_find_js = r"""()=>{const out=[],seen=new Set(),tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
@@ -943,6 +944,35 @@ async def main():
                 if not ok: bad.append(f"{mode or 'top'} off={off} on={on}")
                 await pg.close()
             check(f"1.21 유리 켬({th}): 떠 있는 상단 바 — 유리 층만 들여(inset > 0) 둥글게 · 사방 테두리, 레이아웃 불변(top · sidebar · rail · dual 본문 자리 · 바 높이 = 유리 끔), tabs 는 두 행이 바 안 · 아래 틈 8px", not bad, " | ".join(bad[:3]))
+
+        # ── 1.22 유리 마무리 — 모바일 레일 하단 탭도 떠 있는 바, 유리 카드 안 서브표면(surface-2 · hover · 입력 포커스)을 유리 호스트처럼 ──
+        tabs_js = r"""()=>{const s=document.querySelector('.ag-sidebar--bottom-tabs'),r=s.getBoundingClientRect(),c=getComputedStyle(s);
+          return {disp:c.display,l:Math.round(r.left),r:Math.round(innerWidth-r.right),b:Math.round(innerHeight-r.bottom),rad:parseFloat(c.borderTopLeftRadius),bw:['Top','Right','Bottom','Left'].every(k=>c[`border${k}Width`]==='1px')}}"""
+        sub_js = r"""()=>{const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});const alpha=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return ctx.getImageData(0,0,1,1).data[3]};
+          const tok=t=>{const d=document.createElement('div');d.style.backgroundColor=`var(${t})`;document.body.appendChild(d);const c=getComputedStyle(d).backgroundColor;d.remove();return c};
+          const li=document.querySelector('.ag-card .ag-list__item'),bd=li.closest('.ag-card').querySelector('.ag-badge--count');
+          return {li:getComputedStyle(li).backgroundColor,liA:alpha(getComputedStyle(li).backgroundColor),badgeA:alpha(getComputedStyle(bd).backgroundColor),field:tok('--ag-glass-field'),pill:tok('--ag-glass-pill')}}"""
+        for light in (False, True):
+            th = "라이트" if light else "다크"
+            pg = await page(b, "layouts.html", width=400, light=light)
+            await pg.click('[data-mode="rail"]'); await pg.wait_for_timeout(150)
+            off = await pg.evaluate(tabs_js)
+            await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(150)
+            on = await pg.evaluate(tabs_js)
+            check(f"1.22 유리 켬({th}) 400px 레일: 하단 탭바가 떠 있는 바 — 바닥 · 좌우에서 떨어짐 · 둥글게 · 사방 테두리 / 유리 끔은 바닥에 붙음",
+                  off["disp"] == "flex" and off["b"] == 0 and off["l"] == 0 and on["b"] > 0 and on["l"] > 0 and on["r"] > 0 and on["rad"] > 0 and on["bw"], str({"off": off, "on": on}))
+            await pg.close()
+            pg = await page(b, "index.html", light=light)
+            off = await pg.evaluate(sub_js)
+            await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(350)
+            on = await pg.evaluate(sub_js)
+            # --interactive:hover 는 카드 자신의 --ag-surface-hover 를 읽는다 — 유리 카드는 떠오른 알약 바탕(라이트 카드가 어두운 막으로 바뀌지 않게)
+            await pg.evaluate("""()=>{const a=document.createElement('a');a.className='ag-card ag-card--interactive';a.id='ic';a.href='#';a.textContent='인스턴스 186';document.querySelector('.ag-main').prepend(a)}""")
+            await pg.hover("#ic"); await pg.wait_for_timeout(350)
+            hov = await pg.evaluate("getComputedStyle(document.getElementById('ic')).backgroundColor")
+            check(f"1.22 유리 켬({th}): 카드 안 상태 행 바탕 = glass-field(반투명) · 배지는 불투명 그대로, interactive 카드 hover = glass-pill / 유리 끔은 상태 행 불투명",
+                  off["liA"] == 255 and on["li"] == on["field"] and 0 < on["liA"] < 255 and on["badgeA"] == 255 and hov == on["pill"], str({"off": off, "on": on, "hover": hov}))
+            await pg.close()
 
         # ── 1.18 유리 스킨 4단계 — 알약 컨트롤(트랙 · 유리 알약 · 미끄러짐 · 누름 · 탭 판) ──
         glide_js = r"""(sel)=>{const h=document.querySelector(sel),b=getComputedStyle(h,'::before');
