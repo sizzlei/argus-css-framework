@@ -9,7 +9,7 @@ css/            소스. 빌드 순서 = tokens → base → layout → component
 dist/           build.sh 산출물(전부 minified). 직접 수정 금지. argus.min.css(전체) / core·patterns·charts·auth-landing.min.css(골라 쓰기) / themes/*.min.css / *.js
 js/modules/     선택 헬퍼 소스. 10-core(테마·스킨·사이드바·탭) 20-overlay(드롭다운·모달·배너·날짜·토스트닫기·확장행) 30-keyboard 40-chart-hover 50-toast. build 가 합친다
 js/argus.charts.js  ApexCharts/Chart.js 프리셋
-tools/          check.py 값 단언 회귀(204항목 + axe 접근성 게이트 + 클래스 커버리지, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
+tools/          check.py 값 단언 회귀(216항목 + axe 접근성 게이트 + 클래스 커버리지, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
 examples/src/   예시 페이지 소스. <!--@icons--> 는 _icons.html 스프라이트로 치환됨
 examples/       build_examples.py 산출물. 직접 수정 금지. GitHub Pages 가 main 브랜치 루트를 그대로 서빙하므로 커밋 전 반드시 빌드 (루트 index.html 은 examples/ 로 리다이렉트, .nojekyll 로 _icons.html 등 밑줄 파일 유지)
 docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프롬프트 키트
@@ -58,6 +58,7 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 - 컴포넌트 규칙 안에 `[data-theme]` 셀렉터나 `prefers-color-scheme` 를 쓰지 않는다. 테마는 토큰이 처리한다.
 - **스킨은 세 번째 축**(1.15, `data-skin="glass"`). 스킨 셀렉터(`[data-skin]`)는 `skins.css` 에만 쓰고 layout · components · patterns 에는 쓰지 않는다. 스킨 토큰(`--ag-glass-*`)도 다크 · 라이트 둘 다 정의하고, 유리 바탕 알파를 바꾸면 check.py 유리 대비 단언(7색 × 2테마, 메타 글자 4.5:1)을 다시 통과시킨다. 스킨을 끈 화면은 바뀌지 않아야 한다(스킨 토큰은 skins.css 에서만 참조).
 - 블러(`backdrop-filter`)가 걸린 요소는 ① 안쪽 `position: fixed` 의 기준 상자가 되고 ② backdrop root 가 되어 안쪽 블러가 밖을 못 본다(1.16, Chromium 실측). 그래서 블러 호스트 안에는 fixed 오버레이(모달 · 드로어 · 토스트)를 두지 않고(check.py 단언), 다른 오버레이를 품는 호스트(상단 바 · 오버레이형 모달 막)는 블러를 `::before` 에 둔다 — 단 자체 스크롤 상자(사이드바 · 메뉴 목록 · 드로어)는 `::before` 가 스크롤을 따라가므로 요소 블러.
+- 흐름 안에 나란히 놓이는 블록(카드처럼 드롭다운을 품는 것)에는 블러를 걸지 않는다 — 블러가 쌓임 맥락을 만들어 안쪽 메뉴가 다음 형제 밑에 가려진다(1.17 실측, check.py 단언). 유리 카드는 반투명 바탕 · 광택 · 하이라이트만.
 - `backdrop-filter` 는 접두 없이 한 번만 쓴다. lightningcss 가 `-webkit-` 을 붙이는데, 소스에 둘 다 쓰면 접두 없는 쪽이 지워져 Chrome · Firefox 에서 블러가 꺼진다(1.15 에서 확인, 1.15.1 에서 기존 3곳 수정 — check.py 가 dist 의 블록마다 짝을 검사한다).
 - 새 토큰은 반드시 다크·라이트 양쪽에 정의한다. 한쪽만 있으면 빌드는 통과하지만 화면이 깨진다.
 - 쉼표 목록(`box-shadow: var(--a), var(--b)`, 다중 `background`) 안에서 쓰는 토큰은 한 테마에서 끄더라도 `none` 을 넣지 않는다 — 목록 전체가 무효가 된다. 빈 그림자는 `0 0 #0000`, 빈 배경층은 `linear-gradient(transparent, transparent)` (1.5.1 교훈: `--ag-card-edge: none` 이 라이트 카드 그림자를 전부 지웠다).

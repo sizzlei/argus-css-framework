@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.17.0 — 2026-11-10 · 유리 스킨 3단계 — 카드 · 패널(은은한 유리)
+
+- **카드 유리** — `data-skin="glass"` 에서 `.ag-card` 기본 · `--elevated` · `--interactive` · 엔진 변형(`--engine-title/-border/-stripe/-top/-tint/-glow`)이 두꺼운 유리(`--ag-glass-bg-thick`) + 위쪽 광택 + 하이라이트 선이 된다. `--ag-surface-sheen` · `--ag-card-edge` 를 카드에서 다시 정의해 엔진 띠 · 글로우 · 목록 항목이 따라오고, `--engine-tint` 는 유리 위 엔진 틴트로 다시 선언, `--elevated` 는 광택 · 하이라이트 + `shadow-md`. `--interactive:hover` 는 불투명 hover 그대로(올리면 단단해진다).
+- **블러는 걸지 않는다** — 카드에 `backdrop-filter` 를 걸면 쌓임 맥락이 생겨 카드 안 드롭다운이 다음 카드 밑에 가려진다(Chromium 실측). 카드는 고정된 부드러운 메시 위에만 놓여 블러가 보이지도 않는다. 사진 배경(`--ag-glass-backdrop`)은 미리 흐린 이미지를 쓴다(README).
+- **은은한 두께** — 투명한 유리(64 · 68%)면 카드 안 불투명 표면(표 머리 · 고정 첫 열 · 끝 열 · 입력칸 · 타일 · 도넛 구멍)이 36% 진한 띠로 보인다. 두꺼운 유리는 12~14% 차이라 안쪽은 건드리지 않았다. 대비 최저: 메시 위 카드 text-3 다크 5.64 · 라이트 5.27, 엔진 틴트 카드 엔진 글자 다크 6.00 · 라이트 4.93.
+- **불투명 유지** — 단색 톤 카드(`--accent` `--accent2` `--inverse` `--cat1~4` `--engine-solid`)와 `--accent-soft`(유리면 라이트 orange 액센트 글자 4.37). `:where(:not())` 로 빼서 특이도는 `.ag-card` 하나.
+- **패널** — 듀얼 목록 판 `.ag-pane` 은 사이드바와 같은 유리(블러 없음, 항목 hover 불투명 — 스니펫 text-3 5.04). 사이드바 패널 `.ag-sidebar__panel` 은 오목한 칸(`--ag-glass-field`), `--accent` 패널은 불투명(라이트 orange 4.43).
+- check.py +12(카드 10종 유리 끔 불투명 · 켬 재질 · 엔진 · 단색 톤 유지 · 카드 안 열린 메뉴가 다음 카드 위 — 다크 · 라이트, 목록 판 · 사이드바 패널), 유리 대비에 카드 text-3 · 엔진 틴트 추가. 216항목. 유리 끈 화면은 1.16.0 과 픽셀 차이 없음.
+
 ## 1.16.0 — 2026-11-10 · 유리 스킨 2단계 — 오버레이(메뉴 · 모달 · 드로어 · 토스트 · 위저드 바)
 
 - **오버레이 유리** — `data-skin="glass"` 에서 `.ag-menu`(`.ag-notif` · `--wide`) · `.ag-combobox__list` · `.ag-popover` · `.ag-cmdk` · `.ag-modal__panel` · `.ag-drawer` · `.ag-toast` · `.ag-wizard__bar` 가 두꺼운 유리(`--ag-glass-bg-thick` + 블러 · 광택 · 하이라이트 선 + 기존 그림자)가 된다. 토스트 톤 띠는 하이라이트 선과 함께 유지, 드로어 푸터 · ⌘K 푸터는 투명(호스트 유리), 드로어 도구줄은 유리. 고정 선택 바(`.ag-bulkbar--sticky`)는 1.9 원칙대로 불투명 — 고른 행이 밑을 지날 때 유리면 라이트 orange · yellow · green · red 의 액센트 글자가 3.9~4.3:1 로 모자란다.

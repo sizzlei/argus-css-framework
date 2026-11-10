@@ -771,7 +771,9 @@ async def main():
           const mesh=['--ag-bg','--ag-glass-tint-3','--ag-glass-tint-2','--ag-glass-tint-1'];
           const reg=stack(...mesh,'--ag-glass-bg'),fill=stack(...mesh,'--ag-glass-bg','--ag-glass-fill'),thick=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick');
           const scrim=stack('--ag-bg','--ag-accent','--ag-overlay','--ag-glass-bg-thick'),field=stack(...mesh,'--ag-glass-bg','--ag-glass-field'),thickField=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-field');
-          return {reg3:cr('--ag-text-3',reg),regAccent:cr('--ag-accent-text',reg),fill2:cr('--ag-text-2',fill),thick2:cr('--ag-text-2',thick),thick3:cr('--ag-text-3',thick),
+          const card=stack(...mesh,'--ag-glass-bg-thick');
+          const engTint=Math.min(...['mysql','postgres','oracle','documentdb','mssql'].map(e=>cr(`--ag-engine-${e}-text`,stack(...mesh,`color-mix(in oklab, var(--ag-engine-${e}) 9%, var(--ag-glass-bg-thick))`))));
+          return {card3:cr('--ag-text-3',card),engTint,reg3:cr('--ag-text-3',reg),regAccent:cr('--ag-accent-text',reg),fill2:cr('--ag-text-2',fill),thick2:cr('--ag-text-2',thick),thick3:cr('--ag-text-3',thick),
             scrim2:cr('--ag-text-2',scrim),scrim3:cr('--ag-text-3',scrim),field3:cr('--ag-text-3',field),thickField3:cr('--ag-text-3',thickField)}}"""
         lows = []
         for theme in ("", "red", "orange", "yellow", "green", "blue", "indigo"):
@@ -783,7 +785,7 @@ async def main():
                 bad = {k: v for k, v in r.items() if v < 4.5}
                 if bad: lows.append(f"{theme or 'violet'}/{'light' if light else 'dark'} {bad}")
                 await pg.close()
-        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3, 1.16 막 위 bg-thick · field 위 text-3 ≥ 4.5", not lows, " | ".join(lows[:6]))
+        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3, 1.16 막 위 bg-thick · field 위 text-3, 1.17 메시 위 카드 text-3 · 엔진 틴트 카드 엔진 글자 ≥ 4.5", not lows, " | ".join(lows[:6]))
         for name in ("index", "layouts"):
             pg = await page(b, name + ".html", width=400, skin=True)
             r = await pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
@@ -827,6 +829,49 @@ async def main():
                 if v: trapped.append(f"{name}{'-glass' if skin else ''}: " + ", ".join(v[:3]))
                 await pg.close()
         check("1.16: 블러 호스트 안에 position: fixed 자손 없음(예시 6쪽 × 유리 끔 · 켬)", not trapped, " | ".join(trapped[:4]))
+
+        # ── 1.17 유리 스킨 3단계 — 카드 · 패널(은은한 유리, 블러 없음) ──
+        card_js = r"""()=>{const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});
+          const alpha=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return ctx.getImageData(0,0,1,1).data[3]};
+          const kinds=['','elevated','engine-tint','engine-stripe','accent','accent2','inverse','cat1','engine-solid','accent-soft'];
+          const w=document.createElement('div');w.setAttribute('data-engine','mysql');w.innerHTML=kinds.map(k=>`<div class="ag-card${k?' ag-card--'+k:''}" data-k="${k||'base'}">x</div>`).join('');document.body.appendChild(w);
+          const pr=document.createElement('div');pr.style.backgroundColor='var(--ag-glass-bg-thick)';document.body.appendChild(pr);
+          const out={thickA:alpha(getComputedStyle(pr).backgroundColor)};pr.remove();
+          for(const el of w.children){const cs=getComputedStyle(el);out[el.dataset.k]={bg:cs.backgroundColor,a:alpha(cs.backgroundColor),img:cs.backgroundImage,sh:cs.boxShadow,bf:cs.backdropFilter}}w.remove();return out}"""
+        for light in (False, True):
+            th = "라이트" if light else "다크"
+            pg = await page(b, "components.html", light=light)
+            off = await pg.evaluate(card_js)
+            check(f"1.17 유리 끔({th}): 카드 10종 불투명", all(v["a"] == 255 for k, v in off.items() if k != "thickA"), str({k: v["a"] for k, v in off.items() if k != "thickA"}))
+            await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(100)
+            on = await pg.evaluate(card_js)
+            glassy = all(on[k]["a"] == on["thickA"] < 255 and "linear-gradient" in on[k]["img"] and "inset" in on[k]["sh"] and on[k]["bf"] == "none" for k in ("base", "elevated"))
+            check(f"1.17 유리 켬({th}): 기본 · elevated 카드 = 두꺼운 유리(bg-thick) + 광택 + inset 하이라이트 · 블러 없음, elevated 그림자 유지",
+                  glassy and "8px 24px -8px" in on["elevated"]["sh"], str({k: on[k] for k in ("base", "elevated")}))
+            check(f"1.17 유리 켬({th}): 엔진 틴트 반투명 · 기본과 다른 색, 엔진 띠는 inset 3px + 하이라이트",
+                  0 < on["engine-tint"]["a"] < 255 and on["engine-tint"]["bg"] != on["base"]["bg"] and "3px 0px 0px 0px inset" in on["engine-stripe"]["sh"] and on["engine-stripe"]["sh"].count("inset") >= 3,
+                  str({k: on[k] for k in ("engine-tint", "engine-stripe")}))
+            solid = ("accent", "accent2", "inverse", "cat1", "engine-solid", "accent-soft")
+            check(f"1.17 유리 켬({th}): 단색 톤 카드 · 액센트 소프트는 불투명 · 바탕색 그대로", all(on[k]["a"] == 255 and on[k]["bg"] == off[k]["bg"] for k in solid),
+                  str({k: (off[k]["bg"], on[k]["bg"]) for k in solid if on[k]["bg"] != off[k]["bg"] or on[k]["a"] != 255}))
+            # 카드에 블러를 걸면 쌓임 맥락이 생겨 카드 안 메뉴가 다음 카드 밑에 가려진다 — 겹친 자리 맨 위가 메뉴여야 한다
+            r = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML='<div class="ag-card"><div class="ag-dropdown is-open"><button class="ag-btn">⋯</button><div class="ag-menu ag-menu--left" id="cm"><button class="ag-menu__item">재시작</button><button class="ag-menu__item">스냅샷</button><button class="ag-menu__item">삭제</button></div></div></div><div class="ag-card" id="c2">다음 카드</div>';document.body.prepend(d);
+              const m=document.getElementById('cm').getBoundingClientRect(),c2=document.getElementById('c2').getBoundingClientRect();const y=Math.min(m.bottom,c2.bottom)-4;const top=document.elementFromPoint(m.left+20,y);const r={overlap:m.bottom>c2.top,top:top&&top.closest('#cm')?'menu':(top&&top.id)||top?.className};d.remove();return r}""")
+            check(f"1.17 유리 켬({th}): 카드 안 열린 메뉴가 다음 카드 위에 뜬다(카드에 블러 없음 → 쌓임 맥락 없음)", r["overlap"] and r["top"] == "menu", str(r))
+            await pg.close()
+        for light in (False, True):
+            th = "라이트" if light else "다크"
+            pg = await page(b, "layouts.html", light=light, skin=True)
+            r = await pg.evaluate("""()=>{const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});const alpha=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return ctx.getImageData(0,0,1,1).data[3]};
+              const pr=document.createElement('div');pr.style.backgroundColor='var(--ag-glass-field)';document.body.appendChild(pr);const field=getComputedStyle(pr).backgroundColor;pr.remove();
+              const sb=document.querySelector('.ag-sidebar'),sp=document.createElement('div'),ap=document.createElement('div');sp.className='ag-sidebar__panel ag-sidebar__panel--warn';ap.className='ag-sidebar__panel ag-sidebar__panel--accent';sb.append(sp,ap);
+              const r={panel:getComputedStyle(sp).backgroundColor,field,accentA:alpha(getComputedStyle(ap).backgroundColor)};sp.remove();ap.remove();return r}""")
+            await pg.click('[data-mode="dual"]'); await pg.wait_for_timeout(150)
+            r.update(await pg.evaluate("""()=>{const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});const alpha=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return ctx.getImageData(0,0,1,1).data[3]};
+              const cs=getComputedStyle(document.querySelector('.ag-pane'));return {paneA:alpha(cs.backgroundColor),paneBf:cs.backdropFilter,paneSh:cs.boxShadow}}"""))
+            check(f"1.17 유리 켬({th}): 듀얼 목록 판 반투명 · 블러 없음 · 하이라이트, 사이드바 패널 = field, 액센트 패널 불투명",
+                  0 < r["paneA"] < 255 and r["paneBf"] == "none" and "inset" in r["paneSh"] and r["panel"] == r["field"] and r["accentA"] == 255, str(r))
+            await pg.close()
 
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
