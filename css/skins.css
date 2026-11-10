@@ -6,9 +6,10 @@
    집중 모드 상단 바 · 레일 하단 탭처럼 더 구체적인 기존 규칙이 그대로 이긴다.
    ========================================================================== */
 
-/* ---- 스킨: Liquid Glass (1.15 ~ 1.18) ----------------------------------------
+/* ---- 스킨: Liquid Glass (1.15 ~ 1.19) ----------------------------------------
    <html data-skin="glass">   — 서비스가 기본값으로 고정. 사용자 토글은 <button data-ag-skin-toggle aria-pressed="false">(argus.js, localStorage 'ag-skin')
    뒤에 액센트 · 브랜드 색 메시(--ag-glass-backdrop)를 깔고, 그 위 떠 있는 층을 반투명 유리로 바꾼다.
+   메시 색은 명도를 고정한 상대 색(1.19) — 테마색은 색상만 주고, 위에 바로 놓인 글자 대비는 토큰이 책임진다.
    단계: 1.15 크롬(상단 바 · 사이드바 · 레일) → 1.16 오버레이(메뉴 · 모달 · 드로어 · 토스트 · 위저드 바) → 1.17 카드 · 패널 → 1.18 알약 컨트롤(네비 · 세그먼트 · 탭 · 사용자 메뉴).
    유리 바탕 알파는 대비 단언(check.py)을 통과한 토큰 값으로만 바꾼다 — 컴포넌트에서 따로 낮추지 않는다.
    OS 의 "투명도 줄이기"(prefers-reduced-transparency)면 토큰이 불투명 · 블러 없음 · 메시 없음으로 바뀐다.
@@ -106,17 +107,17 @@
   backdrop-filter: blur(4px);
 }
 
-/* 카드 · 패널(1.17) — 은은한 유리. 카드는 고정된 부드러운 메시 위에만 놓이므로 블러를 걸지 않는다(걸어도 안 보인다).
+/* 카드 · 패널(1.17) — 유리. 카드는 고정된 부드러운 메시 위에만 놓이므로 블러를 걸지 않는다(걸어도 안 보인다).
    블러는 쌓임 맥락을 만들어 카드 안 드롭다운(z-index 50)이 다음 카드 밑에 가려지고, fixed 자손도 갇힌다(Chromium 실측).
-   두꺼운 유리(bg-thick)라 카드 안 불투명 표면(표 머리 · 고정 열 · 입력칸 · 타일 · 도넛 구멍)과 색 차이가 12~14% 뿐 — 안쪽은 건드리지 않는다.
+   1.19: 바탕은 bg-card(70 · 72%) — 명도 고정 메시 색이 비친다. 1.17 은 bg-thick(86 · 88%)이었다.
    단색 톤 카드와 --accent-soft 는 불투명 그대로(--accent-soft 는 라이트 orange 액센트 글자 4.37 로 모자란다).
    특이도는 .ag-card 하나 — 기본 · --elevated 바탕을 덮고, --interactive:hover(불투명 hover) · .is-selected 는 그대로 이긴다 */
 :where(:root[data-skin="glass"]) .ag-card:where(:not(.ag-card--accent, .ag-card--accent2, .ag-card--inverse, .ag-card--cat1, .ag-card--cat2, .ag-card--cat3, .ag-card--cat4, .ag-card--engine-solid, .ag-card--accent-soft)) {
-  background-color: var(--ag-glass-bg-thick);
+  background-color: var(--ag-glass-bg-card);
   --ag-surface-sheen: var(--ag-glass-sheen);   /* 기존 background-image 가 읽는다 */
   --ag-card-edge: var(--ag-glass-edge);        /* 기존 box-shadow · 엔진 띠 · 글로우 · 목록 항목이 읽는다 */
 }
-:where(:root[data-skin="glass"]) .ag-card--engine-tint { background-color: color-mix(in oklab, var(--ag-engine) 9%, var(--ag-glass-bg-thick)); }   /* 위 규칙이 같은 특이도로 뒤에 와서 덮으므로 다시 */
+:where(:root[data-skin="glass"]) .ag-card--engine-tint { background-color: color-mix(in oklab, var(--ag-engine) 9%, var(--ag-glass-bg-card)); }   /* 위 규칙이 같은 특이도로 뒤에 와서 덮으므로 다시 */
 /* --elevated 는 background 단축 · shadow-md 만이라 광택 · 하이라이트가 빠진다 — 유리에서는 다른 카드와 같이 */
 :where(:root[data-skin="glass"]) .ag-card--elevated { background-image: var(--ag-glass-sheen); box-shadow: var(--ag-glass-edge), var(--ag-shadow-md); }
 /* 듀얼 목록 판 — 사이드바와 같은 질감. 메시 위에 고정이라 블러 없음, 항목 hover 는 불투명 그대로(스니펫 text-3 대비) */
