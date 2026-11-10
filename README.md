@@ -37,7 +37,7 @@ index.html                      ← GitHub Pages 진입점 (examples/ 로 리다
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
                                    index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / report(A4 인쇄 문서) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
-tools/                          ← check.py(값 단언 회귀 236항목 + axe 접근성 게이트 + 키보드·모션 상한 + 클래스 커버리지) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
+tools/                          ← check.py(값 단언 회귀 238항목 + axe 접근성 게이트 + 키보드·모션 상한 + 클래스 커버리지) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -161,6 +161,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 - **대비:** 유리 바탕 두께는 셋 — 고정 배경 위(`--ag-glass-bg`, 사이드바), 본문이 밑으로 지나가거나 막 위에 뜨는 곳(`--ag-glass-bg-thick`, 상단 바 · 오버레이), 카드(`--ag-glass-bg-card`, 1.19). 유리 안 입력칸은 `--ag-glass-field`(다크는 어둡게 · 라이트는 희게 — placeholder 대비가 오르는 쪽). 7색 × 다크 · 라이트에서 메타 글자(`--ag-text-3`)까지 4.5:1 을 check.py 가 단언합니다 — 메시 위 맨 글자는 실제 화면 픽셀로도(1.19). 알파를 낮추고 싶으면 컴포넌트가 아니라 토큰에서, 단언을 통과하는 범위로.
 - **블러 호스트 안에 fixed 오버레이를 두지 않습니다.** `backdrop-filter` 가 걸린 요소(사이드바 · 메뉴 · 모달 패널 · 드로어 · 토스트)는 안쪽 `position: fixed` 의 기준 상자가 되어, 그 안에 둔 모달 · 드로어 · 토스트가 호스트 크기로 갇힙니다. 오버레이는 body 직계나 `<dialog>` 로 둡니다(check.py 가 예시에서 단언).
 - **카드 뒤 흐림은 카드의 `::before` 에 겁니다(1.20).** 카드 자신에 블러를 걸면 카드마다 쌓임 맥락이 생겨 카드 안 드롭다운이 다음 카드 밑에 가려집니다(실측). 가상 요소(z-index -1)에 걸면 카드는 쌓임 맥락이 되지 않고 메뉴는 다음 카드 위로 그대로 뜹니다(check.py 단언). 불투명 바탕을 칠한 조상 안에 놓인 카드는 그 바탕 밑에 흐림 층이 깔려 흐림만 빠집니다. 카드 바탕(`--ag-glass-bg-card`)은 다크가 흰 막 4.5%(메시 색이 그대로 비침), 라이트가 흰 유리 72% 이고, 다크 카드 안 메타 글자는 `--ag-glass-text-3` 로 한 단계 밝습니다. 테두리는 위-왼쪽이 밝은 테두리 빛(`--ag-glass-rim`, `::after` 마스크 고리)이 대신합니다(다크는 원래 테두리를 지움 — `--ag-glass-card-border`). 안쪽 표 · 고정 열 · 입력칸은 불투명 그대로입니다.
+- **상단 바는 떠 있습니다(1.21).** 유리 층(`::before`)만 위아래 8px · 좌우 거터의 절반만큼 들여 둥글게 하고, 바 요소는 투명이라 스크롤하면 본문이 바 둘레로 지나갑니다. 바 크기 · 격자 행(`--ag-topbar-h`) · sticky 오프셋은 그대로라 레이아웃은 움직이지 않습니다 — tabs 모드만 두 행을 바 안에 넣으려고 아래 틈 8px 만큼 높아집니다. 바 안 네비는 캡슐 트랙 없이 선택 알약만(바가 곧 트랙), tabs 의 행 구분선은 바 안 내용 폭으로. 집중 모드 상단 바는 원래대로 투명입니다.
 - **선택 알약이 미끄러집니다(1.18).** 네비 · 세그먼트 · 탭의 선택이 바뀌면 유리 알약(탭은 판 + 밑줄)이 새 항목으로 스프링 곡선(`--ag-ease-spring`, 1.0 을 넘는 오버슈트)을 타고 미끄러지고, 누르면 항목이(활성이면 알약도) 살짝 눌렸다 튀어 돌아옵니다. 위치 계산은 argus.js(`15-glide`)가 자동으로 합니다 — 클릭 · 방향키 · Alpine 의 class 변경 모두 따라오고, 따로 붙일 속성은 없습니다. argus.js 가 없으면 선택한 항목이 제자리에서 알약을 받습니다. OS 의 동작 줄이기 설정이면 기존 전역 규칙(base.css)대로 즉시 바뀝니다. 탭 모드 2단 바 네비는 원래 모양(액센트 소프트 · 밑줄 변형) 그대로입니다.
 - **사이드바 안 메뉴는 사이드바 밖을 흐리지 못합니다.** 블러가 걸린 요소 안쪽의 블러는 그 요소 밖을 못 봅니다(backdrop root). 그래서 메뉴를 품는 상단 바 · 오버레이형 모달 막은 블러를 `::before` 에 두었고, 사이드바는 자체 스크롤 상자라 요소 블러 그대로입니다.
 - **투명도 줄이기:** OS 설정(`prefers-reduced-transparency: reduce`)이면 유리 스킨이어도 불투명 · 블러 없음 · 메시 없음으로 떨어집니다.
@@ -375,7 +376,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 236항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 유리 스킨 · 400 · 3400 tabs)
+python3 tools/check.py      # 값 단언 회귀 238항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 유리 스킨 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서

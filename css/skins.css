@@ -48,20 +48,34 @@
   box-shadow: var(--ag-glass-edge);
 }
 /* 상단 바는 알림 · 사용자 메뉴를 품는다 → 블러를 ::before 로(위 ②). 본문이 밑으로 지나가므로 두꺼운 유리.
-   상단 바는 sticky + z-index 라 쌓임 맥락이 있어 -1 층이 바 안에 머문다. 아래 1px 는 테두리 밑까지 유리를 깐다 */
-:where(:root[data-skin="glass"]) .ag-topbar { background: none; backdrop-filter: none; border-color: var(--ag-glass-border); box-shadow: var(--ag-glass-edge); }
+   상단 바는 sticky + z-index 라 쌓임 맥락이 있어 -1 층이 바 안에 머문다.
+   1.21 떠 있는 바 — 유리 층만 안쪽으로 들여(위아래 8px · 좌우 거터의 절반) 둥글게 하고, 바 요소는 투명 · 테두리 없음이라 둘레 틈으로 본문이 지나가 보인다.
+   좌우를 거터의 절반으로 두면 바 안 여백도 거터의 절반 — 폭이 줄어도(400px 거터 16px) 브랜드 · 아바타가 바 가장자리에 붙지 않는다.
+   바 크기 · 격자 행(--ag-topbar-h) · sticky 오프셋은 그대로라 레이아웃이 움직이지 않는다(tabs 만 아래 틈 8px — 아래) */
+:where(:root[data-skin="glass"]) .ag-topbar { background: none; backdrop-filter: none; border-color: transparent; box-shadow: none; }
 :where(:root[data-skin="glass"]) .ag-topbar::before {
   content: "";
   position: absolute;
-  inset: 0 0 -1px;
+  inset: var(--ag-space-2) calc(var(--ag-gutter) / 2);
   z-index: -1;
   pointer-events: none;
+  border: 1px solid var(--ag-glass-border);
+  border-radius: var(--ag-radius-xl);
   background-color: var(--ag-glass-bg-thick);
   background-image: var(--ag-glass-sheen);
+  box-shadow: var(--ag-glass-edge), var(--ag-shadow-md);
   backdrop-filter: var(--ag-glass-filter);
 }
-/* 집중 모드 상단 바는 투명 그대로 — 기존 규칙이 background · backdrop-filter 를 끄고, 여기서 하이라이트 선 · 유리 층을 끈다 */
-:where(:root[data-skin="glass"]) .ag-app--focus .ag-topbar { box-shadow: none; }
+/* 바가 곧 트랙(1.21) — 바 안 네비는 캡슐 트랙을 지우고 선택 알약만. 캡슐(46px)이 들인 바(48px)에 꽉 차 답답했다 */
+:where(:root[data-skin="glass"]) .ag-topbar .ag-nav { background-color: transparent; border-color: transparent; }
+/* tabs 2단 바 — 두 행이 떠 있는 바 안에 들어가게 아래 틈만큼 바를 늘린다(유리를 켰을 때만 8px).
+   행 사이 구분선은 바 밖으로 나가지 않게 행 내용 폭(거터 안)에 다시 그린다 */
+:where(:root[data-skin="glass"]) .ag-app--tabs .ag-topbar { padding-bottom: var(--ag-space-2); }
+:where(:root[data-skin="glass"]) .ag-app--tabs .ag-topbar__row--nav {
+  border-top-color: transparent;
+  background: linear-gradient(var(--ag-glass-border), var(--ag-glass-border)) top center / calc(100% - 2 * var(--ag-gutter)) 1px no-repeat;
+}
+/* 집중 모드 상단 바는 투명 그대로 — 기존 규칙이 background · backdrop-filter 를 끄고, 여기서 유리 층을 끈다 */
 :where(:root[data-skin="glass"]) .ag-app--focus .ag-topbar::before { content: none; }
 @media (max-width: 960px) {
   :where(:root[data-skin="glass"]) .ag-app--rail .ag-sidebar.ag-sidebar--bottom-tabs { background-color: var(--ag-glass-bg-thick); backdrop-filter: var(--ag-glass-filter); }

@@ -732,7 +732,7 @@ async def main():
           const alpha=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return ctx.getImageData(0,0,1,1).data[3]};
           const t=q('.ag-topbar'),s=q('.ag-sidebar'),be=getComputedStyle(document.body,'::before'),tb=getComputedStyle(t,'::before');
           const pr=document.createElement('div');pr.style.backgroundColor='var(--ag-bg-elevated)';document.body.appendChild(pr);const elev=cs(pr).backgroundColor;pr.remove();
-          return {tBf:cs(t).backdropFilter,tA:alpha(cs(t).backgroundColor),tSh:cs(t).boxShadow,tpC:tb.content,tpBf:tb.backdropFilter,tpA:alpha(tb.backgroundColor),sBf:cs(s).backdropFilter,sA:alpha(cs(s).backgroundColor),sBg:cs(s).backgroundColor,elev,sSh:cs(s).boxShadow,
+          return {tBf:cs(t).backdropFilter,tA:alpha(cs(t).backgroundColor),tSh:cs(t).boxShadow,tpC:tb.content,tpBf:tb.backdropFilter,tpA:alpha(tb.backgroundColor),tpSh:tb.boxShadow,sBf:cs(s).backdropFilter,sA:alpha(cs(s).backgroundColor),sBg:cs(s).backgroundColor,elev,sSh:cs(s).boxShadow,
             bA:alpha(cs(q('.ag-sidebar .ag-badge--count')).backgroundColor),before:be.content,beforeImg:be.backgroundImage,beforePos:be.position,appImg:cs(q('.ag-app')).backgroundImage}}"""
         for light in (False, True):
             th = "라이트" if light else "다크"
@@ -744,9 +744,10 @@ async def main():
             r = await pg.evaluate(glass_js)
             # 배지(--ag-surface-3)는 크롬 안에서도 불투명 — 레일에서 배지가 글자 위에 얹혀 아래 글자가 비치던 것(1.15 작업 중 발견)
             # 1.16: 상단 바 유리는 ::before 에 — 요소 자신은 블러 없음(backdrop root 가 되면 안쪽 메뉴의 블러가 바 밖을 못 본다)
-            check(f"1.15 유리 켬({th}): 상단 바(::before) · 사이드바 blur(24px)+saturate · 반투명(상단 바가 더 두꺼움) · inset 하이라이트, 상단 바 요소는 블러 없음, 메시 고정 층 · 상단 글로우 없음, 사이드바 배지 불투명",
+            # 1.21: 하이라이트도 ::before 로 — 상단 바 요소는 투명 · 그림자 없음(떠 있는 바, 아래 1.21 단언)
+            check(f"1.15 유리 켬({th}): 상단 바(::before) · 사이드바 blur(24px)+saturate · 반투명(상단 바가 더 두꺼움) · inset 하이라이트, 상단 바 요소는 블러 · 그림자 없음, 메시 고정 층 · 상단 글로우 없음, 사이드바 배지 불투명",
                   all("blur(24px)" in r[k] and "saturate" in r[k] for k in ("tpBf", "sBf")) and r["tBf"] == "none" and r["tA"] == 0 and 0 < r["sA"] < r["tpA"] < 255 and r["bA"] == 255
-                  and "inset" in r["tSh"] and "inset" in r["sSh"] and r["before"] == '""' and r["beforePos"] == "fixed"
+                  and r["tSh"] == "none" and "inset" in r["tpSh"] and "inset" in r["sSh"] and r["before"] == '""' and r["beforePos"] == "fixed"
                   and "radial-gradient" in r["beforeImg"] and r["appImg"] == "none", str(r))
             await pg.click('[data-mode="focus"]'); await pg.wait_for_timeout(150)
             r = await pg.evaluate(glass_js)
@@ -920,6 +921,29 @@ async def main():
                   and on["aC"] == '""' and "gradient" in on["aImg"] and "exclude" in on["aMask"] and "32px 32px" in on["meshSize"], str({"off": off, "on": on}))
             await pg.close()
 
+        # ── 1.21 떠 있는 상단 바 — 유리 층(::before)만 들여 둥글게. 바 크기 · 격자 행 · sticky 오프셋은 그대로(레이아웃 불변), tabs 만 두 행을 바 안에 넣으려고 아래 틈 8px ──
+        float_js = r"""()=>{const t=document.querySelector('.ag-topbar'),b=getComputedStyle(t,'::before'),tr=t.getBoundingClientRect(),m=document.querySelector('.ag-main').getBoundingClientRect(),nav=document.querySelector('.ag-topbar__row--nav');
+          return {top:parseFloat(b.top),left:parseFloat(b.left),r:parseFloat(b.borderTopLeftRadius),bw:['Top','Right','Bottom','Left'].every(s=>b[`border${s}Width`]==='1px'),
+            mainX:Math.round(m.left),mainY:Math.round(m.top),th:Math.round(tr.height),glassBottom:Math.round(tr.height-(parseFloat(b.bottom)||0)),navBottom:nav&&nav.offsetParent?Math.round(nav.getBoundingClientRect().bottom-tr.top):null}}"""
+        for light in (False, True):
+            th = "라이트" if light else "다크"
+            bad = []
+            for name, mode in (("index", None), ("layouts", "sidebar"), ("layouts", "rail"), ("layouts", "dual"), ("layouts", "tabs")):
+                pg = await page(b, name + ".html", light=light)
+                if mode:
+                    await pg.click(f'[data-mode="{mode}"]'); await pg.wait_for_timeout(150)
+                off = await pg.evaluate(float_js)
+                await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(150)
+                on = await pg.evaluate(float_js)
+                ok = on["top"] > 0 and on["left"] > 0 and on["r"] > 0 and on["bw"]
+                if mode == "tabs":
+                    ok = ok and on["navBottom"] is not None and on["navBottom"] <= on["glassBottom"] and on["th"] == off["th"] + 8 and on["mainX"] == off["mainX"]
+                else:
+                    ok = ok and (on["mainX"], on["mainY"], on["th"]) == (off["mainX"], off["mainY"], off["th"])
+                if not ok: bad.append(f"{mode or 'top'} off={off} on={on}")
+                await pg.close()
+            check(f"1.21 유리 켬({th}): 떠 있는 상단 바 — 유리 층만 들여(inset > 0) 둥글게 · 사방 테두리, 레이아웃 불변(top · sidebar · rail · dual 본문 자리 · 바 높이 = 유리 끔), tabs 는 두 행이 바 안 · 아래 틈 8px", not bad, " | ".join(bad[:3]))
+
         # ── 1.18 유리 스킨 4단계 — 알약 컨트롤(트랙 · 유리 알약 · 미끄러짐 · 누름 · 탭 판) ──
         glide_js = r"""(sel)=>{const h=document.querySelector(sel),b=getComputedStyle(h,'::before');
           const a=[...h.children].find(c=>c.matches('.is-active,[aria-current="page"],[aria-pressed="true"],[aria-checked="true"],[aria-selected="true"]'));
@@ -938,8 +962,8 @@ async def main():
             check(f"1.18 유리 끔({th}): 네비 · 세그먼트 미끄러짐 층 없음 · 트랙 · 활성 불투명 그대로", n["content"] == "none" and sg["content"] == "none" and n["trackA"] == 255 and n["itemA"] == 255 and sg["itemA"] == 255, str({k: (n[k], sg[k]) for k in ("content", "trackA", "itemA")}))
             await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(350)   # 항목 배경 전환(--ag-dur)이 끝난 뒤
             n, sg = await pg.evaluate(glide_js, ".ag-topbar .ag-nav"), await pg.evaluate(glide_js, ".ag-segmented")
-            check(f"1.18 유리 켬({th}): 미끄러지는 알약 — 네비 · 세그먼트 ::before 가 활성 항목 자리 · 폭(±1px), 활성 항목 자신은 투명, 트랙 = fill, 스프링 곡선",
-                  all(r["glide"] and r["content"] == '""' and near(r) and r["itemA"] == 0 and r["track"] == r["fill"] and SPRING in r["tf"] for r in (n, sg)), str({k: (round(n[k], 1) if isinstance(n[k], float) else n[k], round(sg[k], 1) if isinstance(sg[k], float) else sg[k]) for k in ("glide", "x", "ex", "w", "ew", "itemA", "track", "fill")}))
+            check(f"1.18 유리 켬({th}): 미끄러지는 알약 — 네비 · 세그먼트 ::before 가 활성 항목 자리 · 폭(±1px), 활성 항목 자신은 투명, 세그먼트 트랙 = fill · 상단 바 네비 트랙 없음(1.21 바가 곧 트랙), 스프링 곡선",
+                  all(r["glide"] and r["content"] == '""' and near(r) and r["itemA"] == 0 and SPRING in r["tf"] for r in (n, sg)) and sg["track"] == sg["fill"] and n["trackA"] == 0, str({k: (round(n[k], 1) if isinstance(n[k], float) else n[k], round(sg[k], 1) if isinstance(sg[k], float) else sg[k]) for k in ("glide", "x", "ex", "w", "ew", "itemA", "track", "fill")}))
             items = await pg.query_selector_all(".ag-segmented .ag-segmented__item")
             await items[2].click(); await pg.wait_for_timeout(450)
             moved = await pg.evaluate(glide_js, ".ag-segmented")
