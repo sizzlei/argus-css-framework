@@ -57,6 +57,16 @@ def _backdrop_prefix_pairs():
                 bad.append(f"{f.name}: {sel.strip()[:60]}")
     return bad
 
+# ── 2.0.0 버전 표기 일치: build.sh VERSION = dist/VERSION = package.json version = components 가이드 머리글.
+#    package.json 은 1.9.1, 가이드 머리글은 v1.8.0 에서 멈춰 있었다(2.0.0 에서 발견) ──
+def _version_marks():
+    import re, json
+    want = re.search(r'^VERSION="([^"]+)"', (ROOT / "build.sh").read_text(encoding="utf-8"), re.M).group(1)
+    got = {"dist/VERSION": (ROOT / "dist/VERSION").read_text(encoding="utf-8").strip(),
+           "package.json": json.loads((ROOT / "package.json").read_text(encoding="utf-8"))["version"],
+           "components 머리글": (re.search(r'class="ag-eyebrow">v([0-9.]+) ·', (ROOT / "examples/src/components.html").read_text(encoding="utf-8")) or [None, None])[1]}
+    return want, {k: v for k, v in got.items() if v != want}
+
 # ── 1.5 엔진 팔레트: 인접쌍(documentdb→mysql→postgres→oracle→mssql) 색각이상 ΔE 검증 (OKLab, Viénot 행렬) ──
 def _engine_palette_check():
     import re, math
@@ -92,6 +102,8 @@ async def main():
 
         orphan = _class_coverage()
         check(f"coverage: every css class appears in examples/templates/js", not orphan, ", ".join(orphan[:12]) + (f" … +{len(orphan) - 12}" if len(orphan) > 12 else ""))
+        want, off = _version_marks()
+        check(f"2.0.0 버전 표기 일치: build.sh VERSION({want}) = dist/VERSION = package.json = components 가이드 머리글", not off, str(off))
         bp = _backdrop_prefix_pairs()
         check("1.15.1: dist 의 -webkit-backdrop-filter 마다 접두 없는 backdrop-filter 가 같은 블록에 있다", not bp, " | ".join(bp[:6]))
 

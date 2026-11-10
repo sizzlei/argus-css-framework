@@ -1,6 +1,6 @@
 # Argus CSS Framework
 
-어드민 페이지용 순수 CSS 디자인 시스템. 빌드 도구 없이 `<link>` 한 줄, 다크 테마 기본 + 라이트, 컬러 테마 7종, 레이아웃 모드 6종, CSS 전용 차트.
+어드민 페이지용 순수 CSS 디자인 시스템. 빌드 도구 없이 `<link>` 한 줄, 다크 테마 기본 + 라이트, 컬러 테마 7종, 레이아웃 모드 6종, 유리 스킨(`data-skin="glass"`, 2.0), CSS 전용 차트.
 Go `html/template` 같은 서버 렌더링 어드민을 염두에 두고 만들었지만 어떤 스택에서든 쓸 수 있다. JS 는 전부 선택 사항.
 
 A pure-CSS design system for admin pages — dark-first with a light theme, 7 color themes, 6 layout modes, CSS-only charts, optional data-attribute JS helpers. Korean docs; class names are English (`ag-` prefix). MIT.
@@ -37,7 +37,7 @@ index.html                      ← GitHub Pages 진입점 (examples/ 로 리다
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
                                    index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / report(A4 인쇄 문서) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
-tools/                          ← check.py(값 단언 회귀 242항목 + axe 접근성 게이트 + 키보드·모션 상한 + 클래스 커버리지) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
+tools/                          ← check.py(값 단언 회귀 243항목 + axe 접근성 게이트 + 키보드·모션 상한 + 클래스 커버리지) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -392,7 +392,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 242항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 유리 스킨 · 400 · 3400 tabs)
+python3 tools/check.py      # 값 단언 회귀 243항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 유리 스킨 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서
