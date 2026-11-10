@@ -775,7 +775,8 @@ async def main():
           const scrim=stack('--ag-bg','--ag-accent','--ag-overlay','--ag-glass-bg-thick'),thickField=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-field');
           const engTint=Math.min(...['mysql','postgres','oracle','documentdb','mssql'].map(e=>lo(`--ag-engine-${e}-text`,`color-mix(in oklab, var(--ag-engine-${e}) 9%, var(--ag-glass-bg-card))`)));
           const navTrack=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-fill'),pill=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick','--ag-glass-fill','--ag-glass-pill');
-          return {mesh3:lo('--ag-text-3'),mesh2:lo('--ag-text-2'),meshAccent:lo('--ag-accent-text'),navTrack2:cr('--ag-text-2',navTrack),pillText:cr('--ag-text',pill),segCard2:lo('--ag-text-2','--ag-glass-bg-card','--ag-glass-fill'),card3:lo('--ag-text-3','--ag-glass-bg-card'),engTint,
+          return {mesh3:lo('--ag-text-3'),mesh2:lo('--ag-text-2'),meshAccent:lo('--ag-accent-text'),navTrack2:cr('--ag-text-2',navTrack),pillText:cr('--ag-text',pill),segCard2:lo('--ag-text-2','--ag-glass-bg-card','--ag-glass-fill'),card3:lo('--ag-glass-text-3','--ag-glass-bg-card'),engTint,
+            cardText:Math.min(...['--ag-text','--ag-text-2','--ag-accent-text','--ag-accent-2-text','--ag-good-text','--ag-warn-text','--ag-crit-text','--ag-info-text'].map(t=>lo(t,'--ag-glass-bg-card'))),
             reg3:lo('--ag-text-3','--ag-glass-bg'),regAccent:lo('--ag-accent-text','--ag-glass-bg'),fill2:lo('--ag-text-2','--ag-glass-bg','--ag-glass-fill'),thick2:cr('--ag-text-2',thick),thick3:cr('--ag-text-3',thick),
             scrim2:cr('--ag-text-2',scrim),scrim3:cr('--ag-text-3',scrim),field3:lo('--ag-text-3','--ag-glass-bg','--ag-glass-field'),thickField3:cr('--ag-text-3',thickField)}}"""
         lows = []
@@ -788,7 +789,7 @@ async def main():
                 bad = {k: v for k, v in r.items() if v < 4.5}
                 if bad: lows.append(f"{theme or 'violet'}/{'light' if light else 'dark'} {bad}")
                 await pg.close()
-        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3, 1.16 막 위 bg-thick · field 위 text-3, 1.17 메시 위 카드 text-3 · 엔진 틴트 카드 엔진 글자, 1.18 상단 바 · 카드 트랙 위 text-2 · 알약 위 text, 1.19 메시 위 맨 글자 text-3 · text-2 · accent-text ≥ 4.5", not lows, " | ".join(lows[:6]))
+        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3, 1.16 막 위 bg-thick · field 위 text-3, 1.17 메시 위 카드 text-3 · 엔진 틴트 카드 엔진 글자, 1.18 상단 바 · 카드 트랙 위 text-2 · 알약 위 text, 1.19 메시 위 맨 글자 text-3 · text-2 · accent-text, 1.20 카드 안 글자(text · text-2 · glass-text-3 · 액센트 · 상태) ≥ 4.5", not lows, " | ".join(lows[:6]))
         # 1.19 메시 위 맨 글자 — 실제 화면 픽셀로. 조상 바탕이 모두 투명한 글자 요소의 자리를, 글자색을 지운 스크린샷에서 읽어 대비를 잰다.
         # 1.15 ~ 1.18 은 토큰 쌓기가 유리 표면 위만 재서 라이트 메시 위 브레드크럼 4.01 을 놓쳤다(색 × 투명도 메시) — 그 자리를 남긴다
         bare_find_js = r"""()=>{const out=[],seen=new Set(),tw=document.createTreeWalker(document.body,NodeFilter.SHOW_TEXT);let n;
@@ -877,7 +878,7 @@ async def main():
             await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(100)
             on = await pg.evaluate(card_js)
             glassy = all(on[k]["a"] == on["cardA"] < 255 and "linear-gradient" in on[k]["img"] and "inset" in on[k]["sh"] and on[k]["bf"] == "none" for k in ("base", "elevated"))
-            check(f"1.17 유리 켬({th}): 기본 · elevated 카드 = 유리 바탕(1.19 bg-card) + 광택 + inset 하이라이트 · 블러 없음, elevated 그림자 유지",
+            check(f"1.17 유리 켬({th}): 기본 · elevated 카드 = 유리 바탕(bg-card) + 광택 + inset 하이라이트 · 블러 없음, elevated 그림자 유지",
                   glassy and "8px 24px -8px" in on["elevated"]["sh"], str({k: on[k] for k in ("base", "elevated")}))
             check(f"1.17 유리 켬({th}): 엔진 틴트 반투명 · 기본과 다른 색, 엔진 띠는 inset 3px + 하이라이트",
                   0 < on["engine-tint"]["a"] < 255 and on["engine-tint"]["bg"] != on["base"]["bg"] and "3px 0px 0px 0px inset" in on["engine-stripe"]["sh"] and on["engine-stripe"]["sh"].count("inset") >= 3,
@@ -902,6 +903,21 @@ async def main():
               const cs=getComputedStyle(document.querySelector('.ag-pane'));return {paneA:alpha(cs.backgroundColor),paneBf:cs.backdropFilter,paneSh:cs.boxShadow}}"""))
             check(f"1.17 유리 켬({th}): 듀얼 목록 판 반투명 · 블러 없음 · 하이라이트, 사이드바 패널 = field, 액센트 패널 불투명",
                   0 < r["paneA"] < 255 and r["paneBf"] == "none" and "inset" in r["paneSh"] and r["panel"] == r["field"] and r["accentA"] == 255, str(r))
+            await pg.close()
+
+        # ── 1.20 유리 카드 질감 — 카드 뒤 흐림(::before) · 테두리 빛(::after) · 바탕 격자선. 카드 자신은 블러 없음(위 1.17 메뉴 단언이 같이 지킨다) ──
+        pseudo_js = r"""()=>{const solid=/ag-card--(accent|accent2|inverse|cat[1-4]|engine-solid|accent-soft)\b/,c=[...document.querySelectorAll('.ag-card')].find(e=>!solid.test(e.className));
+          const b=getComputedStyle(c,'::before'),a=getComputedStyle(c,'::after'),m=getComputedStyle(document.body,'::before');
+          return {cardBf:getComputedStyle(c).backdropFilter,bC:b.content,bBf:b.backdropFilter,bZ:b.zIndex,aC:a.content,aMask:a.maskComposite,aImg:a.backgroundImage,meshSize:m.backgroundSize}}"""
+        for light in (False, True):
+            th = "라이트" if light else "다크"
+            pg = await page(b, "components.html", light=light)
+            off = await pg.evaluate(pseudo_js)
+            await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(100)
+            on = await pg.evaluate(pseudo_js)
+            check(f"1.20 유리 켬({th}): 카드 뒤 흐림 = ::before(blur · z-index -1) · 카드 자신은 블러 없음, 테두리 빛 = ::after(gradient · mask exclude), 메시에 32px 격자선 / 유리 끔은 가상 요소 없음",
+                  off["bC"] == "none" and off["aC"] == "none" and on["cardBf"] == "none" and on["bC"] == '""' and "blur(" in on["bBf"] and on["bZ"] == "-1"
+                  and on["aC"] == '""' and "gradient" in on["aImg"] and "exclude" in on["aMask"] and "32px 32px" in on["meshSize"], str({"off": off, "on": on}))
             await pg.close()
 
         # ── 1.18 유리 스킨 4단계 — 알약 컨트롤(트랙 · 유리 알약 · 미끄러짐 · 누름 · 탭 판) ──

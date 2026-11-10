@@ -26,8 +26,7 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
-  background-image: var(--ag-glass-backdrop);
-  background-repeat: no-repeat;
+  background: var(--ag-glass-backdrop);   /* 1.20: 단축형 — 격자선 층의 크기 · 반복이 토큰 안에 있다 */
 }
 :where(:root[data-skin="glass"]) .ag-app { background-image: none; }   /* 메시가 상단 글로우(--ag-bg-glow · .ag-glow)를 대신한다 */
 
@@ -107,15 +106,42 @@
   backdrop-filter: blur(4px);
 }
 
-/* 카드 · 패널(1.17) — 유리. 카드는 고정된 부드러운 메시 위에만 놓이므로 블러를 걸지 않는다(걸어도 안 보인다).
-   블러는 쌓임 맥락을 만들어 카드 안 드롭다운(z-index 50)이 다음 카드 밑에 가려지고, fixed 자손도 갇힌다(Chromium 실측).
-   1.19: 바탕은 bg-card(70 · 72%) — 명도 고정 메시 색이 비친다. 1.17 은 bg-thick(86 · 88%)이었다.
+/* 카드 · 패널(1.17) — 유리. 카드 자신에는 블러를 걸지 않는다 — 블러는 쌓임 맥락을 만들어 카드 안 드롭다운(z-index 50)이
+   다음 카드 밑에 가려지고, fixed 자손도 갇힌다(Chromium 실측). 1.20: 그래서 카드 뒤 흐림은 ::before(z-index -1)에 건다(아래).
+   바탕은 bg-card — 다크는 흰 막(1.20)이라 메시 색이 그대로 비치고, 카드 안 text-3 는 glass-text-3 로 한 단계 올린다.
    단색 톤 카드와 --accent-soft 는 불투명 그대로(--accent-soft 는 라이트 orange 액센트 글자 4.37 로 모자란다).
    특이도는 .ag-card 하나 — 기본 · --elevated 바탕을 덮고, --interactive:hover(불투명 hover) · .is-selected 는 그대로 이긴다 */
 :where(:root[data-skin="glass"]) .ag-card:where(:not(.ag-card--accent, .ag-card--accent2, .ag-card--inverse, .ag-card--cat1, .ag-card--cat2, .ag-card--cat3, .ag-card--cat4, .ag-card--engine-solid, .ag-card--accent-soft)) {
   background-color: var(--ag-glass-bg-card);
+  border-color: var(--ag-glass-card-border);   /* 다크는 투명 — 테두리 빛(::after)이 대신한다 */
+  --ag-text-3: var(--ag-glass-text-3);
   --ag-surface-sheen: var(--ag-glass-sheen);   /* 기존 background-image 가 읽는다 */
   --ag-card-edge: var(--ag-glass-edge);        /* 기존 box-shadow · 엔진 띠 · 글로우 · 목록 항목이 읽는다 */
+}
+/* 카드 뒤 흐림(1.20) — 카드 자신이 아니라 가상 요소에 건다. 카드(position: relative, z-index auto)는 쌓임 맥락이 되지 않고,
+   z-index -1 인 이 층은 부모 쌓임 맥락의 음수 층(카드 바탕 밑)에 그려진다 → 카드 안 메뉴는 다음 카드 위로 그대로 뜬다(check.py 1.17 단언).
+   흐림이 보이는 건 바탕 격자선 덕분 — 매끈한 메시는 흐려도 같다. 불투명 바탕 조상 안에 놓인 카드는 이 층이 그 바탕 밑에 깔려 흐림만 빠진다 */
+:where(:root[data-skin="glass"]) .ag-card:where(:not(.ag-card--accent, .ag-card--accent2, .ag-card--inverse, .ag-card--cat1, .ag-card--cat2, .ag-card--cat3, .ag-card--cat4, .ag-card--engine-solid, .ag-card--accent-soft))::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  backdrop-filter: var(--ag-glass-filter);
+}
+/* 테두리 빛(1.20) — 1px 고리를 마스크로 오려 낸 그라디언트. 테두리 안쪽(inset 0)에 그린다: --flush 의 overflow: hidden 이 바깥(-1px)을 자른다.
+   mask · mask-composite 는 접두 없이 한 번만 — lightningcss 가 -webkit-mask(-composite: xor)를 붙인다(backdrop-filter 와 같은 이유) */
+:where(:root[data-skin="glass"]) .ag-card:where(:not(.ag-card--accent, .ag-card--accent2, .ag-card--inverse, .ag-card--cat1, .ag-card--cat2, .ag-card--cat3, .ag-card--cat4, .ag-card--engine-solid, .ag-card--accent-soft))::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: var(--ag-glass-rim);
+  pointer-events: none;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
 }
 :where(:root[data-skin="glass"]) .ag-card--engine-tint { background-color: color-mix(in oklab, var(--ag-engine) 9%, var(--ag-glass-bg-card)); }   /* 위 규칙이 같은 특이도로 뒤에 와서 덮으므로 다시 */
 /* --elevated 는 background 단축 · shadow-md 만이라 광택 · 하이라이트가 빠진다 — 유리에서는 다른 카드와 같이 */
