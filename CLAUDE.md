@@ -5,11 +5,11 @@
 ## 구조
 
 ```
-css/            소스. 빌드 순서 = tokens → base → layout → components → charts → patterns → utilities
+css/            소스. 빌드 순서 = tokens → base → layout → components → charts → patterns → skins → utilities (core = tokens base layout components skins utilities)
 dist/           build.sh 산출물(전부 minified). 직접 수정 금지. argus.min.css(전체) / core·patterns·charts·auth-landing.min.css(골라 쓰기) / themes/*.min.css / *.js
-js/modules/     선택 헬퍼 소스. 10-core(테마·사이드바·탭) 20-overlay(드롭다운·모달·배너·날짜·토스트닫기·확장행) 30-keyboard 40-chart-hover 50-toast. build 가 합친다
+js/modules/     선택 헬퍼 소스. 10-core(테마·스킨·사이드바·탭) 20-overlay(드롭다운·모달·배너·날짜·토스트닫기·확장행) 30-keyboard 40-chart-hover 50-toast. build 가 합친다
 js/argus.charts.js  ApexCharts/Chart.js 프리셋
-tools/          check.py 값 단언 회귀(180항목 + axe 접근성 게이트 + 클래스 커버리지, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
+tools/          check.py 값 단언 회귀(192항목 + axe 접근성 게이트 + 클래스 커버리지, 실패 시 exit 1) · shots.py 시각 회귀 · gen_matrix.py 조합 매트릭스 생성
 examples/src/   예시 페이지 소스. <!--@icons--> 는 _icons.html 스프라이트로 치환됨
 examples/       build_examples.py 산출물. 직접 수정 금지. GitHub Pages 가 main 브랜치 루트를 그대로 서빙하므로 커밋 전 반드시 빌드 (루트 index.html 은 examples/ 로 리다이렉트, .nojekyll 로 _icons.html 등 밑줄 파일 유지)
 docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프롬프트 키트
@@ -27,6 +27,7 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 | 범용 UI 조각 (버튼·카드·테이블·폼·배지…) | `components.css` |
 | CSS 전용 차트, 차트 라이브러리 보정 | `charts.css` |
 | 어드민 화면에서 반복되는 조합 패턴 (인증, 로그 뷰어, 스테퍼, diff…) | `patterns.css`. 거의 안 쓰는 선택 변형은 `extras/` (별도 번들) |
+| 스킨(`<html data-skin="…">`) — 어느 컴포넌트에 재질을 입힐지 | `skins.css`. 셀렉터는 `:where(:root[data-skin="x"]) .ag-…` (특이도 0), 값은 tokens.css 의 `--ag-glass-*` 같은 스킨 토큰 |
 | 한 줄짜리 유틸 | `utilities.css` — **최소한만.** 컴포넌트 클래스로 풀 수 있으면 유틸을 만들지 않는다 |
 
 ## 변형 선언 순서 (소스 순서가 곧 우선순위)
@@ -55,6 +56,8 @@ docs/           디자인 원칙, 기존 어드민 리뉴얼용 Claude Code 프�
 
 - 다크가 기본(`:root`). 라이트는 `:root[data-theme="light"]` 블록에서 **토큰만** 재정의한다.
 - 컴포넌트 규칙 안에 `[data-theme]` 셀렉터나 `prefers-color-scheme` 를 쓰지 않는다. 테마는 토큰이 처리한다.
+- **스킨은 세 번째 축**(1.15, `data-skin="glass"`). 스킨 셀렉터(`[data-skin]`)는 `skins.css` 에만 쓰고 layout · components · patterns 에는 쓰지 않는다. 스킨 토큰(`--ag-glass-*`)도 다크 · 라이트 둘 다 정의하고, 유리 바탕 알파를 바꾸면 check.py 유리 대비 단언(7색 × 2테마, 메타 글자 4.5:1)을 다시 통과시킨다. 스킨을 끈 화면은 바뀌지 않아야 한다(스킨 토큰은 skins.css 에서만 참조).
+- `backdrop-filter` 는 접두 없이 한 번만 쓴다. lightningcss 가 `-webkit-` 을 붙이는데, 소스에 둘 다 쓰면 접두 없는 쪽이 지워져 Chrome 에서 블러가 꺼진다(1.15 에서 확인).
 - 새 토큰은 반드시 다크·라이트 양쪽에 정의한다. 한쪽만 있으면 빌드는 통과하지만 화면이 깨진다.
 - 쉼표 목록(`box-shadow: var(--a), var(--b)`, 다중 `background`) 안에서 쓰는 토큰은 한 테마에서 끄더라도 `none` 을 넣지 않는다 — 목록 전체가 무효가 된다. 빈 그림자는 `0 0 #0000`, 빈 배경층은 `linear-gradient(transparent, transparent)` (1.5.1 교훈: `--ag-card-edge: none` 이 라이트 카드 그림자를 전부 지웠다).
 - 단색 카드(`--accent/--accent2/--inverse/--cat1~4/--engine-solid`) 안의 텍스트 보정은 개별 클래스가 아니라 카드가 토큰(`--ag-text*`, `--ag-border*`, `--ag-surface-2/3/hover`)을 재정의하는 방식으로 한다. 새 컴포넌트가 토큰만 쓰면 자동으로 따라온다.

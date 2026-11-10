@@ -16,13 +16,15 @@ def check(name, ok, detail=""):
     if VERBOSE or not ok:
         print(("  ok   " if ok else "  FAIL ") + name + (f"  — {detail}" if detail else ""))
 
-async def page(b, path, width=1440, height=900, light=False):
+async def page(b, path, width=1440, height=900, light=False, skin=False):
     pg = await b.new_page(viewport={"width": width, "height": height})
     errs = []
     pg.on("pageerror", lambda e: errs.append(str(e)))
     await pg.goto(BASE + path)
     if light:
         await pg.evaluate("document.documentElement.dataset.theme='light'")
+    if skin:
+        await pg.evaluate("document.documentElement.dataset.skin='glass'")
     await pg.wait_for_timeout(350)
     pg._errs = errs
     return pg
@@ -703,17 +705,78 @@ async def main():
               r["bH"] == 0 and abs(r["mTop"] - r["t"]) < 1 and r["over"] <= 0, str(r))
         await pg.close()
 
+        # ── 1.15 유리 스킨(data-skin="glass") — 크롬(상단 바 · 사이드바 · 레일). 끄면 1.14 그대로, 켜면 유리 4겹, 대비는 토큰이 책임진다 ──
+        glass_js = r"""()=>{const q=s=>document.querySelector(s),cs=e=>getComputedStyle(e);
+          const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});
+          const alpha=c=>{ctx.clearRect(0,0,1,1);ctx.fillStyle=c;ctx.fillRect(0,0,1,1);return ctx.getImageData(0,0,1,1).data[3]};
+          const t=q('.ag-topbar'),s=q('.ag-sidebar'),be=getComputedStyle(document.body,'::before');
+          const pr=document.createElement('div');pr.style.backgroundColor='var(--ag-bg-elevated)';document.body.appendChild(pr);const elev=cs(pr).backgroundColor;pr.remove();
+          return {tBf:cs(t).backdropFilter,tA:alpha(cs(t).backgroundColor),tSh:cs(t).boxShadow,sBf:cs(s).backdropFilter,sA:alpha(cs(s).backgroundColor),sBg:cs(s).backgroundColor,elev,sSh:cs(s).boxShadow,
+            bA:alpha(cs(q('.ag-sidebar .ag-badge--count')).backgroundColor),before:be.content,beforeImg:be.backgroundImage,beforePos:be.position,appImg:cs(q('.ag-app')).backgroundImage}}"""
+        for light in (False, True):
+            th = "라이트" if light else "다크"
+            pg = await page(b, "layouts.html", light=light)
+            r = await pg.evaluate(glass_js)
+            check(f"1.15 유리 끔({th}): 사이드바 불투명 · 크롬 하이라이트 없음 · 메시 층 없음 · 상단 글로우 유지",
+                  r["sA"] == 255 and r["sBg"] == r["elev"] and r["tSh"] == "none" and r["sSh"] == "none" and r["before"] == "none" and "radial-gradient" in r["appImg"], str(r))
+            await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(100)
+            r = await pg.evaluate(glass_js)
+            # 배지(--ag-surface-3)는 크롬 안에서도 불투명 — 레일에서 배지가 글자 위에 얹혀 아래 글자가 비치던 것(1.15 작업 중 발견)
+            check(f"1.15 유리 켬({th}): 상단 바 · 사이드바 blur(24px)+saturate · 반투명(상단 바가 더 두꺼움) · inset 하이라이트, 메시 고정 층 · 상단 글로우 없음, 사이드바 배지 불투명",
+                  all("blur(24px)" in r[k] and "saturate" in r[k] for k in ("tBf", "sBf")) and 0 < r["sA"] < r["tA"] < 255 and r["bA"] == 255
+                  and "inset" in r["tSh"] and "inset" in r["sSh"] and r["before"] == '""' and r["beforePos"] == "fixed"
+                  and "radial-gradient" in r["beforeImg"] and r["appImg"] == "none", str(r))
+            await pg.click('[data-mode="focus"]'); await pg.wait_for_timeout(150)
+            r = await pg.evaluate(glass_js)
+            check(f"1.15 유리 켬({th}) 집중 모드: 상단 바는 투명 · 블러 없음 · 하이라이트 선 없음 그대로", r["tA"] == 0 and r["tBf"] == "none" and r["tSh"] == "none", str(r))
+            await pg.close()
+        # 투명도 줄이기(OS 설정): 유리 스킨이어도 불투명 · 블러 없음 · 메시 없음
+        pg = await page(b, "layouts.html", skin=True)
+        cdp = await pg.context.new_cdp_session(pg)
+        await cdp.send("Emulation.setEmulatedMedia", {"features": [{"name": "prefers-reduced-transparency", "value": "reduce"}]})
+        await pg.wait_for_timeout(100)
+        r = await pg.evaluate(glass_js)
+        check("1.15 유리 켬 + prefers-reduced-transparency: 상단 바 · 사이드바 불투명 · 블러 없음 · 메시 없음",
+              r["tA"] == 255 and r["sA"] == 255 and r["tBf"] == "none" and r["sBf"] == "none" and "radial-gradient" not in r["beforeImg"], str(r))
+        await pg.close()
+        # 대비 — 7색 × 다크 · 라이트. 메시 세 색을 다 겹친 가장 진한 지점 위 bg, 그 위 fill(hover), 액센트 카드가 밑을 지날 때 bg-thick
+        contrast_js = r"""()=>{const res=t=>{const d=document.createElement('div');d.style.backgroundColor=`var(${t})`;document.body.appendChild(d);const c=getComputedStyle(d).backgroundColor;d.remove();return c};
+          const ctx=document.createElement('canvas').getContext('2d',{willReadFrequently:true});
+          const stack=(...ts)=>{ctx.clearRect(0,0,1,1);for(const t of ts){ctx.fillStyle=res(t);ctx.fillRect(0,0,1,1)}return [...ctx.getImageData(0,0,1,1).data]};
+          const lum=p=>{const f=v=>{v/=255;return v<=.03928?v/12.92:((v+.055)/1.055)**2.4};return .2126*f(p[0])+.7152*f(p[1])+.0722*f(p[2])};
+          const cr=(fg,bg)=>{const a=lum(stack(fg)),b=lum(bg);return +((Math.max(a,b)+.05)/(Math.min(a,b)+.05)).toFixed(2)};
+          const mesh=['--ag-bg','--ag-glass-tint-3','--ag-glass-tint-2','--ag-glass-tint-1'];
+          const reg=stack(...mesh,'--ag-glass-bg'),fill=stack(...mesh,'--ag-glass-bg','--ag-glass-fill'),thick=stack('--ag-bg','--ag-accent','--ag-glass-bg-thick');
+          return {reg3:cr('--ag-text-3',reg),regAccent:cr('--ag-accent-text',reg),fill2:cr('--ag-text-2',fill),thick2:cr('--ag-text-2',thick),thick3:cr('--ag-text-3',thick)}}"""
+        lows = []
+        for theme in ("", "red", "orange", "yellow", "green", "blue", "indigo"):
+            for light in (False, True):
+                pg = await page(b, "layouts.html", light=light, skin=True)
+                if theme:
+                    await pg.add_style_tag(path=str(ROOT / f"dist/themes/{theme}.min.css")); await pg.wait_for_timeout(100)
+                r = await pg.evaluate(contrast_js)
+                bad = {k: v for k, v in r.items() if v < 4.5}
+                if bad: lows.append(f"{theme or 'violet'}/{'light' if light else 'dark'} {bad}")
+                await pg.close()
+        check("1.15 유리 대비(7색 × 2테마): 메시 위 bg 에서 text-3 · accent-text, + fill 에서 text-2, 액센트 위 bg-thick 에서 text-2 · text-3 ≥ 4.5", not lows, " | ".join(lows[:6]))
+        for name in ("index", "layouts"):
+            pg = await page(b, name + ".html", width=400, skin=True)
+            r = await pg.evaluate("document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            check(f"1.15 유리 켬 {name} 400px: 가로 넘침 없음", r <= 0, str(r))
+            await pg.close()
+
         # ── A11Y. axe-core (npm i 로 받으면 실행, 없으면 건너뜀): 전 페이지 × 다크·라이트, serious/critical 위반 0 ──
         axe_path = ROOT / "node_modules/axe-core/axe.min.js"
         if axe_path.exists():
             axe_src = axe_path.read_text(encoding="utf-8")
             worst = []
-            for name in ["index", "resources", "detail", "login", "layouts", "components", "report"]:
+            # 1.15: index · layouts 는 유리 스킨(data-skin="glass")으로 한 번 더
+            for name, skin in [(n, False) for n in ("index", "resources", "detail", "login", "layouts", "components", "report")] + [("index", True), ("layouts", True)]:
                 for light in (False, True):
-                    pg = await page(b, name + ".html", light=light)
+                    pg = await page(b, name + ".html", light=light, skin=skin)
                     await pg.add_script_tag(content=axe_src)
                     vs = await pg.evaluate("""async()=>{const r=await axe.run(document,{runOnly:{type:'tag',values:['wcag2a','wcag2aa','wcag21a','wcag21aa','wcag22aa']}});return r.violations.filter(v=>['serious','critical'].includes(v.impact)).map(v=>v.id+'×'+v.nodes.length+' ('+v.nodes[0].target[0].slice(0,40)+')')}""")
-                    if vs: worst.append(f"{name}{'-L' if light else ''}: " + ", ".join(vs[:4]))
+                    if vs: worst.append(f"{name}{'-L' if light else ''}{'-glass' if skin else ''}: " + ", ".join(vs[:4]))
                     await pg.close()
             check("a11y: axe serious/critical violations = 0 on all pages (dark+light)", not worst, " | ".join(worst[:6]))
         else:

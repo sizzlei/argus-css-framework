@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../dist/argus.min.css">
-<script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var d=document.documentElement,s=localStorage.getItem('ag-skin');if(localStorage.getItem('ag-theme')==='light')d.setAttribute('data-theme','light');if(s==='glass')d.setAttribute('data-skin','glass');else if(s)d.removeAttribute('data-skin')}catch(e){}</script>
 <style>@media (max-width: 1300px) { .ag-mode-switch { bottom: 72px; } } @media (max-width: 960px) { .ag-mode-switch { bottom: 84px; max-width: calc(100vw - 80px); overflow-x: auto; } }</style>
 </head>
 <body>
@@ -93,6 +93,7 @@
             <a class="ag-menu__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-shield"/></svg>내 계정 · 연결된 로그인<span class="ag-badge ag-badge--sm ag-badge--good">Google</span></a>
             <a class="ag-menu__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-settings"/></svg>환경설정<kbd>,</kbd></a>
             <button class="ag-menu__item" data-ag-theme-toggle><svg class="ag-icon ag-icon--sm ag-only-dark"><use href="#i-sun"/></svg><svg class="ag-icon ag-icon--sm ag-only-light"><use href="#i-moon"/></svg>테마 전환<span class="ag-text-xs ag-text-3 ag-ml-auto"><span class="ag-only-dark">다크</span><span class="ag-only-light">라이트</span></span></button>
+            <button class="ag-menu__item" data-ag-skin-toggle aria-pressed="false"><svg class="ag-icon ag-icon--sm"><use href="#i-layers"/></svg>유리 스킨</button>
             <div class="ag-menu__item" style="cursor:default"><svg class="ag-icon ag-icon--sm"><use href="#i-grid"/></svg>컴팩트 밀도<label class="ag-switch"><input type="checkbox" id="density-menu" aria-label="컴팩트 밀도"></label></div>
             <div class="ag-menu__sep"></div>
             <div class="ag-menu__label">세션</div>

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../dist/argus.min.css">
-<script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var d=document.documentElement,s=localStorage.getItem('ag-skin');if(localStorage.getItem('ag-theme')==='light')d.setAttribute('data-theme','light');if(s==='glass')d.setAttribute('data-skin','glass');else if(s)d.removeAttribute('data-skin')}catch(e){}</script>
 <style>@media (max-width: 1300px) { .ag-mode-switch { bottom: 72px; } } @media (max-width: 960px) { .ag-mode-switch { bottom: 84px; max-width: calc(100vw - 80px); overflow-x: auto; } }</style>
 </head>
 <body>
@@ -141,6 +141,7 @@
             <a class="ag-menu__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-shield"/></svg>내 계정 · 연결된 로그인<span class="ag-badge ag-badge--sm ag-badge--good">Google</span></a>
             <a class="ag-menu__item" href="#"><svg class="ag-icon ag-icon--sm"><use href="#i-settings"/></svg>환경설정<kbd>,</kbd></a>
             <button class="ag-menu__item" data-ag-theme-toggle><svg class="ag-icon ag-icon--sm ag-only-dark"><use href="#i-sun"/></svg><svg class="ag-icon ag-icon--sm ag-only-light"><use href="#i-moon"/></svg>테마 전환<span class="ag-text-xs ag-text-3 ag-ml-auto"><span class="ag-only-dark">다크</span><span class="ag-only-light">라이트</span></span></button>
+            <button class="ag-menu__item" data-ag-skin-toggle aria-pressed="false"><svg class="ag-icon ag-icon--sm"><use href="#i-layers"/></svg>유리 스킨</button>
             <div class="ag-menu__item" style="cursor:default"><svg class="ag-icon ag-icon--sm"><use href="#i-grid"/></svg>컴팩트 밀도<label class="ag-switch"><input type="checkbox" id="density-menu" aria-label="컴팩트 밀도"></label></div>
             <div class="ag-menu__sep"></div>
             <div class="ag-menu__label">세션</div>
@@ -377,6 +378,9 @@
   .demo-nav__color select { appearance: none; -webkit-appearance: none; background: transparent; border: 0; color: var(--ag-text-2); font: inherit; font-size: var(--ag-text-sm); font-weight: 500; padding: 7px 0; cursor: pointer; outline: none; }
   .demo-nav__color select:focus-visible { color: var(--ag-text); }
   .demo-nav__color select option { color: #111; }
+  .demo-nav__skin { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; border: 0; border-radius: var(--ag-radius-pill); background: transparent; color: var(--ag-text-2); font: inherit; font-size: var(--ag-text-sm); font-weight: 500; white-space: nowrap; cursor: pointer; }
+  .demo-nav__skin:hover { color: var(--ag-text); background: var(--ag-surface-hover); }
+  .demo-nav__skin[aria-pressed="true"] { background: var(--ag-accent); color: var(--ag-text-on-accent); }
   @media (min-width: 961px) { .demo-nav summary { display: none; } .demo-nav__list { display: flex !important; } }
   @media (max-width: 960px) {
     .demo-nav { bottom: calc(var(--ag-space-4) + env(safe-area-inset-bottom, 0px)); }
@@ -408,6 +412,7 @@
         <option value="">violet · 기본</option><option value="red">red · 빨강</option><option value="orange">orange · 주황</option><option value="yellow">yellow · 노랑</option><option value="green">green · 초록</option><option value="blue">blue · 파랑</option><option value="indigo">indigo · 남색</option>
       </select>
     </label>
+    <button type="button" class="demo-nav__skin" data-ag-skin-toggle aria-pressed="false">유리 스킨</button>
   </nav>
 </details>
 <script>
@@ -419,6 +424,8 @@
   sel.addEventListener('change',function(){ apply(sel.value); });
   var saved=''; try{ saved=localStorage.getItem('ag-demo-color')||'' }catch(e){}
   apply(saved);
+  /* 유리 스킨 토글은 argus.js 가 처리한다 — argus.js 를 안 싣는 페이지(리포트)에서는 숨김 */
+  if(!document.querySelector('script[src*="argus.js"]')){ var sk=document.querySelector('.demo-nav__skin'); if(sk) sk.hidden=true; }
 })();
 </script>
 <script>if(matchMedia("(max-width: 960px)").matches)document.querySelector(".demo-nav").removeAttribute("open")</script>

@@ -26,6 +26,15 @@ async def main():
                 print(name,theme,"scrollW",sw,"clientW",cw,"errors",errs[:3])
                 await pg.close()
             await ctx.close()
+        # 1.15 유리 스킨: 크롬이 보이는 페이지만 다크·라이트 (끈 화면은 위 shots 와 같아야 한다)
+        for theme in ("dark","light"):
+            ctx=await b.new_context(viewport={"width":1440,"height":900},device_scale_factor=1)
+            await ctx.add_init_script("try{localStorage.setItem('ag-skin','glass');"+("localStorage.setItem('ag-theme','light');" if theme=="light" else "")+"}catch(e){}")
+            for name in ("index","resources","layouts"):
+                pg=await ctx.new_page(); await pg.goto(base+name+".html"); await pg.wait_for_timeout(1200)
+                await pg.screenshot(path=str(ROOT / f"shots/{name}-{theme}-glass.png"), full_page=True)
+                await pg.close()
+            await ctx.close()
         # mobile
         ctx=await b.new_context(viewport={"width":400,"height":800})
         pg=await ctx.new_page(); await pg.goto(base+"index.html"); await pg.wait_for_timeout(800)

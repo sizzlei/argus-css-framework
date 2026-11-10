@@ -1,4 +1,4 @@
-/* core: 테마 토글, 사이드바(접기·모바일·그룹·2단계), 세그먼트/탭, 아코디언 */
+/* core: 테마 토글, 스킨 토글(1.15), 사이드바(접기·모바일·그룹·2단계), 세그먼트/탭, 아코디언 */
 (function () {
   'use strict';
   var root = document.documentElement;
@@ -13,6 +13,20 @@
     });
   }
   try { applyTheme(localStorage.getItem(KEY) || 'dark'); } catch (e) { applyTheme('dark'); }
+
+  /* ---- 스킨(1.15): 저장된 값이 있을 때만 적용 — 없으면 서비스가 <html data-skin> 에 정한 기본값 그대로 ---- */
+  var SKIN = 'ag-skin';
+  function syncSkin() {
+    var on = root.getAttribute('data-skin') === 'glass';
+    document.querySelectorAll('[data-ag-skin-toggle]').forEach(function (b) { b.setAttribute('aria-pressed', on ? 'true' : 'false'); });
+  }
+  function applySkin(s) {
+    if (s === 'glass') root.setAttribute('data-skin', 'glass');
+    else root.removeAttribute('data-skin');
+    syncSkin();
+  }
+  try { var savedSkin = localStorage.getItem(SKIN); if (savedSkin) applySkin(savedSkin); } catch (e) {}
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', syncSkin); else syncSkin();
 
   /* ---- 사이드바 상태 복원 — <head> 에서 로드돼도 동작하도록 body 파싱 후 실행 ---- */
   function restoreSidebar() { try {
@@ -38,6 +52,13 @@
       var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
       applyTheme(next);
       try { localStorage.setItem(KEY, next); } catch (err) {}
+      return;
+    }
+    var sk = e.target.closest('[data-ag-skin-toggle]');
+    if (sk) {
+      var nextSkin = root.getAttribute('data-skin') === 'glass' ? 'flat' : 'glass';
+      applySkin(nextSkin);
+      try { localStorage.setItem(SKIN, nextSkin); } catch (err) {}
       return;
     }
 

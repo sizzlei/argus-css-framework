@@ -1,0 +1,49 @@
+/* ==========================================================================
+   Argus CSS Framework — Skins
+   색 테마(themes/) · 레이아웃 모드(.ag-app--*) 와 따로 움직이는 세 번째 축. <html data-skin="…"> 로 켠다.
+   값(색 · 블러 · 그림자)은 tokens.css 의 --ag-glass-* 만 쓰고, 여기서는 어느 컴포넌트에 입힐지만 정한다.
+   셀렉터는 :where(:root[data-skin]) 로 감싸 특이도를 0 으로 둔다 — 컴포넌트 자기 특이도만 남아서
+   집중 모드 상단 바 · 레일 하단 탭처럼 더 구체적인 기존 규칙이 그대로 이긴다.
+   ========================================================================== */
+
+/* ---- 스킨: Liquid Glass (1.15) --------------------------------------------
+   <html data-skin="glass">   — 서비스가 기본값으로 고정. 사용자 토글은 <button data-ag-skin-toggle aria-pressed="false">(argus.js, localStorage 'ag-skin')
+   뒤에 액센트 · 브랜드 색 메시(--ag-glass-backdrop)를 깔고, 그 위 떠 있는 층을 반투명 유리로 바꾼다.
+   단계: 1.15 크롬(상단 바 · 사이드바 · 레일) → 오버레이 → 카드 · 패널 → 알약 컨트롤 순서로 넓힌다.
+   유리 바탕 알파는 대비 단언(check.py)을 통과한 토큰 값으로만 바꾼다 — 컴포넌트에서 따로 낮추지 않는다.
+   OS 의 "투명도 줄이기"(prefers-reduced-transparency)면 토큰이 불투명 · 블러 없음 · 메시 없음으로 바뀐다. */
+
+/* 배경 메시 — 스크롤과 무관한 고정 층. body 배경(--ag-bg)은 캔버스로 올라가므로 z-index:-1 이 그 위 · 본문 아래에 놓인다.
+   인쇄 문서 책상(.ag-paper-desk)은 배경이 없어 종이 뒤로 비치므로 뺀다 */
+:where(:root[data-skin="glass"]) body:not(.ag-paper-desk)::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: var(--ag-glass-backdrop);
+  background-repeat: no-repeat;
+}
+:where(:root[data-skin="glass"]) .ag-app { background-image: none; }   /* 메시가 상단 글로우(--ag-bg-glow · .ag-glow)를 대신한다 */
+
+/* 크롬 — 늘 떠 있는 틀. 사이드바 규칙은 레일 · 듀얼 · 모바일 고정 사이드바가 같이 받는다 */
+:where(:root[data-skin="glass"]) :is(.ag-topbar, .ag-sidebar) {
+  background-color: var(--ag-glass-bg);
+  background-image: var(--ag-glass-sheen);
+  backdrop-filter: var(--ag-glass-filter);   /* -webkit- 은 lightningcss 가 붙인다. 소스에 둘 다 쓰면 접두 없는 쪽이 지워져 Chrome 에서 블러가 꺼진다 */
+  border-color: var(--ag-glass-border);
+  box-shadow: var(--ag-glass-edge);
+  /* 유리 안 서브표면 · hover 는 불투명 회색 대신 옅은 채움 — 단색 카드처럼 토큰을 다시 정의해서 검색 칸 · 사이드바 항목 · 네비 hover 가 따라온다.
+     --ag-surface-3(배지 · 진행 막대 · 스위치 · 네비 활성)은 불투명 그대로 — 레일처럼 배지가 글자 위에 얹히는 곳에서 아래 글자가 비친다 */
+  --ag-surface-2: var(--ag-glass-fill);
+  --ag-surface-hover: var(--ag-glass-fill);
+}
+:where(:root[data-skin="glass"]) .ag-topbar { background-color: var(--ag-glass-bg-thick); }   /* 본문이 밑으로 지나가는 바는 두꺼운 유리 */
+/* 집중 모드 상단 바는 투명 그대로 — 기존 규칙이 background · backdrop-filter 를 끄고, 여기서 하이라이트 선을 끈다 */
+:where(:root[data-skin="glass"]) .ag-app--focus .ag-topbar { box-shadow: none; }
+@media (max-width: 960px) {
+  :where(:root[data-skin="glass"]) .ag-app--rail .ag-sidebar.ag-sidebar--bottom-tabs { background-color: var(--ag-glass-bg-thick); backdrop-filter: var(--ag-glass-filter); }
+}
+@media print {
+  :where(:root[data-skin="glass"]) body::before { display: none; }
+}

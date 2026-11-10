@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.15.0 — 2026-11-10 · 스킨 축 `data-skin="glass"` 1단계 — 유리 재질 토큰 · 메시 배경 · 크롬 (Liquid Glass)
+
+- **스킨 축 `data-skin`** — 색 테마 · 레이아웃 모드와 따로 움직이는 세 번째 축. `<html data-skin="glass">` 한 줄로 Liquid Glass 재질을 입힌다(마크업 그대로). 규칙은 새 파일 **`css/skins.css`**(core · 전체 번들 둘 다, utilities 앞)에 `:where(:root[data-skin="glass"])` 로 특이도 0 — 집중 모드 상단 바 · 레일 하단 탭처럼 더 구체적인 기존 규칙이 그대로 이긴다. 끈 화면은 1.14 와 같다(스크린샷 픽셀 비교, 예시 데모 네비 제외).
+- **유리 재질 토큰 `--ag-glass-*`**(다크 · 라이트) — 4겹: 바탕 `--ag-glass-bg`(고정 배경 위, 사이드바) · `--ag-glass-bg-thick`(본문이 밑으로 지나가는 곳, 상단 바) + `--ag-glass-filter`(`blur(24px) saturate(180%)`), 위쪽 광택 `--ag-glass-sheen`, 테두리 `--ag-glass-border` + 하이라이트 선 `--ag-glass-edge`(위 흰 선 · 아래 어두운 선), 유리 안 hover `--ag-glass-fill`. 뒤에 비칠 메시 `--ag-glass-backdrop` = 브랜드 · 액센트 색 `--ag-glass-tint-1..3` 세 겹(테마 따라감, 서비스가 이미지로 바꿀 수 있음).
+- **1단계 범위 = 크롬** — `.ag-topbar`(탭 모드 2단 바 포함) · `.ag-sidebar`(사이드바 · 레일 · 듀얼 · 모바일 고정) · 레일 하단 탭. 크롬 안에서 `--ag-surface-2` · `--ag-surface-hover` 를 유리 채움으로 다시 정의해 검색 칸 · 사이드바 항목 · 네비 hover 가 따라온다. `--ag-surface-3`(배지 · 진행 막대 · 스위치 · 네비 활성)은 불투명 그대로 — 레일에서 배지가 글자 위에 얹혀 아래 글자가 비쳤다. 메시는 `body::before` 고정 층(인쇄 · `.ag-paper-desk` 제외), `.ag-app` 상단 글로우는 메시가 대신한다. 오버레이 → 카드 · 패널 → 알약 컨트롤은 다음 단계.
+- **대비는 토큰이 책임** — 유리 바탕 알파는 7색 × 다크 · 라이트에서 메타 글자까지 4.5:1 이 되는 값: 다크 64% / 86%(최저 4.70 · 4.78, yellow), 라이트 68% / 86%(최저 4.59 orange · 4.65 violet). 상단 바는 액센트 카드가 바로 밑을 지날 때 기준이라 사이드바보다 두껍다.
+- **투명도 줄이기** — `prefers-reduced-transparency: reduce` 면 유리 스킨이어도 불투명 · 블러 없음 · 메시 없음(토큰에서).
+- **토글 `data-ag-skin-toggle`**(argus.js) — 켬 ↔ 끔, `localStorage('ag-skin')` 에 `glass` / `flat`, `aria-pressed` 갱신. 저장값이 없으면 서비스가 `<html>` 에 정한 기본값 그대로. 첫 페인트 스크립트가 스킨도 읽는다(README).
+- `backdrop-filter` 는 접두 없이 한 번만 — lightningcss 가 `-webkit-` 을 붙이고, 소스에 둘 다 쓰면 접두 없는 쪽을 지워 Chrome 에서 블러가 꺼진다(CLAUDE.md 규칙).
+- 예시: 모든 페이지 데모 네비에 **유리 스킨** 버튼(argus.js 를 안 싣는 리포트는 숨김), layouts `.ag-user` 메뉴에 "유리 스킨" 항목. 7쪽 첫 페인트 스크립트에 스킨 읽기. shots.py 에 유리 스크린샷(index · resources · layouts × 다크 · 라이트).
+- check.py +10(끔: 사이드바 불투명 · 하이라이트 · 메시 없음 · 글로우 유지, 켬: 블러 · 반투명 두께 순서 · inset 하이라이트 · 메시 고정 층 · 배지 불투명, 집중 모드 투명 유지 — 각 다크 · 라이트, 투명도 줄이기, 7색 × 2테마 대비, 400px 넘침 index · layouts), axe 게이트에 index · layouts 유리 스킨 × 2테마 추가. 192항목.
+
 ## 1.14.0 — 2026-11-07 · 사이드바 셸 상단 배너 자리 `ag-banners` (argus-server 알림 센터)
 
 - **`.ag-banners`** — 배너 묶음. 사이드바 셸(`.ag-app--sidebar`)은 격자 영역이 side · top · main 뿐이라 상단 바 아래 공지 배너를 둘 칸이 없었고, 배너를 셸 직계로 넣으면 격자가 깨졌다. 묶음을 셸 직계(상단 바 다음)에 두면 `:has()` 로 격자가 top · banners(auto) · main 세 줄이 된다(960px 아래도). 비면 높이 0 이라 레이아웃에 늘 두고 배너만 채운다. top 셸에서는 그냥 세로로 쌓인다. argus-server 는 알림 센터의 긴급 상태형 알림(유지관리 예정 등)을 이 자리에 `ag-banner--crit` 으로 띄운다.

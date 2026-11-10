@@ -273,7 +273,7 @@ HEAD = '''<!doctype html>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../dist/argus.min.css">
-<script>try{if(localStorage.getItem('ag-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+<script>try{var d=document.documentElement,s=localStorage.getItem('ag-skin');if(localStorage.getItem('ag-theme')==='light')d.setAttribute('data-theme','light');if(s==='glass')d.setAttribute('data-skin','glass');else if(s)d.removeAttribute('data-skin')}catch(e){}</script>
 <style>
   .demo { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ag-space-3); }
   .ag-table--matrix th:first-child { white-space: nowrap; color: var(--ag-text-3); font-weight: 500; font-family: var(--ag-font-mono); font-size: var(--ag-text-xs); }

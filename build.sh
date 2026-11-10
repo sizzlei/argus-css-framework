@@ -2,7 +2,7 @@
 # css/*.css 를 순서대로 합쳐 dist/ 를 만든다. 빌드 도구 의존 없음 (lightningcss 있으면 minify 품질↑).
 # dist/ 는 배포 전용 — 전부 minified, 소스는 css/ js/.
 #   dist/argus.min.css              전체 (가장 단순한 선택)
-#   dist/argus.core.min.css         tokens+base+layout+components+utilities — 최소 세트
+#   dist/argus.core.min.css         tokens+base+layout+components+skins+utilities — 최소 세트
 #   dist/argus.patterns.min.css     인증·사이드바·로그·Slack·배너·알림… 도메인 패턴 (core 뒤에 로드)
 #   dist/argus.charts.min.css       CSS 차트 + Apex/Chart.js 보정 (차트 있는 페이지만)
 #   dist/argus.auth-landing.min.css 랜딩형 인증 변형 (선택, 거의 안 씀)
@@ -12,12 +12,12 @@
 # 사람이 읽는 합본이 필요하면 `sh build.sh --readable` → dist/argus.css 추가 생성.
 set -e
 cd "$(dirname "$0")"
-VERSION="1.14.0"
-CORE="tokens base layout components utilities"
-ORDER="tokens base layout components charts patterns utilities"
+VERSION="1.15.0"
+CORE="tokens base layout components skins utilities"
+ORDER="tokens base layout components charts patterns skins utilities"
 
 # 린트: tokens.css 와 themes/ 밖의 hex 리터럴은 허용 목록(흰/검 글자, 마스크, Slack·Google 버튼, @media print 회색)만
-BAD=$(grep -nE "#[0-9a-fA-F]{3,8}\b" css/base.css css/layout.css css/components.css css/charts.css css/patterns.css css/utilities.css css/extras/*.css \
+BAD=$(grep -nE "#[0-9a-fA-F]{3,8}\b" css/base.css css/layout.css css/components.css css/charts.css css/patterns.css css/skins.css css/utilities.css css/extras/*.css \
   | grep -vE "#fff\b|#ffffff|#000\b|#0b1a14|#1a1400|#04111a|#04110b|#2eb67d|#259e6b|#e01e5a|#c01b4f|#1f1f1f|#dadce0|#f8f9fa|#c6c6c6|#131314|#e3e3e3|#8e918f|#1b1b1c|#6ee7b7|#fda4af|#111\b|#333\b|#555\b|#999\b|#bbb\b|#ddd\b|#eee\b|#f3f3f3|data:image" || true)
 if [ -n "$BAD" ]; then echo "리터럴 색상 발견 — 토큰으로 바꾸거나 build.sh 허용 목록에 추가:"; echo "$BAD"; exit 1; fi
 
