@@ -132,7 +132,7 @@
 
 /* 카드 · 패널(1.17) — 유리. 카드 자신에는 블러를 걸지 않는다 — 블러는 쌓임 맥락을 만들어 카드 안 드롭다운(z-index 50)이
    다음 카드 밑에 가려지고, fixed 자손도 갇힌다(Chromium 실측). 1.20: 그래서 카드 뒤 흐림은 ::before(z-index -1)에 건다(아래).
-   바탕은 bg-card — 다크는 흰 막(1.20)이라 메시 색이 그대로 비치고, 카드 안 text-3 는 glass-text-3 로 한 단계 올린다.
+   바탕은 bg-card — 다크는 어두운 유리 60%(2.0.1)라 테마색이 은은하게 비치고, 카드 안 text-3 는 glass-text-3 로 한 단계 밝다.
    단색 톤 카드와 --accent-soft 는 불투명 그대로(--accent-soft 는 라이트 orange 액센트 글자 4.37 로 모자란다).
    특이도는 .ag-card 하나 — 기본 · --elevated 바탕을 덮고, --interactive:hover(불투명 hover) · .is-selected 는 그대로 이긴다 */
 :where(:root[data-skin="glass"]) .ag-card:where(:not(.ag-card--accent, .ag-card--accent2, .ag-card--inverse, .ag-card--cat1, .ag-card--cat2, .ag-card--cat3, .ag-card--cat4, .ag-card--engine-solid, .ag-card--accent-soft)) {
