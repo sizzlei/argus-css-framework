@@ -12,7 +12,7 @@
 # 사람이 읽는 합본이 필요하면 `sh build.sh --readable` → dist/argus.css 추가 생성.
 set -e
 cd "$(dirname "$0")"
-VERSION="2.0.2"
+VERSION="2.0.3"
 CORE="tokens base layout components skins utilities"
 ORDER="tokens base layout components charts patterns skins utilities"
 

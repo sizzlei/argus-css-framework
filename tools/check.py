@@ -890,11 +890,11 @@ async def main():
             check(f"1.17 유리 끔({th}): 카드 10종 불투명", all(v["a"] == 255 for k, v in off.items() if k != "cardA"), str({k: v["a"] for k, v in off.items() if k != "cardA"}))
             await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(100)
             on = await pg.evaluate(card_js)
-            glassy = all(on[k]["a"] == on["cardA"] == 255 and "linear-gradient" in on[k]["img"] and "inset" in on[k]["sh"] and on[k]["bf"] == "none" for k in ("base", "elevated"))
-            check(f"1.17 유리 켬({th}): 기본 · elevated 카드 = 불투명 바탕(2.0.2 bg-card = surface) + 광택 + inset 하이라이트 · 블러 없음, elevated 그림자 유지",
+            glassy = all(on[k]["a"] == on["cardA"] and 225 <= on["cardA"] < 255 and "linear-gradient" in on[k]["img"] and "inset" in on[k]["sh"] and on[k]["bf"] == "none" for k in ("base", "elevated"))
+            check(f"1.17 유리 켬({th}): 기본 · elevated 카드 = 거의 불투명 바탕(2.0.3 bg-card = surface 90%) + 광택 + inset 하이라이트 · 블러 없음, elevated 그림자 유지",
                   glassy and "8px 24px -8px" in on["elevated"]["sh"], str({k: on[k] for k in ("base", "elevated")}))
-            check(f"1.17 유리 켬({th}): 엔진 틴트 = 유리 끔과 같은 색(2.0.2 불투명) · 기본과 다른 색, 엔진 띠는 inset 3px + 하이라이트",
-                  on["engine-tint"]["bg"] == off["engine-tint"]["bg"] and on["engine-tint"]["bg"] != on["base"]["bg"] and "3px 0px 0px 0px inset" in on["engine-stripe"]["sh"] and on["engine-stripe"]["sh"].count("inset") >= 3,
+            check(f"1.17 유리 켬({th}): 엔진 틴트 = 카드처럼 거의 불투명 · 기본과 다른 색, 엔진 띠는 inset 3px + 하이라이트",
+                  on["cardA"] <= on["engine-tint"]["a"] < 255 and on["engine-tint"]["bg"] != on["base"]["bg"] and "3px 0px 0px 0px inset" in on["engine-stripe"]["sh"] and on["engine-stripe"]["sh"].count("inset") >= 3,
                   str({k: on[k] for k in ("engine-tint", "engine-stripe")}))
             solid = ("accent", "accent2", "inverse", "cat1", "engine-solid", "accent-soft")
             check(f"1.17 유리 켬({th}): 단색 톤 카드 · 액센트 소프트는 불투명 · 바탕색 그대로", all(on[k]["a"] == 255 and on[k]["bg"] == off[k]["bg"] for k in solid),
@@ -922,15 +922,18 @@ async def main():
         #    2.0.2: 카드가 불투명이라 뒤 흐림 층(::before)은 없앴다 — 보이지도 않으면서 카드마다 블러 비용만 들었다 ──
         pseudo_js = r"""()=>{const solid=/ag-card--(accent|accent2|inverse|cat[1-4]|engine-solid|accent-soft)\b/,c=[...document.querySelectorAll('.ag-card')].find(e=>!solid.test(e.className));
           const b=getComputedStyle(c,'::before'),a=getComputedStyle(c,'::after'),m=getComputedStyle(document.body,'::before');
-          return {cardBf:getComputedStyle(c).backdropFilter,bC:b.content,bBf:b.backdropFilter,bZ:b.zIndex,aC:a.content,aMask:a.maskComposite,aImg:a.backgroundImage,meshSize:m.backgroundSize}}"""
+          const TH='.ag-table--sticky-end th, .ag-table--sticky-col th',tc=[...document.querySelectorAll('.ag-card')].find(e=>!solid.test(e.className)&&e.querySelector(TH));
+          return {cardBf:getComputedStyle(c).backdropFilter,bC:b.content,bBf:b.backdropFilter,bZ:b.zIndex,aC:a.content,aMask:a.maskComposite,aImg:a.backgroundImage,meshSize:m.backgroundSize,
+            aZ:getComputedStyle(tc,'::after').zIndex,thZ:Math.max(...[...tc.querySelectorAll(TH)].map(t=>+getComputedStyle(t).zIndex||0))}}"""
         for light in (False, True):
             th = "라이트" if light else "다크"
             pg = await page(b, "components.html", light=light)
             off = await pg.evaluate(pseudo_js)
             await pg.evaluate("document.documentElement.dataset.skin='glass'"); await pg.wait_for_timeout(100)
             on = await pg.evaluate(pseudo_js)
-            check(f"1.20 유리 켬({th}): 카드 자신 · ::before 블러 없음(2.0.2 불투명 카드), 테두리 빛 = ::after(gradient · mask exclude), 메시에 32px 격자선 / 유리 끔은 가상 요소 없음",
-                  off["bC"] == "none" and off["aC"] == "none" and on["cardBf"] == "none" and on["bC"] == "none"
+            # 2.0.3: 표 머리칸(sticky · z-index 1, sticky-end/col 표 3)이 카드 가장자리까지 닿아 그 구간 테두리 빛이 끊겼다 → 빛이 머리칸보다 위
+            check(f"1.20 유리 켬({th}): 카드 자신 · ::before 블러 없음, 테두리 빛 = ::after(gradient · mask exclude) · 표 머리칸보다 위(2.0.3), 메시에 32px 격자선 / 유리 끔은 가상 요소 없음",
+                  off["bC"] == "none" and off["aC"] == "none" and on["cardBf"] == "none" and on["bC"] == "none" and on["aZ"].isdigit() and on["thZ"] >= 3 and int(on["aZ"]) > on["thZ"]
                   and on["aC"] == '""' and "gradient" in on["aImg"] and "exclude" in on["aMask"] and "32px 32px" in on["meshSize"], str({"off": off, "on": on}))
             await pg.close()
 

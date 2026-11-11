@@ -99,18 +99,19 @@
   /* 1.15: 유리 재질 — <html data-skin="glass"> 일 때 css/skins.css 가 쓴다(스킨을 끄면 쓰는 곳 없음).
      4겹: ① 바탕 bg + filter(블러 · 채도) ② sheen(위쪽 밝음, 프레넬) ③ border(테두리) + edge(위 흰 선 · 아래 어두운 선) ④ 뒤에 비칠 메시 backdrop.
      바탕 두께 셋: bg 는 고정 배경(메시) 위 — 사이드바 · 레일 · 듀얼 목록 판(1.17), bg-thick 은 밑으로 본문이 지나가거나 막 위에 뜨는 곳 — 상단 바 · 하단 탭 · 오버레이(1.16),
-     bg-card 는 카드 — 2.0.2 부터 불투명(--ag-surface, 유리를 끈 카드와 같은 색). 반투명 카드는 안쪽 불투명 표(--ag-surface)와 색이 끊기고
-     (2.0.1 60%), 너무 비우면 화면 전체가 테마색으로 덮였다(1.20 흰 막 4.5%). 서비스가 반투명으로 되돌리려면 이 토큰만 바꾼다.
+     bg-card 는 카드 — 2.0.3 부터 거의 불투명(--ag-surface 90%, 라이트는 흰색 90%). 테마색이 카드 머리에 살짝만 돈다.
+     85% 아래로 내리면 안쪽 불투명 표(--ag-surface)와 경계가 보이기 시작하고(2.0.1 60% 는 갈라졌다), 너무 비우면 화면 전체가 테마색으로 덮인다(1.20 흰 막 4.5%).
+     10% 로 비치는 격자선은 3% 라 보이지 않아 카드 뒤 흐림은 두지 않는다.
      유리 안 서브표면 둘(유리 호스트가 다시 정의): field = --ag-surface-2(입력칸 · 오목한 바탕, 대비가 오르는 쪽 — 다크는 어둡게 · 라이트는 희게),
      fill = --ag-surface-hover(hover, 이때 글자는 --ag-text).
      대비(check.py, 7색 × 다크 · 라이트): 메시(바닥 · 세 덩어리 꼭대기) 위 맨 글자 text-3 · text-2 · accent-text, 그 위 bg 에서 text-3 · accent-text, bg + fill 에서 text-2,
      액센트 채움(액센트 카드)이 바로 밑을 지날 때 bg-thick 에서 text-2 · text-3, 막(--ag-overlay) 위 bg-thick 에서 text-2 · text-3,
      bg · bg-thick + field 에서 text-3(placeholder) — 모두 ≥ 4.5:1. 1.19 에서 메시 위 맨 글자는 실제 화면 픽셀로도 잰다.
      다크 최저(1.19): 메시 위 맨 글자 4.78(green) · bg 5.82 · bg-thick 4.78(yellow, 액센트 위) · 막 위 5.91 · field 위 6.16 — bg-thick 86% 는 액센트 카드 위 대비가 붙잡는다.
-     카드 안 글자는 불투명 카드(2.0.2) 위라 유리를 끈 화면과 같은 대비다 */
+     카드 안 글자는 거의 불투명한 카드(2.0.3) 위라 유리를 끈 화면과 거의 같은 대비다 */
   --ag-glass-bg: color-mix(in oklab, var(--ag-bg-elevated) 64%, transparent);
   --ag-glass-bg-thick: color-mix(in oklab, var(--ag-bg-elevated) 86%, transparent);
-  --ag-glass-bg-card: var(--ag-surface);   /* 2.0.2: 불투명 — 표와 같은 색 */
+  --ag-glass-bg-card: color-mix(in oklab, var(--ag-surface) 90%, transparent);   /* 2.0.3: 살짝 투명 — :root 한 곳, 라이트는 흰색 90% 로 풀린다 */
   --ag-glass-text-3: var(--ag-text-3);   /* 유리 카드 안 메타 글자 — 카드가 --ag-text-3 을 이 값으로 다시 정의한다. 1.20 ~ 2.0.1 은 카드가 메시보다 밝아 #a4a8bc 로 올렸다 */
   --ag-glass-card-border: transparent;   /* 1.20: 다크 카드는 테두리 빛(rim)이 테두리를 대신한다 */
   --ag-glass-rim: linear-gradient(145deg, rgb(255 255 255 / .5), rgb(255 255 255 / .1) 22%, rgb(255 255 255 / .03) 50%, rgb(255 255 255 / .05) 78%, rgb(255 255 255 / .2));   /* 1.20: 카드 테두리 빛 — 위-왼쪽이 밝고 아래-오른쪽에 반사광 */
