@@ -542,7 +542,7 @@ a.ag-list__item:hover, button.ag-list__item:hover { background: var(--ag-surface
 .ag-table th.is-sorted { color: var(--ag-text); }
 .ag-table th .ag-sort { display: inline-flex; align-items: center; gap: 4px; color: inherit; text-transform: inherit; letter-spacing: inherit; font: inherit; }
 .ag-table th .ag-sort:hover { color: var(--ag-text); }
-.ag-table td .ag-mono, .ag-mono { font-family: var(--ag-font-mono); font-size: .92em; }
+.ag-table td .ag-mono, .ag-mono { font-family: var(--ag-font-mono); font-size: max(.92em, var(--ag-text-xs)); }   /* 2.0.4(argus ①): .92em 이 11px 문맥에서 10.12px — 글자 바닥 11px 에서 멈춘다 */
 
 .ag-table-foot {
   display: flex;

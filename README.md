@@ -37,7 +37,7 @@ index.html                      ← GitHub Pages 진입점 (examples/ 로 리다
 examples/                       ← 예시 사이트 (= 라이브 데모 소스). components.html 이 전체 카탈로그
                                    index(대시보드) / resources(목록) / detail(상세) / login(인증) / layouts(6모드 + 컬러 전환) / report(A4 인쇄 문서) / matrix(변형 조합 매트릭스, tools/gen_matrix.py 가 생성)
 templates/                      ← Go html/template + Alpine 적용 예시 (인증 레이아웃, 3단계 로그인)
-tools/                          ← check.py(값 단언 회귀 243항목 + axe 접근성 게이트 + 키보드·모션 상한 + 클래스 커버리지) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
+tools/                          ← check.py(값 단언 회귀 244항목 + axe 접근성 게이트 + 키보드·모션 상한 + 클래스 커버리지) · shots.py(스크린샷) · gen_matrix.py(매트릭스 생성)
 docs/                           ← 디자인 원칙, 기존 어드민을 Claude Code 로 리뉴얼할 때의 프롬프트 키트
 CLAUDE.md                       ← 이 저장소에서 Claude Code 로 작업할 때의 규칙
 ```
@@ -195,7 +195,7 @@ git add web/public/vendor && git commit -m "chore(ui): argus-css $(cat $AG/dist/
 3. `sh build.sh && python3 tools/gen_matrix.py && python3 build_examples.py && python3 tools/check.py` 통과 후 1440/400px 다크·라이트 확인, 커밋.
 4. 서비스는 `dist/` 를 다시 복사한다 (위 "앱에 배포하기").
 
-지금까지 이 루프로 들어온 것 — 1.0~1.1 의 예(1.2 이후 argus-server 보고 ⑫②⑦⑧③ · ⓐ⑰⑪⑬⑭ · 엔진색 · 인쇄 문서 · 구성도 · 상태 신호등까지 전부 `CHANGELOG.md`):
+지금까지 이 루프로 들어온 것 — 1.0~1.1 의 예(1.2 이후 argus-server 보고 ⑫②⑦⑧③ · ⓐ⑰⑪⑬⑭ · ⑮⑥①(2.0.4) · 엔진색 · 인쇄 문서 · 구성도 · 상태 신호등까지 전부 `CHANGELOG.md`):
 
 - 1.0.0: `.ag-toast--warn/--info`, `.ag-provider__label`, `fonts/fetch-fonts.sh` 블록 파싱 두 건, 모바일 상단 바 넘침, `.ag-qr` 예시 누락
 - 1.1.0: `.ag-badge--count` 가 톤을 덮던 것, `.ag-toast-stack--static` z-index, `a/button.ag-card` 의 display·`align-items`, `.ag-tile--stack`, `.ag-form-grid--2/--3/--4` + `--span2/--span3`, `.ag-input-group--end` 패딩, `.ag-text-left` `.ag-scroll-y`, 범주 아바타, 레이아웃 간격 토큰과 `.ag-page`, `--tabs` 초광폭, `.ag-glow` 복원, argus.js 오버레이 소유권·`<head>` 로드·Phosphor 아이콘, 히트맵 순차 램프 `--ag-seq-1..5` / `AG.charts.sequential`, `.ag-list__item.is-active`
@@ -391,7 +391,7 @@ npm i                       # 선택: esbuild + lightningcss-cli (없어도 빌�
 sh build.sh                 # css/*.css → dist/*.min.css + themes + js. 저장소 node_modules/.bin → PATH → npx 순으로 minifier 탐색
 python3 tools/gen_matrix.py # examples/src/matrix.html 재생성 (변형을 추가했으면)
 python3 build_examples.py   # examples/src/*.html → examples/*.html (아이콘 스프라이트 인라인)
-python3 tools/check.py      # 값 단언 회귀 243항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 유리 스킨 · 400 · 3400 tabs)
+python3 tools/check.py      # 값 단언 회귀 244항목 (Playwright, 실패 시 exit 1). axe-core 가 있으면 접근성(serious/critical 0) 게이트 포함. shots.py 는 스크린샷 (1440 다크/라이트 · 유리 스킨 · 400 · 3400 tabs)
 ```
 
 ## 기존 어드민에 적용하는 순서

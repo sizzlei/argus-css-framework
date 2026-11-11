@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.0.4 — 2026-11-11 · argus-server 보고 ⑮ ⑥ ① — 읽기 전용 코드 상자 · Secret 줄바꿈 · mono 11px 바닥
+
+- **⑮ `.ag-code--readonly`** — 기본 `.ag-code` 의 `min-height: 160px` · `resize: vertical` 을 그대로 받아 한 줄 결과도 160px 상자에 크기 조절 손잡이가 붙었다 → `resize: none; min-height: 0`(내용 높이만큼). 편집용 `.ag-code` 는 그대로. 예시(components 비교)의 인라인 `min-height:0` 우회 제거.
+- **⑥ `.ag-secret`** — `word-break: break-all` 이 경로형 값(Secret 이름 `prod/argus/…`)을 글자 중간에서 꺾었다(argus 는 '/' 조각마다 `.ag-nowrap` 으로 우회) → `overflow-wrap: anywhere`. 하이픈 같은 자리에서 먼저 꺾고 안 들어갈 때만 글자 사이, flex 안에서도 상자를 넘지 않는다.
+- **① `.ag-mono`** — `.92em` 이라 `.ag-text-xs`(11px) 안에서 10.12px(글자 바닥 11px 위반) → `max(.92em, var(--ag-text-xs))`. 본문 · 표 안(12.88px)은 그대로, 11px 문맥에서만 11px 에서 멈춘다. 1.4 의 "11px 미만 글자 없음" 단언은 4쪽만 봐서 이 조합이 없었다.
+- check.py +1(2.0.4: 한 줄 읽기 전용 코드 < 80px · 손잡이 없음, Secret overflow-wrap anywhere · 220px 에서 안 넘침, xs 안 mono ≥ 11px · 표 안 mono 12.88px). 244항목.
+- argus-server: dist 2.0.4 재복사 후 '/' 조각 `.ag-nowrap` · 읽기 전용 코드 인라인 `min-height` 우회를 걷어도 된다.
+- 버전 표기 넷 2.0.4. README 피드백 루프 줄.
+
 ## 2.0.3 — 2026-11-11 · 유리 카드 살짝 투명(90%) · 표 머리줄에서 카드 테두리 빛이 끊기던 것
 
 - 사용자 피드백("최근 슬로우 쿼리" 카드): 불투명(2.0.2)에서 살짝만 투명하게, 그리고 표 머리줄 구간에서 카드 가장자리 선이 잘린 것처럼 보인다.

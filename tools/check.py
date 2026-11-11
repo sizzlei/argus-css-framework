@@ -481,6 +481,20 @@ async def main():
             check(f"1.4: {name} 카드 아이콘 상태색 톤 ≤ 2", v["st"] <= 2, str(v))
             check(f"1.4: {name} 11px 미만 글자 없음", v["tiny"] == 0, str(v))
             await pg.close()
+        # ── 2.0.4 argus-server 보고 ⑮ ⑥ ① — 읽기 전용 코드 상자 · Secret 줄바꿈 · mono 11px 바닥.
+        #    ①은 위 1.4 단언(4쪽)에 xs 안 mono 조합이 없어 안 걸렸다 → 조합을 직접 넣어 잰다 ──
+        pg = await page(b, "components.html")
+        v = await pg.evaluate("""()=>{const d=document.createElement('div');d.innerHTML=`
+          <textarea class="ag-code ag-code--readonly" readonly id="r1">SELECT 1;</textarea>
+          <div class="ag-secret" id="s1" style="width:220px"><span>prod/argus/database/order-db-writer/master-password-rotation</span></div>
+          <p class="ag-text-xs"><span class="ag-mono" id="m1">abc123</span></p>
+          <table class="ag-table"><tr><td><span class="ag-mono" id="m2">r6g.2xlarge</span></td></tr></table>`;document.body.append(d);
+          const q=id=>document.getElementById(id),cs=id=>getComputedStyle(q(id)),s=q('s1');
+          const r={codeH:q('r1').offsetHeight,resize:cs('r1').resize,wb:cs('s1').wordBreak,ow:cs('s1').overflowWrap,secretFits:s.scrollWidth<=s.clientWidth,
+            monoXs:parseFloat(cs('m1').fontSize),monoTd:cs('m2').fontSize};d.remove();return r}""")
+        check("2.0.4 argus ⑮ ⑥ ①: 읽기 전용 코드 한 줄 < 80px · 손잡이 없음, Secret 은 overflow-wrap anywhere(break-all 아님) · 220px 에서 안 넘침, xs 안 mono ≥ 11px · 표 안 mono 12.88px 그대로",
+              v["codeH"] < 80 and v["resize"] == "none" and v["wb"] == "normal" and v["ow"] == "anywhere" and v["secretFits"] and v["monoXs"] >= 11 and v["monoTd"] == "12.88px", str(v))
+        await pg.close()
         pg = await page(b, "components.html")
         v = await pg.evaluate("""()=>{const h3=document.createElement('h3'),h4=document.createElement('h4');document.body.append(h3,h4);const r={h3:parseFloat(getComputedStyle(h3).fontSize),h4:parseFloat(getComputedStyle(h4).fontSize),ff:getComputedStyle(document.body).fontFeatureSettings};h3.remove();h4.remove();return r}""")
         check("1.4: h4 < h3 (17 > 14/600)", v["h4"] < v["h3"], str(v))
